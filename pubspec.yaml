@@ -1,0 +1,69 @@
+name: mealo
+description: A new Flutter project.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.0-444.4.beta <3.0.0'
+
+# Globals for packages which share the same version
+isar_version: &isar_version 3.0.5
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+
+  # Immutability
+  freezed: ^2.3.2
+  freezed_annotation: ^2.2.0
+
+  # JSON parser and serializer
+  crimson: ^0.2.1
+
+  # State management
+  flutter_riverpod: ^2.1.3
+  riverpod_annotation: ^1.1.1
+
+  # Local storage
+  isar: *isar_version
+  isar_flutter_libs: *isar_version
+
+  # Navigator 2.0
+  go_router: ^6.0.1
+
+  # UI
+  # Consistent theming
+  flex_color_scheme: ^6.1.2
+
+  # Power up slivers
+  sliver_tools: ^0.2.8
+
+  # Animations
+  flutter_staggered_animations: ^1.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+  # Generator stuff
+  isar_generator: *isar_version
+  riverpod_generator: ^1.1.1
+  build_runner: ^2.3.3
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  assets:
+    - assets/
