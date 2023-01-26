@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mealo/stores/shared/theme.dart';
@@ -12,7 +13,8 @@ class App extends ConsumerWidget {
     bool? darkMode = ref.watch(darkModeProvider);
 
     return MaterialApp.router(
-      routerConfig: RouterUtils.router,
+      routerDelegate: RouterUtils.router,
+      routeInformationParser: BeamerParser(),
       themeMode: darkMode != null
           ? darkMode
               ? ThemeMode.dark

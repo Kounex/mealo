@@ -814,8 +814,8 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       child: ClipRect(
         child: BackdropFilter(
           filter: ImageFilter.blur(
-            sigmaX: StylingHelper.kSigmaBlur,
-            sigmaY: StylingHelper.kSigmaBlur,
+            sigmaX: StylingUtils.kSigmaBlur,
+            sigmaY: StylingUtils.kSigmaBlur,
           ),
           child: AppBar(
             leading: leading,

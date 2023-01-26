@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mealo/utils/styling.dart';
-import 'package:mealo/views/home/widgets/meal_grid.dart';
-import 'package:mealo/views/home/widgets/theme_switcher.dart';
 import 'package:mealo/widgets/flutter_modified/translucent_sliver_app_bar.dart';
 
-class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+import 'widgets/meal_grid.dart';
+
+class MealsView extends StatelessWidget {
+  const MealsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +16,10 @@ class HomeView extends StatelessWidget {
             pinned: true,
             // stretch: true,
             expandedHeight: 192,
-            backgroundColor: Theme.of(context)
-                .appBarTheme
-                .backgroundColor!
-                .withOpacity(StylingHelper.kOpacityForBlur),
+            // backgroundColor: Theme.of(context)
+            //     .appBarTheme
+            //     .backgroundColor!
+            //     .withOpacity(StylingHelper.kOpacityForBlur),
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 alignment: Alignment.bottomCenter,
@@ -30,13 +29,6 @@ class HomeView extends StatelessWidget {
                   height: 164,
                 ),
               ),
-            ),
-          ),
-          const SliverList(
-            delegate: SliverChildListDelegate.fixed(
-              [
-                ThemeSwitcher(),
-              ],
             ),
           ),
           const SliverPadding(

@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 
 /// Will hold some general styling stuff like "custom" icons or some
 /// app wide layout constraints (if applicable)
-class StylingHelper {
+class StylingUtils {
   /// Taken from [CupertinoNavigationBar]
   static const double kSigmaBlur = 10.0;
-  static const double kOpacityForBlur = 0.75;
+  static const double kOpacityForBlur = 0.65;
 
   /// Bouncing scroll for all cases
   static ScrollPhysics get platformAwareScrollPhysics => Platform.isIOS
