@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../models/meal.dart';
 import 'meal_card.dart';
@@ -31,6 +31,7 @@ class MealGrid extends StatelessWidget {
             child: FadeInAnimation(
               child: MealCard(
                 meal: Meal(
+                  uuid: const Uuid().v4(),
                   createdAt: DateTime.now(),
                   name: 'Penne Gorgonzola mit Baguette',
                 ),

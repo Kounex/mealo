@@ -6,7 +6,7 @@ import 'package:mealo/utils/styling.dart';
 /// Material 3 error colors
 class ThemeUtils {
   static ThemeData get baseLight => FlexThemeData.light(
-        scheme: FlexScheme.greyLaw,
+        scheme: FlexScheme.shark,
         surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
         blendLevel: 9,
         appBarOpacity: StylingUtils.kOpacityForBlur,
@@ -18,30 +18,41 @@ class ThemeUtils {
           inputDecoratorUnfocusedHasBorder: false,
           navigationBarOpacity: StylingUtils.kOpacityForBlur,
           navigationBarHeight: 55.0,
+          bottomNavigationBarOpacity: StylingUtils.kOpacityForBlur,
+          bottomNavigationBarSelectedIconSchemeColor: SchemeColor.secondary,
+          bottomNavigationBarSelectedLabelSchemeColor: SchemeColor.secondary,
         ),
         useMaterial3ErrorColors: true,
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
         useMaterial3: true,
         swapLegacyOnMaterial3: true,
+      ).copyWith(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
       );
 
   static ThemeData get baseDark => FlexThemeData.dark(
-        scheme: FlexScheme.greyLaw,
+        scheme: FlexScheme.shark,
         surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
         blendLevel: 15,
         appBarOpacity: StylingUtils.kOpacityForBlur,
         tabBarStyle: FlexTabBarStyle.forBackground,
-        swapColors: true,
         subThemesData: const FlexSubThemesData(
           blendOnLevel: 20,
           inputDecoratorBorderType: FlexInputBorderType.underline,
           inputDecoratorUnfocusedHasBorder: false,
           navigationBarOpacity: StylingUtils.kOpacityForBlur,
           navigationBarHeight: 55.0,
+          bottomNavigationBarOpacity: StylingUtils.kOpacityForBlur,
+          bottomNavigationBarSelectedIconSchemeColor: SchemeColor.secondary,
+          bottomNavigationBarSelectedLabelSchemeColor: SchemeColor.secondary,
         ),
         useMaterial3ErrorColors: true,
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
         useMaterial3: true,
         swapLegacyOnMaterial3: true,
+      ).copyWith(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
       );
 }

@@ -14,12 +14,7 @@ class MealsView extends StatelessWidget {
           TransculentSliverAppBar(
             title: const Text('Mealo'),
             pinned: true,
-            // stretch: true,
             expandedHeight: 192,
-            // backgroundColor: Theme.of(context)
-            //     .appBarTheme
-            //     .backgroundColor!
-            //     .withOpacity(StylingHelper.kOpacityForBlur),
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 alignment: Alignment.bottomCenter,

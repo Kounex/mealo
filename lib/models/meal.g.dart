@@ -8,6 +8,7 @@ part of 'meal.dart';
 
 extension ReadMeal on Crimson {
   Meal readMeal() {
+    late String uuid;
     late DateTime createdAt;
     late String name;
     String? thumbnailBase64;
@@ -19,6 +20,9 @@ extension ReadMeal on Crimson {
         case -1:
           break loop;
 
+        case -8357342922828577102: // uuid
+          uuid = readString();
+          break;
         case -3141059728106243719: // created_at
           createdAt = DateTime.parse(readString());
           break;
@@ -43,6 +47,7 @@ extension ReadMeal on Crimson {
     }
 
     final obj = Meal(
+      uuid: uuid,
       createdAt: createdAt,
       name: name,
       thumbnailBase64: thumbnailBase64,
@@ -71,6 +76,9 @@ extension ReadMeal on Crimson {
 extension WriteMeal on CrimsonWriter {
   void writeMeal(Meal value) {
     writeObjectStart();
+    writeObjectKeyRaw('uuid');
+    final uuidVal = value.uuid;
+    writeString(uuidVal);
     writeObjectKeyRaw('created_at');
     final createdAtVal = value.createdAt;
     writeString(createdAtVal.toIso8601String());

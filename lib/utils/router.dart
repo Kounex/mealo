@@ -6,7 +6,11 @@ import 'package:mealo/tabs.dart';
 import 'package:mealo/views/meals/meals.dart';
 import 'package:mealo/views/settings/settings.dart';
 
-typedef BeamerPageBuilder = dynamic Function(BuildContext, BeamState, Object?);
+import '../models/meal.dart';
+import '../views/meals/details/details.dart';
+
+typedef BeamerPageBuilder = dynamic Function(
+    BuildContext context, BeamState state, Object? data);
 typedef RouteEntry = MapEntry<Pattern, BeamerPageBuilder>;
 
 class RouterUtils {
@@ -37,7 +41,10 @@ class RouterUtils {
     return MapEntry(
       path,
       builder ??
-          (context, state, data) => BeamPage(key: ValueKey(path), child: view!),
+          (context, state, data) => BeamPage(
+                key: ValueKey(path),
+                child: view!,
+              ),
     );
   }
 
@@ -147,7 +154,19 @@ enum TabMeta {
             routes: RouterUtils.routes(
               [
                 RouterUtils.routeEntry('/meals', view: const MealsView()),
-                RouterUtils.routeEntry('/meals/:uuid', view: const MealsView()),
+                RouterUtils.routeEntry(
+                  '/meals/:uuid',
+                  builder: (context, state, data) {
+                    Meal? meal;
+                    try {
+                      meal = data as Meal;
+                    } catch (_) {}
+                    return BeamPage(
+                      key: const ValueKey('/meals/:uuid'),
+                      child: MealDetailsView(meal: meal),
+                    );
+                  },
+                ),
               ],
             ),
           ),

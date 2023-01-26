@@ -8,6 +8,7 @@ part 'meal.g.dart';
 class Meal with _$Meal {
   @jsonSnakeCase
   const factory Meal({
+    required String uuid,
     required DateTime createdAt,
     required String name,
     String? thumbnailBase64,

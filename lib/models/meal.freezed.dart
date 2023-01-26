@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$Meal {
+  String get uuid => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String? get thumbnailBase64 => throw _privateConstructorUsedError;
@@ -31,7 +32,8 @@ abstract class $MealCopyWith<$Res> {
       _$MealCopyWithImpl<$Res, Meal>;
   @useResult
   $Res call(
-      {DateTime createdAt,
+      {String uuid,
+      DateTime createdAt,
       String name,
       String? thumbnailBase64,
       List<String>? imagesBase64});
@@ -50,12 +52,17 @@ class _$MealCopyWithImpl<$Res, $Val extends Meal>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? uuid = null,
     Object? createdAt = null,
     Object? name = null,
     Object? thumbnailBase64 = freezed,
     Object? imagesBase64 = freezed,
   }) {
     return _then(_value.copyWith(
+      uuid: null == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -83,7 +90,8 @@ abstract class _$$_MealCopyWith<$Res> implements $MealCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {DateTime createdAt,
+      {String uuid,
+      DateTime createdAt,
       String name,
       String? thumbnailBase64,
       List<String>? imagesBase64});
@@ -98,12 +106,17 @@ class __$$_MealCopyWithImpl<$Res> extends _$MealCopyWithImpl<$Res, _$_Meal>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? uuid = null,
     Object? createdAt = null,
     Object? name = null,
     Object? thumbnailBase64 = freezed,
     Object? imagesBase64 = freezed,
   }) {
     return _then(_$_Meal(
+      uuid: null == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -129,12 +142,15 @@ class __$$_MealCopyWithImpl<$Res> extends _$MealCopyWithImpl<$Res, _$_Meal>
 @jsonSnakeCase
 class _$_Meal implements _Meal {
   const _$_Meal(
-      {required this.createdAt,
+      {required this.uuid,
+      required this.createdAt,
       required this.name,
       this.thumbnailBase64,
       final List<String>? imagesBase64})
       : _imagesBase64 = imagesBase64;
 
+  @override
+  final String uuid;
   @override
   final DateTime createdAt;
   @override
@@ -153,7 +169,7 @@ class _$_Meal implements _Meal {
 
   @override
   String toString() {
-    return 'Meal(createdAt: $createdAt, name: $name, thumbnailBase64: $thumbnailBase64, imagesBase64: $imagesBase64)';
+    return 'Meal(uuid: $uuid, createdAt: $createdAt, name: $name, thumbnailBase64: $thumbnailBase64, imagesBase64: $imagesBase64)';
   }
 
   @override
@@ -161,6 +177,7 @@ class _$_Meal implements _Meal {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Meal &&
+            (identical(other.uuid, uuid) || other.uuid == uuid) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.name, name) || other.name == name) &&
@@ -171,8 +188,8 @@ class _$_Meal implements _Meal {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, createdAt, name, thumbnailBase64,
-      const DeepCollectionEquality().hash(_imagesBase64));
+  int get hashCode => Object.hash(runtimeType, uuid, createdAt, name,
+      thumbnailBase64, const DeepCollectionEquality().hash(_imagesBase64));
 
   @JsonKey(ignore: true)
   @override
@@ -183,11 +200,14 @@ class _$_Meal implements _Meal {
 
 abstract class _Meal implements Meal {
   const factory _Meal(
-      {required final DateTime createdAt,
+      {required final String uuid,
+      required final DateTime createdAt,
       required final String name,
       final String? thumbnailBase64,
       final List<String>? imagesBase64}) = _$_Meal;
 
+  @override
+  String get uuid;
   @override
   DateTime get createdAt;
   @override

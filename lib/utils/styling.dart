@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 class StylingUtils {
   /// Taken from [CupertinoNavigationBar]
   static const double kSigmaBlur = 10.0;
-  static const double kOpacityForBlur = 0.65;
+  static const double kOpacityForBlur = 0.85;
 
   /// Bouncing scroll for all cases
   static ScrollPhysics get platformAwareScrollPhysics => Platform.isIOS

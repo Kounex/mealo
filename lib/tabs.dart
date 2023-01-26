@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:beamer/beamer.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mealo/utils/styling.dart';
 
@@ -27,9 +26,12 @@ class _TabsViewState extends State<TabsView> {
             index: _index,
             children: List.from(
               TabMeta.values.map(
-                (tab) => Beamer(
-                  key: ValueKey(tab),
-                  routerDelegate: RouterUtils.tabRouter[tab],
+                (tab) => HeroControllerScope(
+                  controller: MaterialApp.createMaterialHeroController(),
+                  child: Beamer(
+                    key: ValueKey(tab),
+                    routerDelegate: RouterUtils.tabRouter[tab],
+                  ),
                 ),
               ),
             ),
@@ -43,7 +45,8 @@ class _TabsViewState extends State<TabsView> {
               children: [
                 SizedBox(
                   height: kBottomNavigationBarHeight +
-                      MediaQuery.of(context).viewPadding.bottom,
+                      MediaQuery.of(context).viewPadding.bottom +
+                      8,
                   child: ClipRect(
                     child: BackdropFilter(
                       filter: ImageFilter.blur(
@@ -54,28 +57,27 @@ class _TabsViewState extends State<TabsView> {
                     ),
                   ),
                 ),
-                CupertinoTabBar(
-                  currentIndex: _index,
+                SizedBox(
                   height: kBottomNavigationBarHeight +
-                      MediaQuery.of(context).viewPadding.bottom,
-                  backgroundColor: Theme.of(context)
-                      .bottomNavigationBarTheme
-                      .backgroundColor!
-                      .withOpacity(StylingUtils.kOpacityForBlur),
-                  items: List.from(
-                    TabMeta.values.map(
-                      (tab) => BottomNavigationBarItem(
-                        icon: tab.icon,
-                        label: tab.title,
+                      MediaQuery.of(context).viewPadding.bottom +
+                      8,
+                  child: BottomNavigationBar(
+                    currentIndex: _index,
+                    items: List.from(
+                      TabMeta.values.map(
+                        (tab) => BottomNavigationBarItem(
+                          icon: tab.icon,
+                          label: tab.title,
+                        ),
                       ),
                     ),
+                    onTap: (index) {
+                      setState(() {
+                        _index = index;
+                        Beamer.of(context).update(rebuild: false);
+                      });
+                    },
                   ),
-                  onTap: (index) {
-                    setState(() {
-                      _index = index;
-                      Beamer.of(context).update(rebuild: false);
-                    });
-                  },
                 ),
               ],
             ),
