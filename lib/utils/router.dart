@@ -3,10 +3,11 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mealo/tabs.dart';
+import 'package:mealo/views/intro/intro.dart';
 import 'package:mealo/views/meals/meals.dart';
 import 'package:mealo/views/settings/settings.dart';
 
-import '../models/meal.dart';
+import '../types/api/meal.dart';
 import '../views/meals/details/details.dart';
 
 typedef BeamerPageBuilder = dynamic Function(
@@ -15,36 +16,65 @@ typedef RouteEntry = MapEntry<Pattern, BeamerPageBuilder>;
 
 class RouterUtils {
   static final router = BeamerDelegate(
-    initialPath: '/meals',
+    initialPath: '/intro',
     locationBuilder: RoutesLocationBuilder(
-      routes: RouterUtils.routes(
+      routes: RouterUtils._routes(
         [
-          RouterUtils.routeEntry('/intro', view: const MealsView()),
-          RouterUtils.routeEntry('/*', view: const TabsView()),
+          RouterUtils._routeEntry('/intro', view: const IntroView()),
+          RouterUtils._routeEntry('/*', view: const TabsView()),
         ],
       ),
     ),
   );
 
-  static final tabRouter = {}..addEntries(
+  static final Map<TabMeta, BeamerDelegate> tabRouter = {}..addEntries(
       TabMeta.values.map(
         (tab) => MapEntry(tab, tab.router),
       ),
     );
 
-  static Map<Pattern, BeamerPageBuilder> routes(Iterable<RouteEntry> entries) =>
+  static final Map<TabMeta, ScrollController> tabScrollController = {}
+    ..addEntries(
+      TabMeta.values.map(
+        (tab) => MapEntry(tab, ScrollController()),
+      ),
+    );
+
+  /// *The* function to navigate throughout the app to ensure consitency
+  static void goTo(BuildContext context, BaseRoute route,
+      {Object? data, bool replace = false}) {
+    if (replace) {
+      Beamer.of(context).removeLastHistoryElement();
+    }
+    Beamer.of(context).beamToNamed(
+      route.path,
+      data: data,
+    );
+  }
+
+  /// Private helper functions only used within this file to simplify and
+  /// shorten various tasks while defining routes and pages
+  static BeamPage _basePage(String path, Widget view, {BeamPageType? type}) =>
+      BeamPage(
+        key: ValueKey(path),
+        type: type ?? BeamPageType.cupertino,
+        child: view,
+      );
+
+  static Map<Pattern, BeamerPageBuilder> _routes(
+          Iterable<RouteEntry> entries) =>
       {}..addEntries(entries);
 
-  static RouteEntry routeEntry(String path,
-      {Widget? view, BeamerPageBuilder? builder}) {
+  static RouteEntry _routeEntry(
+    String path, {
+    Widget? view,
+    BeamerPageBuilder? builder,
+    BeamPageType? type,
+  }) {
     assert(view != null || builder != null);
     return MapEntry(
       path,
-      builder ??
-          (context, state, data) => BeamPage(
-                key: ValueKey(path),
-                child: view!,
-              ),
+      builder ?? (context, state, data) => _basePage(path, view!, type: type),
     );
   }
 
@@ -151,19 +181,25 @@ enum TabMeta {
         return BeamerDelegate(
           initialPath: '/meals',
           locationBuilder: RoutesLocationBuilder(
-            routes: RouterUtils.routes(
+            routes: RouterUtils._routes(
               [
-                RouterUtils.routeEntry('/meals', view: const MealsView()),
-                RouterUtils.routeEntry(
+                RouterUtils._routeEntry(
+                  '/meals',
+                  type: BeamPageType.noTransition,
+                  view: MealsView(
+                    controller: RouterUtils.tabScrollController[this]!,
+                  ),
+                ),
+                RouterUtils._routeEntry(
                   '/meals/:uuid',
                   builder: (context, state, data) {
                     Meal? meal;
                     try {
                       meal = data as Meal;
                     } catch (_) {}
-                    return BeamPage(
-                      key: const ValueKey('/meals/:uuid'),
-                      child: MealDetailsView(meal: meal),
+                    return RouterUtils._basePage(
+                      '/meals/:uuid',
+                      MealDetailsView(meal: meal),
                     );
                   },
                 ),
@@ -175,9 +211,15 @@ enum TabMeta {
         return BeamerDelegate(
           initialPath: '/settings',
           locationBuilder: RoutesLocationBuilder(
-            routes: RouterUtils.routes(
+            routes: RouterUtils._routes(
               [
-                RouterUtils.routeEntry('/settings', view: const SettingsView()),
+                RouterUtils._routeEntry(
+                  '/settings',
+                  type: BeamPageType.noTransition,
+                  view: SettingsView(
+                    controller: RouterUtils.tabScrollController[this]!,
+                  ),
+                ),
               ],
             ),
           ),

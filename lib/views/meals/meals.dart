@@ -4,12 +4,18 @@ import 'package:mealo/widgets/flutter_modified/translucent_sliver_app_bar.dart';
 import 'widgets/meal_grid.dart';
 
 class MealsView extends StatelessWidget {
-  const MealsView({super.key});
+  final ScrollController controller;
+
+  const MealsView({
+    super.key,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
+        controller: this.controller,
         slivers: [
           TransculentSliverAppBar(
             title: const Text('Mealo'),
@@ -30,6 +36,13 @@ class MealsView extends StatelessWidget {
             padding: EdgeInsets.all(24.0),
             sliver: MealGrid(),
           ),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: kBottomNavigationBarHeight +
+                  MediaQuery.of(context).viewPadding.bottom +
+                  2,
+            ),
+          )
         ],
       ),
     );

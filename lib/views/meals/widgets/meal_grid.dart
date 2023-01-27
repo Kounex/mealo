@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../models/meal.dart';
+import '../../../types/api/meal.dart';
 import 'meal_card.dart';
 
 const double kMealGridCrossAxisExtent = 200.0;
@@ -23,6 +23,7 @@ class MealGrid extends StatelessWidget {
           mainAxisSpacing: 24.0,
           crossAxisSpacing: 24.0,
         ),
+        itemCount: 10,
         itemBuilder: (context, index) => AnimationConfiguration.staggeredGrid(
           position: index,
           duration: const Duration(milliseconds: 375),

@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:mealo/utils/router.dart';
 
-import '../../../models/meal.dart';
+import '../../../types/api/meal.dart';
 
 class MealCard extends StatelessWidget {
   final Meal meal;
@@ -17,8 +16,9 @@ class MealCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Beamer.of(context).beamToNamed(
-        MealDetailRoute(this.meal.uuid).path,
+      onTap: () => RouterUtils.goTo(
+        context,
+        MealDetailRoute(this.meal.uuid),
         data: meal,
       ),
       child: Card(
@@ -28,7 +28,6 @@ class MealCard extends StatelessWidget {
           children: [
             Hero(
               tag: this.meal.uuid,
-              transitionOnUserGestures: true,
               child: this.meal.thumbnailBase64 != null
                   ? Image.memory(base64Decode(this.meal.thumbnailBase64!))
                   : Image.asset('assets/images/meal-placeholder.png'),

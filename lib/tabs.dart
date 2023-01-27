@@ -30,7 +30,7 @@ class _TabsViewState extends State<TabsView> {
                   controller: MaterialApp.createMaterialHeroController(),
                   child: Beamer(
                     key: ValueKey(tab),
-                    routerDelegate: RouterUtils.tabRouter[tab],
+                    routerDelegate: RouterUtils.tabRouter[tab]!,
                   ),
                 ),
               ),
@@ -46,7 +46,7 @@ class _TabsViewState extends State<TabsView> {
                 SizedBox(
                   height: kBottomNavigationBarHeight +
                       MediaQuery.of(context).viewPadding.bottom +
-                      8,
+                      2,
                   child: ClipRect(
                     child: BackdropFilter(
                       filter: ImageFilter.blur(
@@ -60,7 +60,7 @@ class _TabsViewState extends State<TabsView> {
                 SizedBox(
                   height: kBottomNavigationBarHeight +
                       MediaQuery.of(context).viewPadding.bottom +
-                      8,
+                      2,
                   child: BottomNavigationBar(
                     currentIndex: _index,
                     items: List.from(
@@ -72,10 +72,21 @@ class _TabsViewState extends State<TabsView> {
                       ),
                     ),
                     onTap: (index) {
-                      setState(() {
-                        _index = index;
-                        Beamer.of(context).update(rebuild: false);
-                      });
+                      if (index != _index) {
+                        setState(() {
+                          _index = index;
+                          Beamer.of(context).update(rebuild: false);
+                        });
+                      } else if (Beamer.of(context).canBeamBack) {
+                        Beamer.of(context).beamBack();
+                      } else {
+                        RouterUtils.tabScrollController[TabMeta.values[index]]!
+                            .animateTo(
+                          0.0,
+                          duration: const Duration(milliseconds: 250),
+                          curve: Curves.easeIn,
+                        );
+                      }
                     },
                   ),
                 ),

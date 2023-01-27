@@ -139,7 +139,6 @@ class __$$_MealCopyWithImpl<$Res> extends _$MealCopyWithImpl<$Res, _$_Meal>
 
 /// @nodoc
 
-@jsonSnakeCase
 class _$_Meal implements _Meal {
   const _$_Meal(
       {required this.uuid,
