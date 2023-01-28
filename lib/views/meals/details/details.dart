@@ -5,8 +5,6 @@ import 'package:mealo/models/meal.dart';
 import 'package:mealo/utils/isar.dart';
 import 'package:mealo/widgets/base/scaffold.dart';
 
-import '../../../types/api/meal.dart';
-
 class MealDetailsView extends StatelessWidget {
   final Meal? meal;
 
@@ -17,8 +15,8 @@ class MealDetailsView extends StatelessWidget {
 
   void _deleteMeal(BuildContext context) async {
     await IsarUtils.crud(
-      (isar) => isar.iMeals.deleteByUuid(this.meal!.uuid),
-      schemas: [IMealSchema],
+      (isar) => isar.meals.deleteByUuid(this.meal!.uuid),
+      // schemas: [MealSchema],
     );
     if (context.mounted) {
       Navigator.of(context).pop();

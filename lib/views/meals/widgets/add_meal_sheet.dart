@@ -19,14 +19,14 @@ class _AddMealSheetState extends State<AddMealSheet> {
   void _saveMeal() async {
     await IsarUtils.crud(
       (isar) {
-        return isar.iMeals.put(
-          IMeal()
+        return isar.meals.put(
+          Meal()
             ..uuid = const Uuid().v4()
             ..createdAt = DateTime.now()
             ..name = _name.text.trim(),
         );
       },
-      schemas: [IMealSchema],
+      // schemas: [MealSchema],
     );
     if (context.mounted) {
       Navigator.of(context).pop();

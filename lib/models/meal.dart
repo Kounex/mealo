@@ -5,7 +5,7 @@ import 'models.dart';
 part 'meal.g.dart';
 
 @collection
-class IMeal {
+class Meal {
   @Index(unique: true, replace: true)
   late String uuid;
 

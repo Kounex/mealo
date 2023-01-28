@@ -7,7 +7,7 @@ import 'package:mealo/views/intro/intro.dart';
 import 'package:mealo/views/meals/meals.dart';
 import 'package:mealo/views/settings/settings.dart';
 
-import '../types/api/meal.dart';
+import '../models/meal.dart';
 import '../views/meals/details/details.dart';
 
 typedef BeamerPageBuilder = dynamic Function(

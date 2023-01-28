@@ -29,7 +29,7 @@ class _SystemHash {
   }
 }
 
-String _$MealsHash() => r'f67c6a83877a220ab2f31ad1b20d87b8255d6cc6';
+String _$MealsHash() => r'65b8328b98bb277abf9c641103086962f6f62fb0';
 
 /// See also [Meals].
 final mealsProvider = AutoDisposeAsyncNotifierProvider<Meals, List<Meal>>(

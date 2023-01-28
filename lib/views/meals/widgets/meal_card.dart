@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mealo/utils/router.dart';
 
-import '../../../types/api/meal.dart';
+import '../../../models/meal.dart';
 
 class MealCard extends StatelessWidget {
   final Meal meal;

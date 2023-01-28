@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$Meal {
+mixin _$MealDTO {
   String get uuid => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
@@ -23,13 +23,13 @@ mixin _$Meal {
   List<String>? get imagesBase64 => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $MealCopyWith<Meal> get copyWith => throw _privateConstructorUsedError;
+  $MealDTOCopyWith<MealDTO> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $MealCopyWith<$Res> {
-  factory $MealCopyWith(Meal value, $Res Function(Meal) then) =
-      _$MealCopyWithImpl<$Res, Meal>;
+abstract class $MealDTOCopyWith<$Res> {
+  factory $MealDTOCopyWith(MealDTO value, $Res Function(MealDTO) then) =
+      _$MealDTOCopyWithImpl<$Res, MealDTO>;
   @useResult
   $Res call(
       {String uuid,
@@ -40,9 +40,9 @@ abstract class $MealCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$MealCopyWithImpl<$Res, $Val extends Meal>
-    implements $MealCopyWith<$Res> {
-  _$MealCopyWithImpl(this._value, this._then);
+class _$MealDTOCopyWithImpl<$Res, $Val extends MealDTO>
+    implements $MealDTOCopyWith<$Res> {
+  _$MealDTOCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -84,9 +84,10 @@ class _$MealCopyWithImpl<$Res, $Val extends Meal>
 }
 
 /// @nodoc
-abstract class _$$_MealCopyWith<$Res> implements $MealCopyWith<$Res> {
-  factory _$$_MealCopyWith(_$_Meal value, $Res Function(_$_Meal) then) =
-      __$$_MealCopyWithImpl<$Res>;
+abstract class _$$_MealDTOCopyWith<$Res> implements $MealDTOCopyWith<$Res> {
+  factory _$$_MealDTOCopyWith(
+          _$_MealDTO value, $Res Function(_$_MealDTO) then) =
+      __$$_MealDTOCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -98,9 +99,10 @@ abstract class _$$_MealCopyWith<$Res> implements $MealCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_MealCopyWithImpl<$Res> extends _$MealCopyWithImpl<$Res, _$_Meal>
-    implements _$$_MealCopyWith<$Res> {
-  __$$_MealCopyWithImpl(_$_Meal _value, $Res Function(_$_Meal) _then)
+class __$$_MealDTOCopyWithImpl<$Res>
+    extends _$MealDTOCopyWithImpl<$Res, _$_MealDTO>
+    implements _$$_MealDTOCopyWith<$Res> {
+  __$$_MealDTOCopyWithImpl(_$_MealDTO _value, $Res Function(_$_MealDTO) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -112,7 +114,7 @@ class __$$_MealCopyWithImpl<$Res> extends _$MealCopyWithImpl<$Res, _$_Meal>
     Object? thumbnailBase64 = freezed,
     Object? imagesBase64 = freezed,
   }) {
-    return _then(_$_Meal(
+    return _then(_$_MealDTO(
       uuid: null == uuid
           ? _value.uuid
           : uuid // ignore: cast_nullable_to_non_nullable
@@ -139,8 +141,8 @@ class __$$_MealCopyWithImpl<$Res> extends _$MealCopyWithImpl<$Res, _$_Meal>
 
 /// @nodoc
 
-class _$_Meal implements _Meal {
-  const _$_Meal(
+class _$_MealDTO implements _MealDTO {
+  const _$_MealDTO(
       {required this.uuid,
       required this.createdAt,
       required this.name,
@@ -168,14 +170,14 @@ class _$_Meal implements _Meal {
 
   @override
   String toString() {
-    return 'Meal(uuid: $uuid, createdAt: $createdAt, name: $name, thumbnailBase64: $thumbnailBase64, imagesBase64: $imagesBase64)';
+    return 'MealDTO(uuid: $uuid, createdAt: $createdAt, name: $name, thumbnailBase64: $thumbnailBase64, imagesBase64: $imagesBase64)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Meal &&
+            other is _$_MealDTO &&
             (identical(other.uuid, uuid) || other.uuid == uuid) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
@@ -193,17 +195,17 @@ class _$_Meal implements _Meal {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_MealCopyWith<_$_Meal> get copyWith =>
-      __$$_MealCopyWithImpl<_$_Meal>(this, _$identity);
+  _$$_MealDTOCopyWith<_$_MealDTO> get copyWith =>
+      __$$_MealDTOCopyWithImpl<_$_MealDTO>(this, _$identity);
 }
 
-abstract class _Meal implements Meal {
-  const factory _Meal(
+abstract class _MealDTO implements MealDTO {
+  const factory _MealDTO(
       {required final String uuid,
       required final DateTime createdAt,
       required final String name,
       final String? thumbnailBase64,
-      final List<String>? imagesBase64}) = _$_Meal;
+      final List<String>? imagesBase64}) = _$_MealDTO;
 
   @override
   String get uuid;
@@ -217,5 +219,6 @@ abstract class _Meal implements Meal {
   List<String>? get imagesBase64;
   @override
   @JsonKey(ignore: true)
-  _$$_MealCopyWith<_$_Meal> get copyWith => throw _privateConstructorUsedError;
+  _$$_MealDTOCopyWith<_$_MealDTO> get copyWith =>
+      throw _privateConstructorUsedError;
 }
