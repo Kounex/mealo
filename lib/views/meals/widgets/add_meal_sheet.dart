@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mealo/models/i_meal.dart';
+import 'package:mealo/models/meal.dart';
 import 'package:mealo/utils/isar.dart';
 import 'package:uuid/uuid.dart';
 
@@ -12,39 +12,82 @@ class AddMealSheet extends StatefulWidget {
 }
 
 class _AddMealSheetState extends State<AddMealSheet> {
+  final GlobalKey<FormState> _form = GlobalKey();
+
   final _name = TextEditingController();
 
   void _saveMeal() async {
-    IsarUtils.crud(
+    await IsarUtils.crud(
       (isar) {
         return isar.iMeals.put(
           IMeal()
             ..uuid = const Uuid().v4()
             ..createdAt = DateTime.now()
-            ..name = _name.text,
+            ..name = _name.text.trim(),
         );
       },
       schemas: [IMealSchema],
     );
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Align(
-          alignment: Alignment.topRight,
-          child: IconButton(
-            icon: const Icon(CupertinoIcons.clear),
-            onPressed: () => Navigator.of(context).pop(),
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'New Meal',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              IconButton(
+                icon: const Icon(CupertinoIcons.clear),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
           ),
-        ),
-        TextField(controller: _name),
-        ElevatedButton(
-          onPressed: () => _saveMeal(),
-          child: const Text('Save'),
-        ),
-      ],
+          Expanded(
+            child: Form(
+              key: _form,
+              child: ListView(
+                children: [
+                  const SizedBox(height: 24.0),
+                  TextFormField(
+                    controller: _name,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Name is required';
+                      }
+                      if (value.trim().length < 3) {
+                        return 'Too short';
+                      }
+                      return null;
+                    },
+                    decoration: const InputDecoration(
+                      hintText: 'Name',
+                    ),
+                  ),
+                  const SizedBox(height: 24.0),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_form.currentState!.validate()) {
+                        _saveMeal();
+                      }
+                    },
+                    child: const Text('Save'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

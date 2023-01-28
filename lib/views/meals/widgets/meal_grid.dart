@@ -19,19 +19,18 @@ class MealGrid extends ConsumerWidget {
         MediaQuery.of(context).size.width ~/ kMealGridCrossAxisExtent;
 
     return asyncMeals.when(
-      loading: () => const SliverToBoxAdapter(
-        child: Center(
-          child: RefreshProgressIndicator(),
-        ),
+      loading: () => const Center(
+        child: RefreshProgressIndicator(),
       ),
       error: (error, stackTrace) => const Center(
-        child: SliverToBoxAdapter(
-          child: Text('ERROR'),
-        ),
+        child: Text('ERROR'),
       ),
       data: (meals) => meals.isNotEmpty
           ? AnimationLimiter(
-              child: SliverGrid.builder(
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(0),
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 200.0,
                   mainAxisExtent: 150.0,
@@ -54,9 +53,7 @@ class MealGrid extends ConsumerWidget {
                 ),
               ),
             )
-          : const SliverToBoxAdapter(
-              child: Text('No meals yet! ò.ó'),
-            ),
+          : const Text('No meals yet! ò.ó'),
     );
   }
 }

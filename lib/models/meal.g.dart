@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'i_meal.dart';
+part of 'meal.dart';
 
 // **************************************************************************
 // IsarCollectionGenerator

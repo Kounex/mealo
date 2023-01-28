@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:mealo/models/meal.dart';
+import 'package:mealo/utils/isar.dart';
+import 'package:mealo/widgets/base/scaffold.dart';
 
 import '../../../types/api/meal.dart';
-import '../../../widgets/flutter_modified/translucent_sliver_app_bar.dart';
 
 class MealDetailsView extends StatelessWidget {
   final Meal? meal;
@@ -13,27 +15,37 @@ class MealDetailsView extends StatelessWidget {
     this.meal,
   });
 
+  void _deleteMeal(BuildContext context) async {
+    await IsarUtils.crud(
+      (isar) => isar.iMeals.deleteByUuid(this.meal!.uuid),
+      schemas: [IMealSchema],
+    );
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          TransculentSliverAppBar(
-            title: Text(this.meal?.name ?? 'Unnamed'),
-            pinned: true,
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate.fixed([
-              Hero(
-                tag: this.meal?.uuid ?? 'placeholder',
-                child: this.meal?.thumbnailBase64 != null
-                    ? Image.memory(base64Decode(this.meal!.thumbnailBase64!))
-                    : Image.asset('assets/images/meal-placeholder.png'),
-              )
-            ]),
-          ),
-        ],
+    return BaseScaffold(
+      appBarProperties: AppBarProperties(
+        title: Text(this.meal?.name ?? 'Unnamed'),
       ),
+      children: [
+        Hero(
+          tag: this.meal?.uuid ?? 'placeholder',
+          child: this.meal?.thumbnailBase64 != null
+              ? Image.memory(base64Decode(this.meal!.thumbnailBase64!))
+              : Image.asset('assets/images/meal-placeholder.png'),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: ElevatedButton(
+            onPressed: () => _deleteMeal(context),
+            child: const Text('Remove'),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mealo/widgets/flutter_modified/translucent_sliver_app_bar.dart';
+import 'package:mealo/utils/modal.dart';
+import 'package:mealo/widgets/animation/fader.dart';
+import 'package:mealo/widgets/base/scaffold.dart';
 
+import 'widgets/add_meal_sheet.dart';
 import 'widgets/meal_grid.dart';
 
 class MealsView extends StatelessWidget {
@@ -13,38 +17,44 @@ class MealsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        controller: this.controller,
-        slivers: [
-          TransculentSliverAppBar(
-            title: const Text('Mealo'),
-            pinned: true,
-            expandedHeight: 192,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Container(
-                alignment: Alignment.bottomCenter,
-                padding: const EdgeInsets.only(bottom: 24.0),
-                child: Image.asset(
-                  'assets/images/app-icon.png',
-                  height: 164,
-                ),
-              ),
+    return BaseScaffold(
+      hasBottomTabBarSpacing: true,
+      appBarProperties: AppBarProperties(
+        expandedHeight: 200,
+        actions: [
+          IconButton(
+            onPressed: () => ModalUtils.showExpandedModalBottomSheet(
+              context,
+              const AddMealSheet(),
             ),
+            icon: const Icon(CupertinoIcons.add),
           ),
-          const SliverPadding(
-            padding: EdgeInsets.all(24.0),
-            sliver: MealGrid(),
-          ),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: kBottomNavigationBarHeight +
-                  MediaQuery.of(context).viewPadding.bottom +
-                  2,
-            ),
-          )
         ],
+        flexibleSpace: FlexibleSpaceBar(
+          title: LayoutBuilder(
+            builder: (context, constraints) => constraints.maxHeight <=
+                    kToolbarHeight + MediaQuery.of(context).viewPadding.top - 16
+                ? const Fader(
+                    child: Text('Mealo'),
+                  )
+                : const SizedBox(),
+          ),
+          background: Container(
+            alignment: Alignment.bottomCenter,
+            padding: const EdgeInsets.only(bottom: 24.0),
+            child: Image.asset(
+              'assets/images/app-icon.png',
+              height: 164,
+            ),
+          ),
+        ),
       ),
+      children: const [
+        Padding(
+          padding: EdgeInsets.all(24.0),
+          child: MealGrid(),
+        ),
+      ],
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mealo/views/settings/widgets/theme_switcher.dart';
-import 'package:mealo/widgets/flutter_modified/translucent_sliver_app_bar.dart';
+import 'package:mealo/widgets/base/scaffold.dart';
 
 class SettingsView extends StatelessWidget {
   final ScrollController controller;
@@ -12,22 +12,14 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        controller: this.controller,
-        slivers: [
-          TransculentSliverAppBar.large(
-            title: const Text('Settings'),
-          ),
-          const SliverList(
-            delegate: SliverChildListDelegate.fixed(
-              [
-                ThemeSwitcher(),
-              ],
-            ),
-          ),
-        ],
+    return BaseScaffold(
+      appBarProperties: AppBarProperties(
+        title: const Text('Settings'),
+        large: true,
       ),
+      children: const [
+        ThemeSwitcher(),
+      ],
     );
   }
 }

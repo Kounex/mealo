@@ -2,7 +2,7 @@ import 'package:isar/isar.dart';
 
 import 'models.dart';
 
-part 'i_meal.g.dart';
+part 'meal.g.dart';
 
 @collection
 class IMeal {

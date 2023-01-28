@@ -1,8 +1,10 @@
 import 'package:isar/isar.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 class IsarUtils {
-  static Future<Isar> instance(List<CollectionSchema<dynamic>> schemas) async =>
-      await Isar.open(schemas);
+  static FutureOr<Isar> instance(
+          List<CollectionSchema<dynamic>> schemas) async =>
+      Isar.getInstance() ?? await Isar.open(schemas);
 
   static Future<T>? crud<T>(Future<T> Function(Isar isar) callback,
       {Isar? isar, List<CollectionSchema<dynamic>>? schemas}) async {
