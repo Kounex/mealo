@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'theme.dart';
+part of 'settings.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -29,18 +29,20 @@ class _SystemHash {
   }
 }
 
-String _$DarkModeHash() => r'cb0eff4ec6eedeec98ca7a569c127e31674f7889';
+String _$SettingsSingletonHash() => r'927e212e696684bbce3f0599ca54bc7009461fc4';
 
-/// See also [DarkMode].
-final darkModeProvider = AutoDisposeNotifierProvider<DarkMode, bool?>(
-  DarkMode.new,
-  name: r'darkModeProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$DarkModeHash,
+/// See also [SettingsSingleton].
+final settingsSingletonProvider =
+    AutoDisposeAsyncNotifierProvider<SettingsSingleton, Settings>(
+  SettingsSingleton.new,
+  name: r'settingsSingletonProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$SettingsSingletonHash,
 );
-typedef DarkModeRef = AutoDisposeNotifierProviderRef<bool?>;
+typedef SettingsSingletonRef = AutoDisposeAsyncNotifierProviderRef<Settings>;
 
-abstract class _$DarkMode extends AutoDisposeNotifier<bool?> {
+abstract class _$SettingsSingleton extends AutoDisposeAsyncNotifier<Settings> {
   @override
-  bool? build();
+  FutureOr<Settings> build();
 }

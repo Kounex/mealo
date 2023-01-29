@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mealo/models/meal.dart';
 import 'package:mealo/utils/isar.dart';
-import 'package:uuid/uuid.dart';
+import 'package:mealo/views/meals/widgets/add_meal_sheet/meal_ratings.dart';
 
 class AddMealSheet extends StatefulWidget {
   const AddMealSheet({super.key});
@@ -16,14 +16,29 @@ class _AddMealSheetState extends State<AddMealSheet> {
 
   final _name = TextEditingController();
 
+  final List<Rating> _ratings = [
+    Rating()..description = 'Effort',
+    Rating()..description = 'Tasty',
+    Rating()..description = 'Time',
+  ];
+
+  String? _validateName(String? name) {
+    if (name == null || name.trim().isEmpty) {
+      return 'Name is required';
+    }
+    if (name.trim().length < 3) {
+      return 'Too short';
+    }
+    return null;
+  }
+
   void _saveMeal() async {
     await IsarUtils.crud(
       (isar) {
         return isar.meals.put(
           Meal()
-            ..uuid = const Uuid().v4()
-            ..createdAt = DateTime.now()
-            ..name = _name.text.trim(),
+            ..name = _name.text.trim()
+            ..ratings = _ratings,
         );
       },
       // schemas: [MealSchema],
@@ -60,17 +75,17 @@ class _AddMealSheetState extends State<AddMealSheet> {
                   const SizedBox(height: 24.0),
                   TextFormField(
                     controller: _name,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Name is required';
-                      }
-                      if (value.trim().length < 3) {
-                        return 'Too short';
-                      }
-                      return null;
-                    },
+                    validator: _validateName,
                     decoration: const InputDecoration(
                       hintText: 'Name',
+                    ),
+                  ),
+                  const SizedBox(height: 24.0),
+                  MealRatings(
+                    ratings: _ratings,
+                    onSelectionChanged: (index, ratingValue) => setState(
+                      () => _ratings[index].value =
+                          ratingValue.isNotEmpty ? ratingValue.first : null,
                     ),
                   ),
                   const SizedBox(height: 24.0),

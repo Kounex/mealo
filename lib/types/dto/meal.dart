@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mealo/models/meal.dart';
+
+import '../../models/meal.dart';
 
 part 'meal.freezed.dart';
 

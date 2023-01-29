@@ -14,7 +14,7 @@ class ModalUtils {
         isDismissible: false,
         isScrollControlled: true,
         constraints: BoxConstraints(
-          maxHeight: max(700, MediaQuery.of(context).size.height * (9 / 10)),
+          maxHeight: min(700, MediaQuery.of(context).size.height * (9 / 10)),
           maxWidth: 700,
         ),
         builder: (_) => content,

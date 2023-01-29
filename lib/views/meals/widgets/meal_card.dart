@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mealo/utils/router.dart';
 
@@ -37,7 +38,7 @@ class MealCard extends StatelessWidget {
               right: 0,
               left: 0,
               child: Container(
-                height: 52.0,
+                height: 48.0,
                 padding: const EdgeInsets.all(4.0),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primaryContainer,
@@ -51,7 +52,14 @@ class MealCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: Text(this.meal.name),
+                child: Center(
+                  child: AutoSizeText(
+                    this.meal.name,
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ),
             ),
           ],

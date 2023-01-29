@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mealo/models/meal.dart';
 import 'package:mealo/utils/isar.dart';
+import 'package:mealo/views/meals/widgets/add_meal_sheet/meal_ratings.dart';
 import 'package:mealo/widgets/base/scaffold.dart';
 
 class MealDetailsView extends StatelessWidget {
@@ -26,6 +27,7 @@ class MealDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
+      hasBottomTabBarSpacing: true,
       appBarProperties: AppBarProperties(
         title: Text(this.meal?.name ?? 'Unnamed'),
       ),
@@ -35,6 +37,12 @@ class MealDetailsView extends StatelessWidget {
           child: this.meal?.thumbnailBase64 != null
               ? Image.memory(base64Decode(this.meal!.thumbnailBase64!))
               : Image.asset('assets/images/meal-placeholder.png'),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: MealRatings(
+            ratings: this.meal!.ratings,
+          ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),

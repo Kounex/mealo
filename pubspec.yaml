@@ -33,9 +33,13 @@ dependencies:
   # Local storage
   isar: *isar_version
   isar_flutter_libs: *isar_version
+  shared_preferences: ^2.0.17
 
   # Navigator 2.0
   beamer: ^1.5.3
+
+  # Some fancy utility functions for collections
+  collection: ^1.17.0
 
   # UI
   # Consistent theming
@@ -49,6 +53,9 @@ dependencies:
 
   # Microsoft icons pack
   fluentui_system_icons: ^1.1.190
+
+  # Adjust text size correctly
+  auto_size_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:

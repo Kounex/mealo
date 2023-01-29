@@ -57,6 +57,12 @@ class BaseScaffold extends StatelessWidget {
   ///   XY (depending on the kind of navigation bar used)
   final double? bottomTabBarSpacing;
 
+  /// Usually we never want to have no spacing at the bottom of our body
+  /// so we set a default of [24] here. Depending on the content though,
+  /// sometimes the last widget has spacing on its own so it might make
+  /// sense to be able to override it
+  final double defaultBottomSpacing;
+
   const BaseScaffold({
     super.key,
     this.slivers,
@@ -66,6 +72,7 @@ class BaseScaffold extends StatelessWidget {
     this.physics,
     this.hasBottomTabBarSpacing = false,
     this.bottomTabBarSpacing,
+    this.defaultBottomSpacing = 24,
   });
 
   @override
@@ -117,7 +124,12 @@ class BaseScaffold extends StatelessWidget {
                         MediaQuery.of(context).viewPadding.bottom +
                         2),
               ),
-            )
+            ),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: this.defaultBottomSpacing,
+            ),
+          )
         ],
       ),
     );
