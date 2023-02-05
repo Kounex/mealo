@@ -1,9 +1,9 @@
-import 'package:mealo/models/meal.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../persistance.dart';
+import '../../../models/meal/meal.dart';
+import '../../persistance.dart';
 
-part 'meal.g.dart';
+part 'meals.g.dart';
 
 @riverpod
 class Meals extends _$Meals with Persistance<Meal> {

@@ -22,8 +22,13 @@ const SettingsSchema = CollectionSchema(
       name: r'darkMode',
       type: IsarType.bool,
     ),
-    r'uuid': PropertySchema(
+    r'firstLaunch': PropertySchema(
       id: 1,
+      name: r'firstLaunch',
+      type: IsarType.bool,
+    ),
+    r'uuid': PropertySchema(
+      id: 2,
       name: r'uuid',
       type: IsarType.string,
     )
@@ -73,7 +78,8 @@ void _settingsSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeBool(offsets[0], object.darkMode);
-  writer.writeString(offsets[1], object.uuid);
+  writer.writeBool(offsets[1], object.firstLaunch);
+  writer.writeString(offsets[2], object.uuid);
 }
 
 Settings _settingsDeserialize(
@@ -84,7 +90,8 @@ Settings _settingsDeserialize(
 ) {
   final object = Settings();
   object.darkMode = reader.readBoolOrNull(offsets[0]);
-  object.uuid = reader.readString(offsets[1]);
+  object.firstLaunch = reader.readBool(offsets[1]);
+  object.uuid = reader.readString(offsets[2]);
   return object;
 }
 
@@ -98,6 +105,8 @@ P _settingsDeserializeProp<P>(
     case 0:
       return (reader.readBoolOrNull(offset)) as P;
     case 1:
+      return (reader.readBool(offset)) as P;
+    case 2:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -317,6 +326,16 @@ extension SettingsQueryFilter
     });
   }
 
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> firstLaunchEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'firstLaunch',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<Settings, Settings, QAfterFilterCondition> isarIdEqualTo(
       Id value) {
     return QueryBuilder.apply(this, (query) {
@@ -520,6 +539,18 @@ extension SettingsQuerySortBy on QueryBuilder<Settings, Settings, QSortBy> {
     });
   }
 
+  QueryBuilder<Settings, Settings, QAfterSortBy> sortByFirstLaunch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'firstLaunch', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterSortBy> sortByFirstLaunchDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'firstLaunch', Sort.desc);
+    });
+  }
+
   QueryBuilder<Settings, Settings, QAfterSortBy> sortByUuid() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'uuid', Sort.asc);
@@ -544,6 +575,18 @@ extension SettingsQuerySortThenBy
   QueryBuilder<Settings, Settings, QAfterSortBy> thenByDarkModeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'darkMode', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterSortBy> thenByFirstLaunch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'firstLaunch', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterSortBy> thenByFirstLaunchDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'firstLaunch', Sort.desc);
     });
   }
 
@@ -580,6 +623,12 @@ extension SettingsQueryWhereDistinct
     });
   }
 
+  QueryBuilder<Settings, Settings, QDistinct> distinctByFirstLaunch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'firstLaunch');
+    });
+  }
+
   QueryBuilder<Settings, Settings, QDistinct> distinctByUuid(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -602,9 +651,60 @@ extension SettingsQueryProperty
     });
   }
 
+  QueryBuilder<Settings, bool, QQueryOperations> firstLaunchProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'firstLaunch');
+    });
+  }
+
   QueryBuilder<Settings, String, QQueryOperations> uuidProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'uuid');
     });
   }
+}
+
+// **************************************************************************
+// RiverpodGenerator
+// **************************************************************************
+
+// ignore_for_file: avoid_private_typedef_functions, non_constant_identifier_names, subtype_of_sealed_class, invalid_use_of_internal_member, unused_element, constant_identifier_names, unnecessary_raw_strings, library_private_types_in_public_api
+
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
+
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
+  }
+
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+String _$SettingsSingletonHash() => r'927e212e696684bbce3f0599ca54bc7009461fc4';
+
+/// See also [SettingsSingleton].
+final settingsSingletonProvider =
+    AutoDisposeAsyncNotifierProvider<SettingsSingleton, Settings>(
+  SettingsSingleton.new,
+  name: r'settingsSingletonProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$SettingsSingletonHash,
+);
+typedef SettingsSingletonRef = AutoDisposeAsyncNotifierProviderRef<Settings>;
+
+abstract class _$SettingsSingleton extends AutoDisposeAsyncNotifier<Settings> {
+  @override
+  FutureOr<Settings> build();
 }

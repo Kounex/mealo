@@ -15,3 +15,10 @@ class Models {
     return hash;
   }
 }
+
+/// Used as an interface for basic models which will have the following basic
+/// properties
+abstract class BaseModel {
+  late String uuid;
+  late String name;
+}

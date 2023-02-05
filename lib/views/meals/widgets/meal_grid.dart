@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:mealo/stores/shared/meal.dart';
 
-import '../../../models/meal.dart';
+import '../../../models/meal/meal.dart';
+import '../../../stores/shared/meals/meals.dart';
 import 'meal_card.dart';
 
 const double kMealGridCrossAxisExtent = 200.0;

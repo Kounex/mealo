@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'meal.dart';
+part of 'tags.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -29,18 +29,18 @@ class _SystemHash {
   }
 }
 
-String _$MealsHash() => r'7ea244ac38e3960fe70d8267231e034d17fcc511';
+String _$TagsHash() => r'6aa852a863d26b33f09ff0c5089b5413b4d34516';
 
-/// See also [Meals].
-final mealsProvider = AutoDisposeAsyncNotifierProvider<Meals, List<Meal>>(
-  Meals.new,
-  name: r'mealsProvider',
+/// See also [Tags].
+final tagsProvider = AutoDisposeAsyncNotifierProvider<Tags, List<Tag>>(
+  Tags.new,
+  name: r'tagsProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$MealsHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$TagsHash,
 );
-typedef MealsRef = AutoDisposeAsyncNotifierProviderRef<List<Meal>>;
+typedef TagsRef = AutoDisposeAsyncNotifierProviderRef<List<Tag>>;
 
-abstract class _$Meals extends AutoDisposeAsyncNotifier<List<Meal>> {
+abstract class _$Tags extends AutoDisposeAsyncNotifier<List<Tag>> {
   @override
-  FutureOr<List<Meal>> build();
+  FutureOr<List<Tag>> build();
 }

@@ -1,12 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:mealo/models/meal.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mealo/models/meal/meal.dart';
+import 'package:mealo/stores/shared/ratings/ratings.dart';
 import 'package:mealo/utils/isar.dart';
-import 'package:mealo/views/meals/widgets/add_meal_sheet/meal_ratings.dart';
+import 'package:mealo/widgets/custom/meal_ratings.dart';
 import 'package:mealo/widgets/base/scaffold.dart';
 
-class MealDetailsView extends StatelessWidget {
+import '../../../models/rating/rating.dart';
+
+class MealDetailsView extends ConsumerWidget {
   final Meal? meal;
 
   const MealDetailsView({
@@ -25,7 +29,9 @@ class MealDetailsView extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final AsyncValue<List<Rating>> asyncRatings = ref.watch(ratingsProvider);
+
     return BaseScaffold(
       hasBottomTabBarSpacing: true,
       appBarProperties: AppBarProperties(
@@ -38,10 +44,15 @@ class MealDetailsView extends StatelessWidget {
               ? Image.memory(base64Decode(this.meal!.thumbnailBase64!))
               : Image.asset('assets/images/meal-placeholder.png'),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: MealRatings(
-            ratings: this.meal!.ratings,
+        asyncRatings.when(
+          loading: () => const CircularProgressIndicator(),
+          error: (error, stackTrace) => Text(error.toString()),
+          data: (ratings) => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: MealRatings(
+              ratings: ratings,
+              valueMap: this.meal!.ratings,
+            ),
           ),
         ),
         Padding(

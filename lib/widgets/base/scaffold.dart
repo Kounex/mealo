@@ -12,6 +12,7 @@ class AppBarProperties {
   final Widget? flexibleSpace;
   final Widget? leading;
   final List<Widget>? actions;
+  PreferredSizeWidget? bottom;
 
   AppBarProperties({
     this.title,
@@ -22,6 +23,7 @@ class AppBarProperties {
     this.flexibleSpace,
     this.leading,
     this.actions,
+    this.bottom,
   });
 }
 
@@ -92,6 +94,7 @@ class BaseScaffold extends StatelessWidget {
                 stretch: this.appBarProperties!.stretch,
                 expandedHeight: this.appBarProperties!.expandedHeight,
                 flexibleSpace: this.appBarProperties!.flexibleSpace,
+                bottom: this.appBarProperties!.bottom,
               ),
           if (this.appBarProperties!.large)
             TransculentSliverAppBar.large(
@@ -102,6 +105,7 @@ class BaseScaffold extends StatelessWidget {
               stretch: this.appBarProperties!.stretch,
               expandedHeight: this.appBarProperties!.expandedHeight,
               flexibleSpace: this.appBarProperties!.flexibleSpace,
+              bottom: this.appBarProperties!.bottom,
             ),
           if (this.slivers != null) ...this.slivers!,
           if (this.children != null)

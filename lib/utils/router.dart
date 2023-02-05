@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:mealo/tabs.dart';
 import 'package:mealo/views/intro/intro.dart';
 import 'package:mealo/views/meals/meals.dart';
+import 'package:mealo/views/settings/ratings_tags_management/ratings_tags_management.dart';
 import 'package:mealo/views/settings/settings.dart';
 
-import '../models/meal.dart';
+import '../models/meal/meal.dart';
 import '../views/meals/details/details.dart';
 
 typedef BeamerPageBuilder = dynamic Function(
@@ -20,8 +21,15 @@ class RouterUtils {
     locationBuilder: RoutesLocationBuilder(
       routes: RouterUtils._routes(
         [
-          RouterUtils._routeEntry('/intro', view: const IntroView()),
-          RouterUtils._routeEntry('/*', view: const TabsView()),
+          RouterUtils._routeEntry(
+            '/intro',
+            view: const IntroView(),
+          ),
+          RouterUtils._routeEntry(
+            '/*',
+            view: const TabsView(),
+            type: BeamPageType.noTransition,
+          ),
         ],
       ),
     ),
@@ -179,26 +187,26 @@ enum TabMeta {
     switch (this) {
       case TabMeta.meals:
         return BeamerDelegate(
-          initialPath: '/meals',
+          initialPath: MealsRoute.blueprint,
           locationBuilder: RoutesLocationBuilder(
             routes: RouterUtils._routes(
               [
                 RouterUtils._routeEntry(
-                  '/meals',
+                  MealsRoute.blueprint,
                   type: BeamPageType.noTransition,
                   view: MealsView(
                     controller: RouterUtils.tabScrollController[this]!,
                   ),
                 ),
                 RouterUtils._routeEntry(
-                  '/meals/:uuid',
+                  MealDetailRoute.blueprint,
                   builder: (context, state, data) {
                     Meal? meal;
                     try {
                       meal = data as Meal;
                     } catch (_) {}
                     return RouterUtils._basePage(
-                      '/meals/:uuid',
+                      MealDetailRoute.blueprint,
                       MealDetailsView(meal: meal),
                     );
                   },
@@ -209,16 +217,20 @@ enum TabMeta {
         );
       case TabMeta.settings:
         return BeamerDelegate(
-          initialPath: '/settings',
+          initialPath: SettingsRoute.blueprint,
           locationBuilder: RoutesLocationBuilder(
             routes: RouterUtils._routes(
               [
                 RouterUtils._routeEntry(
-                  '/settings',
+                  SettingsRoute.blueprint,
                   type: BeamPageType.noTransition,
                   view: SettingsView(
                     controller: RouterUtils.tabScrollController[this]!,
                   ),
+                ),
+                RouterUtils._routeEntry(
+                  RatingsTagsManagementRoute.blueprint,
+                  view: const RatingsTagsManagementView(),
                 ),
               ],
             ),
@@ -235,17 +247,31 @@ abstract class BaseRoute {
 }
 
 class MealsRoute extends BaseRoute {
+  static String blueprint = '/meals';
+
   MealsRoute() : super('/meals');
 }
 
 class MealDetailRoute extends MealsRoute {
+  static String blueprint = '/meals/:uuid';
+
   MealDetailRoute(String uuid) : super() {
     this.path += '/$uuid';
   }
 }
 
 class SettingsRoute extends BaseRoute {
+  static String blueprint = '/settings';
+
   SettingsRoute() : super('/settings');
+}
+
+class RatingsTagsManagementRoute extends SettingsRoute {
+  static String blueprint = '/settings/ratings-tags-management';
+
+  RatingsTagsManagementRoute() : super() {
+    this.path += '/ratings-tags-management';
+  }
 }
 
 /// Example of nested routes

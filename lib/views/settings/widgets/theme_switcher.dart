@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/stores/shared/settings.dart';
+
+import '../../../stores/shared/settings/settings.dart';
 
 class ThemeSwitcher extends ConsumerWidget {
   const ThemeSwitcher({super.key});
@@ -16,6 +17,7 @@ class ThemeSwitcher extends ConsumerWidget {
       trailing: Switch.adaptive(
         value: darkMode ??
             MediaQuery.of(context).platformBrightness == Brightness.dark,
+        activeColor: Theme.of(context).colorScheme.primary,
         onChanged: (mode) =>
             ref.read(settingsSingletonProvider.notifier).setDarkMode(mode),
       ),

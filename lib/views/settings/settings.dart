@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mealo/utils/router.dart';
 import 'package:mealo/views/settings/widgets/theme_switcher.dart';
 import 'package:mealo/widgets/base/scaffold.dart';
 
@@ -17,8 +19,13 @@ class SettingsView extends StatelessWidget {
         title: const Text('Settings'),
         large: true,
       ),
-      children: const [
-        ThemeSwitcher(),
+      children: [
+        ListTile(
+          title: const Text('Ratings & Tags'),
+          trailing: const CupertinoListTileChevron(),
+          onTap: () => RouterUtils.goTo(context, RatingsTagsManagementRoute()),
+        ),
+        const ThemeSwitcher(),
       ],
     );
   }

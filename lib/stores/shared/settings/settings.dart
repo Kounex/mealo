@@ -1,8 +1,8 @@
-import 'package:mealo/models/settings.dart';
-import 'package:mealo/utils/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../persistance.dart';
+import '../../../models/settings/settings.dart';
+import '../../../utils/isar.dart';
+import '../../persistance.dart';
 
 part 'settings.g.dart';
 

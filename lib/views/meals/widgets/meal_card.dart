@@ -4,7 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mealo/utils/router.dart';
 
-import '../../../models/meal.dart';
+import '../../../models/meal/meal.dart';
 
 class MealCard extends StatelessWidget {
   final Meal meal;
