@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:mealo/widgets/base/async_value_builder.dart';
 
 import '../../../models/meal/meal.dart';
-import '../../../stores/shared/meals/meals.dart';
 import 'meal_card.dart';
 
 const double kMealGridCrossAxisExtent = 200.0;
@@ -18,13 +18,8 @@ class MealGrid extends ConsumerWidget {
     final int columnCount =
         MediaQuery.of(context).size.width ~/ kMealGridCrossAxisExtent;
 
-    return asyncMeals.when(
-      loading: () => const Center(
-        child: RefreshProgressIndicator(),
-      ),
-      error: (error, stackTrace) => const Center(
-        child: Text('ERROR'),
-      ),
+    return BaseAsyncValueBuilder(
+      asyncValue: asyncMeals,
       data: (meals) => meals.isNotEmpty
           ? AnimationLimiter(
               child: GridView.builder(

@@ -2,12 +2,11 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mealo/widgets/base/async_value_builder.dart';
 
 import '../../../../models/meal/meal.dart';
 import '../../../../models/rating/rating.dart';
 import '../../../../models/tag/tag.dart';
-import '../../../../stores/shared/ratings/ratings.dart';
-import '../../../../stores/shared/tags/tags.dart';
 import '../../../../utils/isar.dart';
 import '../../../../widgets/custom/meal_ratings.dart';
 
@@ -67,15 +66,8 @@ class _AddMealSheetState extends ConsumerState<AddMealSheet> {
     final AsyncValue<List<Rating>> asyncRatings = ref.watch(ratingsProvider);
     final AsyncValue<List<Tag>> asyncTags = ref.watch(tagsProvider);
 
-    return asyncRatings.when(
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
-      ),
-      error: (error, stackTrace) => Center(
-        child: Text(
-          error.toString(),
-        ),
-      ),
+    return BaseAsyncValueBuilder(
+      asyncValue: asyncRatings,
       data: (ratings) =>
           asyncTags.whenOrNull(
             data: (tags) {

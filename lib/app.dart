@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'stores/shared/settings/settings.dart';
+import 'models/settings/settings.dart';
 import 'utils/router.dart';
 import 'utils/theme.dart';
 

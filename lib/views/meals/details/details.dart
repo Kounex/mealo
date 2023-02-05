@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mealo/models/meal/meal.dart';
-import 'package:mealo/stores/shared/ratings/ratings.dart';
 import 'package:mealo/utils/isar.dart';
+import 'package:mealo/widgets/base/async_value_builder.dart';
 import 'package:mealo/widgets/custom/meal_ratings.dart';
 import 'package:mealo/widgets/base/scaffold.dart';
 
@@ -44,9 +44,8 @@ class MealDetailsView extends ConsumerWidget {
               ? Image.memory(base64Decode(this.meal!.thumbnailBase64!))
               : Image.asset('assets/images/meal-placeholder.png'),
         ),
-        asyncRatings.when(
-          loading: () => const CircularProgressIndicator(),
-          error: (error, stackTrace) => Text(error.toString()),
+        BaseAsyncValueBuilder(
+          asyncValue: asyncRatings,
           data: (ratings) => Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: MealRatings(

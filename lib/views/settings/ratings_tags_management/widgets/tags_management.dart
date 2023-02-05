@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mealo/models/tag/tag.dart';
-import 'package:mealo/stores/shared/tags/tags.dart';
 
 class TagsManagement extends ConsumerWidget {
   const TagsManagement({super.key});

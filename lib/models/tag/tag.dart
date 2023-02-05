@@ -2,11 +2,10 @@ import 'package:isar/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../stores/persistance.dart';
+import '../persistance.dart';
 import '../models.dart';
 
 part 'tag.g.dart';
-part 'tags.g.dart';
 
 @riverpod
 class Tags extends _$Tags with Persistance<Tag> {

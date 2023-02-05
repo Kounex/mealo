@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 
 import '../../../../models/rating/rating.dart';
-import '../../../../stores/shared/ratings/ratings.dart';
 import '../../../../utils/isar.dart';
 import '../../../../widgets/base/text_form_field.dart';
 

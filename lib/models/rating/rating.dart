@@ -2,11 +2,10 @@ import 'package:isar/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../stores/persistance.dart';
+import '../persistance.dart';
 import '../models.dart';
 
 part 'rating.g.dart';
-part 'ratings.g.dart';
 
 @riverpod
 class Ratings extends _$Ratings with Persistance<Rating> {

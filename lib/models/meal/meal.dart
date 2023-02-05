@@ -3,11 +3,10 @@ import 'package:mealo/models/tag/tag.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../stores/persistance.dart';
+import '../persistance.dart';
 import '../models.dart';
 
 part 'meal.g.dart';
-part 'meals.g.dart';
 
 @riverpod
 class Meals extends _$Meals with Persistance<Meal> {
