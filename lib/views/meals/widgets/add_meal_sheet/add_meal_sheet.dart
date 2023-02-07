@@ -52,7 +52,7 @@ class _AddMealSheetState extends ConsumerState<AddMealSheet> {
         return isar.meals.put(
           Meal()
             ..name = _name.text.trim()
-            ..ratings.addAll(_valueMap),
+            ..ratings = _valueMap,
         );
       },
     );
