@@ -27,6 +27,7 @@ class _RatingsTagsManagementViewState
       hasBottomTabBarSpacing: true,
       appBarProperties: AppBarProperties(
         title: const Text('Ratings & Tags'),
+        // expandedHeight: 150,
         actions: [
           Builder(builder: (context) {
             return IconButton(

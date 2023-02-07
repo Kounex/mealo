@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/styling.dart';
@@ -97,10 +98,10 @@ class BaseScaffold extends StatelessWidget {
         children: this
             .tabBarProperties!
             .children
-            .map(
-              (child) => _customScrollView(
+            .mapIndexed(
+              (index, child) => _customScrollView(
                 context,
-                tabChild: child,
+                tabIndex: index,
               ),
             )
             .toList(),
@@ -110,10 +111,15 @@ class BaseScaffold extends StatelessWidget {
     return _customScrollView(context);
   }
 
-  Widget _customScrollView(BuildContext context, {Widget? tabChild}) => Builder(
+  Widget _customScrollView(BuildContext context, {int? tabIndex}) => Builder(
         builder: (context) {
           return CustomScrollView(
+            key: tabIndex != null
+                ? PageStorageKey<String>(
+                    this.tabBarProperties!.titles[tabIndex])
+                : null,
             controller: this.appBarProperties == null ? this.controller : null,
+            primary: this.tabBarProperties == null,
             physics: this.physics ?? StylingUtils.platformAwareScrollPhysics,
             slivers: [
               if (this.appBarProperties != null)
@@ -123,8 +129,8 @@ class BaseScaffold extends StatelessWidget {
                   handle:
                       NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                 ),
-              if (tabChild == null && this.slivers != null) ...this.slivers!,
-              if (tabChild == null && this.children != null)
+              if (tabIndex == null && this.slivers != null) ...this.slivers!,
+              if (tabIndex == null && this.children != null)
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) => this.children![index],
@@ -137,9 +143,9 @@ class BaseScaffold extends StatelessWidget {
                     },
                   ),
                 ),
-              if (tabChild != null)
+              if (tabIndex != null)
                 SliverToBoxAdapter(
-                  child: tabChild,
+                  child: this.tabBarProperties!.children[tabIndex],
                 ),
               if (this.hasBottomTabBarSpacing)
                 SliverToBoxAdapter(
