@@ -83,7 +83,7 @@ class _TabsViewState extends State<TabsView> {
                         RouterUtils.tabScrollController[TabMeta.values[index]]!
                             .animateTo(
                           0.0,
-                          duration: const Duration(milliseconds: 250),
+                          duration: StylingUtils.kBaseAnimationDuration,
                           curve: Curves.easeIn,
                         );
                       }

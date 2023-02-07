@@ -11,7 +11,6 @@ class ThemeUtils {
         blendLevel: 9,
         swapColors: true,
         appBarOpacity: StylingUtils.kOpacityForBlur,
-        tabBarStyle: FlexTabBarStyle.forBackground,
         subThemesData: const FlexSubThemesData(
           blendOnLevel: 10,
           blendOnColors: false,

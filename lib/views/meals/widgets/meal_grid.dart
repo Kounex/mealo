@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:mealo/utils/styling.dart';
 import 'package:mealo/widgets/base/async_value_builder.dart';
 
 import '../../../models/meal/meal.dart';
@@ -36,7 +37,7 @@ class MealGrid extends ConsumerWidget {
                 itemBuilder: (context, index) =>
                     AnimationConfiguration.staggeredGrid(
                   position: index,
-                  duration: const Duration(milliseconds: 375),
+                  duration: StylingUtils.kBaseAnimationDuration,
                   columnCount: columnCount,
                   child: ScaleAnimation(
                     child: FadeInAnimation(

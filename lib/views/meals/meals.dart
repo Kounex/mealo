@@ -34,8 +34,14 @@ class MealsView extends StatelessWidget {
           title: LayoutBuilder(
             builder: (context, constraints) => constraints.maxHeight <=
                     kToolbarHeight + MediaQuery.of(context).viewPadding.top - 16
-                ? const Fader(
-                    child: Text('Mealo'),
+                ? Fader(
+                    child: Text(
+                      'Mealo',
+                      style: TextStyle(
+                        color:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
+                      ),
+                    ),
                   )
                 : const SizedBox(),
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mealo/utils/styling.dart';
 
 class BaseTextFormField extends StatefulWidget {
   final FocusNode? focusNode;
@@ -47,7 +48,7 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
       decoration: InputDecoration(
         hintText: this.widget.hintText,
         suffixIcon: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 200),
+          duration: StylingUtils.kBaseAnimationDuration,
           child: _focus.hasFocus
               ? IconButton(
                   onPressed: () => _controller.clear(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mealo/utils/styling.dart';
 
 class Fader extends StatefulWidget {
   final Widget child;
@@ -10,7 +11,7 @@ class Fader extends StatefulWidget {
   const Fader({
     Key? key,
     required this.child,
-    this.duration = const Duration(milliseconds: 200),
+    this.duration = StylingUtils.kBaseAnimationDuration,
     this.delay = const Duration(milliseconds: 0),
     this.curve = Curves.linear,
     this.showDuration,

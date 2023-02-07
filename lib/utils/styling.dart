@@ -10,6 +10,8 @@ class StylingUtils {
   static const double kSigmaBlur = 10.0;
   static const double kOpacityForBlur = 0.85;
 
+  static const Duration kBaseAnimationDuration = Duration(milliseconds: 200);
+
   /// Bouncing scroll for all cases
   static ScrollPhysics get platformAwareScrollPhysics => Platform.isIOS
       ? const AlwaysScrollableScrollPhysics()
