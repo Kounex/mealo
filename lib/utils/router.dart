@@ -193,7 +193,6 @@ enum TabMeta {
               [
                 RouterUtils._routeEntry(
                   MealsRoute.blueprint,
-                  type: BeamPageType.noTransition,
                   view: MealsView(
                     controller: RouterUtils.tabScrollController[this]!,
                   ),
@@ -223,7 +222,6 @@ enum TabMeta {
               [
                 RouterUtils._routeEntry(
                   SettingsRoute.blueprint,
-                  type: BeamPageType.noTransition,
                   view: SettingsView(
                     controller: RouterUtils.tabScrollController[this]!,
                   ),

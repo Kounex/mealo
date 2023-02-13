@@ -3,6 +3,16 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class ModalUtils {
+  static Future<T?> showBaseDialog<T>(
+    BuildContext context,
+    Widget dialog,
+  ) =>
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) => dialog,
+      );
+
   static Future<T?> showExpandedModalBottomSheet<T>(
     BuildContext context,
     Widget content,

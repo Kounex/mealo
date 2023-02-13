@@ -6,11 +6,22 @@ import 'package:mealo/utils/styling.dart';
 /// Material 3 error colors
 class ThemeUtils {
   static ThemeData get baseLight => FlexThemeData.light(
-        scheme: FlexScheme.shark,
+        colors: const FlexSchemeColor(
+          primary: Color(0xFFD2600A),
+          primaryContainer: Color(0xFFFFDBC8),
+          secondary: Color(0xFF1F3339),
+          secondaryContainer: Color(0xFF9EC4D4),
+          tertiary: Color(0xFF93A0A9),
+          tertiaryContainer: Color(0xFFB5CDDB),
+          appBarColor: Color(0xffffdbcf),
+          error: Color(0xFFD00020),
+          errorContainer: Color(0xFFB1384E),
+        ),
         surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
         blendLevel: 9,
-        swapColors: true,
         appBarOpacity: StylingUtils.kOpacityForBlur,
+        tabBarStyle: FlexTabBarStyle.forBackground,
+        appBarStyle: FlexAppBarStyle.surface,
         subThemesData: const FlexSubThemesData(
           blendOnLevel: 10,
           blendOnColors: false,
@@ -29,10 +40,19 @@ class ThemeUtils {
       );
 
   static ThemeData get baseDark => FlexThemeData.dark(
-        scheme: FlexScheme.shark,
+        colors: const FlexSchemeColor(
+          primary: Color(0xFFDB823F),
+          primaryContainer: Color(0xFFC05402),
+          secondary: Color(0xFF486A71),
+          secondaryContainer: Color(0xFF1F3339),
+          tertiary: Color(0xFFAAB4BB),
+          tertiaryContainer: Color(0xFF285C71),
+          appBarColor: Color(0xffffdbcf),
+          error: Color(0xFFD00020),
+          errorContainer: Color(0xFFB1384E),
+        ),
         surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
         blendLevel: 15,
-        swapColors: true,
         darkIsTrueBlack: true,
         appBarOpacity: StylingUtils.kOpacityForBlur,
         tabBarStyle: FlexTabBarStyle.forBackground,
@@ -44,7 +64,6 @@ class ThemeUtils {
           navigationBarHeight: 55.0,
           bottomNavigationBarOpacity: StylingUtils.kOpacityForBlur,
         ),
-        useMaterial3ErrorColors: true,
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
         swapLegacyOnMaterial3: true,
       ).copyWith(

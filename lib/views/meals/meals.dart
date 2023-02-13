@@ -20,6 +20,7 @@ class MealsView extends StatelessWidget {
     return BaseScaffold(
       hasBottomTabBarSpacing: true,
       appBarProperties: AppBarProperties(
+        stretch: true,
         expandedHeight: 200,
         actions: [
           IconButton(

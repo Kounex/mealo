@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mealo/models/models.dart';
+import 'package:mealo/utils/modal.dart';
+import 'package:mealo/widgets/dialog/confirmation.dart';
 
 import '../../../../widgets/base/text_form_field.dart';
 
@@ -12,6 +14,7 @@ class AddEditBaseModelDialog<T extends BaseModel>
 
   final Future<int>? Function(String name)? onAdd;
   final Future<int>? Function(String name)? onEdit;
+  final Future<bool>? Function(String uuid)? onDelete;
 
   const AddEditBaseModelDialog({
     super.key,
@@ -19,6 +22,7 @@ class AddEditBaseModelDialog<T extends BaseModel>
     this.validator,
     this.onAdd,
     this.onEdit,
+    this.onDelete,
   });
 
   @override
@@ -55,9 +59,35 @@ class _AddEditBaseModelDialogState<T extends BaseModel>
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(
-        _getTitle(),
-        style: Theme.of(context).textTheme.headlineSmall,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            _getTitle(),
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          if (this.widget.editingModel != null)
+            TextButton(
+              onPressed: () => ModalUtils.showBaseDialog(
+                context,
+                ConfirmationDialog(
+                  title: 'Delete ${_getGenericBaseModelType()}',
+                  text:
+                      'Aure you sure you want to delete ${this.widget.editingModel!.name}? This action can\'t be undone!',
+                  isYesDestructive: true,
+                  onYes: () {
+                    this.widget.onDelete?.call(this.widget.editingModel!.uuid);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+              style: ButtonStyle(
+                foregroundColor: MaterialStatePropertyAll(
+                    Theme.of(context).colorScheme.error),
+              ),
+              child: const Text('Delete'),
+            ),
+        ],
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -80,7 +110,7 @@ class _AddEditBaseModelDialogState<T extends BaseModel>
           child: const Text('Cancel'),
         ),
         TextButton(
-          onPressed: _controller.text.isNotEmpty &&
+          onPressed: _controller.text.trim().isNotEmpty &&
                   (this.widget.editingModel == null ||
                       this.widget.editingModel!.name != _controller.text.trim())
               ? () {

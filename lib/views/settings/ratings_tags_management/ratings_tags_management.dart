@@ -19,7 +19,7 @@ class RatingsTagsManagementView extends ConsumerStatefulWidget {
 
 class _RatingsTagsManagementViewState
     extends ConsumerState<RatingsTagsManagementView> {
-  bool _editMode = false;
+  final bool _editMode = false;
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +49,12 @@ class _RatingsTagsManagementViewState
               icon: const Icon(CupertinoIcons.add),
             );
           }),
-          IconButton(
-            onPressed: () => setState(() => _editMode = !_editMode),
-            icon: Icon(
-              _editMode ? CupertinoIcons.checkmark_alt : CupertinoIcons.pencil,
-            ),
-          ),
+          // IconButton(
+          //   onPressed: () => setState(() => _editMode = !_editMode),
+          //   icon: Icon(
+          //     _editMode ? CupertinoIcons.checkmark_alt : CupertinoIcons.pencil,
+          //   ),
+          // ),
         ],
       ),
       tabBarProperties: TabBarProperties(

@@ -1,8 +1,25 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:mealo/widgets/themed/cupertino_sliver_navigation_bar.dart';
 
 import '../../utils/styling.dart';
 import '../flutter_modified/translucent_sliver_app_bar.dart';
+
+class CupertinoAppBarProperties {
+  final Widget? middle;
+  final Widget? largeTitle;
+  final bool stretch;
+  final Widget? leading;
+  final Widget? trailing;
+
+  CupertinoAppBarProperties({
+    this.middle,
+    this.largeTitle,
+    this.stretch = false,
+    this.leading,
+    this.trailing,
+  });
+}
 
 class AppBarProperties {
   final Widget? title;
@@ -54,6 +71,9 @@ class BaseScaffold extends StatelessWidget {
   final ScrollController? controller;
   final ScrollPhysics? physics;
 
+  /// Either [cupertinoAppBarProperties] or [appBarProperties] should be used
+  /// for using an app bar
+  final CupertinoAppBarProperties? cupertinoAppBarProperties;
   final AppBarProperties? appBarProperties;
 
   final TabBarProperties? tabBarProperties;
@@ -82,6 +102,7 @@ class BaseScaffold extends StatelessWidget {
     super.key,
     this.slivers,
     this.children,
+    this.cupertinoAppBarProperties,
     this.appBarProperties,
     this.tabBarProperties,
     this.controller,
@@ -118,7 +139,10 @@ class BaseScaffold extends StatelessWidget {
                 ? PageStorageKey<String>(
                     this.tabBarProperties!.titles[tabIndex])
                 : null,
-            controller: this.appBarProperties == null ? this.controller : null,
+            controller: this.appBarProperties == null &&
+                    this.cupertinoAppBarProperties == null
+                ? this.controller
+                : null,
             primary: this.tabBarProperties == null,
             physics: this.physics ?? StylingUtils.platformAwareScrollPhysics,
             slivers: [
@@ -169,7 +193,8 @@ class BaseScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget scaffold = Scaffold(
-      body: this.appBarProperties != null
+      body: this.cupertinoAppBarProperties != null ||
+              this.appBarProperties != null
           ? NestedScrollView(
               controller: this.controller,
               physics: this.physics ?? StylingUtils.platformAwareScrollPhysics,
@@ -187,59 +212,70 @@ class BaseScaffold extends StatelessWidget {
                     // widgets that do not overlap the next sliver.
                     handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                         context),
-                    sliver: !this.appBarProperties!.large
-                        ? TransculentSliverAppBar(
-                            leading: this.appBarProperties!.leading,
-                            title: this.appBarProperties!.title,
-                            actions: this.appBarProperties!.actions,
-                            pinned: this.appBarProperties!.pinned,
-                            stretch: this.appBarProperties!.stretch,
-                            expandedHeight:
-                                this.appBarProperties!.expandedHeight,
-                            flexibleSpace: this.appBarProperties!.flexibleSpace,
-                            bottom: this.appBarProperties!.bottom ??
-                                (this.tabBarProperties != null
-                                    ? TabBar(
-                                        tabs: this
-                                            .tabBarProperties!
-                                            .titles
-                                            .map((title) => Tab(
-                                                  text: title,
-                                                ))
-                                            .toList())
-                                    : null),
-                            // The "forceElevated" property causes the SliverAppBar to show
-                            // a shadow. The "innerBoxIsScrolled" parameter is true when the
-                            // inner scroll view is scrolled beyond its "zero" point, i.e.
-                            // when it appears to be scrolled below the SliverAppBar.
-                            // Without this, there are cases where the shadow would appear
-                            // or not appear inappropriately, because the SliverAppBar is
-                            // not actually aware of the precise position of the inner
-                            // scroll views.
-                            forceElevated: innerBoxIsScrolled,
+                    sliver: this.cupertinoAppBarProperties != null
+                        ? ThemedCupertinoSliverNavigationBar(
+                            largeTitle:
+                                this.cupertinoAppBarProperties!.largeTitle,
+                            middle: this.cupertinoAppBarProperties!.middle,
+                            leading: this.cupertinoAppBarProperties!.leading,
+                            trailing: this.cupertinoAppBarProperties!.trailing,
+                            stretch: this.cupertinoAppBarProperties!.stretch,
                           )
-                        : TransculentSliverAppBar.large(
-                            leading: this.appBarProperties!.leading,
-                            title: this.appBarProperties!.title,
-                            actions: this.appBarProperties!.actions,
-                            pinned: this.appBarProperties!.pinned,
-                            stretch: this.appBarProperties!.stretch,
-                            expandedHeight:
-                                this.appBarProperties!.expandedHeight,
-                            flexibleSpace: this.appBarProperties!.flexibleSpace,
-                            bottom: this.appBarProperties!.bottom ??
-                                (this.tabBarProperties != null
-                                    ? TabBar(
-                                        tabs: this
-                                            .tabBarProperties!
-                                            .titles
-                                            .map((title) => Tab(
-                                                  text: title,
-                                                ))
-                                            .toList())
-                                    : null),
-                            forceElevated: innerBoxIsScrolled,
-                          ),
+                        : !this.appBarProperties!.large
+                            ? TransculentSliverAppBar(
+                                leading: this.appBarProperties!.leading,
+                                title: this.appBarProperties!.title,
+                                actions: this.appBarProperties!.actions,
+                                pinned: this.appBarProperties!.pinned,
+                                stretch: this.appBarProperties!.stretch,
+                                expandedHeight:
+                                    this.appBarProperties!.expandedHeight,
+                                flexibleSpace:
+                                    this.appBarProperties!.flexibleSpace,
+                                bottom: this.appBarProperties!.bottom ??
+                                    (this.tabBarProperties != null
+                                        ? TabBar(
+                                            tabs: this
+                                                .tabBarProperties!
+                                                .titles
+                                                .map((title) => Tab(
+                                                      text: title,
+                                                    ))
+                                                .toList())
+                                        : null),
+                                // The "forceElevated" property causes the SliverAppBar to show
+                                // a shadow. The "innerBoxIsScrolled" parameter is true when the
+                                // inner scroll view is scrolled beyond its "zero" point, i.e.
+                                // when it appears to be scrolled below the SliverAppBar.
+                                // Without this, there are cases where the shadow would appear
+                                // or not appear inappropriately, because the SliverAppBar is
+                                // not actually aware of the precise position of the inner
+                                // scroll views.
+                                forceElevated: innerBoxIsScrolled,
+                              )
+                            : TransculentSliverAppBar.medium(
+                                leading: this.appBarProperties!.leading,
+                                title: this.appBarProperties!.title,
+                                actions: this.appBarProperties!.actions,
+                                pinned: this.appBarProperties!.pinned,
+                                stretch: this.appBarProperties!.stretch,
+                                expandedHeight:
+                                    this.appBarProperties!.expandedHeight,
+                                flexibleSpace:
+                                    this.appBarProperties!.flexibleSpace,
+                                bottom: this.appBarProperties!.bottom ??
+                                    (this.tabBarProperties != null
+                                        ? TabBar(
+                                            tabs: this
+                                                .tabBarProperties!
+                                                .titles
+                                                .map((title) => Tab(
+                                                      text: title,
+                                                    ))
+                                                .toList())
+                                        : null),
+                                forceElevated: innerBoxIsScrolled,
+                              ),
                   ),
                 ];
               },

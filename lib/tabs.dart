@@ -57,10 +57,18 @@ class _TabsViewState extends State<TabsView> {
                     ),
                   ),
                 ),
-                SizedBox(
+                Container(
                   height: kBottomNavigationBarHeight +
                       MediaQuery.of(context).viewPadding.bottom +
                       2,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        width: 0,
+                        color: Theme.of(context).dividerColor,
+                      ),
+                    ),
+                  ),
                   child: BottomNavigationBar(
                     currentIndex: _index,
                     items: List.from(
