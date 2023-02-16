@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/utils/modal.dart';
-import 'package:mealo/widgets/base/async_value_builder.dart';
-import 'package:mealo/widgets/base/card.dart';
 
 import '../../../../models/models.dart';
+import '../../../../utils/modal.dart';
+import '../../../../widgets/base/async_value_builder.dart';
+import '../../../../widgets/base/card.dart';
 import 'add_edit_base_model_dialog.dart';
 
-class BaseModelManagement<T extends BaseModel> extends ConsumerStatefulWidget {
+class BaseModelManagement<T extends BaseModel> extends ConsumerWidget {
   final ProviderListenable<AsyncValue<List<T>>> provider;
 
   final String? Function(String?)? validator;
@@ -26,14 +26,7 @@ class BaseModelManagement<T extends BaseModel> extends ConsumerStatefulWidget {
     this.editMode = false,
   });
 
-  @override
-  ConsumerState<BaseModelManagement> createState() =>
-      _BaseModelManagementState<T>();
-}
-
-class _BaseModelManagementState<T extends BaseModel>
-    extends ConsumerState<BaseModelManagement<T>> {
-  List<Widget> _entityWidgets(List<T> entities) {
+  List<Widget> _entityWidgets(BuildContext context, List<T> entities) {
     entities.sort(
       (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
     );
@@ -47,8 +40,8 @@ class _BaseModelManagementState<T extends BaseModel>
               context,
               AddEditBaseModelDialog<T>(
                 editingModel: entity,
-                onEdit: (name) => this.widget.onEdit(entity, name),
-                onDelete: this.widget.onDelete,
+                onEdit: (name) => this.onEdit(entity, name),
+                onDelete: this.onDelete,
               ),
             ),
           ),
@@ -107,8 +100,8 @@ class _BaseModelManagementState<T extends BaseModel>
   }
 
   @override
-  Widget build(BuildContext context) {
-    final AsyncValue<List<T>> asyncEntities = ref.watch(this.widget.provider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final AsyncValue<List<T>> asyncEntities = ref.watch(this.provider);
 
     return BaseCard(
       constrained: false,
@@ -120,7 +113,7 @@ class _BaseModelManagementState<T extends BaseModel>
           child: Wrap(
             spacing: 12.0,
             children: [
-              ..._entityWidgets(entities),
+              ..._entityWidgets(context, entities),
             ],
           ),
         ),

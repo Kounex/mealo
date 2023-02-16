@@ -90,7 +90,9 @@ class BaseCard extends StatelessWidget {
           mainAxisAlignment: this.centerChild
               ? MainAxisAlignment.center
               : MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: this.centerChild
+              ? CrossAxisAlignment.center
+              : CrossAxisAlignment.start,
           children: [
             if (this.titleWidget != null || this.title != null)
               Padding(
@@ -129,7 +131,7 @@ class BaseCard extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: kBaseCardMaxWidth),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             this.above ?? Container(),
             card,

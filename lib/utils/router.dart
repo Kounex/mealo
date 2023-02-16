@@ -3,6 +3,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mealo/tabs.dart';
+import 'package:mealo/views/home/home.dart';
 import 'package:mealo/views/intro/intro.dart';
 import 'package:mealo/views/meals/meals.dart';
 import 'package:mealo/views/settings/ratings_tags_management/ratings_tags_management.dart';
@@ -160,11 +161,14 @@ class RouterUtils {
 }
 
 enum TabMeta {
+  home,
   meals,
   settings;
 
   String get title {
     switch (this) {
+      case TabMeta.home:
+        return 'Home';
       case TabMeta.meals:
         return 'Meals';
       case TabMeta.settings:
@@ -175,6 +179,8 @@ enum TabMeta {
   Icon get icon {
     return Icon(() {
       switch (this) {
+        case TabMeta.home:
+          return FluentIcons.home_24_filled;
         case TabMeta.meals:
           return FluentIcons.food_24_filled;
         case TabMeta.settings:
@@ -185,6 +191,22 @@ enum TabMeta {
 
   BeamerDelegate get router {
     switch (this) {
+      case TabMeta.home:
+        return BeamerDelegate(
+          initialPath: HomeRoute.blueprint,
+          locationBuilder: RoutesLocationBuilder(
+            routes: RouterUtils._routes(
+              [
+                RouterUtils._routeEntry(
+                  HomeRoute.blueprint,
+                  view: HomeView(
+                    controller: RouterUtils.tabScrollController[this]!,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
       case TabMeta.meals:
         return BeamerDelegate(
           initialPath: MealsRoute.blueprint,
@@ -242,6 +264,12 @@ abstract class BaseRoute {
   String path;
 
   BaseRoute(this.path);
+}
+
+class HomeRoute extends BaseRoute {
+  static String blueprint = '/home';
+
+  HomeRoute() : super('/home');
 }
 
 class MealsRoute extends BaseRoute {
