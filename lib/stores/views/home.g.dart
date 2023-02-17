@@ -29,14 +29,20 @@ class _SystemHash {
   }
 }
 
-String _$randomizedMealHash() => r'85d61fd97f3dc709895a95132ec5584167d525a1';
+String _$RandomizedMealHash() => r'c9c4d486b39a92ab27c73b4bb228a237efaecc5d';
 
-/// See also [randomizedMeal].
-final randomizedMealProvider = AutoDisposeProvider<Meal?>(
-  randomizedMeal,
+/// See also [RandomizedMeal].
+final randomizedMealProvider =
+    AutoDisposeAsyncNotifierProvider<RandomizedMeal, Meal?>(
+  RandomizedMeal.new,
   name: r'randomizedMealProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$randomizedMealHash,
+      : _$RandomizedMealHash,
 );
-typedef RandomizedMealRef = AutoDisposeProviderRef<Meal?>;
+typedef RandomizedMealRef = AutoDisposeAsyncNotifierProviderRef<Meal?>;
+
+abstract class _$RandomizedMeal extends AutoDisposeAsyncNotifier<Meal?> {
+  @override
+  FutureOr<Meal?> build();
+}

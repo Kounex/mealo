@@ -56,6 +56,12 @@ dependencies:
 
   # Adjust text size correctly
   auto_size_text: ^3.0.0
+  
+  # Loading shimmering
+  shimmer: ^2.0.0
+
+  # Powered-up animations
+  flutter_animate: ^4.0.0
 
 dev_dependencies:
   flutter_test:
@@ -65,8 +71,8 @@ dev_dependencies:
 
   # analyzer: ^5.5.0
   # analyzer_plugin: ^0.11.2
-  # custom_lint: ^0.2.5
-  # riverpod_lint: ^1.0.1
+  custom_lint: ^0.2.5
+  riverpod_lint: ^1.0.1
 
   # Generator stuff
   isar_generator: *isar_version

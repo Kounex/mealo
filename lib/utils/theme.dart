@@ -33,7 +33,6 @@ class ThemeUtils {
         ),
         useMaterial3ErrorColors: true,
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        swapLegacyOnMaterial3: true,
       ).copyWith(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
@@ -65,7 +64,6 @@ class ThemeUtils {
           bottomNavigationBarOpacity: StylingUtils.kOpacityForBlur,
         ),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        swapLegacyOnMaterial3: true,
       ).copyWith(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,

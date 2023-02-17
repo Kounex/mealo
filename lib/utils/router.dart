@@ -203,6 +203,19 @@ enum TabMeta {
                     controller: RouterUtils.tabScrollControllerMap[this]!,
                   ),
                 ),
+                RouterUtils._routeEntry(
+                  HomeMealDetailRoute.blueprint,
+                  builder: (context, state, data) {
+                    Meal? meal;
+                    try {
+                      meal = data as Meal;
+                    } catch (_) {}
+                    return RouterUtils._basePage(
+                      HomeMealDetailRoute.blueprint,
+                      MealDetailsView(meal: meal),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -270,6 +283,14 @@ class HomeRoute extends BaseRoute {
   static String blueprint = '/home';
 
   HomeRoute() : super('/home');
+}
+
+class HomeMealDetailRoute extends HomeRoute {
+  static String blueprint = '/home/:uuid';
+
+  HomeMealDetailRoute(String uuid) : super() {
+    this.path += '/$uuid';
+  }
 }
 
 class MealsRoute extends BaseRoute {

@@ -5,6 +5,7 @@ import 'package:mealo/utils/styling.dart';
 import 'package:mealo/widgets/base/async_value_builder.dart';
 
 import '../../../models/meal/meal.dart';
+import '../../../utils/router.dart';
 import 'meal_card.dart';
 
 const double kMealGridCrossAxisExtent = 200.0;
@@ -43,6 +44,11 @@ class MealGrid extends ConsumerWidget {
                     child: FadeInAnimation(
                       child: MealCard(
                         meal: meals[index],
+                        onTap: () => RouterUtils.goTo(
+                          context,
+                          MealDetailRoute(meals[index].uuid),
+                          data: meals[index],
+                        ),
                       ),
                     ),
                   ),
