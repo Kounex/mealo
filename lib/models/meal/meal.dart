@@ -31,14 +31,18 @@ class Meal implements BaseModel {
   Id get isarId => Models.fastHash(uuid);
 
   DateTime createdAt = DateTime.now();
+  DateTime? lastTimeRandomized;
+  DateTime? lastTimeAte;
+
   @override
   late String name;
+  String? instructions;
   String? thumbnailBase64;
   List<String>? imagesBase64;
 
   late List<RatingValueMap> ratings;
-
   IsarLinks<Tag> tags = IsarLinks();
+  late List<IngredientMap> ingredients;
 }
 
 @embedded
@@ -70,4 +74,12 @@ enum RatingValue {
         return 5;
     }
   }
+}
+
+@embedded
+class IngredientMap {
+  String? uuidIngredient;
+  String? uuidUnit;
+
+  double? amount;
 }

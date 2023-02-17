@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mealo/models/meal/meal.dart';
 import 'package:mealo/utils/modal.dart';
 import 'package:mealo/widgets/base/scaffold.dart';
 
+import '../../utils/router.dart';
+import '../../widgets/custom/meal_grid.dart';
 import 'widgets/add_meal_sheet/add_meal_sheet.dart';
-import 'widgets/meal_grid.dart';
 
 class MealsView extends StatelessWidget {
   final ScrollController controller;
@@ -17,6 +19,7 @@ class MealsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
+      controller: this.controller,
       hasBottomTabBarSpacing: true,
       appBarProperties: AppBarProperties(
         title: const Text('Meals'),
@@ -30,10 +33,17 @@ class MealsView extends StatelessWidget {
           ),
         ],
       ),
-      children: const [
+      children: [
         Padding(
-          padding: EdgeInsets.all(24.0),
-          child: MealGrid(),
+          padding: const EdgeInsets.all(24.0),
+          child: MealGrid(
+            provider: mealsProvider,
+            onTap: (meal) => RouterUtils.goTo(
+              context,
+              MealDetailRoute(meal.uuid),
+              data: meal,
+            ),
+          ),
         ),
       ],
     );

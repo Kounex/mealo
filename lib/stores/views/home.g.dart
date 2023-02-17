@@ -46,3 +46,26 @@ abstract class _$RandomizedMeal extends AutoDisposeAsyncNotifier<Meal?> {
   @override
   FutureOr<Meal?> build();
 }
+
+String _$prevRandomizedMealsHash() =>
+    r'13d21b4f74b32edf4297b6fd7b720faa5c04f66d';
+
+/// See also [prevRandomizedMeals].
+final prevRandomizedMealsProvider = AutoDisposeFutureProvider<List<Meal>>(
+  prevRandomizedMeals,
+  name: r'prevRandomizedMealsProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$prevRandomizedMealsHash,
+);
+typedef PrevRandomizedMealsRef = AutoDisposeFutureProviderRef<List<Meal>>;
+String _$prevAteMealsHash() => r'8e5dc90904eba8c4c86555a34c71373f54afc765';
+
+/// See also [prevAteMeals].
+final prevAteMealsProvider = AutoDisposeFutureProvider<List<Meal>>(
+  prevAteMeals,
+  name: r'prevAteMealsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$prevAteMealsHash,
+);
+typedef PrevAteMealsRef = AutoDisposeFutureProviderRef<List<Meal>>;

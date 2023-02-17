@@ -6,11 +6,11 @@ import 'package:mealo/models/meal/meal.dart';
 import 'package:mealo/stores/views/home.dart';
 import 'package:mealo/utils/styling.dart';
 import 'package:mealo/views/home/widgets/meal_randomizer/meal_shuffle.dart';
-import 'package:mealo/views/meals/widgets/meal_card.dart';
+import 'package:mealo/views/home/widgets/meal_randomizer/suggested_meal.dart';
 import 'package:mealo/widgets/animation/text_shimmer.dart';
 import 'package:mealo/widgets/base/async_value_builder.dart';
+import 'package:mealo/widgets/base/divider.dart';
 
-import '../../../../utils/router.dart';
 import '../../../../widgets/base/card.dart';
 
 class MealRandomizer extends ConsumerStatefulWidget {
@@ -40,21 +40,16 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
                       duration: Duration(seconds: 3),
                     )
                   : asyncRandomizedMeal.valueOrNull != null
-                      ? MealCard(
-                          meal: asyncRandomizedMeal.value,
-                          onTap: () => RouterUtils.goTo(
-                            context,
-                            HomeMealDetailRoute(
-                                asyncRandomizedMeal.value!.uuid),
-                            data: asyncRandomizedMeal.value,
-                          ),
-                        )
+                      ? SuggestedMeal(meal: asyncRandomizedMeal.value!)
                       : meals.isNotEmpty
-                          ? const Text('Hungy? Don\'t know what to eat next? ')
+                          ? const Text(
+                              'Hungy? Don\'t know what to eat next? Let the app decide what you are going to eat next - you can make use of some filters to make it less random!')
                           : const Text('You don\'t have any meals yet.'),
             ),
           ),
-          const SizedBox(height: 24.0),
+          const SizedBox(height: 12.0),
+          const BaseDivider(),
+          const SizedBox(height: 12.0),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(

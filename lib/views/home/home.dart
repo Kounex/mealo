@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mealo/views/home/widgets/meal_randomizer/meal_randomizer.dart';
+import 'package:mealo/views/home/widgets/prev_random_meals.dart';
 import 'package:mealo/widgets/base/scaffold.dart';
 
 import '../../widgets/animation/fader.dart';
+import 'widgets/prev_ate_meals.dart';
 
 class HomeView extends StatelessWidget {
   final ScrollController controller;
@@ -15,6 +17,8 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
+      controller: this.controller,
+      hasBottomTabBarSpacing: true,
       appBarProperties: AppBarProperties(
         stretch: true,
         expandedHeight: 200,
@@ -45,6 +49,8 @@ class HomeView extends StatelessWidget {
       ),
       children: const [
         MealRandomizer(),
+        PrevAteMeals(),
+        PrevRandomMeals(),
       ],
     );
   }

@@ -38,12 +38,15 @@ class MealDetailsView extends ConsumerWidget {
         title: Text(this.meal?.name ?? 'Unnamed'),
       ),
       children: [
-        Hero(
-          tag: this.meal?.uuid ?? 'placeholder',
-          child: this.meal?.thumbnailBase64 != null
-              ? Image.memory(base64Decode(this.meal!.thumbnailBase64!))
-              : Image.asset('assets/images/meal-placeholder.png'),
-        ),
+        // Hero(
+        //   tag: this.meal?.uuid ?? 'placeholder',
+        //   child: this.meal?.thumbnailBase64 != null
+        //       ? Image.memory(base64Decode(this.meal!.thumbnailBase64!))
+        //       : Image.asset('assets/images/meal-placeholder.png'),
+        // ),
+        this.meal?.thumbnailBase64 != null
+            ? Image.memory(base64Decode(this.meal!.thumbnailBase64!))
+            : Image.asset('assets/images/meal-placeholder.png'),
         BaseAsyncValueBuilder(
           asyncValue: asyncRatings,
           data: (ratings) => Padding(
@@ -54,6 +57,7 @@ class MealDetailsView extends ConsumerWidget {
             ),
           ),
         ),
+        const SizedBox(height: 24.0),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: ElevatedButton(

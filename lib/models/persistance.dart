@@ -25,7 +25,7 @@ mixin Persistance<T> on AutoDisposeAsyncNotifier<List<T>> {
   void _watcher() async =>
       IsarUtils.instance.collection<T>().watchLazy().listen(
         (_) async {
-          this.state = const AsyncLoading();
+          this.state = AsyncLoading<List<T>>();
           this.state = await AsyncValue.guard(() async => _local());
         },
       );

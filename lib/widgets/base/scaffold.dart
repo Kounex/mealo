@@ -140,7 +140,7 @@ class BaseScaffold extends StatelessWidget {
                     this.tabBarProperties!.titles[tabIndex])
                 : null,
             controller: this.tabBarProperties == null ? this.controller : null,
-            primary: this.tabBarProperties == null,
+            primary: this.controller == null && this.tabBarProperties == null,
             physics: this.physics ?? StylingUtils.platformAwareScrollPhysics,
             slivers: [
               if (this.tabBarProperties != null)

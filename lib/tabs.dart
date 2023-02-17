@@ -85,8 +85,10 @@ class _TabsViewState extends State<TabsView> {
                           _index = index;
                           Beamer.of(context).update(rebuild: false);
                         });
-                      } else if (Beamer.of(context).canBeamBack) {
-                        Beamer.of(context).beamBack();
+                      } else if (RouterUtils
+                          .tabRouterMap[TabMeta.values[index]]!.canBeamBack) {
+                        RouterUtils.tabRouterMap[TabMeta.values[index]]!
+                            .beamBack();
                       } else {
                         RouterUtils
                             .tabScrollControllerMap[TabMeta.values[index]]!
