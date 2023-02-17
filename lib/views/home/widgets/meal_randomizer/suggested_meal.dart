@@ -16,6 +16,20 @@ class SuggestedMeal extends ConsumerWidget {
     required this.meal,
   });
 
+  Future<void> feast(BuildContext context, WidgetRef ref) async {
+    await IsarUtils.crud(
+      (isar) => isar.meals.putByUuid(this.meal..lastTimeAte = DateTime.now()),
+    );
+    ref.invalidate(randomizedMealProvider);
+    if (context.mounted) {
+      RouterUtils.goTo(
+        context,
+        HomeMealDetailRoute(meal.uuid),
+        data: meal,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
@@ -34,20 +48,7 @@ class SuggestedMeal extends ConsumerWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
-              onPressed: () async {
-                await IsarUtils.crud(
-                  (isar) => isar.meals
-                      .putByUuid(this.meal..lastTimeAte = DateTime.now()),
-                );
-                ref.invalidate(randomizedMealProvider);
-                if (context.mounted) {
-                  RouterUtils.goTo(
-                    context,
-                    HomeMealDetailRoute(meal.uuid),
-                    data: meal,
-                  );
-                }
-              },
+              onPressed: () => feast(context, ref),
               style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Colors.green)),
               icon: const Icon(CupertinoIcons.checkmark_alt_circle),

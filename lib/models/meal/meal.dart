@@ -42,7 +42,7 @@ class Meal implements BaseModel {
 
   late List<RatingValueMap> ratings;
   IsarLinks<Tag> tags = IsarLinks();
-  late List<IngredientMap> ingredients;
+  List<IngredientMap> ingredients = [];
 }
 
 @embedded
