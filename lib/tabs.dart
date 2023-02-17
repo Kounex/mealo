@@ -30,7 +30,7 @@ class _TabsViewState extends State<TabsView> {
                   controller: MaterialApp.createMaterialHeroController(),
                   child: Beamer(
                     key: ValueKey(tab),
-                    routerDelegate: RouterUtils.tabRouter[tab]!,
+                    routerDelegate: RouterUtils.tabRouterMap[tab]!,
                   ),
                 ),
               ),
@@ -88,7 +88,8 @@ class _TabsViewState extends State<TabsView> {
                       } else if (Beamer.of(context).canBeamBack) {
                         Beamer.of(context).beamBack();
                       } else {
-                        RouterUtils.tabScrollController[TabMeta.values[index]]!
+                        RouterUtils
+                            .tabScrollControllerMap[TabMeta.values[index]]!
                             .animateTo(
                           0.0,
                           duration: StylingUtils.kBaseAnimationDuration,

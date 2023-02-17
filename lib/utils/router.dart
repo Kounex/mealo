@@ -36,13 +36,13 @@ class RouterUtils {
     ),
   );
 
-  static final Map<TabMeta, BeamerDelegate> tabRouter = {}..addEntries(
+  static final Map<TabMeta, BeamerDelegate> tabRouterMap = {}..addEntries(
       TabMeta.values.map(
         (tab) => MapEntry(tab, tab.router),
       ),
     );
 
-  static final Map<TabMeta, ScrollController> tabScrollController = {}
+  static final Map<TabMeta, ScrollController> tabScrollControllerMap = {}
     ..addEntries(
       TabMeta.values.map(
         (tab) => MapEntry(tab, ScrollController()),
@@ -200,7 +200,7 @@ enum TabMeta {
                 RouterUtils._routeEntry(
                   HomeRoute.blueprint,
                   view: HomeView(
-                    controller: RouterUtils.tabScrollController[this]!,
+                    controller: RouterUtils.tabScrollControllerMap[this]!,
                   ),
                 ),
               ],
@@ -216,7 +216,7 @@ enum TabMeta {
                 RouterUtils._routeEntry(
                   MealsRoute.blueprint,
                   view: MealsView(
-                    controller: RouterUtils.tabScrollController[this]!,
+                    controller: RouterUtils.tabScrollControllerMap[this]!,
                   ),
                 ),
                 RouterUtils._routeEntry(
@@ -245,7 +245,7 @@ enum TabMeta {
                 RouterUtils._routeEntry(
                   SettingsRoute.blueprint,
                   view: SettingsView(
-                    controller: RouterUtils.tabScrollController[this]!,
+                    controller: RouterUtils.tabScrollControllerMap[this]!,
                   ),
                 ),
                 RouterUtils._routeEntry(

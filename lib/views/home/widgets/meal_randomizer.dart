@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mealo/models/meal/meal.dart';
 import 'package:mealo/views/meals/widgets/meal_card.dart';
 import 'package:mealo/widgets/base/async_value_builder.dart';
+import 'package:mealo/widgets/base/divider.dart';
 
 import '../../../widgets/base/card.dart';
 
@@ -16,6 +17,7 @@ class MealRandomizer extends ConsumerStatefulWidget {
 }
 
 class _MealRandomizerState extends ConsumerState<MealRandomizer> {
+  final Duration _randomizeDuration = const Duration(milliseconds: 3000);
   Meal? _randomizedMeal;
 
   bool _loadingRandomizedMeal = false;
@@ -23,6 +25,7 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
   @override
   Widget build(BuildContext context) {
     AsyncValue<List<Meal>> asyncMeals = ref.watch(mealsProvider);
+    // Meal? randomizedMeal = ref.watch(randomizedM)
 
     return BaseCard(
       constrained: false,
@@ -33,9 +36,12 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
             data: (meals) => _randomizedMeal != null
                 ? MealCard(meal: _randomizedMeal!)
                 : meals.isNotEmpty
-                    ? const Text('GOT MEALS')
+                    ? const Text('Hungy? Don\'t know what to eat next? ')
                     : const Text('NO MEALS :<<<'),
           ),
+          const SizedBox(height: 24.0),
+          const BaseDivider(),
+          const SizedBox(height: 24.0),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -45,11 +51,12 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
                   ? () {
                       setState(() {
                         _loadingRandomizedMeal = true;
-                        Future.delayed(const Duration(milliseconds: 3000), () {
+                        Future.delayed(_randomizeDuration, () {
                           setState(() {
                             _loadingRandomizedMeal = false;
                             _randomizedMeal = asyncMeals.value!.elementAt(
-                                Random().nextInt(asyncMeals.value!.length));
+                              Random().nextInt(asyncMeals.value!.length),
+                            );
                           });
                         });
                       });
