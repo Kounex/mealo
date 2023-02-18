@@ -6,7 +6,7 @@ import 'package:mealo/utils/isar.dart';
 
 import '../../../../models/meal/meal.dart';
 import '../../../../utils/router.dart';
-import '../../../../widgets/custom/meal_card.dart';
+import '../../../../widgets/shared/meal_card.dart';
 
 class SuggestedMeal extends ConsumerWidget {
   final Meal meal;

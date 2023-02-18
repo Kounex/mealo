@@ -8,10 +8,11 @@ import 'package:mealo/utils/styling.dart';
 import 'package:mealo/views/home/widgets/meal_randomizer/meal_shuffle.dart';
 import 'package:mealo/views/home/widgets/meal_randomizer/suggested_meal.dart';
 import 'package:mealo/widgets/animation/text_shimmer.dart';
-import 'package:mealo/widgets/base/async_value_builder.dart';
-import 'package:mealo/widgets/base/divider.dart';
+import 'package:mealo/widgets/base/functional/async_value_builder.dart';
+import 'package:mealo/widgets/base/ui/divider.dart';
+import 'package:mealo/widgets/base/ui/progress_indicator.dart';
 
-import '../../../../widgets/base/card.dart';
+import '../../../../widgets/base/ui/card.dart';
 
 class MealRandomizer extends ConsumerStatefulWidget {
   const MealRandomizer({super.key});
@@ -65,11 +66,7 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
                     }
                   : null,
               child: asyncRandomizedMeal.isLoading
-                  ? const SizedBox(
-                      height: 18.0,
-                      width: 18.0,
-                      child: CircularProgressIndicator(strokeWidth: 2.0),
-                    )
+                  ? BaseProgressIndicator(size: 18.0)
                   : const Text('Randomize!'),
             ),
           ),

@@ -5,7 +5,7 @@ import 'package:mealo/models/rating/rating.dart';
 import 'package:mealo/models/tag/tag.dart';
 import 'package:mealo/utils/isar.dart';
 import 'package:mealo/views/settings/ratings_tags_management/widgets/base_model_management.dart';
-import 'package:mealo/widgets/base/scaffold.dart';
+import 'package:mealo/widgets/base/functional/scaffold.dart';
 
 import 'widgets/add_edit_base_model_dialog.dart';
 

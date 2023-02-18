@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mealo/views/home/widgets/meal_randomizer/meal_randomizer.dart';
 import 'package:mealo/views/home/widgets/prev_random_meals.dart';
-import 'package:mealo/widgets/base/scaffold.dart';
+import 'package:mealo/widgets/base/functional/scaffold.dart';
 
 import '../../widgets/animation/fader.dart';
 import 'widgets/prev_ate_meals.dart';

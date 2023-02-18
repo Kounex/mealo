@@ -47,5 +47,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>The camera feature can be used here to make photos of your meals!</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Microphone is not used since this app has no video capability but the feature itself is coupled to the camera plugin!</string>
 </dict>
 </plist>

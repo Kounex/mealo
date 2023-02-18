@@ -5,7 +5,7 @@ import 'package:mealo/utils/modal.dart';
 import 'package:mealo/widgets/base/scaffold.dart';
 
 import '../../utils/router.dart';
-import '../../widgets/custom/meal_grid.dart';
+import '../../widgets/shared/meal_grid.dart';
 import 'widgets/add_meal_sheet/add_meal_sheet.dart';
 
 class MealsView extends StatelessWidget {

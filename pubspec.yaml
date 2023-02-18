@@ -41,6 +41,9 @@ dependencies:
   # Some fancy utility functions for collections
   collection: ^1.17.0
 
+  #Enable camera access and handling
+  camera: ^0.10.3
+
   # UI
   # Consistent theming
   flex_color_scheme: ^6.1.2

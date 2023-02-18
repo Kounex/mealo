@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/models.dart';
 import '../../../../utils/modal.dart';
-import '../../../../widgets/base/async_value_builder.dart';
-import '../../../../widgets/base/card.dart';
+import '../../../../widgets/base/functional/async_value_builder.dart';
+import '../../../../widgets/base/ui/card.dart';
 import 'add_edit_base_model_dialog.dart';
 
 class BaseModelManagement<T extends BaseModel> extends ConsumerWidget {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mealo/widgets/base/ui/progress_indicator.dart';
 
 class BaseAsyncValueBuilder<T> extends StatelessWidget {
   final AsyncValue<T> asyncValue;
@@ -77,8 +78,8 @@ class BaseAsyncValueBuilder<T> extends StatelessWidget {
                     ),
                   ),
           loading: this.loading ??
-              () => const Center(
-                    child: CircularProgressIndicator(),
+              () => Center(
+                    child: BaseProgressIndicator(),
                   ),
         );
   }

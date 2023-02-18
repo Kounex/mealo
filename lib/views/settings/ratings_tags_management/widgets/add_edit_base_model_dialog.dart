@@ -4,7 +4,7 @@ import 'package:mealo/models/models.dart';
 import 'package:mealo/utils/modal.dart';
 import 'package:mealo/widgets/dialog/confirmation.dart';
 
-import '../../../../widgets/base/text_form_field.dart';
+import '../../../../widgets/base/functional/text_form_field.dart';
 
 class AddEditBaseModelDialog<T extends BaseModel>
     extends ConsumerStatefulWidget {

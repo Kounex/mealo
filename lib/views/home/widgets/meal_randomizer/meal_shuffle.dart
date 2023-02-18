@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-import '../../../../widgets/custom/meal_card.dart';
+import '../../../../widgets/shared/meal_card.dart';
 
 class MealShuffle extends StatelessWidget {
   final Duration duration;

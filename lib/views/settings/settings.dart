@@ -6,8 +6,8 @@ import 'package:mealo/utils/isar.dart';
 import 'package:mealo/utils/modal.dart';
 import 'package:mealo/utils/router.dart';
 import 'package:mealo/views/settings/widgets/theme_switcher.dart';
-import 'package:mealo/widgets/base/card.dart';
-import 'package:mealo/widgets/base/scaffold.dart';
+import 'package:mealo/widgets/base/ui/card.dart';
+import 'package:mealo/widgets/base/functional/scaffold.dart';
 import 'package:mealo/widgets/dialog/confirmation.dart';
 
 class SettingsView extends ConsumerWidget {

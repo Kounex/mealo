@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mealo/stores/views/home.dart';
 import 'package:mealo/utils/router.dart';
-import 'package:mealo/widgets/custom/meal_grid.dart';
+import 'package:mealo/widgets/shared/meal_grid.dart';
 
-import '../../../widgets/base/card.dart';
+import '../../../widgets/base/ui/card.dart';
 
 class PrevRandomMeals extends StatelessWidget {
   const PrevRandomMeals({super.key});
@@ -13,6 +13,8 @@ class PrevRandomMeals extends StatelessWidget {
     return BaseCard(
       constrained: false,
       title: 'Randomized meals',
+      expandable: true,
+      expanded: false,
       child: MealGrid(
         provider: prevRandomizedMealsProvider,
         itemCrossAxisExtent: 150,

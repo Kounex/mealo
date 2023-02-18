@@ -10,6 +10,8 @@ import 'models/settings/settings.dart';
 import 'utils/isar.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   /// Open our [Isar] instance which will be available in sync. We need
   /// to add and maintain all schemas here
   IsarUtils.instance = await Isar.open([

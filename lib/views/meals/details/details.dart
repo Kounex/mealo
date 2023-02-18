@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mealo/models/meal/meal.dart';
 import 'package:mealo/utils/isar.dart';
-import 'package:mealo/widgets/base/async_value_builder.dart';
-import 'package:mealo/widgets/custom/meal_ratings.dart';
-import 'package:mealo/widgets/base/scaffold.dart';
+import 'package:mealo/widgets/base/functional/async_value_builder.dart';
+import 'package:mealo/widgets/shared/meal_ratings.dart';
+import 'package:mealo/widgets/base/functional/scaffold.dart';
 
 import '../../../models/rating/rating.dart';
 

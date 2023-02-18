@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mealo/stores/views/home.dart';
 import 'package:mealo/utils/router.dart';
-import 'package:mealo/widgets/base/card.dart';
-import 'package:mealo/widgets/custom/meal_grid.dart';
+import 'package:mealo/widgets/base/ui/card.dart';
+import 'package:mealo/widgets/shared/meal_grid.dart';
 
 class PrevAteMeals extends StatelessWidget {
   const PrevAteMeals({super.key});

@@ -2,13 +2,13 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/widgets/base/async_value_builder.dart';
+import 'package:mealo/widgets/base/functional/async_value_builder.dart';
 
 import '../../../../models/meal/meal.dart';
 import '../../../../models/rating/rating.dart';
 import '../../../../models/tag/tag.dart';
 import '../../../../utils/isar.dart';
-import '../../../../widgets/custom/meal_ratings.dart';
+import '../../../../widgets/shared/meal_ratings.dart';
 
 class AddMealSheet extends ConsumerStatefulWidget {
   const AddMealSheet({super.key});
