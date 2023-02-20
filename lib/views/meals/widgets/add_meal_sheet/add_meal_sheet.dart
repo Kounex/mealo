@@ -35,7 +35,7 @@ class _AddMealSheetState extends ConsumerState<AddMealSheet> {
   final List<RatingValueMap> _valueMap = [];
   final List<IngredientMap> _ingredientMap = [];
 
-  AddMealStep _step = AddMealStep.values[0];
+  AddMealStep _step = AddMealStep.values.first;
 
   void _saveMeal() async {
     await IsarUtils.crud(
