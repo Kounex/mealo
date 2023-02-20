@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mealo/models/meal/meal.dart';
 import 'package:mealo/utils/modal.dart';
-import 'package:mealo/widgets/base/scaffold.dart';
 
 import '../../utils/router.dart';
+import '../../widgets/base/functional/scaffold.dart';
 import '../../widgets/shared/meal_grid.dart';
 import 'widgets/add_meal_sheet/add_meal_sheet.dart';
 

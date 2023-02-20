@@ -8,7 +8,7 @@ class BaseFutureBuilder<T> extends StatelessWidget {
 
   final String? loading;
 
-  final Widget Function(T data) data;
+  final Widget Function(T? data) data;
 
   const BaseFutureBuilder({
     super.key,
@@ -22,9 +22,9 @@ class BaseFutureBuilder<T> extends StatelessWidget {
     return FutureBuilder<T>(
       future: this.future,
       builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
+        if (snapshot.connectionState == ConnectionState.done) {
           if (!snapshot.hasError) {
-            return this.data(snapshot.data as T);
+            return this.data(snapshot.data);
           }
           return Center(
             child: BaseResult(

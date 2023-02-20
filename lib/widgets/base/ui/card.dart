@@ -186,9 +186,9 @@ class _BaseCardState extends State<BaseCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            this.widget.above ?? Container(),
+            if (this.widget.above != null) this.widget.above!,
             card,
-            this.widget.below ?? Container(),
+            if (this.widget.below != null) this.widget.below!,
           ],
         ),
       ),

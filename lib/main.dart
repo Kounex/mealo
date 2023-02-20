@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
+import 'package:mealo/models/ingredient/ingredient.dart';
 import 'package:mealo/models/rating/rating.dart';
 import 'package:mealo/models/tag/tag.dart';
+import 'package:mealo/models/unit/unit.dart';
 
 import 'app.dart';
 import 'models/meal/meal.dart';
@@ -19,6 +21,8 @@ void main() async {
     SettingsSchema,
     RatingSchema,
     TagSchema,
+    IngredientSchema,
+    UnitSchema,
   ]);
 
   /// Make sure our singleton [Isar] collections are present, create one
