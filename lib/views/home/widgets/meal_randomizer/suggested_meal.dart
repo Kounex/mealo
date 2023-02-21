@@ -25,7 +25,6 @@ class SuggestedMeal extends ConsumerWidget {
       RouterUtils.goTo(
         context,
         HomeMealDetailRoute(meal.uuid),
-        data: meal,
       );
     }
   }

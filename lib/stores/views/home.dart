@@ -7,6 +7,13 @@ import '../../models/meal/meal.dart';
 part 'home.g.dart';
 
 @riverpod
+FutureOr<Meal> selectedMeal(SelectedMealRef ref, String uuid) async {
+  List<Meal> meals = await ref.watch(mealsProvider.future);
+
+  return meals.firstWhere((meal) => meal.uuid == uuid);
+}
+
+@riverpod
 class RandomizedMeal extends _$RandomizedMeal {
   @override
   FutureOr<Meal?> build() => null;

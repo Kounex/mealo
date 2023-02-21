@@ -65,7 +65,7 @@ class BaseCard extends StatefulWidget {
     this.titlePadding =
         const EdgeInsets.only(left: 24.0, right: 24.0, top: 12.0, bottom: 12.0),
     this.titleCrossAlignment = CrossAxisAlignment.center,
-    this.elevation = 4.0,
+    this.elevation = 1.0,
     this.borderRadius = kBaseCardBorderRadius,
   }) : super(key: key);
 

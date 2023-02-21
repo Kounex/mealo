@@ -29,7 +29,7 @@ class _SystemHash {
   }
 }
 
-String _$RandomizedMealHash() => r'c9c4d486b39a92ab27c73b4bb228a237efaecc5d';
+String _$RandomizedMealHash() => r'0fa53dfed01c5488e579a22b6dfced798e6bf894';
 
 /// See also [RandomizedMeal].
 final randomizedMealProvider =
@@ -47,8 +47,78 @@ abstract class _$RandomizedMeal extends AutoDisposeAsyncNotifier<Meal?> {
   FutureOr<Meal?> build();
 }
 
+String _$selectedMealHash() => r'd3d66e11a80a7e9c23112cbec22bb182a5288315';
+
+/// See also [selectedMeal].
+class SelectedMealProvider extends AutoDisposeFutureProvider<Meal> {
+  SelectedMealProvider(
+    this.uuid,
+  ) : super(
+          (ref) => selectedMeal(
+            ref,
+            uuid,
+          ),
+          from: selectedMealProvider,
+          name: r'selectedMealProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$selectedMealHash,
+        );
+
+  final String uuid;
+
+  @override
+  bool operator ==(Object other) {
+    return other is SelectedMealProvider && other.uuid == uuid;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, uuid.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+typedef SelectedMealRef = AutoDisposeFutureProviderRef<Meal>;
+
+/// See also [selectedMeal].
+final selectedMealProvider = SelectedMealFamily();
+
+class SelectedMealFamily extends Family<AsyncValue<Meal>> {
+  SelectedMealFamily();
+
+  SelectedMealProvider call(
+    String uuid,
+  ) {
+    return SelectedMealProvider(
+      uuid,
+    );
+  }
+
+  @override
+  AutoDisposeFutureProvider<Meal> getProviderOverride(
+    covariant SelectedMealProvider provider,
+  ) {
+    return call(
+      provider.uuid,
+    );
+  }
+
+  @override
+  List<ProviderOrFamily>? get allTransitiveDependencies => null;
+
+  @override
+  List<ProviderOrFamily>? get dependencies => null;
+
+  @override
+  String? get name => r'selectedMealProvider';
+}
+
 String _$prevRandomizedMealsHash() =>
-    r'13d21b4f74b32edf4297b6fd7b720faa5c04f66d';
+    r'9eb8db004b8444e647d5169ba3068d6cfc35a0a2';
 
 /// See also [prevRandomizedMeals].
 final prevRandomizedMealsProvider = AutoDisposeFutureProvider<List<Meal>>(
@@ -59,7 +129,7 @@ final prevRandomizedMealsProvider = AutoDisposeFutureProvider<List<Meal>>(
       : _$prevRandomizedMealsHash,
 );
 typedef PrevRandomizedMealsRef = AutoDisposeFutureProviderRef<List<Meal>>;
-String _$prevAteMealsHash() => r'8e5dc90904eba8c4c86555a34c71373f54afc765';
+String _$prevAteMealsHash() => r'579cbf75dd8ef906bffc4cb6c2dfa49600326a52';
 
 /// See also [prevAteMeals].
 final prevAteMealsProvider = AutoDisposeFutureProvider<List<Meal>>(

@@ -6,7 +6,7 @@ import 'package:mealo/utils/modal.dart';
 import '../../utils/router.dart';
 import '../../widgets/base/functional/scaffold.dart';
 import '../../widgets/shared/meal_grid.dart';
-import 'widgets/add_meal_sheet/add_meal_sheet.dart';
+import 'widgets/add_edit_meal_sheet/add_edit_meal_sheet.dart';
 
 class MealsView extends StatelessWidget {
   final ScrollController controller;
@@ -27,7 +27,7 @@ class MealsView extends StatelessWidget {
           IconButton(
             onPressed: () => ModalUtils.showExpandedModalBottomSheet(
               context,
-              const AddMealSheet(),
+              const AddEditMealSheet(),
             ),
             icon: const Icon(CupertinoIcons.add),
           ),
@@ -41,7 +41,6 @@ class MealsView extends StatelessWidget {
             onTap: (meal) => RouterUtils.goTo(
               context,
               MealDetailRoute(meal.uuid),
-              data: meal,
             ),
           ),
         ),

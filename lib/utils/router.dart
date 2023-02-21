@@ -9,7 +9,6 @@ import 'package:mealo/views/meals/meals.dart';
 import 'package:mealo/views/settings/ratings_tags_management/ratings_tags_management.dart';
 import 'package:mealo/views/settings/settings.dart';
 
-import '../models/meal/meal.dart';
 import '../views/meals/details/details.dart';
 
 typedef BeamerPageBuilder = dynamic Function(
@@ -206,13 +205,9 @@ enum TabMeta {
                 RouterUtils._routeEntry(
                   HomeMealDetailRoute.blueprint,
                   builder: (context, state, data) {
-                    Meal? meal;
-                    try {
-                      meal = data as Meal;
-                    } catch (_) {}
                     return RouterUtils._basePage(
                       HomeMealDetailRoute.blueprint,
-                      MealDetailsView(meal: meal),
+                      MealDetailsView(uuid: state.pathParameters['uuid']!),
                     );
                   },
                 ),
@@ -235,13 +230,9 @@ enum TabMeta {
                 RouterUtils._routeEntry(
                   MealDetailRoute.blueprint,
                   builder: (context, state, data) {
-                    Meal? meal;
-                    try {
-                      meal = data as Meal;
-                    } catch (_) {}
                     return RouterUtils._basePage(
                       MealDetailRoute.blueprint,
-                      MealDetailsView(meal: meal),
+                      MealDetailsView(uuid: state.pathParameters['uuid']!),
                     );
                   },
                 ),

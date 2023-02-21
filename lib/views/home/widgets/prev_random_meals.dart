@@ -24,7 +24,6 @@ class PrevRandomMeals extends StatelessWidget {
         onTap: (meal) => RouterUtils.goTo(
           context,
           HomeMealDetailRoute(meal.uuid),
-          data: meal,
         ),
       ),
     );

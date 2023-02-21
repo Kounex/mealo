@@ -7,15 +7,20 @@ class BaseTextFormField extends StatefulWidget {
   final TextEditingController? controller;
 
   final String? Function(String?)? validator;
+  void Function(String)? onFieldSubmitted;
 
   final String? hintText;
 
-  const BaseTextFormField({
+  final bool loseFocusOnTapOutside;
+
+  BaseTextFormField({
     super.key,
     this.focusNode,
     this.controller,
     this.validator,
+    this.onFieldSubmitted,
     this.hintText,
+    this.loseFocusOnTapOutside = true,
   });
 
   @override
@@ -43,6 +48,7 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      // key: this.widget.key,
       focusNode: _focus,
       controller: _controller,
       decoration: InputDecoration(
@@ -57,8 +63,10 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
               : const SizedBox(),
         ),
       ),
-      onTapOutside: (_) => _focus.unfocus(),
+      onTapOutside:
+          this.widget.loseFocusOnTapOutside ? (_) => _focus.unfocus() : null,
       validator: this.widget.validator,
+      onFieldSubmitted: this.widget.onFieldSubmitted,
     );
   }
 }
