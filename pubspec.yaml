@@ -66,6 +66,9 @@ dependencies:
   # Powered-up animations
   flutter_animate: ^4.0.0
 
+  # Pre-built color picker because it is a pain in the ass to do on my own
+  flutter_colorpicker: ^1.0.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

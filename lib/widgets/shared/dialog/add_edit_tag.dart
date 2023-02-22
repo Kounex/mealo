@@ -1,61 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/models/models.dart';
+import 'package:mealo/models/tag/tag.dart';
 import 'package:mealo/utils/modal.dart';
 import 'package:mealo/widgets/dialog/confirmation.dart';
+import 'package:mealo/widgets/shared/dialog/color_picker_tile.dart';
 
 import '../../../../widgets/base/functional/text_form_field.dart';
+import '../../../utils/isar.dart';
+import '../../../types/extensions/color.dart';
 
-class AddEditBaseModelDialog<T extends BaseModel>
-    extends ConsumerStatefulWidget {
-  final T? editingModel;
+class AddEditTagDialog extends ConsumerStatefulWidget {
+  final Tag? tag;
   final String? name;
 
   final String? Function(String?)? validator;
 
-  final Future<T?>? Function(String name)? onAdd;
-  final Future<int?>? Function(String name)? onEdit;
-  final Future<bool?>? Function(String uuid)? onDelete;
-
-  const AddEditBaseModelDialog({
+  const AddEditTagDialog({
     super.key,
-    this.editingModel,
+    this.tag,
     this.name,
     this.validator,
-    this.onAdd,
-    this.onEdit,
-    this.onDelete,
   });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _AddEditBaseModelDialogState();
+      _AddEditTagDialogState();
 }
 
-class _AddEditBaseModelDialogState<T extends BaseModel>
-    extends ConsumerState<AddEditBaseModelDialog<T>> {
+class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
   final GlobalKey<FormState> _form = GlobalKey();
   late TextEditingController _controller;
+
+  String? _colorHex;
 
   @override
   void initState() {
     super.initState();
 
     _controller = TextEditingController(
-        text: this.widget.editingModel != null
-            ? this.widget.editingModel!.name
+        text: this.widget.tag != null
+            ? this.widget.tag!.name
             : this.widget.name ?? '');
-  }
 
-  String _getGenericBaseModelType() =>
-      this.widget.runtimeType.toString().split('<')[1].split('>')[0];
-
-  String _getTitle() {
-    String title = this.widget.editingModel != null ? 'Edit ' : 'Add ';
-
-    title += _getGenericBaseModelType();
-
-    return title;
+    _colorHex = this.widget.tag?.colorHex;
   }
 
   @override
@@ -65,20 +52,22 @@ class _AddEditBaseModelDialogState<T extends BaseModel>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            _getTitle(),
+            '${this.widget.tag != null ? "Edit" : "Add"} Tag',
             style: Theme.of(context).textTheme.headlineSmall,
           ),
-          if (this.widget.editingModel != null)
+          if (this.widget.tag != null)
             TextButton(
               onPressed: () => ModalUtils.showBaseDialog(
                 context,
                 ConfirmationDialog(
-                  title: 'Delete ${_getGenericBaseModelType()}',
+                  title: 'Delete Tag',
                   text:
-                      'Aure you sure you want to delete ${this.widget.editingModel!.name}? This action can\'t be undone!',
+                      'Aure you sure you want to delete ${this.widget.tag!.name}? This action can\'t be undone!',
                   isYesDestructive: true,
                   onYes: () {
-                    this.widget.onDelete?.call(this.widget.editingModel!.uuid);
+                    IsarUtils.crud(
+                      (isar) => isar.tags.deleteByUuid(this.widget.tag!.uuid),
+                    );
                     Navigator.of(context).pop();
                   },
                 ),
@@ -94,15 +83,20 @@ class _AddEditBaseModelDialogState<T extends BaseModel>
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('Enter the name for the ${_getGenericBaseModelType()} entity:'),
+          const Text('Enter the name for the Tag entity:'),
           const SizedBox(height: 12.0),
           Form(
             key: _form,
             child: BaseTextFormField(
               controller: _controller..addListener(() => setState(() {})),
-              hintText: '${_getGenericBaseModelType()}...',
+              hintText: 'Tag...',
               validator: this.widget.validator,
             ),
+          ),
+          const SizedBox(height: 12.0),
+          ColorPickerTile(
+            colorHex: _colorHex,
+            onColorSet: (color) => setState(() => _colorHex = color.toHex()),
           ),
         ],
       ),
@@ -113,25 +107,23 @@ class _AddEditBaseModelDialogState<T extends BaseModel>
         ),
         TextButton(
           onPressed: _controller.text.trim().isNotEmpty &&
-                  (this.widget.editingModel == null ||
-                      this.widget.editingModel!.name != _controller.text.trim())
+                  (this.widget.tag == null ||
+                      this.widget.tag!.name.toLowerCase() !=
+                          _controller.text.toLowerCase().trim())
               ? () async {
                   if (_form.currentState!.validate()) {
-                    T? model = this.widget.editingModel;
-                    if (this.widget.editingModel != null) {
-                      this.widget.onEdit?.call(_controller.text.trim());
-                    } else {
-                      model = await this
-                          .widget
-                          .onAdd
-                          ?.call(_controller.text.trim());
-                    }
+                    Tag? tag = this.widget.tag ?? Tag();
 
-                    Navigator.of(context).pop(model);
+                    tag = await IsarUtils.crud(
+                      (isar) async => isar.tags.get(await isar.tags
+                          .put(tag!..name = _controller.text.trim())),
+                    );
+
+                    Navigator.of(context).pop(tag);
                   }
                 }
               : null,
-          child: Text(this.widget.editingModel != null ? 'Save' : 'Add'),
+          child: Text(this.widget.tag != null ? 'Save' : 'Add'),
         ),
       ],
     );

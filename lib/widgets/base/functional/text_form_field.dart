@@ -10,6 +10,7 @@ class BaseTextFormField extends StatefulWidget {
   void Function(String)? onFieldSubmitted;
 
   final String? hintText;
+  final bool autocorrect;
 
   final bool loseFocusOnTapOutside;
 
@@ -20,6 +21,7 @@ class BaseTextFormField extends StatefulWidget {
     this.validator,
     this.onFieldSubmitted,
     this.hintText,
+    this.autocorrect = true,
     this.loseFocusOnTapOutside = true,
   });
 
@@ -51,6 +53,7 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
       // key: this.widget.key,
       focusNode: _focus,
       controller: _controller,
+      autocorrect: this.widget.autocorrect,
       decoration: InputDecoration(
         hintText: this.widget.hintText,
         suffixIcon: AnimatedSwitcher(

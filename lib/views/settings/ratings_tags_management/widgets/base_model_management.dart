@@ -12,8 +12,8 @@ class BaseModelManagement<T extends BaseModel> extends ConsumerWidget {
 
   final String? Function(String?)? validator;
 
-  final Future<int>? Function(T entity, String name) onEdit;
-  final Future<bool>? Function(String uuid) onDelete;
+  final Future<int?>? Function(T entity, String name) onEdit;
+  final Future<bool?>? Function(String uuid) onDelete;
 
   final bool editMode;
 

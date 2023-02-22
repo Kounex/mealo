@@ -37,12 +37,14 @@ class _RatingsTagsManagementViewState
                 builder: DefaultTabController.of(context).index == 0
                     ? (_) => AddEditBaseModelDialog<Rating>(
                           onAdd: (name) => IsarUtils.crud(
-                            (isar) => isar.ratings.put(Rating()..name = name),
+                            (isar) async => isar.ratings.get(
+                                await isar.ratings.put(Rating()..name = name)),
                           ),
                         )
                     : (_) => AddEditBaseModelDialog<Tag>(
                           onAdd: (name) => IsarUtils.crud(
-                            (isar) => isar.tags.put(Tag()..name = name),
+                            (isar) async => isar.tags
+                                .get(await isar.tags.put(Tag()..name = name)),
                           ),
                         ),
               ),

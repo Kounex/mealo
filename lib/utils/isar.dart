@@ -36,7 +36,7 @@ class IsarUtils {
     );
   }
 
-  static Future<T>? crud<T>(Future<T> Function(Isar isar) callback) async {
+  static Future<T?>? crud<T>(Future<T?> Function(Isar isar) callback) async {
     return IsarUtils.instance.writeTxn(
       () async => callback(IsarUtils.instance),
     );

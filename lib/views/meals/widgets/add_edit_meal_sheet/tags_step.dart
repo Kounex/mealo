@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mealo/models/tag/tag.dart';
+import 'package:mealo/utils/modal.dart';
 import 'package:mealo/widgets/base/functional/async_value_builder.dart';
-import 'package:mealo/widgets/base/functional/suggestion_text_field.dart';
+import 'package:mealo/widgets/base/functional/suggestion_text_field/suggestion_text_field.dart';
+import 'package:mealo/widgets/shared/dialog/add_edit_tag.dart';
 
 class TagsStep extends ConsumerStatefulWidget {
   final List<Tag> tags;
@@ -35,7 +37,10 @@ class _TagsStepState extends ConsumerState<TagsStep> {
             suggestions: (text) => tags
                 .where(
                   (tag) =>
-                      !this.widget.tags.contains(tag) &&
+                      !this
+                          .widget
+                          .tags
+                          .any((selectedTag) => selectedTag.uuid == tag.uuid) &&
                       (text.trim().isEmpty
                           ? true
                           : tag.name.toLowerCase().contains(
@@ -44,6 +49,17 @@ class _TagsStepState extends ConsumerState<TagsStep> {
                 )
                 .toList(),
             suggestionText: (tag) => tag.name,
+            onCreateNew: (text) async {
+              Tag? tag = await ModalUtils.showBaseDialog(
+                context,
+                AddEditTagDialog(
+                  name: text,
+                ),
+              );
+              if (tag != null) {
+                setState(() => this.widget.tags.add(tag));
+              }
+            },
             onSuggestionTapped: (tag) =>
                 setState(() => this.widget.tags.add(tag)),
           ),
