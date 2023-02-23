@@ -4,7 +4,10 @@ import 'package:mealo/models/tag/tag.dart';
 import 'package:mealo/utils/modal.dart';
 import 'package:mealo/widgets/base/functional/async_value_builder.dart';
 import 'package:mealo/widgets/base/functional/suggestion_text_field/suggestion_text_field.dart';
+import 'package:mealo/widgets/base/ui/chip.dart';
 import 'package:mealo/widgets/shared/dialog/add_edit_tag.dart';
+
+import '../../../../types/extensions/string.dart';
 
 class TagsStep extends ConsumerStatefulWidget {
   final List<Tag> tags;
@@ -63,7 +66,7 @@ class _TagsStepState extends ConsumerState<TagsStep> {
             onSuggestionTapped: (tag) =>
                 setState(() => this.widget.tags.add(tag)),
           ),
-          const SizedBox(height: 12.0),
+          const SizedBox(height: 24.0),
           this.widget.tags.isNotEmpty
               ? Wrap(
                   spacing: 12.0,
@@ -71,7 +74,12 @@ class _TagsStepState extends ConsumerState<TagsStep> {
                       .widget
                       .tags
                       .map(
-                        (tag) => Chip(label: Text(tag.name)),
+                        (tag) => BaseChip(
+                          text: tag.name,
+                          color: tag.colorHex?.toColor(),
+                          onDeleted: () =>
+                              setState(() => this.widget.tags.remove(tag)),
+                        ),
                       )
                       .toList(),
                 )

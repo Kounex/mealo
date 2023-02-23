@@ -45,7 +45,11 @@ class ConfirmationDialog extends StatelessWidget {
           style: this.isYesDestructive
               ? ButtonStyle(
                   foregroundColor: MaterialStatePropertyAll(
-                      Theme.of(context).colorScheme.error),
+                    Theme.of(context).colorScheme.error,
+                  ),
+                  overlayColor: MaterialStatePropertyAll(
+                    Theme.of(context).colorScheme.error.withOpacity(0.1),
+                  ),
                 )
               : null,
           child: Text(this.yesText ?? 'Yes'),

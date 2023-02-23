@@ -47,7 +47,7 @@ abstract class _$RandomizedMeal extends AutoDisposeAsyncNotifier<Meal?> {
   FutureOr<Meal?> build();
 }
 
-String _$selectedMealHash() => r'd3d66e11a80a7e9c23112cbec22bb182a5288315';
+String _$selectedMealHash() => r'7cf17b74d0ce438f84911a6c9972b86eedd35114';
 
 /// See also [selectedMeal].
 class SelectedMealProvider extends AutoDisposeFutureProvider<Meal> {

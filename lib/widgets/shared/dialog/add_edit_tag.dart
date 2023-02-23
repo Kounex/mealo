@@ -6,8 +6,8 @@ import 'package:mealo/widgets/dialog/confirmation.dart';
 import 'package:mealo/widgets/shared/dialog/color_picker_tile.dart';
 
 import '../../../../widgets/base/functional/text_form_field.dart';
-import '../../../utils/isar.dart';
 import '../../../types/extensions/color.dart';
+import '../../../utils/isar.dart';
 
 class AddEditTagDialog extends ConsumerStatefulWidget {
   final Tag? tag;
@@ -96,7 +96,7 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
           const SizedBox(height: 12.0),
           ColorPickerTile(
             colorHex: _colorHex,
-            onColorSet: (color) => setState(() => _colorHex = color.toHex()),
+            onColorSet: (color) => setState(() => _colorHex = color?.toHex()),
           ),
         ],
       ),
@@ -115,8 +115,13 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
                     Tag? tag = this.widget.tag ?? Tag();
 
                     tag = await IsarUtils.crud(
-                      (isar) async => isar.tags.get(await isar.tags
-                          .put(tag!..name = _controller.text.trim())),
+                      (isar) async => isar.tags.get(
+                        await isar.tags.put(
+                          tag!
+                            ..name = _controller.text.trim()
+                            ..colorHex = _colorHex,
+                        ),
+                      ),
                     );
 
                     Navigator.of(context).pop(tag);

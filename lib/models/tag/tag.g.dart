@@ -80,7 +80,12 @@ int _tagEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  bytesCount += 3 + object.colorHex.length * 3;
+  {
+    final value = object.colorHex;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.name.length * 3;
   bytesCount += 3 + object.uuid.length * 3;
   return bytesCount;
@@ -104,7 +109,7 @@ Tag _tagDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Tag();
-  object.colorHex = reader.readString(offsets[0]);
+  object.colorHex = reader.readStringOrNull(offsets[0]);
   object.name = reader.readString(offsets[1]);
   object.uuid = reader.readString(offsets[2]);
   return object;
@@ -118,7 +123,7 @@ P _tagDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
@@ -406,8 +411,24 @@ extension TagQueryWhere on QueryBuilder<Tag, Tag, QWhereClause> {
 }
 
 extension TagQueryFilter on QueryBuilder<Tag, Tag, QFilterCondition> {
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> colorHexIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'colorHex',
+      ));
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> colorHexIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'colorHex',
+      ));
+    });
+  }
+
   QueryBuilder<Tag, Tag, QAfterFilterCondition> colorHexEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -420,7 +441,7 @@ extension TagQueryFilter on QueryBuilder<Tag, Tag, QFilterCondition> {
   }
 
   QueryBuilder<Tag, Tag, QAfterFilterCondition> colorHexGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -435,7 +456,7 @@ extension TagQueryFilter on QueryBuilder<Tag, Tag, QFilterCondition> {
   }
 
   QueryBuilder<Tag, Tag, QAfterFilterCondition> colorHexLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -450,8 +471,8 @@ extension TagQueryFilter on QueryBuilder<Tag, Tag, QFilterCondition> {
   }
 
   QueryBuilder<Tag, Tag, QAfterFilterCondition> colorHexBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -965,7 +986,7 @@ extension TagQueryProperty on QueryBuilder<Tag, Tag, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Tag, String, QQueryOperations> colorHexProperty() {
+  QueryBuilder<Tag, String?, QQueryOperations> colorHexProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'colorHex');
     });

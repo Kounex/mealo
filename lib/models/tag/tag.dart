@@ -2,8 +2,8 @@ import 'package:isar/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 
-import '../persistance.dart';
 import '../models.dart';
+import '../persistance.dart';
 
 part 'tag.g.dart';
 
@@ -25,5 +25,5 @@ class Tag implements BaseModel {
   @Index(unique: true)
   late String name;
 
-  String colorHex = 'cccccc';
+  String? colorHex;
 }
