@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:mealo/widgets/base/functional/text_form_field.dart';
 
@@ -31,6 +29,8 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
   final FocusNode _focus = FocusNode();
   final TextEditingController _controller = TextEditingController();
 
+  final LayerLink _link = LayerLink();
+
   final List<T> _suggestions = [];
 
   late OverlayEntry _entry;
@@ -43,23 +43,17 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
 
     _entry = OverlayEntry(
       builder: (context) {
-        RenderBox box = _key.currentContext!.findRenderObject() as RenderBox;
-        Offset position = box.localToGlobal(Offset.zero);
-        return Positioned(
-          bottom: window.physicalSize.height / window.devicePixelRatio -
-              (position.dy + 12),
-          left: position.dx - 16,
-          width: box.size.width + 32,
-          child: SuggestionOverlay(
-            controller: _controller,
-            focus: _focus,
-            currentSuggestions: _suggestions,
-            suggestions: this.widget.suggestions,
-            suggestionText: this.widget.suggestionText,
-            suggestionBuilder: this.widget.suggestionBuilder,
-            onSuggestionTapped: this.widget.onSuggestionTapped,
-            onCreateNew: this.widget.onCreateNew,
-          ),
+        return SuggestionOverlay(
+          textFieldKey: _key,
+          link: _link,
+          controller: _controller,
+          focus: _focus,
+          currentSuggestions: _suggestions,
+          suggestions: this.widget.suggestions,
+          suggestionText: this.widget.suggestionText,
+          suggestionBuilder: this.widget.suggestionBuilder,
+          onSuggestionTapped: this.widget.onSuggestionTapped,
+          onCreateNew: this.widget.onCreateNew,
         );
       },
     );
@@ -86,19 +80,22 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseTextFormField(
-      key: _key,
-      focusNode: _focus,
-      controller: _controller,
-      autocorrect: false,
-      loseFocusOnTapOutside: false,
-      onFieldSubmitted: (text) {
-        if (_suggestions.length == 1) {
-          this.widget.onSuggestionTapped?.call(_suggestions.first);
-        } else if (_suggestions.isEmpty) {
-          this.widget.onCreateNew?.call(_controller.text);
-        }
-      },
+    return CompositedTransformTarget(
+      link: _link,
+      child: BaseTextFormField(
+        key: _key,
+        focusNode: _focus,
+        controller: _controller,
+        autocorrect: false,
+        loseFocusOnTapOutside: false,
+        onFieldSubmitted: (text) {
+          if (_suggestions.length == 1) {
+            this.widget.onSuggestionTapped?.call(_suggestions.first);
+          } else if (_suggestions.isEmpty) {
+            this.widget.onCreateNew?.call(_controller.text);
+          }
+        },
+      ),
     );
   }
 }

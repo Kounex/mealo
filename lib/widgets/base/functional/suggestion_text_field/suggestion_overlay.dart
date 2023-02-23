@@ -5,6 +5,8 @@ import 'package:mealo/widgets/base/functional/suggestion_text_field/suggestion_l
 import '../../ui/card.dart';
 
 class SuggestionOverlay<T> extends StatefulWidget {
+  final GlobalKey textFieldKey;
+  final LayerLink link;
   final TextEditingController controller;
   final FocusNode focus;
   final List<T> currentSuggestions;
@@ -16,6 +18,8 @@ class SuggestionOverlay<T> extends StatefulWidget {
 
   const SuggestionOverlay({
     super.key,
+    required this.textFieldKey,
+    required this.link,
     required this.currentSuggestions,
     required this.controller,
     required this.focus,
@@ -30,17 +34,42 @@ class SuggestionOverlay<T> extends StatefulWidget {
   State<SuggestionOverlay<T>> createState() => _SuggestionOverlayState();
 }
 
-class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>> {
+class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>>
+    with WidgetsBindingObserver {
   final ScrollController _controller = ScrollController();
+
+  late Size _textFieldSize;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
+    _updateTextFieldRenderBoxValues();
 
     this.widget.currentSuggestions.clear();
     this.widget.currentSuggestions.addAll(this.widget.suggestions(''));
 
     this.widget.controller.addListener(_handleControllerChange);
+  }
+
+  @override
+  void didChangeMetrics() {
+    Future.delayed(
+      const Duration(milliseconds: 200),
+      () => _updateTextFieldRenderBoxValues(),
+    );
+  }
+
+  void _updateTextFieldRenderBoxValues() {
+    setState(() {
+      RenderBox box = this
+          .widget
+          .textFieldKey
+          .currentContext!
+          .findRenderObject() as RenderBox;
+      _textFieldSize = box.size;
+    });
   }
 
   void _handleControllerChange() {
@@ -65,46 +94,59 @@ class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseCard(
-      paddingChild: const EdgeInsets.all(0),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 200),
-        child: MediaQuery.removePadding(
-          context: context,
-          removeTop: true,
-          removeBottom: true,
-          child: Scrollbar(
-            controller: _controller,
-            thumbVisibility: true,
-            child: ListView(
-              controller: _controller,
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              shrinkWrap: true,
-              children: [
-                ...this.widget.currentSuggestions.expandIndexed(
-                      (index, suggestion) => [
-                        SuggestionListTile(
-                          suggestion: suggestion,
-                          controller: this.widget.controller,
-                          focus: this.widget.focus,
-                          currentSuggestions: this.widget.currentSuggestions,
-                          suggestionText: this.widget.suggestionText,
-                          suggestionBuilder: this.widget.suggestionBuilder,
-                          onSuggestionTapped: this.widget.onSuggestionTapped,
+    return Positioned(
+      width: _textFieldSize.width + 32,
+      child: CompositedTransformFollower(
+        link: this.widget.link,
+        followerAnchor: Alignment.bottomLeft,
+        offset: const Offset(-16, 12),
+        child: BaseCard(
+          paddingChild: const EdgeInsets.all(0),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 200),
+            child: MediaQuery.removePadding(
+              context: context,
+              removeTop: true,
+              removeBottom: true,
+              removeRight: true,
+              removeLeft: true,
+              child: Scrollbar(
+                controller: _controller,
+                thumbVisibility: true,
+                child: ListView(
+                  controller: _controller,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shrinkWrap: true,
+                  children: [
+                    ...this.widget.currentSuggestions.expandIndexed(
+                          (index, suggestion) => [
+                            SuggestionListTile(
+                              suggestion: suggestion,
+                              controller: this.widget.controller,
+                              focus: this.widget.focus,
+                              currentSuggestions:
+                                  this.widget.currentSuggestions,
+                              suggestionText: this.widget.suggestionText,
+                              suggestionBuilder: this.widget.suggestionBuilder,
+                              onSuggestionTapped:
+                                  this.widget.onSuggestionTapped,
+                            ),
+                            if (index <
+                                    this.widget.currentSuggestions.length - 1 ||
+                                this.widget.controller.text.isNotEmpty)
+                              const Divider(thickness: 0),
+                          ],
                         ),
-                        if (index < this.widget.currentSuggestions.length - 1 ||
-                            this.widget.controller.text.isNotEmpty)
-                          const Divider(thickness: 0),
-                      ],
-                    ),
-                if (this.widget.controller.text.isNotEmpty)
-                  SuggestionListTile(
-                    controller: this.widget.controller,
-                    focus: this.widget.focus,
-                    currentSuggestions: this.widget.currentSuggestions,
-                    onCreateNew: this.widget.onCreateNew,
-                  ),
-              ],
+                    if (this.widget.controller.text.isNotEmpty)
+                      SuggestionListTile(
+                        controller: this.widget.controller,
+                        focus: this.widget.focus,
+                        currentSuggestions: this.widget.currentSuggestions,
+                        onCreateNew: this.widget.onCreateNew,
+                      ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
