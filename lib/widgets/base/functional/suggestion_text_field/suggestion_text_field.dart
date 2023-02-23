@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:mealo/widgets/base/functional/text_form_field.dart';
 
 import 'suggestion_overlay.dart';
@@ -25,7 +26,6 @@ class BaseSuggestionTextField<T> extends StatefulWidget {
 }
 
 class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
-  late GlobalObjectKey _key;
   final FocusNode _focus = FocusNode();
   final TextEditingController _controller = TextEditingController();
 
@@ -39,24 +39,20 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
   void initState() {
     super.initState();
 
-    _key = GlobalObjectKey(this.widget.suggestions);
-
     _entry = OverlayEntry(
-      builder: (context) {
-        return SuggestionOverlay(
-          textFieldKey: _key,
-          link: _link,
-          controller: _controller,
-          focus: _focus,
-          currentSuggestions: _suggestions,
-          suggestions: this.widget.suggestions,
-          suggestionText: this.widget.suggestionText,
-          suggestionBuilder: this.widget.suggestionBuilder,
-          onSuggestionTapped: this.widget.onSuggestionTapped,
-          onCreateNew: this.widget.onCreateNew,
-        );
-      },
+      builder: (context) => SuggestionOverlay(
+        link: _link,
+        controller: _controller,
+        focus: _focus,
+        currentSuggestions: _suggestions,
+        suggestions: this.widget.suggestions,
+        suggestionText: this.widget.suggestionText,
+        suggestionBuilder: this.widget.suggestionBuilder,
+        onSuggestionTapped: this.widget.onSuggestionTapped,
+        onCreateNew: this.widget.onCreateNew,
+      ),
     );
+
     _focus.addListener(_handleFocusChange);
   }
 
@@ -82,19 +78,30 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
   Widget build(BuildContext context) {
     return CompositedTransformTarget(
       link: _link,
-      child: BaseTextFormField(
-        key: _key,
-        focusNode: _focus,
-        controller: _controller,
-        autocorrect: false,
-        loseFocusOnTapOutside: false,
-        onFieldSubmitted: (text) {
-          if (_suggestions.length == 1) {
-            this.widget.onSuggestionTapped?.call(_suggestions.first);
-          } else if (_suggestions.isEmpty) {
-            this.widget.onCreateNew?.call(_controller.text);
+      child: NotificationListener<SizeChangedLayoutNotification>(
+        onNotification: (notification) {
+          if (_entry.mounted) {
+            SchedulerBinding.instance.addPostFrameCallback((_) {
+              _entry.markNeedsBuild();
+            });
           }
+          return true;
         },
+        child: SizeChangedLayoutNotifier(
+          child: BaseTextFormField(
+            focusNode: _focus,
+            controller: _controller,
+            autocorrect: false,
+            loseFocusOnTapOutside: false,
+            onFieldSubmitted: (text) {
+              if (_suggestions.length == 1) {
+                this.widget.onSuggestionTapped?.call(_suggestions.first);
+              } else if (_suggestions.isEmpty) {
+                this.widget.onCreateNew?.call(_controller.text);
+              }
+            },
+          ),
+        ),
       ),
     );
   }

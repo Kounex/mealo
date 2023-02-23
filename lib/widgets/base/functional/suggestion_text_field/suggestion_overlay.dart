@@ -5,7 +5,6 @@ import 'package:mealo/widgets/base/functional/suggestion_text_field/suggestion_l
 import '../../ui/card.dart';
 
 class SuggestionOverlay<T> extends StatefulWidget {
-  final GlobalKey textFieldKey;
   final LayerLink link;
   final TextEditingController controller;
   final FocusNode focus;
@@ -18,7 +17,6 @@ class SuggestionOverlay<T> extends StatefulWidget {
 
   const SuggestionOverlay({
     super.key,
-    required this.textFieldKey,
     required this.link,
     required this.currentSuggestions,
     required this.controller,
@@ -34,42 +32,17 @@ class SuggestionOverlay<T> extends StatefulWidget {
   State<SuggestionOverlay<T>> createState() => _SuggestionOverlayState();
 }
 
-class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>>
-    with WidgetsBindingObserver {
+class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>> {
   final ScrollController _controller = ScrollController();
-
-  late Size _textFieldSize;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
-
-    _updateTextFieldRenderBoxValues();
 
     this.widget.currentSuggestions.clear();
     this.widget.currentSuggestions.addAll(this.widget.suggestions(''));
 
     this.widget.controller.addListener(_handleControllerChange);
-  }
-
-  @override
-  void didChangeMetrics() {
-    Future.delayed(
-      const Duration(milliseconds: 200),
-      () => _updateTextFieldRenderBoxValues(),
-    );
-  }
-
-  void _updateTextFieldRenderBoxValues() {
-    setState(() {
-      RenderBox box = this
-          .widget
-          .textFieldKey
-          .currentContext!
-          .findRenderObject() as RenderBox;
-      _textFieldSize = box.size;
-    });
   }
 
   void _handleControllerChange() {
@@ -95,7 +68,7 @@ class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>>
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      width: _textFieldSize.width + 32,
+      width: this.widget.link.leaderSize!.width + 32,
       child: CompositedTransformFollower(
         link: this.widget.link,
         followerAnchor: Alignment.bottomLeft,
