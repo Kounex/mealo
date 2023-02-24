@@ -5,9 +5,9 @@ import 'package:mealo/utils/modal.dart';
 import 'package:mealo/widgets/base/functional/async_value_builder.dart';
 import 'package:mealo/widgets/base/functional/suggestion_text_field/suggestion_text_field.dart';
 import 'package:mealo/widgets/base/ui/chip.dart';
-import 'package:mealo/widgets/shared/dialog/add_edit_tag.dart';
 
 import '../../../../types/extensions/string.dart';
+import '../../../../widgets/shared/dialog/add_edit_tag/add_edit_tag.dart';
 
 class TagsStep extends ConsumerStatefulWidget {
   final List<Tag> tags;

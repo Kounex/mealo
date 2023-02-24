@@ -3,7 +3,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:mealo/utils/modal.dart';
 import 'package:mealo/widgets/dialog/confirmation.dart';
 
-import '../../../types/extensions/string.dart';
+import '../../../../types/extensions/string.dart';
 
 class ColorPickerTile extends StatefulWidget {
   final String? colorHex;

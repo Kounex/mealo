@@ -6,11 +6,13 @@ class BaseTextFormField extends StatefulWidget {
   final FocusNode? focusNode;
   final TextEditingController? controller;
 
-  final String? Function(String?)? validator;
-  void Function(String)? onFieldSubmitted;
+  final String? Function(String? text)? validator;
+  void Function(String text)? onFieldSubmitted;
 
   final String? hintText;
   final bool autocorrect;
+  final int? minLines;
+  final int? maxLines;
 
   final bool loseFocusOnTapOutside;
 
@@ -22,6 +24,8 @@ class BaseTextFormField extends StatefulWidget {
     this.onFieldSubmitted,
     this.hintText,
     this.autocorrect = true,
+    this.minLines,
+    this.maxLines,
     this.loseFocusOnTapOutside = true,
   });
 
@@ -69,6 +73,8 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
       onTapOutside:
           this.widget.loseFocusOnTapOutside ? (_) => _focus.unfocus() : null,
       validator: this.widget.validator,
+      minLines: this.widget.minLines,
+      maxLines: this.widget.maxLines,
       onFieldSubmitted: this.widget.onFieldSubmitted,
     );
   }

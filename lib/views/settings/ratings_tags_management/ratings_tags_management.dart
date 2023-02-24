@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/models/rating/rating.dart';
-import 'package:mealo/models/tag/tag.dart';
-import 'package:mealo/utils/isar.dart';
-import 'package:mealo/views/settings/ratings_tags_management/widgets/base_model_management.dart';
+import 'package:mealo/views/settings/ratings_tags_management/widgets/ratings_overview.dart';
+import 'package:mealo/views/settings/ratings_tags_management/widgets/tags_overview.dart';
 import 'package:mealo/widgets/base/functional/scaffold.dart';
-
-import 'widgets/add_edit_base_model_dialog.dart';
+import 'package:mealo/widgets/shared/dialog/add_edit_rating.dart';
+import 'package:mealo/widgets/shared/dialog/add_edit_tag/add_edit_tag.dart';
 
 class RatingsTagsManagementView extends ConsumerStatefulWidget {
   const RatingsTagsManagementView({super.key});
@@ -35,18 +33,8 @@ class _RatingsTagsManagementViewState
                 context: context,
                 barrierDismissible: true,
                 builder: DefaultTabController.of(context).index == 0
-                    ? (_) => AddEditBaseModelDialog<Rating>(
-                          onAdd: (name) => IsarUtils.crud(
-                            (isar) async => isar.ratings.get(
-                                await isar.ratings.put(Rating()..name = name)),
-                          ),
-                        )
-                    : (_) => AddEditBaseModelDialog<Tag>(
-                          onAdd: (name) => IsarUtils.crud(
-                            (isar) async => isar.tags
-                                .get(await isar.tags.put(Tag()..name = name)),
-                          ),
-                        ),
+                    ? (_) => const AddEditRatingDialog()
+                    : (_) => const AddEditTagDialog(),
               ),
               icon: const Icon(CupertinoIcons.add),
             );
@@ -62,24 +50,8 @@ class _RatingsTagsManagementViewState
       tabBarProperties: TabBarProperties(
         titles: ['Ratings', 'Tags'],
         children: [
-          BaseModelManagement(
-            provider: ratingsProvider,
-            editMode: _editMode,
-            onEdit: (rating, name) =>
-                IsarUtils.crud((isar) => isar.ratings.put(rating..name = name)),
-            onDelete: (uuid) => IsarUtils.crud(
-              (isar) => isar.ratings.deleteByUuid(uuid),
-            ),
-          ),
-          BaseModelManagement(
-            provider: tagsProvider,
-            editMode: _editMode,
-            onEdit: (tag, name) =>
-                IsarUtils.crud((isar) => isar.tags.put(tag..name = name)),
-            onDelete: (uuid) => IsarUtils.crud(
-              (isar) => isar.tags.deleteByUuid(uuid),
-            ),
-          ),
+          const RatingsOverview(),
+          const TagsOverview(),
         ],
       ),
     );

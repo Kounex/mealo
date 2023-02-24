@@ -2,24 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mealo/models/tag/tag.dart';
 import 'package:mealo/utils/modal.dart';
+import 'package:mealo/utils/validation.dart';
 import 'package:mealo/widgets/dialog/confirmation.dart';
-import 'package:mealo/widgets/shared/dialog/color_picker_tile.dart';
 
+import '../../../../types/extensions/color.dart';
+import '../../../../utils/isar.dart';
 import '../../../../widgets/base/functional/text_form_field.dart';
-import '../../../types/extensions/color.dart';
-import '../../../utils/isar.dart';
+import 'color_picker_tile.dart';
 
 class AddEditTagDialog extends ConsumerStatefulWidget {
   final Tag? tag;
   final String? name;
 
-  final String? Function(String?)? validator;
-
   const AddEditTagDialog({
     super.key,
     this.tag,
     this.name,
-    this.validator,
   });
 
   @override
@@ -90,7 +88,19 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
             child: BaseTextFormField(
               controller: _controller..addListener(() => setState(() {})),
               hintText: 'Tag...',
-              validator: this.widget.validator,
+              validator: (text) {
+                String? error;
+                error = ValidationUtils.name(text);
+                if (this.widget.tag == null && error == null) {
+                  if (ref.read(tagsProvider).valueOrNull?.any((tag) =>
+                          tag.name.toLowerCase() ==
+                          text!.toLowerCase().trim()) ??
+                      true) {
+                    error = 'Tag already exists!';
+                  }
+                }
+                return error;
+              },
             ),
           ),
           const SizedBox(height: 12.0),
@@ -106,28 +116,23 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
           child: const Text('Cancel'),
         ),
         TextButton(
-          onPressed: _controller.text.trim().isNotEmpty &&
-                  (this.widget.tag == null ||
-                      this.widget.tag!.name.toLowerCase() !=
-                          _controller.text.toLowerCase().trim())
-              ? () async {
-                  if (_form.currentState!.validate()) {
-                    Tag? tag = this.widget.tag ?? Tag();
+          onPressed: () async {
+            if (_form.currentState!.validate()) {
+              Tag? tag = this.widget.tag ?? Tag();
 
-                    tag = await IsarUtils.crud(
-                      (isar) async => isar.tags.get(
-                        await isar.tags.put(
-                          tag!
-                            ..name = _controller.text.trim()
-                            ..colorHex = _colorHex,
-                        ),
-                      ),
-                    );
+              tag = await IsarUtils.crud(
+                (isar) async => isar.tags.get(
+                  await isar.tags.put(
+                    tag!
+                      ..name = _controller.text.trim()
+                      ..colorHex = _colorHex,
+                  ),
+                ),
+              );
 
-                    Navigator.of(context).pop(tag);
-                  }
-                }
-              : null,
+              Navigator.of(context).pop(tag);
+            }
+          },
           child: Text(this.widget.tag != null ? 'Save' : 'Add'),
         ),
       ],
