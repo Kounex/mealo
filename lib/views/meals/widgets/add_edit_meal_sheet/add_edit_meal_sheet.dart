@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mealo/utils/modal.dart';
 import 'package:mealo/utils/styling.dart';
 import 'package:mealo/utils/validation.dart';
-import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/ingredients_step.dart';
+import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/ingredients_step/ingredients_step.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/rating_step.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/stepper_control.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/stepper_overview.dart';
@@ -40,7 +40,7 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
   final _name = TextEditingController();
 
   final List<Tag> _tags = [];
-  final List<RatingValueMap> _valueMap = [];
+  final List<RatingMap> _ratingMap = [];
   final List<IngredientMap> _ingredientMap = [];
 
   AddEditMealStep _step = AddEditMealStep.values.first;
@@ -52,7 +52,7 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
     if (this.widget.meal != null) {
       _name.text = this.widget.meal!.name;
       _tags.addAll(this.widget.meal!.tags);
-      _valueMap.addAll(this.widget.meal!.ratings);
+      _ratingMap.addAll(this.widget.meal!.ratings);
       _ingredientMap.addAll(this.widget.meal!.ingredients);
     }
   }
@@ -66,7 +66,7 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
           meal
             ..name = _name.text.trim()
             ..tags.addAll(_tags)
-            ..ratings = _valueMap
+            ..ratings = _ratingMap
             ..ingredients = _ingredientMap,
         );
       },
@@ -157,7 +157,7 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                         //   ),
                         // ),
                         icon: const Icon(FluentIcons.delete_dismiss_24_regular),
-                        color: Colors.red,
+                        color: Theme.of(context).colorScheme.error,
                       ),
                     ),
                 ],
@@ -209,10 +209,12 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                         );
                       case AddEditMealStep.ratings:
                         return RatingStep(
-                          valueMap: _valueMap,
+                          valueMap: _ratingMap,
                         );
                       case AddEditMealStep.ingredients:
-                        return const IngredientsStep();
+                        return IngredientsStep(
+                          ingredientMap: _ingredientMap,
+                        );
                     }
                   }(),
                 ),

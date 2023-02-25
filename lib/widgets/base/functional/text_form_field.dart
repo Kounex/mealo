@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mealo/utils/styling.dart';
 
 class BaseTextFormField extends StatefulWidget {
@@ -14,6 +15,10 @@ class BaseTextFormField extends StatefulWidget {
   final int? minLines;
   final int? maxLines;
 
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final List<TextInputFormatter>? inputFormatters;
+
   final bool loseFocusOnTapOutside;
 
   BaseTextFormField({
@@ -26,6 +31,9 @@ class BaseTextFormField extends StatefulWidget {
     this.autocorrect = true,
     this.minLines,
     this.maxLines,
+    this.keyboardType,
+    this.textInputAction,
+    this.inputFormatters,
     this.loseFocusOnTapOutside = true,
   });
 
@@ -45,7 +53,7 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
     _controller = this.widget.controller ?? TextEditingController();
 
     _focus.addListener(() {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {});
       }
     });
@@ -54,7 +62,6 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      // key: this.widget.key,
       focusNode: _focus,
       controller: _controller,
       autocorrect: this.widget.autocorrect,
@@ -75,6 +82,9 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
       validator: this.widget.validator,
       minLines: this.widget.minLines,
       maxLines: this.widget.maxLines,
+      keyboardType: this.widget.keyboardType,
+      inputFormatters: this.widget.inputFormatters,
+      textInputAction: this.widget.textInputAction ?? TextInputAction.done,
       onFieldSubmitted: this.widget.onFieldSubmitted,
     );
   }

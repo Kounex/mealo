@@ -32,13 +32,9 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
     super.initState();
 
     _name = TextEditingController(
-        text: this.widget.rating != null
-            ? this.widget.rating!.name
-            : this.widget.name ?? '');
+        text: this.widget.rating?.name ?? this.widget.name ?? '');
 
-    _description = TextEditingController(
-        text:
-            this.widget.rating != null ? this.widget.rating!.description : '');
+    _description = TextEditingController(text: this.widget.rating?.description);
   }
 
   @override

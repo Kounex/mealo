@@ -11,7 +11,6 @@ class PrevRandomMeals extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseCard(
-      constrained: false,
       title: 'Randomized meals',
       expandable: true,
       expanded: false,

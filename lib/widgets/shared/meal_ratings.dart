@@ -7,7 +7,7 @@ import '../../models/rating/rating.dart';
 
 class MealRatings extends StatelessWidget {
   final List<Rating> ratings;
-  final List<RatingValueMap> valueMap;
+  final List<RatingMap> valueMap;
   final void Function(int index, RatingValue ratingValue)? onSelectionChanged;
 
   const MealRatings({

@@ -57,7 +57,7 @@ const MealSchema = CollectionSchema(
       id: 7,
       name: r'ratings',
       type: IsarType.objectList,
-      target: r'RatingValueMap',
+      target: r'RatingMap',
     ),
     r'thumbnailBase64': PropertySchema(
       id: 8,
@@ -99,7 +99,7 @@ const MealSchema = CollectionSchema(
     )
   },
   embeddedSchemas: {
-    r'RatingValueMap': RatingValueMapSchema,
+    r'RatingMap': RatingMapSchema,
     r'IngredientMap': IngredientMapSchema
   },
   getId: _mealGetId,
@@ -144,11 +144,10 @@ int _mealEstimateSize(
   bytesCount += 3 + object.name.length * 3;
   bytesCount += 3 + object.ratings.length * 3;
   {
-    final offsets = allOffsets[RatingValueMap]!;
+    final offsets = allOffsets[RatingMap]!;
     for (var i = 0; i < object.ratings.length; i++) {
       final value = object.ratings[i];
-      bytesCount +=
-          RatingValueMapSchema.estimateSize(value, offsets, allOffsets);
+      bytesCount += RatingMapSchema.estimateSize(value, offsets, allOffsets);
     }
   }
   {
@@ -179,10 +178,10 @@ void _mealSerialize(
   writer.writeDateTime(offsets[4], object.lastTimeAte);
   writer.writeDateTime(offsets[5], object.lastTimeRandomized);
   writer.writeString(offsets[6], object.name);
-  writer.writeObjectList<RatingValueMap>(
+  writer.writeObjectList<RatingMap>(
     offsets[7],
     allOffsets,
-    RatingValueMapSchema.serialize,
+    RatingMapSchema.serialize,
     object.ratings,
   );
   writer.writeString(offsets[8], object.thumbnailBase64);
@@ -209,11 +208,11 @@ Meal _mealDeserialize(
   object.lastTimeAte = reader.readDateTimeOrNull(offsets[4]);
   object.lastTimeRandomized = reader.readDateTimeOrNull(offsets[5]);
   object.name = reader.readString(offsets[6]);
-  object.ratings = reader.readObjectList<RatingValueMap>(
+  object.ratings = reader.readObjectList<RatingMap>(
         offsets[7],
-        RatingValueMapSchema.deserialize,
+        RatingMapSchema.deserialize,
         allOffsets,
-        RatingValueMap(),
+        RatingMap(),
       ) ??
       [];
   object.thumbnailBase64 = reader.readStringOrNull(offsets[8]);
@@ -249,11 +248,11 @@ P _mealDeserializeProp<P>(
     case 6:
       return (reader.readString(offset)) as P;
     case 7:
-      return (reader.readObjectList<RatingValueMap>(
+      return (reader.readObjectList<RatingMap>(
             offset,
-            RatingValueMapSchema.deserialize,
+            RatingMapSchema.deserialize,
             allOffsets,
-            RatingValueMap(),
+            RatingMap(),
           ) ??
           []) as P;
     case 8:
@@ -1652,7 +1651,7 @@ extension MealQueryObject on QueryBuilder<Meal, Meal, QFilterCondition> {
   }
 
   QueryBuilder<Meal, Meal, QAfterFilterCondition> ratingsElement(
-      FilterQuery<RatingValueMap> q) {
+      FilterQuery<RatingMap> q) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'ratings');
     });
@@ -2005,7 +2004,7 @@ extension MealQueryProperty on QueryBuilder<Meal, Meal, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Meal, List<RatingValueMap>, QQueryOperations> ratingsProperty() {
+  QueryBuilder<Meal, List<RatingMap>, QQueryOperations> ratingsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'ratings');
     });
@@ -2031,9 +2030,9 @@ extension MealQueryProperty on QueryBuilder<Meal, Meal, QQueryProperty> {
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters
 
-const RatingValueMapSchema = Schema(
-  name: r'RatingValueMap',
-  id: 4401378451117556931,
+const RatingMapSchema = Schema(
+  name: r'RatingMap',
+  id: -1237193197385617406,
   properties: {
     r'uuid': PropertySchema(
       id: 0,
@@ -2044,17 +2043,17 @@ const RatingValueMapSchema = Schema(
       id: 1,
       name: r'value',
       type: IsarType.string,
-      enumMap: _RatingValueMapvalueEnumValueMap,
+      enumMap: _RatingMapvalueEnumValueMap,
     )
   },
-  estimateSize: _ratingValueMapEstimateSize,
-  serialize: _ratingValueMapSerialize,
-  deserialize: _ratingValueMapDeserialize,
-  deserializeProp: _ratingValueMapDeserializeProp,
+  estimateSize: _ratingMapEstimateSize,
+  serialize: _ratingMapSerialize,
+  deserialize: _ratingMapDeserialize,
+  deserializeProp: _ratingMapDeserializeProp,
 );
 
-int _ratingValueMapEstimateSize(
-  RatingValueMap object,
+int _ratingMapEstimateSize(
+  RatingMap object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -2074,8 +2073,8 @@ int _ratingValueMapEstimateSize(
   return bytesCount;
 }
 
-void _ratingValueMapSerialize(
-  RatingValueMap object,
+void _ratingMapSerialize(
+  RatingMap object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -2084,20 +2083,20 @@ void _ratingValueMapSerialize(
   writer.writeString(offsets[1], object.value?.name);
 }
 
-RatingValueMap _ratingValueMapDeserialize(
+RatingMap _ratingMapDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = RatingValueMap();
+  final object = RatingMap();
   object.uuid = reader.readStringOrNull(offsets[0]);
   object.value =
-      _RatingValueMapvalueValueEnumMap[reader.readStringOrNull(offsets[1])];
+      _RatingMapvalueValueEnumMap[reader.readStringOrNull(offsets[1])];
   return object;
 }
 
-P _ratingValueMapDeserializeProp<P>(
+P _ratingMapDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -2107,21 +2106,21 @@ P _ratingValueMapDeserializeProp<P>(
     case 0:
       return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (_RatingValueMapvalueValueEnumMap[reader.readStringOrNull(offset)])
+      return (_RatingMapvalueValueEnumMap[reader.readStringOrNull(offset)])
           as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
 
-const _RatingValueMapvalueEnumValueMap = {
+const _RatingMapvalueEnumValueMap = {
   r'one': r'one',
   r'two': r'two',
   r'three': r'three',
   r'four': r'four',
   r'five': r'five',
 };
-const _RatingValueMapvalueValueEnumMap = {
+const _RatingMapvalueValueEnumMap = {
   r'one': RatingValue.one,
   r'two': RatingValue.two,
   r'three': RatingValue.three,
@@ -2129,10 +2128,9 @@ const _RatingValueMapvalueValueEnumMap = {
   r'five': RatingValue.five,
 };
 
-extension RatingValueMapQueryFilter
-    on QueryBuilder<RatingValueMap, RatingValueMap, QFilterCondition> {
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      uuidIsNull() {
+extension RatingMapQueryFilter
+    on QueryBuilder<RatingMap, RatingMap, QFilterCondition> {
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> uuidIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'uuid',
@@ -2140,8 +2138,7 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      uuidIsNotNull() {
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> uuidIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'uuid',
@@ -2149,8 +2146,7 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      uuidEqualTo(
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> uuidEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -2163,8 +2159,7 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      uuidGreaterThan(
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> uuidGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -2179,8 +2174,7 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      uuidLessThan(
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> uuidLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -2195,8 +2189,7 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      uuidBetween(
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> uuidBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -2215,8 +2208,7 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      uuidStartsWith(
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> uuidStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -2229,8 +2221,7 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      uuidEndsWith(
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> uuidEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -2243,8 +2234,9 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      uuidContains(String value, {bool caseSensitive = true}) {
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> uuidContains(
+      String value,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'uuid',
@@ -2254,8 +2246,9 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      uuidMatches(String pattern, {bool caseSensitive = true}) {
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> uuidMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'uuid',
@@ -2265,8 +2258,7 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      uuidIsEmpty() {
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> uuidIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'uuid',
@@ -2275,8 +2267,7 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      uuidIsNotEmpty() {
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> uuidIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'uuid',
@@ -2285,8 +2276,7 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      valueIsNull() {
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> valueIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'value',
@@ -2294,8 +2284,7 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      valueIsNotNull() {
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> valueIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'value',
@@ -2303,8 +2292,7 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      valueEqualTo(
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> valueEqualTo(
     RatingValue? value, {
     bool caseSensitive = true,
   }) {
@@ -2317,8 +2305,7 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      valueGreaterThan(
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> valueGreaterThan(
     RatingValue? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -2333,8 +2320,7 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      valueLessThan(
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> valueLessThan(
     RatingValue? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -2349,8 +2335,7 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      valueBetween(
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> valueBetween(
     RatingValue? lower,
     RatingValue? upper, {
     bool includeLower = true,
@@ -2369,8 +2354,7 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      valueStartsWith(
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> valueStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -2383,8 +2367,7 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      valueEndsWith(
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> valueEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -2397,8 +2380,9 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      valueContains(String value, {bool caseSensitive = true}) {
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> valueContains(
+      String value,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'value',
@@ -2408,8 +2392,9 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      valueMatches(String pattern, {bool caseSensitive = true}) {
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> valueMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'value',
@@ -2419,8 +2404,7 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      valueIsEmpty() {
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> valueIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'value',
@@ -2429,8 +2413,7 @@ extension RatingValueMapQueryFilter
     });
   }
 
-  QueryBuilder<RatingValueMap, RatingValueMap, QAfterFilterCondition>
-      valueIsNotEmpty() {
+  QueryBuilder<RatingMap, RatingMap, QAfterFilterCondition> valueIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'value',
@@ -2440,8 +2423,8 @@ extension RatingValueMapQueryFilter
   }
 }
 
-extension RatingValueMapQueryObject
-    on QueryBuilder<RatingValueMap, RatingValueMap, QFilterCondition> {}
+extension RatingMapQueryObject
+    on QueryBuilder<RatingMap, RatingMap, QFilterCondition> {}
 
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters

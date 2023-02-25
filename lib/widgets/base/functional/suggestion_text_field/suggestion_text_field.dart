@@ -11,6 +11,10 @@ class BaseSuggestionTextField<T> extends StatefulWidget {
   final void Function(T item)? onSuggestionTapped;
   final void Function(String text)? onCreateNew;
 
+  final int Function(T a, T b)? sort;
+
+  final String? hintText;
+
   const BaseSuggestionTextField({
     super.key,
     required this.suggestions,
@@ -18,6 +22,8 @@ class BaseSuggestionTextField<T> extends StatefulWidget {
     this.suggestionBuilder,
     this.onSuggestionTapped,
     this.onCreateNew,
+    this.sort,
+    this.hintText,
   }) : assert(suggestionText != null || suggestionBuilder != null);
 
   @override
@@ -50,6 +56,7 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
         suggestionBuilder: this.widget.suggestionBuilder,
         onSuggestionTapped: this.widget.onSuggestionTapped,
         onCreateNew: this.widget.onCreateNew,
+        sort: this.widget.sort,
       ),
     );
 
@@ -93,6 +100,8 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
             controller: _controller,
             autocorrect: false,
             loseFocusOnTapOutside: false,
+            maxLines: 1,
+            hintText: this.widget.hintText,
             onFieldSubmitted: (text) {
               if (_suggestions.length == 1) {
                 this.widget.onSuggestionTapped?.call(_suggestions.first);

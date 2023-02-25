@@ -140,9 +140,10 @@ class _BaseCardState extends State<BaseCard> {
                               duration: StylingUtils.kBaseAnimationDuration,
                               turns: _expandedTurn / 2,
                               curve: Curves.easeInCubic,
-                              child: GestureDetector(
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(32),
                                 onTap: () => setState(() => _expandedTurn++),
-                                behavior: HitTestBehavior.opaque,
+                                // behavior: HitTestBehavior.opaque,
                                 child: const SizedBox(
                                   height: 32.0,
                                   width: 32.0,

@@ -45,7 +45,9 @@ class SuggestionListTile<T> extends StatelessWidget {
                             this.suggestionText!(this.suggestion as T),
                           )
                         : Text(
-                            'Create and add new',
+                            this.onCreateNew != null
+                                ? 'Create and add new'
+                                : 'None matching',
                             style: TextStyle(
                               color: Theme.of(context)
                                   .textTheme
@@ -61,7 +63,9 @@ class SuggestionListTile<T> extends StatelessWidget {
                   ),
           ),
           if (this.suggestion != null && this.currentSuggestions.length == 1 ||
-              this.suggestion == null && this.currentSuggestions.isEmpty)
+              this.onCreateNew != null &&
+                  this.suggestion == null &&
+                  this.currentSuggestions.isEmpty)
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 12),
               child: PressDoneTag(),

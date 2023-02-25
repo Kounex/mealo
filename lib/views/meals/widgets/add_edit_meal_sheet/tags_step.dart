@@ -51,7 +51,10 @@ class _TagsStepState extends ConsumerState<TagsStep> {
                               )),
                 )
                 .toList(),
+            hintText: 'Search for tags...',
             suggestionText: (tag) => tag.name,
+            sort: (tag1, tag2) =>
+                tag1.name.toLowerCase().compareTo(tag2.name.toLowerCase()),
             onCreateNew: (text) async {
               Tag? tag = await ModalUtils.showBaseDialog(
                 context,

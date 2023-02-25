@@ -8,13 +8,11 @@ import '../../../../models/rating/rating.dart';
 import '../../../../widgets/shared/meal_ratings.dart';
 
 class RatingStep extends ConsumerStatefulWidget {
-  final List<RatingValueMap> valueMap;
-  final void Function(int, RatingValue)? onSelectionChanged;
+  final List<RatingMap> valueMap;
 
   const RatingStep({
     super.key,
     required this.valueMap,
-    this.onSelectionChanged,
   });
 
   @override
@@ -22,11 +20,11 @@ class RatingStep extends ConsumerStatefulWidget {
 }
 
 class _RatingStepState extends ConsumerState<RatingStep> {
-  void _updateValueMap(List<Rating> ratings) {
+  void _updateRatingMap(List<Rating> ratings) {
     for (var rating in ratings) {
       if (!this.widget.valueMap.any((value) => value.uuid == rating.uuid)) {
         this.widget.valueMap.add(
-              RatingValueMap()
+              RatingMap()
                 ..uuid = rating.uuid
                 ..value = RatingValue.three,
             );
@@ -41,7 +39,7 @@ class _RatingStepState extends ConsumerState<RatingStep> {
     return BaseAsyncValueBuilder(
       asyncValue: asyncRatings,
       data: (ratings) {
-        _updateValueMap(ratings);
+        _updateRatingMap(ratings);
 
         return MealRatings(
           ratings: ratings,

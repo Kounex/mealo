@@ -41,8 +41,11 @@ dependencies:
   # Some fancy utility functions for collections
   collection: ^1.17.0
 
-  #Enable camera access and handling
+  # Enable camera access and handling
   camera: ^0.10.3
+
+  # Enable selecting files
+  file_picker: ^5.2.5
 
   # UI
   # Consistent theming

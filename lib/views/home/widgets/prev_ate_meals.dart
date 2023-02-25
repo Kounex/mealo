@@ -10,7 +10,6 @@ class PrevAteMeals extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseCard(
-      constrained: false,
       title: 'Previous meals',
       child: MealGrid(
         provider: prevAteMealsProvider,

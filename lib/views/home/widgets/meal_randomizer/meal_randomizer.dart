@@ -28,7 +28,6 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
     AsyncValue<Meal?> asyncRandomizedMeal = ref.watch(randomizedMealProvider);
 
     return BaseCard(
-      constrained: false,
       child: Column(
         children: [
           BaseAsyncValueBuilder(

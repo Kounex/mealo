@@ -40,13 +40,13 @@ class Meal implements BaseModel {
   String? thumbnailBase64;
   List<String>? imagesBase64;
 
-  late List<RatingValueMap> ratings;
+  late List<RatingMap> ratings;
   IsarLinks<Tag> tags = IsarLinks();
   List<IngredientMap> ingredients = [];
 }
 
 @embedded
-class RatingValueMap {
+class RatingMap {
   String? uuid;
 
   @Enumerated(EnumType.name)
