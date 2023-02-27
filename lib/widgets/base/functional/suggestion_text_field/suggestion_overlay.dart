@@ -1,10 +1,15 @@
+import 'dart:math';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:mealo/widgets/base/functional/suggestion_text_field/suggestion_list_tile.dart';
 
 import '../../ui/card.dart';
+import 'suggestion_text_field.dart';
 
 class SuggestionOverlay<T> extends StatefulWidget {
+  final GlobalKey textFieldKey;
   final LayerLink link;
   final TextEditingController controller;
   final FocusNode focus;
@@ -15,9 +20,12 @@ class SuggestionOverlay<T> extends StatefulWidget {
   final void Function(T item)? onSuggestionTapped;
   final void Function(String text)? onCreateNew;
   final int Function(T a, T b)? sort;
+  final ExpandType expandType;
+  final double? minWidth;
 
   const SuggestionOverlay({
     super.key,
+    required this.textFieldKey,
     required this.link,
     required this.currentSuggestions,
     required this.controller,
@@ -28,6 +36,8 @@ class SuggestionOverlay<T> extends StatefulWidget {
     this.onSuggestionTapped,
     this.onCreateNew,
     this.sort,
+    required this.expandType,
+    this.minWidth,
   });
 
   @override
@@ -69,12 +79,56 @@ class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>> {
 
   @override
   Widget build(BuildContext context) {
+    double baseWidth = this.widget.link.leaderSize!.width + 32;
+    Offset baseOffset = const Offset(-16, 12);
+
+    double width = baseWidth;
+    Offset offset = baseOffset.copyWith();
+
+    if (this.widget.minWidth != null) {
+      final box = this.widget.textFieldKey.currentContext!.findRenderObject()
+          as RenderBox;
+      final pos = box.localToGlobal(Offset.zero);
+
+      double screenWidth = MediaQuery.of(context).size.width;
+      width = min(screenWidth, max(width, this.widget.minWidth!));
+
+      switch (this.widget.expandType) {
+        case ExpandType.left:
+          width = width > (screenWidth - (pos.dx + baseOffset.dx))
+              ? (screenWidth - (pos.dx + baseOffset.dx))
+              : width;
+          break;
+        case ExpandType.right:
+          width = width > ((pos.dx + baseOffset.dx) + baseWidth)
+              ? ((pos.dx + baseOffset.dx) + baseWidth)
+              : width;
+          offset = offset.copyWith(dx: offset.dx + baseWidth);
+          break;
+        case ExpandType.center:
+          width = width > (pos.dx + baseOffset.dx + baseWidth / 2)
+              ? (pos.dx + baseOffset.dx + baseWidth / 2)
+              : width;
+          offset = offset.copyWith(dx: offset.dx + baseWidth / 2);
+          break;
+      }
+    }
+
     return Positioned(
-      width: this.widget.link.leaderSize!.width + 32,
+      width: width,
       child: CompositedTransformFollower(
         link: this.widget.link,
-        followerAnchor: Alignment.bottomLeft,
-        offset: const Offset(-16, 12),
+        followerAnchor: () {
+          switch (this.widget.expandType) {
+            case ExpandType.left:
+              return Alignment.bottomLeft;
+            case ExpandType.center:
+              return Alignment.bottomCenter;
+            case ExpandType.right:
+              return Alignment.bottomRight;
+          }
+        }(),
+        offset: offset,
         child: TextFieldTapRegion(
           child: BaseCard(
             paddingChild: const EdgeInsets.all(0),
@@ -120,9 +174,12 @@ class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>> {
                                 const Divider(thickness: 0),
                             ],
                           ),
-                      if (this.widget.controller.text.isNotEmpty &&
-                          (this.widget.onCreateNew != null ||
+                      if (this.widget.onCreateNew != null &&
+                          (this.widget.controller.text.isNotEmpty ||
                               this.widget.currentSuggestions.isEmpty))
+                        // if (this.widget.controller.text.isNotEmpty &&
+                        //     (this.widget.onCreateNew != null ||
+                        //         this.widget.currentSuggestions.isEmpty))
                         SuggestionListTile(
                           controller: this.widget.controller,
                           focus: this.widget.focus,

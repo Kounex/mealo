@@ -75,123 +75,159 @@ class _IngredientRowState extends State<IngredientRow> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        SizedBox(
-          width: 144.0,
-          child: BaseTextFormField(
-            controller: _amount
-              ..addListener(() => this.widget.ingredient.amount =
-                  double.tryParse(_amount.text)),
-            hintText: 'Amount',
-            maxLines: 1,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-              TextInputFormatter.withFunction((oldValue, newValue) {
-                try {
-                  final text = newValue.text;
-                  if (text.isNotEmpty) double.parse(text);
-                  return newValue;
-                } catch (e) {}
-                return oldValue;
-              }),
-            ],
-            validator: ValidationUtils.number,
-          ),
-        ),
-        const SizedBox(width: 12.0),
-        SizedBox(
-          width: 102.0,
-          child: _unit == null
-              ? BaseSuggestionTextField<Unit>(
-                  suggestions: (text) => this
-                      .widget
-                      .units
-                      .where(
-                        (unit) => unit.name
-                            .toLowerCase()
-                            .contains(text.toLowerCase().trim()),
-                      )
-                      .toList(),
-                  hintText: 'Unit',
-                  sort: (unit1, unit2) => unit1.name
+    double availableWidth = MediaQuery.of(context).size.width;
+
+    Widget amountTextField = BaseTextFormField(
+      controller: _amount
+        ..addListener(() =>
+            this.widget.ingredient.amount = double.tryParse(_amount.text)),
+      hintText: 'Amount',
+      maxLines: 1,
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+        TextInputFormatter.withFunction((oldValue, newValue) {
+          try {
+            final text = newValue.text;
+            if (text.isNotEmpty) double.parse(text);
+            return newValue;
+          } catch (e) {}
+          return oldValue;
+        }),
+      ],
+      validator: ValidationUtils.number,
+    );
+
+    Widget unitSuggestField = _unit == null
+        ? BaseSuggestionTextField<Unit>(
+            suggestions: (text) => this
+                .widget
+                .units
+                .where(
+                  (unit) => unit.name
                       .toLowerCase()
-                      .compareTo(unit2.name.toLowerCase()),
-                  suggestionText: (unit) => unit.name,
-                  onSuggestionTapped: (unit) => setState(() {
-                    _unit = unit;
-                    this.widget.ingredient.uuidUnit = unit.uuid;
-                  }),
-                  onCreateNew: (text) async {
-                    Unit? unit = await ModalUtils.showBaseDialog(
-                      context,
-                      AddEditBaseModelDialog<Unit>(
-                        name: text,
-                        onAdd: (name) => IsarUtils.crud(
-                          (isar) async => isar.units
-                              .get(await isar.units.put(Unit()..name = name)),
-                        ),
-                      ),
-                    );
-                    _setUnit(unit);
-                  },
+                      .contains(text.toLowerCase().trim()),
                 )
-              : BaseChip(
-                  text: _unit!.name,
-                  onDeleted: () => setState(() {
-                    _unit = null;
-                    this.widget.ingredient.uuidUnit = null;
-                  }),
-                ),
-        ),
-        const SizedBox(width: 12.0),
-        Expanded(
-          child: _ingredient == null
-              ? BaseSuggestionTextField<Ingredient>(
-                  suggestions: (text) => this
-                      .widget
-                      .ingredients
-                      .where(
-                        (ingredient) => ingredient.name
-                            .toLowerCase()
-                            .contains(text.toLowerCase().trim()),
-                      )
-                      .toList(),
-                  hintText: 'Search for ingredients...',
-                  sort: (ingredient1, ingredient2) => ingredient1.name
-                      .toLowerCase()
-                      .compareTo(ingredient2.name.toLowerCase()),
-                  suggestionText: (ingredient) => ingredient.name,
-                  onSuggestionTapped: (ingredient) => setState(() {
-                    _ingredient = ingredient;
-                    this.widget.ingredient.uuidIngredient = ingredient.uuid;
-                  }),
-                  onCreateNew: (text) async {
-                    Ingredient? ingredient = await ModalUtils.showBaseDialog(
-                      context,
-                      AddEditBaseModelDialog<Ingredient>(
-                        name: text,
-                        onAdd: (name) => IsarUtils.crud(
-                          (isar) async => isar.ingredients.get(await isar
-                              .ingredients
-                              .put(Ingredient()..name = name)),
-                        ),
-                      ),
-                    );
-                    _setIngredient(ingredient);
-                  },
-                )
-              : Align(
-                  alignment: Alignment.centerLeft,
-                  child: BaseChip(
-                    text: _ingredient!.name,
-                    onDeleted: () => setState(() {
-                      _ingredient = null;
-                      this.widget.ingredient.uuidIngredient = null;
-                    }),
+                .toList(),
+            hintText: 'Unit',
+            sort: (unit1, unit2) =>
+                unit1.name.toLowerCase().compareTo(unit2.name.toLowerCase()),
+            suggestionText: (unit) => unit.name,
+            onSuggestionTapped: (unit) => setState(() {
+              _unit = unit;
+              this.widget.ingredient.uuidUnit = unit.uuid;
+            }),
+            expandType: ExpandType.right,
+            minWidth: 350,
+            onCreateNew: (text) async {
+              Unit? unit = await ModalUtils.showBaseDialog(
+                context,
+                AddEditBaseModelDialog<Unit>(
+                  name: text,
+                  onAdd: (name) => IsarUtils.crud(
+                    (isar) async => isar.units
+                        .get(await isar.units.put(Unit()..name = name)),
                   ),
                 ),
+              );
+              _setUnit(unit);
+            },
+          )
+        : BaseChip(
+            text: _unit!.name,
+            onDeleted: () => setState(() {
+              _unit = null;
+              this.widget.ingredient.uuidUnit = null;
+            }),
+          );
+
+    Widget ingredientSuggestField = _ingredient == null
+        ? BaseSuggestionTextField<Ingredient>(
+            suggestions: (text) => this
+                .widget
+                .ingredients
+                .where(
+                  (ingredient) => ingredient.name
+                      .toLowerCase()
+                      .contains(text.toLowerCase().trim()),
+                )
+                .toList(),
+            hintText: 'Search for ingredients...',
+            sort: (ingredient1, ingredient2) => ingredient1.name
+                .toLowerCase()
+                .compareTo(ingredient2.name.toLowerCase()),
+            suggestionText: (ingredient) => ingredient.name,
+            onSuggestionTapped: (ingredient) => setState(() {
+              _ingredient = ingredient;
+              this.widget.ingredient.uuidIngredient = ingredient.uuid;
+            }),
+            onCreateNew: (text) async {
+              Ingredient? ingredient = await ModalUtils.showBaseDialog(
+                context,
+                AddEditBaseModelDialog<Ingredient>(
+                  name: text,
+                  onAdd: (name) => IsarUtils.crud(
+                    (isar) async => isar.ingredients.get(
+                        await isar.ingredients.put(Ingredient()..name = name)),
+                  ),
+                ),
+              );
+              _setIngredient(ingredient);
+            },
+          )
+        : Align(
+            alignment: Alignment.centerLeft,
+            child: BaseChip(
+              text: _ingredient!.name,
+              onDeleted: () => setState(() {
+                _ingredient = null;
+                this.widget.ingredient.uuidIngredient = null;
+              }),
+            ),
+          );
+
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  if (availableWidth >= 700) ...[
+                    SizedBox(
+                      width: 144.0,
+                      child: amountTextField,
+                    ),
+                    const SizedBox(width: 12.0),
+                    SizedBox(
+                      width: 108.0,
+                      child: unitSuggestField,
+                    ),
+                  ],
+                  if (availableWidth < 700) ...[
+                    Expanded(
+                      child: amountTextField,
+                    ),
+                    const SizedBox(width: 12.0),
+                    Expanded(
+                      child: unitSuggestField,
+                    ),
+                  ],
+                  if (availableWidth >= 700) ...[
+                    const SizedBox(width: 12.0),
+                    Expanded(
+                      child: ingredientSuggestField,
+                    ),
+                  ],
+                ],
+              ),
+              if (availableWidth < 700) ...[
+                const SizedBox(height: 12.0),
+                ingredientSuggestField
+              ],
+            ],
+          ),
         ),
         IconButton(
           onPressed: this.widget.onDelete,

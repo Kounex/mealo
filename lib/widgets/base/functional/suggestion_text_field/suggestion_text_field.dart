@@ -4,6 +4,12 @@ import 'package:mealo/widgets/base/functional/text_form_field.dart';
 
 import 'suggestion_overlay.dart';
 
+enum ExpandType {
+  left,
+  right,
+  center,
+}
+
 class BaseSuggestionTextField<T> extends StatefulWidget {
   final List<T> Function(String text) suggestions;
   final String Function(T item)? suggestionText;
@@ -15,6 +21,9 @@ class BaseSuggestionTextField<T> extends StatefulWidget {
 
   final String? hintText;
 
+  final ExpandType expandType;
+  final double? minWidth;
+
   const BaseSuggestionTextField({
     super.key,
     required this.suggestions,
@@ -24,6 +33,8 @@ class BaseSuggestionTextField<T> extends StatefulWidget {
     this.onCreateNew,
     this.sort,
     this.hintText,
+    this.expandType = ExpandType.left,
+    this.minWidth,
   }) : assert(suggestionText != null || suggestionBuilder != null);
 
   @override
@@ -35,6 +46,7 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
   final FocusNode _focus = FocusNode();
   final TextEditingController _controller = TextEditingController();
 
+  final GlobalKey _key = GlobalKey();
   final LayerLink _link = LayerLink();
 
   final List<T> _suggestions = [];
@@ -47,6 +59,7 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
 
     _entry = OverlayEntry(
       builder: (context) => SuggestionOverlay(
+        textFieldKey: _key,
         link: _link,
         controller: _controller,
         focus: _focus,
@@ -57,6 +70,8 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
         onSuggestionTapped: this.widget.onSuggestionTapped,
         onCreateNew: this.widget.onCreateNew,
         sort: this.widget.sort,
+        expandType: this.widget.expandType,
+        minWidth: this.widget.minWidth,
       ),
     );
 
@@ -96,10 +111,11 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
         },
         child: SizeChangedLayoutNotifier(
           child: BaseTextFormField(
+            key: _key,
             focusNode: _focus,
             controller: _controller,
             autocorrect: false,
-            loseFocusOnTapOutside: false,
+            loseFocusOnTapOutside: true,
             maxLines: 1,
             hintText: this.widget.hintText,
             onFieldSubmitted: (text) {
