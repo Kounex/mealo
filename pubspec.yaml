@@ -27,8 +27,8 @@ dependencies:
   crimson: ^0.2.1
 
   # State management
-  flutter_riverpod: ^2.1.3
-  riverpod_annotation: ^1.1.1
+  flutter_riverpod: ^2.3.2
+  riverpod_annotation: ^2.0.2
 
   # Local storage
   isar: *isar_version
@@ -49,7 +49,7 @@ dependencies:
 
   # UI
   # Consistent theming
-  flex_color_scheme: ^6.1.2
+  flex_color_scheme: ^7.0.0-dev.3
 
   # Power up slivers
   sliver_tools: ^0.2.8
@@ -76,16 +76,16 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.0
+  flutter_lints: ^2.0.1
 
   # analyzer: ^5.5.0
   # analyzer_plugin: ^0.11.2
-  custom_lint: ^0.2.5
-  riverpod_lint: ^1.0.1
+  custom_lint: ^0.3.2
+  riverpod_lint: ^1.1.6
 
   # Generator stuff
   isar_generator: *isar_version
-  riverpod_generator: ^1.1.1
+  riverpod_generator: ^2.1.4
   build_runner: ^2.3.3
 
 # For information on the generic Dart part of this file, see the
