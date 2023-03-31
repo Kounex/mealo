@@ -46,7 +46,7 @@ class MealCard extends StatelessWidget {
                     this.height != null ? min(this.height! / 3, 48.0) : 48.0,
                 padding: const EdgeInsets.all(4.0),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondaryContainer,
+                  color: Theme.of(context).colorScheme.primaryContainer,
                   // border: Border(
                   //   top: BorderSide(color: Theme.of(context).dividerColor),
                   // ),
