@@ -47,6 +47,9 @@ dependencies:
   # Enable selecting files
   file_picker: ^5.2.5
 
+  # HTTP client
+  dio: ^5.1.1
+
   # UI
   # Consistent theming
   flex_color_scheme: ^7.0.0-dev.3

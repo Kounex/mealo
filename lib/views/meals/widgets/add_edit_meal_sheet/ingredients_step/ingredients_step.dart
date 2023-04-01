@@ -5,6 +5,8 @@ import 'package:mealo/models/meal/meal.dart';
 import 'package:mealo/models/unit/unit.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/ingredients_step/ingredient_row.dart';
 import 'package:mealo/widgets/base/functional/async_value_builder.dart';
+import 'package:mealo/widgets/base/ui/divider.dart';
+import 'package:mealo/widgets/base/ui/placeholder_text.dart';
 
 class IngredientsStep extends ConsumerStatefulWidget {
   final List<IngredientMap> ingredientMap;
@@ -36,25 +38,32 @@ class _IngredientsStepState extends ConsumerState<IngredientsStep> {
           key: _form,
           child: Column(
             children: [
-              ...this.widget.ingredientMap.map(
-                    (ingredient) => Padding(
-                      padding: const EdgeInsets.only(bottom: 12.0),
-                      child: IngredientRow(
-                        ingredient: ingredient,
-                        ingredientMap: this.widget.ingredientMap,
-                        ingredients: ingredients,
-                        units: units,
-                        onDelete: () => setState(
-                          () => this.widget.ingredientMap.remove(ingredient),
+              if (this.widget.ingredientMap.isNotEmpty)
+                ...this.widget.ingredientMap.map(
+                      (ingredient) => Padding(
+                        padding: const EdgeInsets.only(bottom: 12.0),
+                        child: IngredientRow(
+                          ingredient: ingredient,
+                          ingredientMap: this.widget.ingredientMap,
+                          ingredients: ingredients,
+                          units: units,
+                          onDelete: () => setState(
+                            () => this.widget.ingredientMap.remove(ingredient),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-              const Divider(thickness: 0),
+              if (this.widget.ingredientMap.isEmpty) ...[
+                const SizedBox(height: 8.0),
+                const BasePlaceholderText(text: 'No ingredients added yet'),
+                const SizedBox(height: 24.0),
+              ],
+              const BaseDivider(),
               const SizedBox(height: 12.0),
               ElevatedButton(
                 onPressed: () => setState(
-                    () => this.widget.ingredientMap.add(IngredientMap())),
+                  () => this.widget.ingredientMap.add(IngredientMap()),
+                ),
                 child: const Text('Add ingredient'),
               ),
             ],

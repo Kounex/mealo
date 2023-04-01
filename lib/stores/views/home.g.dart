@@ -6,7 +6,7 @@ part of 'home.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// ignore_for_file: avoid_private_typedef_functions, non_constant_identifier_names, subtype_of_sealed_class, invalid_use_of_internal_member, unused_element, constant_identifier_names, unnecessary_raw_strings, library_private_types_in_public_api
+String _$selectedMealHash() => r'7cf17b74d0ce438f84911a6c9972b86eedd35114';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,31 +29,56 @@ class _SystemHash {
   }
 }
 
-String _$RandomizedMealHash() => r'0fa53dfed01c5488e579a22b6dfced798e6bf894';
+typedef SelectedMealRef = AutoDisposeFutureProviderRef<Meal>;
 
-/// See also [RandomizedMeal].
-final randomizedMealProvider =
-    AutoDisposeAsyncNotifierProvider<RandomizedMeal, Meal?>(
-  RandomizedMeal.new,
-  name: r'randomizedMealProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$RandomizedMealHash,
-);
-typedef RandomizedMealRef = AutoDisposeAsyncNotifierProviderRef<Meal?>;
+/// See also [selectedMeal].
+@ProviderFor(selectedMeal)
+const selectedMealProvider = SelectedMealFamily();
 
-abstract class _$RandomizedMeal extends AutoDisposeAsyncNotifier<Meal?> {
+/// See also [selectedMeal].
+class SelectedMealFamily extends Family<AsyncValue<Meal>> {
+  /// See also [selectedMeal].
+  const SelectedMealFamily();
+
+  /// See also [selectedMeal].
+  SelectedMealProvider call(
+    String uuid,
+  ) {
+    return SelectedMealProvider(
+      uuid,
+    );
+  }
+
   @override
-  FutureOr<Meal?> build();
-}
+  SelectedMealProvider getProviderOverride(
+    covariant SelectedMealProvider provider,
+  ) {
+    return call(
+      provider.uuid,
+    );
+  }
 
-String _$selectedMealHash() => r'7cf17b74d0ce438f84911a6c9972b86eedd35114';
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'selectedMealProvider';
+}
 
 /// See also [selectedMeal].
 class SelectedMealProvider extends AutoDisposeFutureProvider<Meal> {
+  /// See also [selectedMeal].
   SelectedMealProvider(
     this.uuid,
-  ) : super(
+  ) : super.internal(
           (ref) => selectedMeal(
             ref,
             uuid,
@@ -64,6 +89,9 @@ class SelectedMealProvider extends AutoDisposeFutureProvider<Meal> {
               const bool.fromEnvironment('dart.vm.product')
                   ? null
                   : _$selectedMealHash,
+          dependencies: SelectedMealFamily._dependencies,
+          allTransitiveDependencies:
+              SelectedMealFamily._allTransitiveDependencies,
         );
 
   final String uuid;
@@ -82,60 +110,51 @@ class SelectedMealProvider extends AutoDisposeFutureProvider<Meal> {
   }
 }
 
-typedef SelectedMealRef = AutoDisposeFutureProviderRef<Meal>;
-
-/// See also [selectedMeal].
-final selectedMealProvider = SelectedMealFamily();
-
-class SelectedMealFamily extends Family<AsyncValue<Meal>> {
-  SelectedMealFamily();
-
-  SelectedMealProvider call(
-    String uuid,
-  ) {
-    return SelectedMealProvider(
-      uuid,
-    );
-  }
-
-  @override
-  AutoDisposeFutureProvider<Meal> getProviderOverride(
-    covariant SelectedMealProvider provider,
-  ) {
-    return call(
-      provider.uuid,
-    );
-  }
-
-  @override
-  List<ProviderOrFamily>? get allTransitiveDependencies => null;
-
-  @override
-  List<ProviderOrFamily>? get dependencies => null;
-
-  @override
-  String? get name => r'selectedMealProvider';
-}
-
 String _$prevRandomizedMealsHash() =>
     r'9eb8db004b8444e647d5169ba3068d6cfc35a0a2';
 
 /// See also [prevRandomizedMeals].
-final prevRandomizedMealsProvider = AutoDisposeFutureProvider<List<Meal>>(
+@ProviderFor(prevRandomizedMeals)
+final prevRandomizedMealsProvider =
+    AutoDisposeFutureProvider<List<Meal>>.internal(
   prevRandomizedMeals,
   name: r'prevRandomizedMealsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$prevRandomizedMealsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
 );
+
 typedef PrevRandomizedMealsRef = AutoDisposeFutureProviderRef<List<Meal>>;
 String _$prevAteMealsHash() => r'579cbf75dd8ef906bffc4cb6c2dfa49600326a52';
 
 /// See also [prevAteMeals].
-final prevAteMealsProvider = AutoDisposeFutureProvider<List<Meal>>(
+@ProviderFor(prevAteMeals)
+final prevAteMealsProvider = AutoDisposeFutureProvider<List<Meal>>.internal(
   prevAteMeals,
   name: r'prevAteMealsProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product') ? null : _$prevAteMealsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
 );
+
 typedef PrevAteMealsRef = AutoDisposeFutureProviderRef<List<Meal>>;
+String _$randomizedMealHash() => r'0fa53dfed01c5488e579a22b6dfced798e6bf894';
+
+/// See also [RandomizedMeal].
+@ProviderFor(RandomizedMeal)
+final randomizedMealProvider =
+    AutoDisposeAsyncNotifierProvider<RandomizedMeal, Meal?>.internal(
+  RandomizedMeal.new,
+  name: r'randomizedMealProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$randomizedMealHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$RandomizedMeal = AutoDisposeAsyncNotifier<Meal?>;
+// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

@@ -23,15 +23,15 @@ class HomeView extends StatelessWidget {
         stretch: true,
         expandedHeight: 200,
         flexibleSpace: FlexibleSpaceBar(
+          titlePadding: const EdgeInsetsDirectional.only(start: 0, bottom: 14),
           title: LayoutBuilder(
             builder: (context, constraints) => constraints.maxHeight <=
-                    kToolbarHeight + MediaQuery.of(context).viewPadding.top - 16
+                    kToolbarHeight + MediaQuery.of(context).viewPadding.top - 14
                 ? Fader(
                     child: Text(
                       'Mealo',
                       style: TextStyle(
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
+                        color: Theme.of(context).colorScheme.onBackground,
                       ),
                     ),
                   )

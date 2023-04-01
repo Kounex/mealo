@@ -10,9 +10,9 @@ import 'package:mealo/utils/validation.dart';
 import 'package:mealo/widgets/base/functional/suggestion_text_field/suggestion_text_field.dart';
 import 'package:mealo/widgets/base/functional/text_form_field.dart';
 import 'package:mealo/widgets/base/ui/chip.dart';
-import 'package:mealo/widgets/shared/dialog/add_edit_base_model.dart';
 
 import '../../../../../models/unit/unit.dart';
+import '../../../../../widgets/shared/dialog/add_edit_model.dart';
 
 class IngredientRow extends StatefulWidget {
   final IngredientMap ingredient;
@@ -39,6 +39,8 @@ class _IngredientRowState extends State<IngredientRow> {
   late TextEditingController _amount;
   late Unit? _unit;
   late Ingredient? _ingredient;
+
+  bool _editAmount = true;
 
   @override
   void initState() {
@@ -77,26 +79,34 @@ class _IngredientRowState extends State<IngredientRow> {
   Widget build(BuildContext context) {
     double availableWidth = MediaQuery.of(context).size.width;
 
-    Widget amountTextField = BaseTextFormField(
-      controller: _amount
-        ..addListener(() =>
-            this.widget.ingredient.amount = double.tryParse(_amount.text)),
-      hintText: 'Amount',
-      maxLines: 1,
-      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-        TextInputFormatter.withFunction((oldValue, newValue) {
-          try {
-            final text = newValue.text;
-            if (text.isNotEmpty) double.parse(text);
-            return newValue;
-          } catch (e) {}
-          return oldValue;
-        }),
-      ],
-      validator: ValidationUtils.number,
-    );
+    Widget amountTextField = _editAmount || _amount.text.isEmpty
+        ? BaseTextFormField(
+            controller: _amount
+              ..addListener(() => this.widget.ingredient.amount =
+                  double.tryParse(_amount.text)),
+            hintText: 'Amount',
+            maxLines: 1,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+              TextInputFormatter.withFunction((oldValue, newValue) {
+                try {
+                  final text = newValue.text;
+                  if (text.isNotEmpty) double.parse(text);
+                  return newValue;
+                } catch (e) {}
+                return oldValue;
+              }),
+            ],
+            validator: ValidationUtils.number,
+            onFieldSubmitted: (text) => text.trim().isNotEmpty
+                ? setState(() => _editAmount = false)
+                : null,
+          )
+        : BaseChip(
+            text: _amount.text,
+            onDeleted: () => setState(() => _editAmount = true),
+          );
 
     Widget unitSuggestField = _unit == null
         ? BaseSuggestionTextField<Unit>(
@@ -122,7 +132,7 @@ class _IngredientRowState extends State<IngredientRow> {
             onCreateNew: (text) async {
               Unit? unit = await ModalUtils.showBaseDialog(
                 context,
-                AddEditBaseModelDialog<Unit>(
+                AddEditModelDialog<Unit>(
                   name: text,
                   onAdd: (name) => IsarUtils.crud(
                     (isar) async => isar.units
@@ -164,7 +174,7 @@ class _IngredientRowState extends State<IngredientRow> {
             onCreateNew: (text) async {
               Ingredient? ingredient = await ModalUtils.showBaseDialog(
                 context,
-                AddEditBaseModelDialog<Ingredient>(
+                AddEditModelDialog<Ingredient>(
                   name: text,
                   onAdd: (name) => IsarUtils.crud(
                     (isar) async => isar.ingredients.get(
@@ -189,45 +199,46 @@ class _IngredientRowState extends State<IngredientRow> {
     return Row(
       children: [
         Expanded(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  if (availableWidth >= 700) ...[
+          child: availableWidth >= 700 ||
+                  (!_editAmount && _unit != null && _ingredient != null)
+              ? Row(
+                  children: [
                     SizedBox(
-                      width: 144.0,
+                      width: _editAmount ? 144.0 : null,
                       child: amountTextField,
                     ),
                     const SizedBox(width: 12.0),
                     SizedBox(
-                      width: 108.0,
+                      width: _unit == null ? 108.0 : null,
                       child: unitSuggestField,
                     ),
-                  ],
-                  if (availableWidth < 700) ...[
-                    Expanded(
-                      child: amountTextField,
-                    ),
-                    const SizedBox(width: 12.0),
-                    Expanded(
-                      child: unitSuggestField,
-                    ),
-                  ],
-                  if (availableWidth >= 700) ...[
                     const SizedBox(width: 12.0),
                     Expanded(
                       child: ingredientSuggestField,
                     ),
                   ],
-                ],
-              ),
-              if (availableWidth < 700) ...[
-                const SizedBox(height: 12.0),
-                ingredientSuggestField
-              ],
-            ],
-          ),
+                )
+              : Column(
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: _editAmount ? 144.0 : null,
+                          child: amountTextField,
+                        ),
+                        const SizedBox(width: 12.0),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: unitSuggestField,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12.0),
+                    ingredientSuggestField,
+                  ],
+                ),
         ),
         IconButton(
           onPressed: this.widget.onDelete,

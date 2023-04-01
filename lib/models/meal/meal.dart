@@ -1,7 +1,6 @@
 import 'package:isar/isar.dart';
 import 'package:mealo/models/tag/tag.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:uuid/uuid.dart';
 
 import '../persistance.dart';
 import '../models.dart';
@@ -23,22 +22,14 @@ class Meals extends _$Meals with Persistance<Meal> {
 }
 
 @collection
-class Meal implements BaseModel {
-  @override
-  @Index(unique: true, replace: true)
-  String uuid = const Uuid().v4();
-
-  Id get isarId => Models.fastHash(uuid);
-
+class Meal extends Model {
   DateTime createdAt = DateTime.now();
   DateTime? lastTimeRandomized;
   DateTime? lastTimeAte;
 
-  @override
-  late String name;
   String? instructions;
   String? thumbnailBase64;
-  List<String>? imagesBase64;
+  List<String> imagesBase64 = [];
 
   late List<RatingMap> ratings;
   IsarLinks<Tag> tags = IsarLinks();

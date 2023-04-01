@@ -27,30 +27,33 @@ class _BaseCameraState extends State<BaseCamera> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        BaseFutureBuilder(
-          future: _cameras,
-          loading: 'Accessing cameras...',
-          data: (cameras) => cameras != null && cameras.isNotEmpty
-              ? BaseCameraUI(
-                  cameras: cameras,
-                )
-              : const BaseResult(
-                  icon: BaseResultIcon.Negative,
-                  text: 'No camera available!',
-                ),
-        ),
-        Positioned(
-          right: 12.0 + window.viewPadding.right / window.devicePixelRatio,
-          top: 12.0 + window.viewPadding.top / window.devicePixelRatio,
-          child: IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: const Icon(CupertinoIcons.clear),
+    return Material(
+      color: Colors.black,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          BaseFutureBuilder(
+            future: _cameras,
+            loading: 'Accessing cameras...',
+            data: (cameras) => cameras != null && cameras.isNotEmpty
+                ? BaseCameraUI(
+                    cameras: cameras,
+                  )
+                : const BaseResult(
+                    icon: BaseResultIcon.Negative,
+                    text: 'No camera available!',
+                  ),
           ),
-        ),
-      ],
+          Positioned(
+            right: 12.0 + window.viewPadding.right / window.devicePixelRatio,
+            top: 12.0 + window.viewPadding.top / window.devicePixelRatio,
+            child: IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: const Icon(CupertinoIcons.clear),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mealo/utils/styling.dart';
+import 'package:mealo/widgets/base/ui/divider.dart';
 
 class StepperOverview extends StatelessWidget {
   final int step;
@@ -33,13 +34,15 @@ class StepperOverview extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: index == this.step
-                  ? Theme.of(context).colorScheme.primary
+                  ? Theme.of(context).colorScheme.primaryContainer
                   : Theme.of(context).disabledColor,
               shape: BoxShape.circle,
             ),
             child: Text(
               (index + 1).toString(),
-              style: Theme.of(context).textTheme.labelLarge,
+              style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
             ),
           ),
         ),
@@ -49,7 +52,7 @@ class StepperOverview extends StatelessWidget {
           const Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 12.0),
-              child: Divider(thickness: 0),
+              child: BaseDivider(),
             ),
           ),
         );

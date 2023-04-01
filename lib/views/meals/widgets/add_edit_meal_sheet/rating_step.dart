@@ -8,11 +8,11 @@ import '../../../../models/rating/rating.dart';
 import '../../../../widgets/shared/meal_ratings.dart';
 
 class RatingStep extends ConsumerStatefulWidget {
-  final List<RatingMap> valueMap;
+  final List<RatingMap> ratingMap;
 
   const RatingStep({
     super.key,
-    required this.valueMap,
+    required this.ratingMap,
   });
 
   @override
@@ -22,8 +22,8 @@ class RatingStep extends ConsumerStatefulWidget {
 class _RatingStepState extends ConsumerState<RatingStep> {
   void _updateRatingMap(List<Rating> ratings) {
     for (var rating in ratings) {
-      if (!this.widget.valueMap.any((value) => value.uuid == rating.uuid)) {
-        this.widget.valueMap.add(
+      if (!this.widget.ratingMap.any((value) => value.uuid == rating.uuid)) {
+        this.widget.ratingMap.add(
               RatingMap()
                 ..uuid = rating.uuid
                 ..value = RatingValue.three,
@@ -43,10 +43,10 @@ class _RatingStepState extends ConsumerState<RatingStep> {
 
         return MealRatings(
           ratings: ratings,
-          valueMap: this.widget.valueMap,
+          valueMap: this.widget.ratingMap,
           onSelectionChanged: (index, ratingValue) => setState(
             () {
-              final value = this.widget.valueMap.firstWhereOrNull(
+              final value = this.widget.ratingMap.firstWhereOrNull(
                   (value) => value.uuid == ratings[index].uuid);
               value?.value = ratingValue != value.value ? ratingValue : null;
             },

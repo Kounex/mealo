@@ -51,19 +51,6 @@ const RatingSchema = CollectionSchema(
           caseSensitive: true,
         )
       ],
-    ),
-    r'name': IndexSchema(
-      id: 879695947855722453,
-      name: r'name',
-      unique: true,
-      replace: false,
-      properties: [
-        IndexPropertySchema(
-          name: r'name',
-          type: IndexType.hash,
-          caseSensitive: true,
-        )
-      ],
     )
   },
   links: {},
@@ -195,58 +182,6 @@ extension RatingByIndex on IsarCollection<Rating> {
   List<Id> putAllByUuidSync(List<Rating> objects, {bool saveLinks = true}) {
     return putAllByIndexSync(r'uuid', objects, saveLinks: saveLinks);
   }
-
-  Future<Rating?> getByName(String name) {
-    return getByIndex(r'name', [name]);
-  }
-
-  Rating? getByNameSync(String name) {
-    return getByIndexSync(r'name', [name]);
-  }
-
-  Future<bool> deleteByName(String name) {
-    return deleteByIndex(r'name', [name]);
-  }
-
-  bool deleteByNameSync(String name) {
-    return deleteByIndexSync(r'name', [name]);
-  }
-
-  Future<List<Rating?>> getAllByName(List<String> nameValues) {
-    final values = nameValues.map((e) => [e]).toList();
-    return getAllByIndex(r'name', values);
-  }
-
-  List<Rating?> getAllByNameSync(List<String> nameValues) {
-    final values = nameValues.map((e) => [e]).toList();
-    return getAllByIndexSync(r'name', values);
-  }
-
-  Future<int> deleteAllByName(List<String> nameValues) {
-    final values = nameValues.map((e) => [e]).toList();
-    return deleteAllByIndex(r'name', values);
-  }
-
-  int deleteAllByNameSync(List<String> nameValues) {
-    final values = nameValues.map((e) => [e]).toList();
-    return deleteAllByIndexSync(r'name', values);
-  }
-
-  Future<Id> putByName(Rating object) {
-    return putByIndex(r'name', object);
-  }
-
-  Id putByNameSync(Rating object, {bool saveLinks = true}) {
-    return putByIndexSync(r'name', object, saveLinks: saveLinks);
-  }
-
-  Future<List<Id>> putAllByName(List<Rating> objects) {
-    return putAllByIndex(r'name', objects);
-  }
-
-  List<Id> putAllByNameSync(List<Rating> objects, {bool saveLinks = true}) {
-    return putAllByIndexSync(r'name', objects, saveLinks: saveLinks);
-  }
 }
 
 extension RatingQueryWhereSort on QueryBuilder<Rating, Rating, QWhere> {
@@ -360,49 +295,6 @@ extension RatingQueryWhere on QueryBuilder<Rating, Rating, QWhereClause> {
               indexName: r'uuid',
               lower: [],
               upper: [uuid],
-              includeUpper: false,
-            ));
-      }
-    });
-  }
-
-  QueryBuilder<Rating, Rating, QAfterWhereClause> nameEqualTo(String name) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'name',
-        value: [name],
-      ));
-    });
-  }
-
-  QueryBuilder<Rating, Rating, QAfterWhereClause> nameNotEqualTo(String name) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'name',
-              lower: [],
-              upper: [name],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'name',
-              lower: [name],
-              includeLower: false,
-              upper: [],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'name',
-              lower: [name],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'name',
-              lower: [],
-              upper: [name],
               includeUpper: false,
             ));
       }
@@ -1013,41 +905,19 @@ extension RatingQueryProperty on QueryBuilder<Rating, Rating, QQueryProperty> {
 // RiverpodGenerator
 // **************************************************************************
 
-// ignore_for_file: avoid_private_typedef_functions, non_constant_identifier_names, subtype_of_sealed_class, invalid_use_of_internal_member, unused_element, constant_identifier_names, unnecessary_raw_strings, library_private_types_in_public_api
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-String _$RatingsHash() => r'3d61a79b66e10ed48be39475f9c8c7a24340fe80';
+String _$ratingsHash() => r'3d61a79b66e10ed48be39475f9c8c7a24340fe80';
 
 /// See also [Ratings].
-final ratingsProvider = AutoDisposeAsyncNotifierProvider<Ratings, List<Rating>>(
+@ProviderFor(Ratings)
+final ratingsProvider =
+    AutoDisposeAsyncNotifierProvider<Ratings, List<Rating>>.internal(
   Ratings.new,
   name: r'ratingsProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$RatingsHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$ratingsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
 );
-typedef RatingsRef = AutoDisposeAsyncNotifierProviderRef<List<Rating>>;
 
-abstract class _$Ratings extends AutoDisposeAsyncNotifier<List<Rating>> {
-  @override
-  FutureOr<List<Rating>> build();
-}
+typedef _$Ratings = AutoDisposeAsyncNotifier<List<Rating>>;
+// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

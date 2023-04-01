@@ -114,16 +114,11 @@ int _mealEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.imagesBase64.length * 3;
   {
-    final list = object.imagesBase64;
-    if (list != null) {
-      bytesCount += 3 + list.length * 3;
-      {
-        for (var i = 0; i < list.length; i++) {
-          final value = list[i];
-          bytesCount += value.length * 3;
-        }
-      }
+    for (var i = 0; i < object.imagesBase64.length; i++) {
+      final value = object.imagesBase64[i];
+      bytesCount += value.length * 3;
     }
   }
   bytesCount += 3 + object.ingredients.length * 3;
@@ -196,7 +191,7 @@ Meal _mealDeserialize(
 ) {
   final object = Meal();
   object.createdAt = reader.readDateTime(offsets[0]);
-  object.imagesBase64 = reader.readStringList(offsets[1]);
+  object.imagesBase64 = reader.readStringList(offsets[1]) ?? [];
   object.ingredients = reader.readObjectList<IngredientMap>(
         offsets[2],
         IngredientMapSchema.deserialize,
@@ -230,7 +225,7 @@ P _mealDeserializeProp<P>(
     case 0:
       return (reader.readDateTime(offset)) as P;
     case 1:
-      return (reader.readStringList(offset)) as P;
+      return (reader.readStringList(offset) ?? []) as P;
     case 2:
       return (reader.readObjectList<IngredientMap>(
             offset,
@@ -498,22 +493,6 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesBase64IsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'imagesBase64',
-      ));
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesBase64IsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'imagesBase64',
       ));
     });
   }
@@ -1967,7 +1946,7 @@ extension MealQueryProperty on QueryBuilder<Meal, Meal, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Meal, List<String>?, QQueryOperations> imagesBase64Property() {
+  QueryBuilder<Meal, List<String>, QQueryOperations> imagesBase64Property() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'imagesBase64');
     });
@@ -2920,41 +2899,19 @@ extension IngredientMapQueryObject
 // RiverpodGenerator
 // **************************************************************************
 
-// ignore_for_file: avoid_private_typedef_functions, non_constant_identifier_names, subtype_of_sealed_class, invalid_use_of_internal_member, unused_element, constant_identifier_names, unnecessary_raw_strings, library_private_types_in_public_api
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-String _$MealsHash() => r'7ea244ac38e3960fe70d8267231e034d17fcc511';
+String _$mealsHash() => r'7ea244ac38e3960fe70d8267231e034d17fcc511';
 
 /// See also [Meals].
-final mealsProvider = AutoDisposeAsyncNotifierProvider<Meals, List<Meal>>(
+@ProviderFor(Meals)
+final mealsProvider =
+    AutoDisposeAsyncNotifierProvider<Meals, List<Meal>>.internal(
   Meals.new,
   name: r'mealsProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$MealsHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$mealsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
 );
-typedef MealsRef = AutoDisposeAsyncNotifierProviderRef<List<Meal>>;
 
-abstract class _$Meals extends AutoDisposeAsyncNotifier<List<Meal>> {
-  @override
-  FutureOr<List<Meal>> build();
-}
+typedef _$Meals = AutoDisposeAsyncNotifier<List<Meal>>;
+// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

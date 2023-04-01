@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mealo/widgets/base/ui/divider.dart';
 
 import '../../models/meal/meal.dart';
 import '../../models/rating/rating.dart';
@@ -33,9 +34,7 @@ class MealRatings extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Expanded(
-                          child: Divider(
-                            thickness: 0,
-                          ),
+                          child: BaseDivider(),
                         ),
                         Flexible(
                           child: Text(
@@ -44,9 +43,7 @@ class MealRatings extends StatelessWidget {
                           ),
                         ),
                         const Expanded(
-                          child: Divider(
-                            thickness: 0,
-                          ),
+                          child: BaseDivider(),
                         ),
                       ],
                     ),

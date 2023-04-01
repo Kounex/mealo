@@ -6,8 +6,7 @@ import '../../../utils/modal.dart';
 import '../../base/functional/text_form_field.dart';
 import '../../dialog/confirmation.dart';
 
-class AddEditBaseModelDialog<T extends BaseModel>
-    extends ConsumerStatefulWidget {
+class AddEditModelDialog<T extends Model> extends ConsumerStatefulWidget {
   final T? editingModel;
   final String? name;
 
@@ -17,7 +16,7 @@ class AddEditBaseModelDialog<T extends BaseModel>
   final Future<int?>? Function(String name)? onEdit;
   final Future<bool?>? Function(String uuid)? onDelete;
 
-  const AddEditBaseModelDialog({
+  const AddEditModelDialog({
     super.key,
     this.editingModel,
     this.name,
@@ -29,11 +28,11 @@ class AddEditBaseModelDialog<T extends BaseModel>
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _AddEditBaseModelDialogState();
+      _AddEditModelDialogState();
 }
 
-class _AddEditBaseModelDialogState<T extends BaseModel>
-    extends ConsumerState<AddEditBaseModelDialog<T>> {
+class _AddEditModelDialogState<T extends Model>
+    extends ConsumerState<AddEditModelDialog<T>> {
   final GlobalKey<FormState> _form = GlobalKey();
   late TextEditingController _controller;
 
@@ -126,8 +125,9 @@ class _AddEditBaseModelDialogState<T extends BaseModel>
                           .onAdd
                           ?.call(_controller.text.trim());
                     }
-
-                    Navigator.of(context).pop(model);
+                    if (mounted) {
+                      Navigator.of(context).pop(model);
+                    }
                   }
                 }
               : null,

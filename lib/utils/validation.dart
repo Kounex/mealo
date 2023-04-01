@@ -25,4 +25,15 @@ class ValidationUtils {
     }
     return null;
   }
+
+  static String? url(String? url) {
+    if (_required(url)) {
+      return 'Field is required!';
+    }
+    if (!url!.toLowerCase().startsWith('https://') &&
+        !url.toLowerCase().startsWith('http://')) {
+      return 'Not a valid URL!';
+    }
+    return null;
+  }
 }

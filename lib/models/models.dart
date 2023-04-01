@@ -1,3 +1,6 @@
+import 'package:isar/isar.dart';
+import 'package:uuid/uuid.dart';
+
 class Models {
   /// FNV-1a 64bit hash algorithm optimized for Dart Strings
   static int fastHash(String string) {
@@ -19,6 +22,12 @@ class Models {
 /// Used as an interface for basic models which will have the following basic
 /// properties
 abstract class BaseModel {
-  late String uuid;
+  @Index(unique: true, replace: true)
+  String uuid = const Uuid().v4();
+
+  Id get isarId => Models.fastHash(uuid);
+}
+
+abstract class Model extends BaseModel {
   late String name;
 }

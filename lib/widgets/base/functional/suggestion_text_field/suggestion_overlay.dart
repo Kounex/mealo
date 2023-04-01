@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:mealo/widgets/base/functional/suggestion_text_field/suggestion_list_tile.dart';
+import 'package:mealo/widgets/base/ui/divider.dart';
 
 import '../../ui/card.dart';
 import 'suggestion_text_field.dart';
@@ -171,7 +172,7 @@ class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>> {
                                               .widget
                                               .currentSuggestions
                                               .isEmpty)))
-                                const Divider(thickness: 0),
+                                const BaseDivider(),
                             ],
                           ),
                       if (this.widget.onCreateNew != null &&

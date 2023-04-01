@@ -1,11 +1,14 @@
 import 'package:beamer/beamer.dart';
+import 'package:collection/collection.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:isar/isar.dart';
 import 'package:mealo/utils/modal.dart';
 import 'package:mealo/utils/styling.dart';
 import 'package:mealo/utils/validation.dart';
+import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/images_step/images_step.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/ingredients_step/ingredients_step.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/rating_step.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/stepper_control.dart';
@@ -18,6 +21,7 @@ import '../../../../models/tag/tag.dart';
 import '../../../../utils/isar.dart';
 
 enum AddEditMealStep {
+  images,
   tags,
   ratings,
   ingredients,
@@ -39,6 +43,8 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
   final GlobalKey<FormState> _form = GlobalKey();
   final _name = TextEditingController();
 
+  final List<String> _thumbnailBase64 = [];
+  final List<String> _imagesBase64 = [];
   final List<Tag> _tags = [];
   final List<RatingMap> _ratingMap = [];
   final List<IngredientMap> _ingredientMap = [];
@@ -50,6 +56,10 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
     super.initState();
 
     if (this.widget.meal != null) {
+      if (this.widget.meal!.thumbnailBase64 != null) {
+        _thumbnailBase64.add(this.widget.meal!.thumbnailBase64!);
+      }
+      _imagesBase64.addAll(this.widget.meal!.imagesBase64);
       _name.text = this.widget.meal!.name;
       _tags.addAll(this.widget.meal!.tags);
       _ratingMap.addAll(this.widget.meal!.ratings);
@@ -64,10 +74,12 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
       (isar) {
         return isar.meals.put(
           meal
+            ..thumbnailBase64 = _thumbnailBase64.firstOrNull
+            ..imagesBase64.addAll(_imagesBase64)
             ..name = _name.text.trim()
             ..tags.addAll(_tags)
-            ..ratings = _ratingMap
-            ..ingredients = _ingredientMap,
+            ..ratings.addAll(_ratingMap)
+            ..ingredients.addAll(_ingredientMap),
         );
       },
     );
@@ -165,6 +177,8 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
               IconButton(
                 icon: const Icon(CupertinoIcons.clear),
                 onPressed: () {
+                  /// Important step - this makes sure that all changes we made
+                  /// here are set back to its original value
                   ref.invalidate(mealsProvider);
                   Navigator.of(context).pop();
                 },
@@ -176,7 +190,15 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
             key: _form,
             child: TextFormField(
               controller: _name,
-              validator: ValidationUtils.name,
+              validator: (name) =>
+                  ValidationUtils.name(name?.trim()) ??
+                  (IsarUtils.instance.meals
+                          .filter()
+                          .nameEqualTo(name!.trim())
+                          .findAllSync()
+                          .isNotEmpty
+                      ? 'Meal already exists!'
+                      : null),
               decoration: const InputDecoration(
                 hintText: 'Name',
               ),
@@ -196,29 +218,41 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
           ),
           const SizedBox(height: 12.0),
           Expanded(
-            child: ListView(
-              children: [
-                const SizedBox(height: 24.0),
-                AnimatedSwitcher(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 24.0),
+                child: AnimatedSwitcher(
                   duration: StylingUtils.kBaseAnimationDuration,
                   child: () {
                     switch (_step) {
+                      case AddEditMealStep.images:
+                        return ImagesStep(
+                          thumbnailBase64: _thumbnailBase64,
+                          imagesBase64: _imagesBase64,
+                        );
                       case AddEditMealStep.tags:
-                        return TagsStep(
-                          tags: _tags,
+                        return SingleChildScrollView(
+                          child: TagsStep(
+                            tags: _tags,
+                          ),
                         );
                       case AddEditMealStep.ratings:
-                        return RatingStep(
-                          valueMap: _ratingMap,
+                        return SingleChildScrollView(
+                          child: RatingStep(
+                            ratingMap: _ratingMap,
+                          ),
                         );
                       case AddEditMealStep.ingredients:
-                        return IngredientsStep(
-                          ingredientMap: _ingredientMap,
+                        return SingleChildScrollView(
+                          child: IngredientsStep(
+                            ingredientMap: _ingredientMap,
+                          ),
                         );
                     }
                   }(),
                 ),
-              ],
+              ),
             ),
           ),
           const SizedBox(height: 12.0),

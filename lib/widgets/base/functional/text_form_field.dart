@@ -80,7 +80,7 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
       onTapOutside:
           this.widget.loseFocusOnTapOutside ? (_) => _focus.unfocus() : null,
       validator: this.widget.validator,
-      minLines: this.widget.minLines,
+      minLines: this.widget.minLines ?? 1,
       maxLines: this.widget.maxLines,
       keyboardType: this.widget.keyboardType,
       inputFormatters: this.widget.inputFormatters,
