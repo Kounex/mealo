@@ -71,16 +71,22 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
     Meal meal = this.widget.meal ?? Meal();
 
     await IsarUtils.crud(
-      (isar) {
-        return isar.meals.put(
+      (isar) async {
+        /// [IsarLink/s] need special treatment for correct persistance
+        /// which means we need to manually reset and save them to
+        /// work properly - see the docs for more
+        await meal.tags.reset();
+        int id = await isar.meals.put(
           meal
             ..thumbnailBase64 = _thumbnailBase64.firstOrNull
-            ..imagesBase64.addAll(_imagesBase64)
+            ..imagesBase64 = _imagesBase64
             ..name = _name.text.trim()
             ..tags.addAll(_tags)
-            ..ratings.addAll(_ratingMap)
-            ..ingredients.addAll(_ingredientMap),
+            ..ratings = _ratingMap
+            ..ingredients = _ingredientMap,
         );
+        await meal.tags.save();
+        return id;
       },
     );
     if (context.mounted) {
@@ -92,6 +98,19 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
     Navigator.of(context).pop();
     Beamer.of(context).beamBack();
     IsarUtils.crud((isar) => isar.meals.deleteByUuid(this.widget.meal!.uuid));
+  }
+
+  String? _checkMealNameUnique(String name) {
+    List<Meal> meals = IsarUtils.instance.meals
+        .filter()
+        .nameEqualTo(name.trim())
+        .findAllSync();
+
+    if (meals.isNotEmpty &&
+        meals.every((meal) => meal.uuid != this.widget.meal?.uuid)) {
+      return 'Meal already exists!';
+    }
+    return null;
   }
 
   @override
@@ -192,13 +211,7 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
               controller: _name,
               validator: (name) =>
                   ValidationUtils.name(name?.trim()) ??
-                  (IsarUtils.instance.meals
-                          .filter()
-                          .nameEqualTo(name!.trim())
-                          .findAllSync()
-                          .isNotEmpty
-                      ? 'Meal already exists!'
-                      : null),
+                  _checkMealNameUnique(name!),
               decoration: const InputDecoration(
                 hintText: 'Name',
               ),

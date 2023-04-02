@@ -31,7 +31,7 @@ class Meal extends Model {
   String? thumbnailBase64;
   List<String> imagesBase64 = [];
 
-  late List<RatingMap> ratings;
+  List<RatingMap> ratings = [];
   IsarLinks<Tag> tags = IsarLinks();
   List<IngredientMap> ingredients = [];
 }
