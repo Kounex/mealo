@@ -20,7 +20,7 @@ class PrevRandomMeals extends StatelessWidget {
         skipLoadingOnReload: true,
         empty: const Text(
             'You haven\'t randomized any meals yet! Go on, let\'s see what the clearly unbiased algorithm is recommending you to eat ;)'),
-        onTap: (meal) => RouterUtils.goTo(
+        onTap: (meal) => RouterUtils.beamTo(
           context,
           HomeMealDetailRoute(meal.uuid),
         ),

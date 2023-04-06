@@ -15,7 +15,7 @@ class IntroView extends StatelessWidget {
           children: [
             ElevatedButton(
               child: const Text('oof'),
-              onPressed: () => RouterUtils.goTo(
+              onPressed: () => RouterUtils.beamTo(
                 context,
                 MealsRoute(),
                 replace: true,

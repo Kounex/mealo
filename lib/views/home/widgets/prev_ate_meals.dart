@@ -15,7 +15,7 @@ class PrevAteMeals extends StatelessWidget {
         provider: prevAteMealsProvider,
         empty: const Text('No meals have been marked as eaten yet!'),
         skipLoadingOnReload: true,
-        onTap: (meal) => RouterUtils.goTo(
+        onTap: (meal) => RouterUtils.beamTo(
           context,
           HomeMealDetailRoute(meal.uuid),
         ),

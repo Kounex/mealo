@@ -2,28 +2,25 @@ import 'dart:ui';
 
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mealo/stores/shared/tabs.dart';
 import 'package:mealo/utils/styling.dart';
 
 import 'utils/router.dart';
 
-class TabsView extends StatefulWidget {
+class TabsView extends ConsumerWidget {
   const TabsView({super.key});
 
   @override
-  State<TabsView> createState() => _TabsViewState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    int tabIndex = ref.watch(currentTabIndexProvider);
 
-class _TabsViewState extends State<TabsView> {
-  int _index = 0;
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           IndexedStack(
-            index: _index,
+            index: tabIndex,
             children: List.from(
               TabMeta.values.map(
                 (tab) => HeroControllerScope(
@@ -70,7 +67,7 @@ class _TabsViewState extends State<TabsView> {
                     ),
                   ),
                   child: BottomNavigationBar(
-                    currentIndex: _index,
+                    currentIndex: tabIndex,
                     items: List.from(
                       TabMeta.values.map(
                         (tab) => BottomNavigationBarItem(
@@ -80,11 +77,11 @@ class _TabsViewState extends State<TabsView> {
                       ),
                     ),
                     onTap: (index) {
-                      if (index != _index) {
-                        setState(() {
-                          _index = index;
-                          Beamer.of(context).update(rebuild: false);
-                        });
+                      if (index != tabIndex) {
+                        ref
+                            .read(currentTabIndexProvider.notifier)
+                            .setTabIndex(index);
+                        Beamer.of(context).update(rebuild: false);
                       } else if (RouterUtils
                           .tabRouterMap[TabMeta.values[index]]!.canBeamBack) {
                         RouterUtils.tabRouterMap[TabMeta.values[index]]!

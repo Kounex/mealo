@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:collection/collection.dart';
 import 'package:mealo/utils/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -14,29 +16,35 @@ FutureOr<Meal> selectedMeal(SelectedMealRef ref, String uuid) async {
 }
 
 @riverpod
-class RandomizedMeal extends _$RandomizedMeal {
+class RandomizedMealUUID extends _$RandomizedMealUUID {
   @override
-  FutureOr<Meal?> build() => null;
+  FutureOr<String?> build() => null;
 
-  void start(
-    Meal? meal, {
+  void start({
     Duration? duration,
     bool immediate = false,
   }) async {
-    if (immediate) {
-      this.state = AsyncValue.data(meal);
-    } else {
-      this.state = const AsyncLoading();
-      this.state = await AsyncValue.guard(() async {
-        await Future.delayed(duration ?? const Duration(seconds: 3));
-        if (meal != null) {
+    AsyncValue<List<Meal>> asyncMeals = ref.read(mealsProvider);
+
+    if (asyncMeals.valueOrNull != null) {
+      Meal randomMeal = asyncMeals.value!.elementAt(
+        Random().nextInt(asyncMeals.value!.length),
+      );
+      if (immediate) {
+        this.state = AsyncValue.data(randomMeal.uuid);
+      } else {
+        this.state = const AsyncLoading();
+        this.state = await AsyncValue.guard(() async {
+          await Future.delayed(duration ?? const Duration(seconds: 3));
           await IsarUtils.crud(
-            (isar) =>
-                isar.meals.putByUuid(meal..lastTimeRandomized = DateTime.now()),
+            (isar) => isar.meals
+                .putByUuid(randomMeal..lastTimeRandomized = DateTime.now()),
           );
-        }
-        return meal;
-      });
+          return randomMeal.uuid;
+        });
+      }
+    } else {
+      this.state = const AsyncValue.data(null);
     }
   }
 }

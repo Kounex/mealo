@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/stores/views/home.dart';
 import 'package:mealo/utils/isar.dart';
 import 'package:mealo/utils/modal.dart';
 import 'package:mealo/utils/router.dart';
@@ -35,7 +34,7 @@ class SettingsView extends ConsumerWidget {
                 title: const Text('Ratings & Tags'),
                 trailing: const CupertinoListTileChevron(),
                 onTap: () =>
-                    RouterUtils.goTo(context, RatingsTagsManagementRoute()),
+                    RouterUtils.beamTo(context, RatingsTagsManagementRoute()),
               ),
               const ThemeSwitcher(),
               ListTile(
@@ -50,7 +49,6 @@ class SettingsView extends ConsumerWidget {
                     onYes: () async {
                       await IsarUtils.crud((isar) => isar.clear());
                       await IsarUtils.init();
-                      ref.invalidate(randomizedMealProvider);
                     },
                   ),
                 ),

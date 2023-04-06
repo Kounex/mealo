@@ -1,5 +1,4 @@
-import 'dart:math';
-
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mealo/models/meal/meal.dart';
@@ -25,7 +24,8 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
   @override
   Widget build(BuildContext context) {
     AsyncValue<List<Meal>> asyncMeals = ref.watch(mealsProvider);
-    AsyncValue<Meal?> asyncRandomizedMeal = ref.watch(randomizedMealProvider);
+    AsyncValue<String?> asyncRandomizedMeal =
+        ref.watch(randomizedMealUUIDProvider);
 
     return BaseCard(
       child: Column(
@@ -34,18 +34,26 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
             asyncValue: asyncMeals,
             loading: () => const TextShimmer(),
             data: (meals) => AnimatedSwitcher(
-              duration: StylingUtils.kBaseAnimationDuration * 4,
-              child: asyncRandomizedMeal.isLoading
-                  ? const MealShuffle(
+                duration: StylingUtils.kBaseAnimationDuration * 4,
+                child: () {
+                  if (asyncRandomizedMeal.isLoading) {
+                    return const MealShuffle(
                       duration: Duration(seconds: 3),
-                    )
-                  : asyncRandomizedMeal.valueOrNull != null
-                      ? SuggestedMeal(meal: asyncRandomizedMeal.value!)
-                      : meals.isNotEmpty
-                          ? const Text(
-                              'Hungy? Don\'t know what to eat next? Let the app decide what you are going to eat next - you can make use of some filters to make it less random!')
-                          : const Text('You don\'t have any meals yet.'),
-            ),
+                    );
+                  }
+                  if (asyncRandomizedMeal.valueOrNull != null) {
+                    Meal? randomizedMeal = meals.firstWhereOrNull(
+                        (meal) => meal.uuid == asyncRandomizedMeal.value);
+                    if (randomizedMeal != null) {
+                      return SuggestedMeal(meal: randomizedMeal);
+                    }
+                  }
+                  if (meals.isNotEmpty) {
+                    return const Text(
+                        'Hungy? Don\'t know what to eat next? Let the app decide what you are going to eat next - you can make use of some filters to make it less random!');
+                  }
+                  return const Text('You don\'t have any meals yet.');
+                }()),
           ),
           const SizedBox(height: 12.0),
           const BaseDivider(),
@@ -57,11 +65,7 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
                       asyncMeals.asData != null &&
                       asyncMeals.value!.isNotEmpty
                   ? () {
-                      ref.read(randomizedMealProvider.notifier).start(
-                            asyncMeals.value!.elementAt(
-                              Random().nextInt(asyncMeals.value!.length),
-                            ),
-                          );
+                      ref.read(randomizedMealUUIDProvider.notifier).start();
                     }
                   : null,
               child: asyncRandomizedMeal.isLoading

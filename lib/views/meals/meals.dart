@@ -27,7 +27,9 @@ class MealsView extends StatelessWidget {
           IconButton(
             onPressed: () => ModalUtils.showExpandedModalBottomSheet(
               context,
-              const AddEditMealSheet(),
+              AddEditMealSheet(
+                context: context,
+              ),
             ),
             icon: const Icon(CupertinoIcons.add),
           ),
@@ -38,7 +40,7 @@ class MealsView extends StatelessWidget {
           padding: const EdgeInsets.all(24.0),
           child: MealGrid(
             provider: mealsProvider,
-            onTap: (meal) => RouterUtils.goTo(
+            onTap: (meal) => RouterUtils.beamTo(
               context,
               MealDetailRoute(meal.uuid),
             ),

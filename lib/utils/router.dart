@@ -49,7 +49,7 @@ class RouterUtils {
     );
 
   /// *The* function to navigate throughout the app to ensure consitency
-  static void goTo(BuildContext context, BaseRoute route,
+  static void beamTo(BuildContext context, BaseRoute route,
       {Object? data, bool replace = false}) {
     if (replace) {
       Beamer.of(context).removeLastHistoryElement();

@@ -20,9 +20,9 @@ class SuggestedMeal extends ConsumerWidget {
     await IsarUtils.crud(
       (isar) => isar.meals.putByUuid(this.meal..lastTimeAte = DateTime.now()),
     );
-    ref.invalidate(randomizedMealProvider);
+    ref.invalidate(randomizedMealUUIDProvider);
     if (context.mounted) {
-      RouterUtils.goTo(
+      RouterUtils.beamTo(
         context,
         HomeMealDetailRoute(meal.uuid),
       );
@@ -37,7 +37,7 @@ class SuggestedMeal extends ConsumerWidget {
         children: [
           MealCard(
             meal: this.meal,
-            onTap: () => RouterUtils.goTo(
+            onTap: () => RouterUtils.beamTo(
               context,
               HomeMealDetailRoute(this.meal.uuid),
               data: this.meal,

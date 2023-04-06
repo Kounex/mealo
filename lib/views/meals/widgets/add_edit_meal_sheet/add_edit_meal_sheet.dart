@@ -28,10 +28,18 @@ enum AddEditMealStep {
 }
 
 class AddEditMealSheet extends ConsumerStatefulWidget {
+  /// I need the [context] of the widget calling this sheet since
+  /// I'm currently using the [showModalBottomSheet] function to
+  /// display this and this will use the root [Navigator]. Therefore
+  /// the [context] here has not access to the full subtree. This means
+  /// I can't access the [Beamer] instance from where I have called
+  /// this sheet and only get the root [Beamer] which is not right.
+  final BuildContext context;
   final Meal? meal;
 
   const AddEditMealSheet({
     super.key,
+    required this.context,
     this.meal,
   });
 
@@ -72,19 +80,20 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
 
     await IsarUtils.crud(
       (isar) async {
-        /// [IsarLink/s] need special treatment for correct persistance
-        /// which means we need to manually reset and save them to
-        /// work properly - see the docs for more
-        await meal.tags.reset();
         int id = await isar.meals.put(
           meal
             ..thumbnailBase64 = _thumbnailBase64.firstOrNull
             ..imagesBase64 = _imagesBase64
             ..name = _name.text.trim()
-            ..tags.addAll(_tags)
             ..ratings = _ratingMap
             ..ingredients = _ingredientMap,
         );
+
+        /// [IsarLink/s] need special treatment for correct persistance
+        /// which means we need to manually reset and save them to
+        /// work properly - see the docs for more
+        await meal.tags.reset();
+        meal.tags.addAll(_tags);
         await meal.tags.save();
         return id;
       },
@@ -94,10 +103,14 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
     }
   }
 
-  void _deleteMeal() {
-    Navigator.of(context).pop();
-    Beamer.of(context).beamBack();
-    IsarUtils.crud((isar) => isar.meals.deleteByUuid(this.widget.meal!.uuid));
+  void _deleteMeal() async {
+    await IsarUtils.crud(
+        (isar) => isar.meals.deleteByUuid(this.widget.meal!.uuid));
+
+    if (mounted) {
+      Navigator.of(context).pop();
+      Beamer.of(this.widget.context).beamBack();
+    }
   }
 
   String? _checkMealNameUnique(String name) {

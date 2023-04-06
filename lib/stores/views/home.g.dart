@@ -141,20 +141,21 @@ final prevAteMealsProvider = AutoDisposeFutureProvider<List<Meal>>.internal(
 );
 
 typedef PrevAteMealsRef = AutoDisposeFutureProviderRef<List<Meal>>;
-String _$randomizedMealHash() => r'0fa53dfed01c5488e579a22b6dfced798e6bf894';
+String _$randomizedMealUUIDHash() =>
+    r'd2fede856d6a85aba550b5cd52ceb70586e4b4ba';
 
-/// See also [RandomizedMeal].
-@ProviderFor(RandomizedMeal)
-final randomizedMealProvider =
-    AutoDisposeAsyncNotifierProvider<RandomizedMeal, Meal?>.internal(
-  RandomizedMeal.new,
-  name: r'randomizedMealProvider',
+/// See also [RandomizedMealUUID].
+@ProviderFor(RandomizedMealUUID)
+final randomizedMealUUIDProvider =
+    AutoDisposeAsyncNotifierProvider<RandomizedMealUUID, String?>.internal(
+  RandomizedMealUUID.new,
+  name: r'randomizedMealUUIDProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$randomizedMealHash,
+      : _$randomizedMealUUIDHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$RandomizedMeal = AutoDisposeAsyncNotifier<Meal?>;
+typedef _$RandomizedMealUUID = AutoDisposeAsyncNotifier<String?>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

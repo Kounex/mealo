@@ -38,54 +38,56 @@ class MealDetailsView extends ConsumerWidget {
         ref.watch(selectedMealProvider(this.uuid));
 
     return BaseAsyncValueBuilder(
-        asyncValue: asyncSelectedMeal,
-        data: (meal) {
-          return BaseScaffold(
-            hasBottomTabBarSpacing: true,
-            appBarProperties: AppBarProperties(
-              title: Text(meal.name),
-              actions: [
-                IconButton(
-                  onPressed: () => ModalUtils.showExpandedModalBottomSheet(
-                    context,
-                    AddEditMealSheet(
-                      meal: meal,
-                    ),
-                  ),
-                  icon: const Icon(FluentIcons.document_edit_24_regular),
-                ),
-              ],
-            ),
-            children: [
-              // Hero(
-              //   tag: meal.uuid ?? 'placeholder',
-              //   child: meal.thumbnailBase64 != null
-              //       ? Image.memory(base64Decode(this.meal!.thumbnailBase64!))
-              //       : Image.asset('assets/images/meal-placeholder.png'),
-              // ),
-              meal.thumbnailBase64 != null
-                  ? Image.memory(base64Decode(meal.thumbnailBase64!))
-                  : Image.asset('assets/images/meal-placeholder.png'),
-              BaseAsyncValueBuilder(
-                asyncValue: asyncRatings,
-                data: (ratings) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: MealRatings(
-                    ratings: ratings,
-                    valueMap: meal.ratings,
+      asyncValue: asyncSelectedMeal,
+      data: (meal) {
+        return BaseScaffold(
+          hasBottomTabBarSpacing: true,
+          appBarProperties: AppBarProperties(
+            title: Text(meal.name),
+            actions: [
+              IconButton(
+                onPressed: () => ModalUtils.showExpandedModalBottomSheet(
+                  context,
+                  AddEditMealSheet(
+                    context: context,
+                    meal: meal,
                   ),
                 ),
-              ),
-              const SizedBox(height: 24.0),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: ElevatedButton(
-                  onPressed: () => _deleteMeal(context),
-                  child: const Text('Remove'),
-                ),
+                icon: const Icon(FluentIcons.document_edit_24_regular),
               ),
             ],
-          );
-        });
+          ),
+          children: [
+            // Hero(
+            //   tag: meal.uuid ?? 'placeholder',
+            //   child: meal.thumbnailBase64 != null
+            //       ? Image.memory(base64Decode(this.meal!.thumbnailBase64!))
+            //       : Image.asset('assets/images/meal-placeholder.png'),
+            // ),
+            meal.thumbnailBase64 != null
+                ? Image.memory(base64Decode(meal.thumbnailBase64!))
+                : Image.asset('assets/images/meal-placeholder.png'),
+            BaseAsyncValueBuilder(
+              asyncValue: asyncRatings,
+              data: (ratings) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: MealRatings(
+                  ratings: ratings,
+                  valueMap: meal.ratings,
+                ),
+              ),
+            ),
+            const SizedBox(height: 24.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: ElevatedButton(
+                onPressed: () => _deleteMeal(context),
+                child: const Text('Remove'),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
