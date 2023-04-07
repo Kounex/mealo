@@ -251,7 +251,6 @@ class _ImagesStepState extends State<ImagesStep> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Card(
-                        color: Colors.black87,
                         child: Padding(
                           padding: const EdgeInsets.all(24.0),
                           child: BaseProgressIndicator(

@@ -1,7 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:mealo/utils/modal.dart';
+import 'package:mealo/widgets/base/functional/cached_memory_image.dart';
 import 'package:mealo/widgets/dialog/confirmation.dart';
 
 class ActionImage extends StatelessWidget {
@@ -43,11 +42,10 @@ class ActionImage extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(this.borderRadius),
-            child: Image.memory(
-              base64Decode(this.imageBase64),
+            child: CachedMemoryImage(
+              imageBase64: this.imageBase64,
               height: this.height,
               width: this.width,
-              fit: BoxFit.cover,
             ),
           ),
         ),
