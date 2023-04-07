@@ -58,6 +58,7 @@ class MealGrid extends ConsumerWidget {
                     child: MealCard(
                       meal: meals[index],
                       height: this.itemCrossAxisExtent * 3 / 4,
+                      width: this.itemCrossAxisExtent,
                       onTap: () => this.onTap?.call(meals[index]),
                     ),
                   ),

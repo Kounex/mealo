@@ -1,14 +1,15 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:mealo/widgets/base/ui/image.dart';
 
 import '../../../models/meal/meal.dart';
 
 class MealCard extends StatelessWidget {
   final Meal? meal;
   final double? height;
+  final double? width;
 
   final void Function()? onTap;
 
@@ -16,6 +17,7 @@ class MealCard extends StatelessWidget {
     super.key,
     this.meal,
     this.height,
+    this.width,
     this.onTap,
   });
 
@@ -24,7 +26,7 @@ class MealCard extends StatelessWidget {
     return GestureDetector(
       onTap: this.onTap,
       child: Card(
-        elevation: 10,
+        // elevation: 10,
         child: Stack(
           clipBehavior: Clip.none,
           children: [
@@ -34,8 +36,12 @@ class MealCard extends StatelessWidget {
             //       ? Image.memory(base64Decode(this.meal!.thumbnailBase64!))
             //       : Image.asset('assets/images/meal-placeholder.png'),
             // ),
-            this.meal?.thumbnailBase64 != null
-                ? Image.memory(base64Decode(this.meal!.thumbnailBase64!))
+            this.meal?.thumbnailUUID != null
+                ? BaseImage(
+                    imageUUID: this.meal?.thumbnailUUID,
+                    height: this.height,
+                    width: this.width,
+                  )
                 : Image.asset('assets/images/meal-placeholder.png'),
             Positioned(
               bottom: 0,

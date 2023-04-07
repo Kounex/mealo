@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:collection/collection.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mealo/utils/modal.dart';
 import 'package:mealo/utils/styling.dart';
-import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/images_step/action_image.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/images_step/image_from_url_dialog.dart';
+import 'package:mealo/widgets/base/ui/image.dart';
 import 'package:mealo/widgets/base/ui/progress_indicator.dart';
 
 import '../../../../../widgets/base/ui/placeholder_text.dart';
@@ -56,13 +54,21 @@ enum ImagePickerType {
 }
 
 class ImagesStep extends StatefulWidget {
-  final List<String> thumbnailBase64;
-  final List<String> imagesBase64;
+  final List<String> thumbnailUUID;
+  final List<String> imagesUUIDs;
+
+  final List<XFile> thumbnailToAdd;
+  final List<XFile> imagesToAdd;
+
+  final List<String> imagesUUIDsToDelete;
 
   const ImagesStep({
     super.key,
-    required this.thumbnailBase64,
-    required this.imagesBase64,
+    required this.thumbnailUUID,
+    required this.imagesUUIDs,
+    required this.thumbnailToAdd,
+    required this.imagesToAdd,
+    required this.imagesUUIDsToDelete,
   });
 
   @override
@@ -95,32 +101,30 @@ class _ImagesStepState extends State<ImagesStep> {
     );
 
     if (type != null && mounted) {
-      List<String> imagesBase64 = [];
+      List<XFile> images = [];
       switch (type) {
         case ImagePickerType.camera:
         case ImagePickerType.gallery:
-          imagesBase64 = await _pickImages(type, multiple);
+          images = await _pickImages(type, multiple);
           break;
         case ImagePickerType.url:
-          String? imageBase64 = await ModalUtils.showBaseDialog(
+          XFile? image = XFile.fromData(await ModalUtils.showBaseDialog(
             context,
             const ImageFromURLDialog(),
-          );
+          ));
 
-          if (imageBase64 != null) {
-            imagesBase64.add(imageBase64);
-          }
+          images.add(image);
           break;
       }
-      if (imagesBase64.isNotEmpty) {
+      if (images.isNotEmpty) {
         setState(
           () {
             if (multiple) {
-              this.widget.imagesBase64.addAll(imagesBase64);
+              this.widget.imagesToAdd.addAll(images);
             } else {
-              this.widget.thumbnailBase64
+              this.widget.thumbnailToAdd
                 ..clear()
-                ..add(imagesBase64.first);
+                ..add(images.first);
             }
           },
         );
@@ -130,7 +134,7 @@ class _ImagesStepState extends State<ImagesStep> {
     return [];
   }
 
-  Future<List<String>> _pickImages(ImagePickerType type,
+  Future<List<XFile>> _pickImages(ImagePickerType type,
       [bool multiple = false]) async {
     final ImagePicker picker = ImagePicker();
 
@@ -159,16 +163,7 @@ class _ImagesStepState extends State<ImagesStep> {
         break;
     }
 
-    photos.removeWhere((photo) => photo == null);
-
-    if (photos.isNotEmpty) {
-      List<String> images = [];
-      for (XFile? photo in photos) {
-        images.add(base64Encode(await photo!.readAsBytes()));
-      }
-      return images;
-    }
-    return [];
+    return photos.whereType<XFile>().toList();
   }
 
   @override
@@ -202,15 +197,29 @@ class _ImagesStepState extends State<ImagesStep> {
                       child: () {
                         switch (_type) {
                           case MealImageType.thumbnail:
-                            return this.widget.thumbnailBase64.isNotEmpty
-                                ? ActionImage(
-                                    imageBase64:
-                                        this.widget.thumbnailBase64.first,
+                            return this.widget.thumbnailUUID.isNotEmpty ||
+                                    this.widget.thumbnailToAdd.isNotEmpty
+                                ? BaseImage(
+                                    imageUUID:
+                                        this.widget.thumbnailUUID.firstOrNull,
+                                    image:
+                                        this.widget.thumbnailToAdd.firstOrNull,
                                     height: 172.0,
                                     width: 172.0,
                                     icon: CupertinoIcons.clear,
-                                    onPress: () => setState(() =>
-                                        this.widget.thumbnailBase64.clear()),
+                                    onAction: () => setState(
+                                      () {
+                                        if (this
+                                            .widget
+                                            .thumbnailUUID
+                                            .isNotEmpty) {
+                                          this.widget.imagesUUIDsToDelete.add(
+                                              this.widget.thumbnailUUID.first);
+                                        }
+                                        this.widget.thumbnailUUID.clear();
+                                        this.widget.thumbnailToAdd.clear();
+                                      },
+                                    ),
                                   )
                                 : Container(
                                     height: 172.0,
@@ -220,27 +229,47 @@ class _ImagesStepState extends State<ImagesStep> {
                                     ),
                                   );
                           case MealImageType.additional:
-                            return this.widget.imagesBase64.isNotEmpty
+                            return this.widget.imagesUUIDs.isNotEmpty ||
+                                    this.widget.imagesToAdd.isNotEmpty
                                 ? Wrap(
                                     spacing: 24.0,
                                     runSpacing: 24.0,
-                                    children: this
-                                        .widget
-                                        .imagesBase64
-                                        .mapIndexed(
-                                          (index, imageBase64) => ActionImage(
-                                            imageBase64: imageBase64,
-                                            height: 128.0,
-                                            width: 128.0,
-                                            icon: CupertinoIcons.clear,
-                                            onPress: () => setState(() => this
-                                                .widget
-                                                .imagesBase64
-                                                .removeAt(index)),
-                                          ),
-                                        )
-                                        .toList(),
-                                  )
+                                    children: [
+                                        ...this.widget.imagesUUIDs.mapIndexed(
+                                              (index, imageUUID) => BaseImage(
+                                                imageUUID: imageUUID,
+                                                height: 128.0,
+                                                width: 128.0,
+                                                icon: CupertinoIcons.clear,
+                                                onAction: () => setState(
+                                                  () {
+                                                    this
+                                                        .widget
+                                                        .imagesUUIDs
+                                                        .removeAt(index);
+                                                    this
+                                                        .widget
+                                                        .imagesUUIDsToDelete
+                                                        .add(imageUUID);
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                        ...this.widget.imagesToAdd.mapIndexed(
+                                              (index, image) => BaseImage(
+                                                image: image,
+                                                height: 128.0,
+                                                width: 128.0,
+                                                icon: CupertinoIcons.clear,
+                                                onAction: () => setState(
+                                                  () => this
+                                                      .widget
+                                                      .imagesToAdd
+                                                      .removeAt(index),
+                                                ),
+                                              ),
+                                            ),
+                                      ])
                                 : Container(
                                     height: 172.0,
                                     alignment: Alignment.center,

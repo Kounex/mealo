@@ -37,6 +37,8 @@ class SuggestedMeal extends ConsumerWidget {
         children: [
           MealCard(
             meal: this.meal,
+            height: 200.0,
+            width: 250.0,
             onTap: () => RouterUtils.beamTo(
               context,
               HomeMealDetailRoute(this.meal.uuid),

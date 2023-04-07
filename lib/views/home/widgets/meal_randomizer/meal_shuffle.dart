@@ -13,7 +13,10 @@ class MealShuffle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MealCard()
+    return const MealCard(
+      height: 200.0,
+      width: 250.0,
+    )
         .animate()
         .shake(
           duration: this.duration,

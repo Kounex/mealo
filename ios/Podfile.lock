@@ -40,6 +40,9 @@ PODS:
     - Flutter
   - isar_flutter_libs (1.0.0):
     - Flutter
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
   - SDWebImage (5.15.5):
     - SDWebImage/Core (= 5.15.5)
   - SDWebImage/Core (5.15.5)
@@ -54,6 +57,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - isar_flutter_libs (from `.symlinks/plugins/isar_flutter_libs/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
 
 SPEC REPOS:
@@ -74,6 +78,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   isar_flutter_libs:
     :path: ".symlinks/plugins/isar_flutter_libs/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/ios"
 
@@ -85,6 +91,7 @@ SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
   isar_flutter_libs: b69f437aeab9c521821c3f376198c4371fa21073
+  path_provider_foundation: c68054786f1b4f3343858c1e1d0caaded73f0be9
   SDWebImage: fd7e1a22f00303e058058278639bf6196ee431fe
   shared_preferences_foundation: 986fc17f3d3251412d18b0265f9c64113a8c2472
   SwiftyGif: 93a1cc87bf3a51916001cf8f3d63835fb64c819f

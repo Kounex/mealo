@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:beamer/beamer.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +9,7 @@ import 'package:mealo/utils/modal.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/add_edit_meal_sheet.dart';
 import 'package:mealo/widgets/base/functional/async_value_builder.dart';
 import 'package:mealo/widgets/base/functional/scaffold.dart';
+import 'package:mealo/widgets/base/ui/image.dart';
 import 'package:mealo/widgets/shared/meal_ratings.dart';
 
 import '../../../models/rating/rating.dart';
@@ -68,8 +67,16 @@ class MealDetailsView extends ConsumerWidget {
             //       ? Image.memory(base64Decode(this.meal!.thumbnailBase64!))
             //       : Image.asset('assets/images/meal-placeholder.png'),
             // ),
-            meal.thumbnailBase64 != null
-                ? Image.memory(base64Decode(meal.thumbnailBase64!))
+            meal.thumbnailUUID != null
+                ? Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(24.0),
+                    child: BaseImage(
+                      imageUUID: meal.thumbnailUUID,
+                      height: 192.0,
+                      width: 192.0,
+                    ),
+                  )
                 : Image.asset('assets/images/meal-placeholder.png'),
             BaseAsyncValueBuilder(
               asyncValue: asyncRatings,
@@ -79,14 +86,6 @@ class MealDetailsView extends ConsumerWidget {
                   ratings: ratings,
                   valueMap: meal.ratings,
                 ),
-              ),
-            ),
-            const SizedBox(height: 24.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: ElevatedButton(
-                onPressed: () => _deleteMeal(context),
-                child: const Text('Remove'),
               ),
             ),
           ],

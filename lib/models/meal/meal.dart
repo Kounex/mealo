@@ -2,8 +2,8 @@ import 'package:isar/isar.dart';
 import 'package:mealo/models/tag/tag.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../persistance.dart';
 import '../models.dart';
+import '../persistance.dart';
 
 part 'meal.g.dart';
 
@@ -28,8 +28,8 @@ class Meal extends Model {
   DateTime? lastTimeAte;
 
   String? instructions;
-  String? thumbnailBase64;
-  List<String> imagesBase64 = [];
+  String? thumbnailUUID;
+  List<String> imagesUUIDs = [];
 
   List<RatingMap> ratings = [];
   IsarLinks<Tag> tags = IsarLinks();

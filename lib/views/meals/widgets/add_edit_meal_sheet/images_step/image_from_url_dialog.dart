@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mealo/utils/modal.dart';
@@ -28,7 +26,7 @@ class _ImageFromURLDialogState extends State<ImageFromURLDialog> {
     if (mounted) {
       if (response.headers.value('content-type')?.startsWith('image') ??
           false) {
-        Navigator.of(context).pop(base64Encode(response.data));
+        Navigator.of(context).pop(response.data);
       } else {
         ModalUtils.showBaseDialog(
           context,

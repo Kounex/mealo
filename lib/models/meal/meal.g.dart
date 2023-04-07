@@ -22,9 +22,9 @@ const MealSchema = CollectionSchema(
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
-    r'imagesBase64': PropertySchema(
+    r'imagesUUIDs': PropertySchema(
       id: 1,
-      name: r'imagesBase64',
+      name: r'imagesUUIDs',
       type: IsarType.stringList,
     ),
     r'ingredients': PropertySchema(
@@ -59,9 +59,9 @@ const MealSchema = CollectionSchema(
       type: IsarType.objectList,
       target: r'RatingMap',
     ),
-    r'thumbnailBase64': PropertySchema(
+    r'thumbnailUUID': PropertySchema(
       id: 8,
-      name: r'thumbnailBase64',
+      name: r'thumbnailUUID',
       type: IsarType.string,
     ),
     r'uuid': PropertySchema(
@@ -114,10 +114,10 @@ int _mealEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  bytesCount += 3 + object.imagesBase64.length * 3;
+  bytesCount += 3 + object.imagesUUIDs.length * 3;
   {
-    for (var i = 0; i < object.imagesBase64.length; i++) {
-      final value = object.imagesBase64[i];
+    for (var i = 0; i < object.imagesUUIDs.length; i++) {
+      final value = object.imagesUUIDs[i];
       bytesCount += value.length * 3;
     }
   }
@@ -146,7 +146,7 @@ int _mealEstimateSize(
     }
   }
   {
-    final value = object.thumbnailBase64;
+    final value = object.thumbnailUUID;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -162,7 +162,7 @@ void _mealSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTime(offsets[0], object.createdAt);
-  writer.writeStringList(offsets[1], object.imagesBase64);
+  writer.writeStringList(offsets[1], object.imagesUUIDs);
   writer.writeObjectList<IngredientMap>(
     offsets[2],
     allOffsets,
@@ -179,7 +179,7 @@ void _mealSerialize(
     RatingMapSchema.serialize,
     object.ratings,
   );
-  writer.writeString(offsets[8], object.thumbnailBase64);
+  writer.writeString(offsets[8], object.thumbnailUUID);
   writer.writeString(offsets[9], object.uuid);
 }
 
@@ -191,7 +191,7 @@ Meal _mealDeserialize(
 ) {
   final object = Meal();
   object.createdAt = reader.readDateTime(offsets[0]);
-  object.imagesBase64 = reader.readStringList(offsets[1]) ?? [];
+  object.imagesUUIDs = reader.readStringList(offsets[1]) ?? [];
   object.ingredients = reader.readObjectList<IngredientMap>(
         offsets[2],
         IngredientMapSchema.deserialize,
@@ -210,7 +210,7 @@ Meal _mealDeserialize(
         RatingMap(),
       ) ??
       [];
-  object.thumbnailBase64 = reader.readStringOrNull(offsets[8]);
+  object.thumbnailUUID = reader.readStringOrNull(offsets[8]);
   object.uuid = reader.readString(offsets[9]);
   return object;
 }
@@ -497,21 +497,20 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesBase64ElementEqualTo(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesUUIDsElementEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'imagesBase64',
+        property: r'imagesUUIDs',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition>
-      imagesBase64ElementGreaterThan(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesUUIDsElementGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -519,14 +518,14 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'imagesBase64',
+        property: r'imagesUUIDs',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesBase64ElementLessThan(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesUUIDsElementLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -534,14 +533,14 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'imagesBase64',
+        property: r'imagesUUIDs',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesBase64ElementBetween(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesUUIDsElementBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -550,7 +549,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'imagesBase64',
+        property: r'imagesUUIDs',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -560,80 +559,80 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesBase64ElementStartsWith(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesUUIDsElementStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'imagesBase64',
+        property: r'imagesUUIDs',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesBase64ElementEndsWith(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesUUIDsElementEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'imagesBase64',
+        property: r'imagesUUIDs',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesBase64ElementContains(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesUUIDsElementContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'imagesBase64',
+        property: r'imagesUUIDs',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesBase64ElementMatches(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesUUIDsElementMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'imagesBase64',
+        property: r'imagesUUIDs',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesBase64ElementIsEmpty() {
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesUUIDsElementIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'imagesBase64',
+        property: r'imagesUUIDs',
         value: '',
       ));
     });
   }
 
   QueryBuilder<Meal, Meal, QAfterFilterCondition>
-      imagesBase64ElementIsNotEmpty() {
+      imagesUUIDsElementIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'imagesBase64',
+        property: r'imagesUUIDs',
         value: '',
       ));
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesBase64LengthEqualTo(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesUUIDsLengthEqualTo(
       int length) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'imagesBase64',
+        r'imagesUUIDs',
         length,
         true,
         length,
@@ -642,10 +641,10 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesBase64IsEmpty() {
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesUUIDsIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'imagesBase64',
+        r'imagesUUIDs',
         0,
         true,
         0,
@@ -654,10 +653,10 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesBase64IsNotEmpty() {
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesUUIDsIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'imagesBase64',
+        r'imagesUUIDs',
         0,
         false,
         999999,
@@ -666,13 +665,13 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesBase64LengthLessThan(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesUUIDsLengthLessThan(
     int length, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'imagesBase64',
+        r'imagesUUIDs',
         0,
         true,
         length,
@@ -681,13 +680,13 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesBase64LengthGreaterThan(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesUUIDsLengthGreaterThan(
     int length, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'imagesBase64',
+        r'imagesUUIDs',
         length,
         include,
         999999,
@@ -696,7 +695,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesBase64LengthBetween(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesUUIDsLengthBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -704,7 +703,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'imagesBase64',
+        r'imagesUUIDs',
         lower,
         includeLower,
         upper,
@@ -1346,36 +1345,36 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailBase64IsNull() {
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailUUIDIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'thumbnailBase64',
+        property: r'thumbnailUUID',
       ));
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailBase64IsNotNull() {
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailUUIDIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'thumbnailBase64',
+        property: r'thumbnailUUID',
       ));
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailBase64EqualTo(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailUUIDEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'thumbnailBase64',
+        property: r'thumbnailUUID',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailBase64GreaterThan(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailUUIDGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1383,14 +1382,14 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'thumbnailBase64',
+        property: r'thumbnailUUID',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailBase64LessThan(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailUUIDLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1398,14 +1397,14 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'thumbnailBase64',
+        property: r'thumbnailUUID',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailBase64Between(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailUUIDBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1414,7 +1413,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'thumbnailBase64',
+        property: r'thumbnailUUID',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1424,69 +1423,69 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailBase64StartsWith(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailUUIDStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'thumbnailBase64',
+        property: r'thumbnailUUID',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailBase64EndsWith(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailUUIDEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'thumbnailBase64',
+        property: r'thumbnailUUID',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailBase64Contains(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailUUIDContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'thumbnailBase64',
+        property: r'thumbnailUUID',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailBase64Matches(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailUUIDMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'thumbnailBase64',
+        property: r'thumbnailUUID',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailBase64IsEmpty() {
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailUUIDIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'thumbnailBase64',
+        property: r'thumbnailUUID',
         value: '',
       ));
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailBase64IsNotEmpty() {
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailUUIDIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'thumbnailBase64',
+        property: r'thumbnailUUID',
         value: '',
       ));
     });
@@ -1755,15 +1754,15 @@ extension MealQuerySortBy on QueryBuilder<Meal, Meal, QSortBy> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterSortBy> sortByThumbnailBase64() {
+  QueryBuilder<Meal, Meal, QAfterSortBy> sortByThumbnailUUID() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'thumbnailBase64', Sort.asc);
+      return query.addSortBy(r'thumbnailUUID', Sort.asc);
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterSortBy> sortByThumbnailBase64Desc() {
+  QueryBuilder<Meal, Meal, QAfterSortBy> sortByThumbnailUUIDDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'thumbnailBase64', Sort.desc);
+      return query.addSortBy(r'thumbnailUUID', Sort.desc);
     });
   }
 
@@ -1853,15 +1852,15 @@ extension MealQuerySortThenBy on QueryBuilder<Meal, Meal, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterSortBy> thenByThumbnailBase64() {
+  QueryBuilder<Meal, Meal, QAfterSortBy> thenByThumbnailUUID() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'thumbnailBase64', Sort.asc);
+      return query.addSortBy(r'thumbnailUUID', Sort.asc);
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterSortBy> thenByThumbnailBase64Desc() {
+  QueryBuilder<Meal, Meal, QAfterSortBy> thenByThumbnailUUIDDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'thumbnailBase64', Sort.desc);
+      return query.addSortBy(r'thumbnailUUID', Sort.desc);
     });
   }
 
@@ -1885,9 +1884,9 @@ extension MealQueryWhereDistinct on QueryBuilder<Meal, Meal, QDistinct> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QDistinct> distinctByImagesBase64() {
+  QueryBuilder<Meal, Meal, QDistinct> distinctByImagesUUIDs() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'imagesBase64');
+      return query.addDistinctBy(r'imagesUUIDs');
     });
   }
 
@@ -1917,10 +1916,10 @@ extension MealQueryWhereDistinct on QueryBuilder<Meal, Meal, QDistinct> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QDistinct> distinctByThumbnailBase64(
+  QueryBuilder<Meal, Meal, QDistinct> distinctByThumbnailUUID(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'thumbnailBase64',
+      return query.addDistinctBy(r'thumbnailUUID',
           caseSensitive: caseSensitive);
     });
   }
@@ -1946,9 +1945,9 @@ extension MealQueryProperty on QueryBuilder<Meal, Meal, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Meal, List<String>, QQueryOperations> imagesBase64Property() {
+  QueryBuilder<Meal, List<String>, QQueryOperations> imagesUUIDsProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'imagesBase64');
+      return query.addPropertyName(r'imagesUUIDs');
     });
   }
 
@@ -1989,9 +1988,9 @@ extension MealQueryProperty on QueryBuilder<Meal, Meal, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Meal, String?, QQueryOperations> thumbnailBase64Property() {
+  QueryBuilder<Meal, String?, QQueryOperations> thumbnailUUIDProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'thumbnailBase64');
+      return query.addPropertyName(r'thumbnailUUID');
     });
   }
 

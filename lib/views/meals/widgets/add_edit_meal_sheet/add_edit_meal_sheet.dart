@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:collection/collection.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:isar/isar.dart';
 import 'package:mealo/utils/modal.dart';
 import 'package:mealo/utils/styling.dart';
@@ -15,6 +18,8 @@ import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/tags_step.dart';
 import 'package:mealo/widgets/base/functional/text_form_field.dart';
 import 'package:mealo/widgets/base/ui/divider.dart';
 import 'package:mealo/widgets/dialog/confirmation.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../models/meal/meal.dart';
 import '../../../../models/tag/tag.dart';
@@ -44,11 +49,16 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
   final GlobalKey<FormState> _form = GlobalKey();
   final _name = TextEditingController();
 
-  final List<String> _thumbnailBase64 = [];
-  final List<String> _imagesBase64 = [];
+  final List<String> _thumbnailUUID = [];
+  final List<String> _imagesUUIDs = [];
   final List<Tag> _tags = [];
   final List<RatingMap> _ratingMap = [];
   final List<IngredientMap> _ingredientMap = [];
+
+  final List<XFile> _thumbnailToAdd = [];
+  final List<XFile> _imagesToAdd = [];
+
+  final List<String> _imagesUUIDsToDelete = [];
 
   AddEditMealStep _step = AddEditMealStep.values.first;
 
@@ -57,10 +67,10 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
     super.initState();
 
     if (this.widget.meal != null) {
-      if (this.widget.meal!.thumbnailBase64 != null) {
-        _thumbnailBase64.add(this.widget.meal!.thumbnailBase64!);
+      if (this.widget.meal!.thumbnailUUID != null) {
+        _thumbnailUUID.add(this.widget.meal!.thumbnailUUID!);
       }
-      _imagesBase64.addAll(this.widget.meal!.imagesBase64);
+      _imagesUUIDs.addAll(this.widget.meal!.imagesUUIDs);
       _name.text = this.widget.meal!.name;
       _tags.addAll(this.widget.meal!.tags);
       _ratingMap.addAll(this.widget.meal!.ratings);
@@ -68,15 +78,42 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
     }
   }
 
+  Future<void> _handleImages() async {
+    String path = (await getApplicationDocumentsDirectory()).path;
+    List<Future> deletions = [];
+    for (String uuid in _imagesUUIDsToDelete) {
+      deletions.add(File('$path/$uuid').delete());
+    }
+    await Future.wait(deletions);
+
+    if (_thumbnailToAdd.isNotEmpty) {
+      String uuid = const Uuid().v4();
+      await _thumbnailToAdd.first.saveTo('$path/$uuid');
+      _thumbnailUUID.clear();
+      _thumbnailUUID.add(uuid);
+    }
+
+    for (XFile image in _imagesToAdd) {
+      String uuid = const Uuid().v4();
+      await image.saveTo('$path/$uuid');
+      _imagesUUIDs.add(uuid);
+    }
+  }
+
   void _saveMeal() async {
     Meal meal = this.widget.meal ?? Meal();
+
+    List<FileSystemEntity> lol =
+        (await getApplicationDocumentsDirectory()).listSync();
+
+    await _handleImages();
 
     await IsarUtils.crud(
       (isar) async {
         int id = await isar.meals.put(
           meal
-            ..thumbnailBase64 = _thumbnailBase64.firstOrNull
-            ..imagesBase64 = _imagesBase64
+            ..thumbnailUUID = _thumbnailUUID.firstOrNull
+            ..imagesUUIDs = _imagesUUIDs
             ..name = _name.text.trim()
             ..ratings = _ratingMap
             ..ingredients = _ingredientMap,
@@ -97,9 +134,21 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
   }
 
   void _deleteMeal() async {
-    await IsarUtils.crud(
-        (isar) => isar.meals.deleteByUuid(this.widget.meal!.uuid));
+    if (this.widget.meal != null) {
+      String path = (await getApplicationDocumentsDirectory()).path;
+      List<String> imagesUUIDsToDelete = this.widget.meal!.imagesUUIDs;
+      if (this.widget.meal!.thumbnailUUID != null) {
+        imagesUUIDsToDelete.add(this.widget.meal!.thumbnailUUID!);
+      }
+      List<Future> deletions = [];
+      for (String uuid in imagesUUIDsToDelete) {
+        deletions.add(File('$path/$uuid').delete());
+      }
+      await Future.wait(deletions);
 
+      await IsarUtils.crud(
+          (isar) => isar.meals.deleteByUuid(this.widget.meal!.uuid));
+    }
     if (mounted) {
       Navigator.of(context).pop('delete');
     }
@@ -207,8 +256,11 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                               switch (_step) {
                                 case AddEditMealStep.images:
                                   return ImagesStep(
-                                    thumbnailBase64: _thumbnailBase64,
-                                    imagesBase64: _imagesBase64,
+                                    thumbnailUUID: _thumbnailUUID,
+                                    imagesUUIDs: _imagesUUIDs,
+                                    thumbnailToAdd: _thumbnailToAdd,
+                                    imagesToAdd: _imagesToAdd,
+                                    imagesUUIDsToDelete: _imagesUUIDsToDelete,
                                   );
                                 case AddEditMealStep.tags:
                                   return TagsStep(
