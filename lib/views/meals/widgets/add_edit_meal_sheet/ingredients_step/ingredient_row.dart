@@ -86,19 +86,20 @@ class _IngredientRowState extends State<IngredientRow> {
                   double.tryParse(_amount.text)),
             hintText: 'Amount',
             maxLines: 1,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            // keyboardType: const TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
               TextInputFormatter.withFunction((oldValue, newValue) {
                 try {
-                  final text = newValue.text;
+                  final text = newValue.text.replaceAll(RegExp(r','), '.');
                   if (text.isNotEmpty) double.parse(text);
-                  return newValue;
+                  return newValue.copyWith(text: text);
                 } catch (e) {}
                 return oldValue;
               }),
             ],
             validator: ValidationUtils.number,
+            triggerSubmitOnLoseFocus: true,
             onFieldSubmitted: (text) => text.trim().isNotEmpty
                 ? setState(() => _editAmount = false)
                 : null,

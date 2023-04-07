@@ -53,6 +53,9 @@ dependencies:
   # HTTP client
   dio: ^5.1.1
 
+  # Some hashing functions
+  crypto: ^3.0.2
+
   # UI
   # Consistent theming
   flex_color_scheme: ^7.0.0-dev.3

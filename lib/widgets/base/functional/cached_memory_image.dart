@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui' as ui show Codec, ImmutableBuffer;
 
+import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -24,10 +25,11 @@ class CachedMemoryImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Uint8List bytes = base64Decode(this.imageBase64);
     return Image(
       image: CacheMemoryImageProvider(
-        this.imageBase64.substring(0, 64),
-        base64Decode(this.imageBase64),
+        this.id ?? md5.convert(bytes).toString(),
+        bytes,
       ),
       height: this.height,
       width: this.width,

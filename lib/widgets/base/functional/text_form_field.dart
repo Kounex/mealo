@@ -20,6 +20,7 @@ class BaseTextFormField extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
 
   final bool loseFocusOnTapOutside;
+  final bool triggerSubmitOnLoseFocus;
 
   BaseTextFormField({
     super.key,
@@ -35,6 +36,7 @@ class BaseTextFormField extends StatefulWidget {
     this.textInputAction,
     this.inputFormatters,
     this.loseFocusOnTapOutside = true,
+    this.triggerSubmitOnLoseFocus = false,
   });
 
   @override
@@ -53,6 +55,9 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
     _controller = this.widget.controller ?? TextEditingController();
 
     _focus.addListener(() {
+      if (this.widget.triggerSubmitOnLoseFocus && !_focus.hasFocus) {
+        this.widget.onFieldSubmitted?.call(_controller.text);
+      }
       if (mounted) {
         setState(() {});
       }

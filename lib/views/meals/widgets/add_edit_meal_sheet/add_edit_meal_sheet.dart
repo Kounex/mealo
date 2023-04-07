@@ -12,6 +12,7 @@ import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/ingredients_step/i
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/rating_step.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/stepper_overview.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/tags_step.dart';
+import 'package:mealo/widgets/base/functional/text_form_field.dart';
 import 'package:mealo/widgets/base/ui/divider.dart';
 import 'package:mealo/widgets/dialog/confirmation.dart';
 
@@ -171,14 +172,12 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                 const SizedBox(height: 24.0),
                 Form(
                   key: _form,
-                  child: TextFormField(
+                  child: BaseTextFormField(
                     controller: _name,
                     validator: (name) =>
                         ValidationUtils.name(name?.trim()) ??
                         _checkMealNameUnique(name!),
-                    decoration: const InputDecoration(
-                      hintText: 'Name',
-                    ),
+                    hintText: 'Name',
                   ),
                 ),
                 const SizedBox(height: 24.0),

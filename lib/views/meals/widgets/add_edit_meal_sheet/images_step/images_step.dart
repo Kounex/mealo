@@ -176,8 +176,8 @@ class _ImagesStepState extends State<ImagesStep> {
     return Column(
       children: [
         SizedBox(
-          width: 256,
-          // width: double.infinity,
+          // width: 256,
+          width: double.infinity,
           child: CupertinoSlidingSegmentedControl(
             groupValue: _type,
             children: {}..addEntries(
@@ -196,7 +196,7 @@ class _ImagesStepState extends State<ImagesStep> {
               children: [
                 Column(
                   children: [
-                    const SizedBox(height: 48.0),
+                    const SizedBox(height: 24.0),
                     AnimatedSwitcher(
                       duration: StylingUtils.kBaseAnimationDuration,
                       child: () {
@@ -212,8 +212,12 @@ class _ImagesStepState extends State<ImagesStep> {
                                     onPress: () => setState(() =>
                                         this.widget.thumbnailBase64.clear()),
                                   )
-                                : const BasePlaceholderText(
-                                    text: 'No thumbnail set yet',
+                                : Container(
+                                    height: 172.0,
+                                    alignment: Alignment.center,
+                                    child: const BasePlaceholderText(
+                                      text: 'No thumbnail set yet',
+                                    ),
                                   );
                           case MealImageType.additional:
                             return this.widget.imagesBase64.isNotEmpty
@@ -237,13 +241,17 @@ class _ImagesStepState extends State<ImagesStep> {
                                         )
                                         .toList(),
                                   )
-                                : const BasePlaceholderText(
-                                    text: 'No additional images set yet',
+                                : Container(
+                                    height: 172.0,
+                                    alignment: Alignment.center,
+                                    child: const BasePlaceholderText(
+                                      text: 'No additional images set yet',
+                                    ),
                                   );
                         }
                       }(),
                     ),
-                    const SizedBox(height: 48.0),
+                    const SizedBox(height: 24.0),
                   ],
                 ),
                 FutureBuilder(
@@ -265,13 +273,13 @@ class _ImagesStepState extends State<ImagesStep> {
               ],
             ),
             SizedBox(
-              width: 256,
-              // width: double.infinity,
+              // width: 256,
+              width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
                   _showPhotoPickerSheet(_type == MealImageType.additional);
                 },
-                child: const Text('Select photo'),
+                child: const Text('Select photo(s)'),
               ),
             ),
           ],

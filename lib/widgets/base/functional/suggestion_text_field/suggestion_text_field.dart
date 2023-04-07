@@ -90,9 +90,9 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
   @override
   void dispose() {
     _focus.removeListener(_handleFocusChange);
-    if (_entry.mounted) {
-      _entry.remove();
-    }
+    // if (_entry.mounted) {
+    //   _entry.remove();
+    // }
     super.dispose();
   }
 
