@@ -27,9 +27,7 @@ class MealsView extends StatelessWidget {
           IconButton(
             onPressed: () => ModalUtils.showExpandedModalBottomSheet(
               context,
-              AddEditMealSheet(
-                context: context,
-              ),
+              const AddEditMealSheet(),
             ),
             icon: const Icon(CupertinoIcons.add),
           ),

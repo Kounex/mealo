@@ -32,15 +32,15 @@ class ConfirmationDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () {
-            this.onNo?.call();
             Navigator.of(context).pop();
+            this.onNo?.call();
           },
           child: Text(this.noText ?? 'No'),
         ),
         TextButton(
           onPressed: () {
-            this.onYes?.call();
             Navigator.of(context).pop();
+            this.onYes?.call();
           },
           style: this.isYesDestructive
               ? ButtonStyle(

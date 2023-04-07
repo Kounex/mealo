@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:mealo/utils/modal.dart';
+import 'package:mealo/widgets/dialog/confirmation.dart';
 
 class ActionImage extends StatelessWidget {
   final String imageBase64;
@@ -51,7 +53,15 @@ class ActionImage extends StatelessWidget {
         ),
         if (this.icon != null && this.onPress != null)
           GestureDetector(
-            onTap: this.onPress,
+            onTap: () => ModalUtils.showBaseDialog(
+              context,
+              ConfirmationDialog(
+                title: 'Delete Image',
+                text: 'Are you sure you want to delete this image?',
+                onYes: this.onPress,
+                isYesDestructive: true,
+              ),
+            ),
             child: Container(
               alignment: Alignment.center,
               height: this.actionSize,

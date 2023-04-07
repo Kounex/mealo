@@ -44,6 +44,9 @@ dependencies:
   # Enable camera access and handling
   camera: ^0.10.3
 
+  # Enable photo gallery access
+  image_picker: ^0.8.7+1
+
   # Enable selecting files
   file_picker: ^5.2.5
 

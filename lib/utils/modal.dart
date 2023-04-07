@@ -27,8 +27,8 @@ class ModalUtils {
         constraints: !fullscreen
             ? BoxConstraints(
                 maxHeight:
-                    min(700, MediaQuery.of(context).size.height * (9 / 10)),
-                maxWidth: 700,
+                    min(720, MediaQuery.of(context).size.height * (9 / 10)),
+                maxWidth: 720,
               )
             : null,
         builder: (_) => content,

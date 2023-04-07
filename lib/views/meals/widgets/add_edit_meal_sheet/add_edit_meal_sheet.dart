@@ -1,4 +1,3 @@
-import 'package:beamer/beamer.dart';
 import 'package:collection/collection.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,18 +28,10 @@ enum AddEditMealStep {
 }
 
 class AddEditMealSheet extends ConsumerStatefulWidget {
-  /// I need the [context] of the widget calling this sheet since
-  /// I'm currently using the [showModalBottomSheet] function to
-  /// display this and this will use the root [Navigator]. Therefore
-  /// the [context] here has not access to the full subtree. This means
-  /// I can't access the [Beamer] instance from where I have called
-  /// this sheet and only get the root [Beamer] which is not right.
-  final BuildContext context;
   final Meal? meal;
 
   const AddEditMealSheet({
     super.key,
-    required this.context,
     this.meal,
   });
 
@@ -109,8 +100,7 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
         (isar) => isar.meals.deleteByUuid(this.widget.meal!.uuid));
 
     if (mounted) {
-      Navigator.of(context).pop();
-      Beamer.of(this.widget.context).beamBack();
+      Navigator.of(context).pop('delete');
     }
   }
 
@@ -138,8 +128,7 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
               left: 24.0,
               right: 24.0,
             ),
-            child: ListView(
-              physics: const ClampingScrollPhysics(),
+            child: Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -205,39 +194,47 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                   ),
                 ),
                 const SizedBox(height: 12.0),
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 24.0),
-                    child: AnimatedSwitcher(
-                      duration: StylingUtils.kBaseAnimationDuration,
-                      child: () {
-                        switch (_step) {
-                          case AddEditMealStep.images:
-                            return ImagesStep(
-                              thumbnailBase64: _thumbnailBase64,
-                              imagesBase64: _imagesBase64,
-                            );
-                          case AddEditMealStep.tags:
-                            return TagsStep(
-                              tags: _tags,
-                            );
-                          case AddEditMealStep.ratings:
-                            return RatingStep(
-                              ratingMap: _ratingMap,
-                            );
-                          case AddEditMealStep.ingredients:
-                            return IngredientsStep(
-                              ingredientMap: _ingredientMap,
-                            );
-                        }
-                      }(),
-                    ),
+                Expanded(
+                  child: ListView(
+                    physics: const ClampingScrollPhysics(),
+                    children: [
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 24.0),
+                          child: AnimatedSwitcher(
+                            duration: StylingUtils.kBaseAnimationDuration,
+                            child: () {
+                              switch (_step) {
+                                case AddEditMealStep.images:
+                                  return ImagesStep(
+                                    thumbnailBase64: _thumbnailBase64,
+                                    imagesBase64: _imagesBase64,
+                                  );
+                                case AddEditMealStep.tags:
+                                  return TagsStep(
+                                    tags: _tags,
+                                  );
+                                case AddEditMealStep.ratings:
+                                  return RatingStep(
+                                    ratingMap: _ratingMap,
+                                  );
+                                case AddEditMealStep.ingredients:
+                                  return IngredientsStep(
+                                    ingredientMap: _ingredientMap,
+                                  );
+                              }
+                            }(),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 36.0 +
+                            48.0 +
+                            MediaQuery.of(context).viewPadding.bottom,
+                      ),
+                    ],
                   ),
-                ),
-                SizedBox(
-                  height:
-                      36.0 + 48.0 + MediaQuery.of(context).viewPadding.bottom,
                 ),
               ],
             ),

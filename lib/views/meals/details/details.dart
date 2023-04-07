@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:beamer/beamer.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,10 +50,13 @@ class MealDetailsView extends ConsumerWidget {
                 onPressed: () => ModalUtils.showExpandedModalBottomSheet(
                   context,
                   AddEditMealSheet(
-                    context: context,
                     meal: meal,
                   ),
-                ),
+                ).then((value) {
+                  if (value != null) {
+                    Beamer.of(context).beamBack();
+                  }
+                }),
                 icon: const Icon(FluentIcons.document_edit_24_regular),
               ),
             ],
