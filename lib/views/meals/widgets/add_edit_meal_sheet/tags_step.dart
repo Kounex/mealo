@@ -64,11 +64,14 @@ class _TagsStepState extends ConsumerState<TagsStep> {
                 ),
               );
               if (tag != null) {
-                setState(() => this.widget.tags.add(tag));
+                setState(
+                  () => this.widget.tags.add(tag),
+                );
               }
             },
-            onSuggestionTapped: (tag) =>
-                setState(() => this.widget.tags.add(tag)),
+            onSuggestionTapped: (tag) => setState(
+              () => this.widget.tags.add(tag),
+            ),
           ),
           const SizedBox(height: 24.0),
           this.widget.tags.isNotEmpty
@@ -81,13 +84,16 @@ class _TagsStepState extends ConsumerState<TagsStep> {
                         (tag) => BaseChip(
                           text: tag.name,
                           color: tag.colorHex?.toColor(),
-                          onDeleted: () =>
-                              setState(() => this.widget.tags.remove(tag)),
+                          onDeleted: () => setState(
+                            () => this.widget.tags.remove(tag),
+                          ),
                         ),
                       )
                       .toList(),
                 )
-              : const BasePlaceholderText(text: 'No tags set yet'),
+              : const Center(
+                  child: BasePlaceholderText(text: 'No tags added yet'),
+                ),
         ],
       ),
     );

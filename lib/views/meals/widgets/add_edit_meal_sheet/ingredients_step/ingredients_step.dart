@@ -56,15 +56,19 @@ class _IngredientsStepState extends ConsumerState<IngredientsStep> {
               if (this.widget.ingredientMap.isEmpty) ...[
                 const SizedBox(height: 8.0),
                 const BasePlaceholderText(text: 'No ingredients added yet'),
-                const SizedBox(height: 24.0),
+                const SizedBox(height: 12.0),
               ],
-              const BaseDivider(),
               const SizedBox(height: 12.0),
-              ElevatedButton(
-                onPressed: () => setState(
-                  () => this.widget.ingredientMap.add(IngredientMap()),
+              const BaseDivider(),
+              const SizedBox(height: 24.0),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => setState(
+                    () => this.widget.ingredientMap.add(IngredientMap()),
+                  ),
+                  child: const Text('Add ingredient'),
                 ),
-                child: const Text('Add ingredient'),
               ),
             ],
           ),

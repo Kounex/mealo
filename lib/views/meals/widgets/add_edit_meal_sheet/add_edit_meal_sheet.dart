@@ -11,14 +11,15 @@ import 'package:mealo/utils/validation.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/images_step/images_step.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/ingredients_step/ingredients_step.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/rating_step.dart';
-import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/stepper_control.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/stepper_overview.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/tags_step.dart';
+import 'package:mealo/widgets/base/ui/divider.dart';
 import 'package:mealo/widgets/dialog/confirmation.dart';
 
 import '../../../../models/meal/meal.dart';
 import '../../../../models/tag/tag.dart';
 import '../../../../utils/isar.dart';
+import 'stepper_control.dart';
 
 enum AddEditMealStep {
   images,
@@ -128,179 +129,154 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    '${this.widget.meal != null ? "Edit" : "New"} Meal',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  if (this.widget.meal != null)
-                    Padding(
-                      padding: const EdgeInsets.only(left: 4.0),
-                      child: IconButton(
-                        onPressed: () => ModalUtils.showBaseDialog(
-                          context,
-                          ConfirmationDialog(
-                            isYesDestructive: true,
-                            onYes: () => _deleteMeal(),
-                          ),
+    return Stack(
+      children: [
+        Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.only(
+              top: 24.0,
+              left: 24.0,
+              right: 24.0,
+            ),
+            child: ListView(
+              physics: const ClampingScrollPhysics(),
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          '${this.widget.meal != null ? "Edit" : "New"} Meal',
+                          style: Theme.of(context).textTheme.headlineMedium,
                         ),
-
-                        /// With M3, elevation will have an impact on the color of some
-                        /// components like [Card] or [BottomSheet]. Basically a
-                        /// so called [surfaceTint] is going to be applied to the
-                        /// base color with an opacity based on the elevation. This
-                        /// makes it very difficult to mimic a color as needed in
-                        /// this use case since we are working with opcaity which
-                        /// can't be stacked...
-                        ///
-                        // icon: Container(
-                        //   height: 32.0,
-                        //   width: 32.0,
-                        //   alignment: Alignment.center,
-                        //   child: Stack(
-                        //     fit: StackFit.expand,
-                        //     children: [
-                        //       const Icon(FluentIcons.food_24_filled),
-                        //       Positioned(
-                        //         right: 0,
-                        //         top: 0,
-                        //         child: Container(
-                        //           height: 32.0,
-                        //           width: 32.0,
-                        //           alignment: Alignment.center,
-                        //           decoration: BoxDecoration(
-                        //             color: ElevationOverlay.applySurfaceTint(
-                        //               Theme.of(context)
-                        //                   .bottomSheetTheme
-                        //                   .backgroundColor!,
-                        //               Theme.of(context).colorScheme.surfaceTint,
-                        //               Theme.of(context)
-                        //                   .bottomSheetTheme
-                        //                   .elevation!,
-                        //             ),
-                        //             shape: BoxShape.circle,
-                        //           ),
-                        //           child: Transform.translate(
-                        //             offset: const Offset(0.4, 0),
-                        //             child: const Icon(
-                        //               CupertinoIcons.clear_circled_solid,
-                        //               size: 12.0,
-                        //             ),
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        icon: const Icon(FluentIcons.delete_dismiss_24_regular),
-                        color: Theme.of(context).colorScheme.error,
-                      ),
+                        if (this.widget.meal != null)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 4.0),
+                            child: IconButton(
+                              onPressed: () => ModalUtils.showBaseDialog(
+                                context,
+                                ConfirmationDialog(
+                                  isYesDestructive: true,
+                                  onYes: () => _deleteMeal(),
+                                ),
+                              ),
+                              icon: const Icon(
+                                  FluentIcons.delete_dismiss_24_regular),
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                          ),
+                      ],
                     ),
-                ],
-              ),
-              IconButton(
-                icon: const Icon(CupertinoIcons.clear),
-                onPressed: () {
-                  /// Important step - this makes sure that all changes we made
-                  /// here are set back to its original value
-                  ref.invalidate(mealsProvider);
-                  Navigator.of(context).pop();
-                },
+                    IconButton(
+                      icon: const Icon(CupertinoIcons.clear),
+                      onPressed: () {
+                        /// Important step - this makes sure that all changes we made
+                        /// here are set back to its original value
+                        ref.invalidate(mealsProvider);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24.0),
+                Form(
+                  key: _form,
+                  child: TextFormField(
+                    controller: _name,
+                    validator: (name) =>
+                        ValidationUtils.name(name?.trim()) ??
+                        _checkMealNameUnique(name!),
+                    decoration: const InputDecoration(
+                      hintText: 'Name',
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24.0),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: StepperOverview(
+                    step: _step.index,
+                    max: AddEditMealStep.values.length - 1,
+                    size: 42,
+                    onStepTapped: (step) => setState(
+                      () => _step = AddEditMealStep.values[step],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12.0),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 24.0),
+                    child: AnimatedSwitcher(
+                      duration: StylingUtils.kBaseAnimationDuration,
+                      child: () {
+                        switch (_step) {
+                          case AddEditMealStep.images:
+                            return ImagesStep(
+                              thumbnailBase64: _thumbnailBase64,
+                              imagesBase64: _imagesBase64,
+                            );
+                          case AddEditMealStep.tags:
+                            return TagsStep(
+                              tags: _tags,
+                            );
+                          case AddEditMealStep.ratings:
+                            return RatingStep(
+                              ratingMap: _ratingMap,
+                            );
+                          case AddEditMealStep.ingredients:
+                            return IngredientsStep(
+                              ingredientMap: _ingredientMap,
+                            );
+                        }
+                      }(),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height:
+                      36.0 + 48.0 + MediaQuery.of(context).viewPadding.bottom,
+                ),
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const BaseDivider(),
+              Material(
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0) +
+                      MediaQuery.of(context).viewPadding,
+                  child: StepperControl(
+                    step: _step.index,
+                    max: AddEditMealStep.values.length - 1,
+                    onBack: () => setState(
+                      () => _step = AddEditMealStep.values[_step.index - 1],
+                    ),
+                    onNext: () => setState(
+                      () => _step = AddEditMealStep.values[_step.index + 1],
+                    ),
+                    onSave: () {
+                      if (_form.currentState!.validate()) {
+                        _saveMeal();
+                        setState(() {});
+                      }
+                    },
+                  ),
+                ),
               ),
             ],
           ),
-          const SizedBox(height: 24.0),
-          Form(
-            key: _form,
-            child: TextFormField(
-              controller: _name,
-              validator: (name) =>
-                  ValidationUtils.name(name?.trim()) ??
-                  _checkMealNameUnique(name!),
-              decoration: const InputDecoration(
-                hintText: 'Name',
-              ),
-            ),
-          ),
-          const SizedBox(height: 24.0),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: StepperOverview(
-              step: _step.index,
-              max: AddEditMealStep.values.length - 1,
-              size: 42,
-              onStepTapped: (step) => setState(
-                () => _step = AddEditMealStep.values[step],
-              ),
-            ),
-          ),
-          const SizedBox(height: 12.0),
-          Expanded(
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 24.0),
-                child: AnimatedSwitcher(
-                  duration: StylingUtils.kBaseAnimationDuration,
-                  child: () {
-                    switch (_step) {
-                      case AddEditMealStep.images:
-                        return ImagesStep(
-                          thumbnailBase64: _thumbnailBase64,
-                          imagesBase64: _imagesBase64,
-                        );
-                      case AddEditMealStep.tags:
-                        return SingleChildScrollView(
-                          child: TagsStep(
-                            tags: _tags,
-                          ),
-                        );
-                      case AddEditMealStep.ratings:
-                        return SingleChildScrollView(
-                          child: RatingStep(
-                            ratingMap: _ratingMap,
-                          ),
-                        );
-                      case AddEditMealStep.ingredients:
-                        return SingleChildScrollView(
-                          child: IngredientsStep(
-                            ingredientMap: _ingredientMap,
-                          ),
-                        );
-                    }
-                  }(),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 12.0),
-          StepperControl(
-            step: _step.index,
-            max: AddEditMealStep.values.length - 1,
-            onBack: () => setState(
-              () => _step = AddEditMealStep.values[_step.index - 1],
-            ),
-            onNext: () => setState(
-              () => _step = AddEditMealStep.values[_step.index + 1],
-            ),
-            onSave: () {
-              if (_form.currentState!.validate()) {
-                _saveMeal();
-                setState(() {});
-              }
-            },
-          ),
-          const SizedBox(height: 24.0),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

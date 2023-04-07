@@ -8,7 +8,8 @@ import 'package:mealo/utils/styling.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/images_step/action_image.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/images_step/image_from_url_dialog.dart';
 import 'package:mealo/widgets/base/functional/camera/camera.dart';
-import 'package:mealo/widgets/base/ui/result.dart';
+
+import '../../../../../widgets/base/ui/placeholder_text.dart';
 
 enum MealImageType {
   thumbnail,
@@ -125,6 +126,7 @@ class _ImagesStepState extends State<ImagesStep> {
       children: [
         SizedBox(
           width: 256,
+          // width: double.infinity,
           child: CupertinoSlidingSegmentedControl(
             groupValue: _type,
             children: {}..addEntries(
@@ -137,76 +139,72 @@ class _ImagesStepState extends State<ImagesStep> {
           ),
         ),
         const SizedBox(height: 48.0),
-        SingleChildScrollView(
-          child: AnimatedSwitcher(
-            duration: StylingUtils.kBaseAnimationDuration,
-            child: () {
-              switch (_type) {
-                case MealImageType.thumbnail:
-                  return Column(
-                    key: ValueKey(_type),
-                    children: [
-                      this.widget.thumbnailBase64.isNotEmpty
-                          ? ActionImage(
-                              imageBase64: this.widget.thumbnailBase64.first,
-                              height: 128.0,
-                              icon: CupertinoIcons.clear,
-                              onPress: () {},
-                            )
-                          : const BaseResult(
-                              text: 'No thumbnail set yet',
-                              icon: BaseResultIcon.Missing,
-                              iconSize: 48,
-                            ),
-                      const SizedBox(height: 48.0),
-                      SizedBox(
-                        width: 256,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            _showPhotoPickerSheet();
-                          },
-                          child: const Text('Select photo'),
-                        ),
+        AnimatedSwitcher(
+          duration: StylingUtils.kBaseAnimationDuration,
+          child: () {
+            switch (_type) {
+              case MealImageType.thumbnail:
+                return Column(
+                  key: ValueKey(_type),
+                  children: [
+                    this.widget.thumbnailBase64.isNotEmpty
+                        ? ActionImage(
+                            imageBase64: this.widget.thumbnailBase64.first,
+                            height: 128.0,
+                            icon: CupertinoIcons.clear,
+                            onPress: () {},
+                          )
+                        : const BasePlaceholderText(
+                            text: 'No thumbnail set yet',
+                          ),
+                    const SizedBox(height: 48.0),
+                    SizedBox(
+                      // width: 256,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _showPhotoPickerSheet();
+                        },
+                        child: const Text('Select photo'),
                       ),
-                    ],
-                  );
-                case MealImageType.additional:
-                  return Column(
-                    key: ValueKey(_type),
-                    children: [
-                      this.widget.imagesBase64.isNotEmpty
-                          ? Wrap(
-                              children: this
-                                  .widget
-                                  .imagesBase64
-                                  .map(
-                                    (imageBase64) => Image.memory(
-                                      base64Decode(imageBase64),
-                                      height: 48.0,
-                                    ),
-                                  )
-                                  .toList(),
-                            )
-                          : const BaseResult(
-                              text: 'No additional images set yet',
-                              icon: BaseResultIcon.Missing,
-                              iconSize: 48,
-                            ),
-                      const SizedBox(height: 48.0),
-                      SizedBox(
-                        width: 256,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            _showPhotoPickerSheet();
-                          },
-                          child: const Text('Select photo'),
-                        ),
+                    ),
+                  ],
+                );
+              case MealImageType.additional:
+                return Column(
+                  key: ValueKey(_type),
+                  children: [
+                    this.widget.imagesBase64.isNotEmpty
+                        ? Wrap(
+                            children: this
+                                .widget
+                                .imagesBase64
+                                .map(
+                                  (imageBase64) => Image.memory(
+                                    base64Decode(imageBase64),
+                                    height: 48.0,
+                                  ),
+                                )
+                                .toList(),
+                          )
+                        : const BasePlaceholderText(
+                            text: 'No additional images set yet',
+                          ),
+                    const SizedBox(height: 48.0),
+                    SizedBox(
+                      // width: 256,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _showPhotoPickerSheet();
+                        },
+                        child: const Text('Select photo'),
                       ),
-                    ],
-                  );
-              }
-            }(),
-          ),
+                    ),
+                  ],
+                );
+            }
+          }(),
         )
       ],
     );
