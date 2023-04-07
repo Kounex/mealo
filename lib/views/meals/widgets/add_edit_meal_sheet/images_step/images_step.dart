@@ -265,8 +265,8 @@ class _ImagesStepState extends State<ImagesStep> {
               ],
             ),
             SizedBox(
-              // width: 256,
-              width: double.infinity,
+              width: 256,
+              // width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
                   _showPhotoPickerSheet(_type == MealImageType.additional);
