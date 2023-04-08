@@ -144,7 +144,7 @@ class _ImagesStepState extends State<ImagesStep> {
         setState(() {
           _pickFuture = picker.pickImage(source: ImageSource.camera);
         });
-        photos.addAll(await _pickFuture);
+        photos.add(await _pickFuture);
         break;
       case ImagePickerType.gallery:
         if (multiple) {

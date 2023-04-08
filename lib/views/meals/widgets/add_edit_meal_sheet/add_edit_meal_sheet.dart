@@ -103,9 +103,6 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
   void _saveMeal() async {
     Meal meal = this.widget.meal ?? Meal();
 
-    List<FileSystemEntity> lol =
-        (await getApplicationDocumentsDirectory()).listSync();
-
     await _handleImages();
 
     await IsarUtils.crud(
@@ -136,7 +133,7 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
   void _deleteMeal() async {
     if (this.widget.meal != null) {
       String path = (await getApplicationDocumentsDirectory()).path;
-      List<String> imagesUUIDsToDelete = this.widget.meal!.imagesUUIDs;
+      List<String> imagesUUIDsToDelete = [...this.widget.meal!.imagesUUIDs];
       if (this.widget.meal!.thumbnailUUID != null) {
         imagesUUIDsToDelete.add(this.widget.meal!.thumbnailUUID!);
       }

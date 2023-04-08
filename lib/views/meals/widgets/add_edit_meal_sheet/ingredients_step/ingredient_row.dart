@@ -52,6 +52,7 @@ class _IngredientRowState extends State<IngredientRow> {
           text: amount.truncateToDouble() == amount
               ? amount.toStringAsFixed(0)
               : amount.toString());
+      _editAmount = false;
     } else {
       _amount = TextEditingController();
     }
