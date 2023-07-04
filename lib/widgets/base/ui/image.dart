@@ -4,10 +4,10 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mealo/utils/modal.dart';
-import 'package:mealo/widgets/base/functional/cached_memory_image.dart';
-import 'package:mealo/widgets/base/ui/progress_indicator.dart';
-import 'package:mealo/widgets/dialog/confirmation.dart';
+import '../../../utils/modal.dart';
+import '../functional/cached_memory_image.dart';
+import 'progress_indicator.dart';
+import '../../dialog/confirmation.dart';
 import 'package:path_provider/path_provider.dart';
 
 class BaseImage extends StatelessWidget {

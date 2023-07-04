@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-import 'package:mealo/utils/isar.dart';
+import '../../utils/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../models/meal/meal.dart';

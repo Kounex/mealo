@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/models/tag/tag.dart';
-import 'package:mealo/utils/modal.dart';
-import 'package:mealo/utils/validation.dart';
-import 'package:mealo/widgets/dialog/confirmation.dart';
+import '../../../../models/tag/tag.dart';
+import '../../../../utils/modal.dart';
+import '../../../../utils/validation.dart';
+import '../../../dialog/confirmation.dart';
 
 import '../../../../types/extensions/color.dart';
 import '../../../../utils/isar.dart';

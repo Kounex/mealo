@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mealo/utils/styling.dart';
+import '../../../utils/styling.dart';
 
 class BaseTextFormField extends StatefulWidget {
   final FocusNode? focusNode;

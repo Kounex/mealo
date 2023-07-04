@@ -1,6 +1,6 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:mealo/utils/styling.dart';
+import 'styling.dart';
 
 /// Base themes are based on Grey Law with Material 3 on and using
 /// Material 3 error colors

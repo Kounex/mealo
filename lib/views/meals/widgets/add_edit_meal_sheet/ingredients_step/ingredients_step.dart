@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/models/ingredient/ingredient.dart';
-import 'package:mealo/models/meal/meal.dart';
-import 'package:mealo/models/unit/unit.dart';
-import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/ingredients_step/ingredient_row.dart';
-import 'package:mealo/widgets/base/functional/async_value_builder.dart';
-import 'package:mealo/widgets/base/ui/divider.dart';
-import 'package:mealo/widgets/base/ui/placeholder_text.dart';
+import '../../../../../models/ingredient/ingredient.dart';
+import '../../../../../models/meal/meal.dart';
+import '../../../../../models/unit/unit.dart';
+import 'ingredient_row.dart';
+import '../../../../../widgets/base/functional/async_value_builder.dart';
+import '../../../../../widgets/base/ui/divider.dart';
+import '../../../../../widgets/base/ui/placeholder_text.dart';
 
 class IngredientsStep extends ConsumerStatefulWidget {
   final List<IngredientMap> ingredientMap;

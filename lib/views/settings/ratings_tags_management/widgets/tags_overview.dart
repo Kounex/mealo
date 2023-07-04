@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/models/tag/tag.dart';
-import 'package:mealo/types/extensions/string.dart';
-import 'package:mealo/widgets/base/ui/chip.dart';
-import 'package:mealo/widgets/shared/dialog/add_edit_tag/add_edit_tag.dart';
+import '../../../../models/tag/tag.dart';
+import '../../../../types/extensions/string.dart';
+import '../../../../widgets/base/ui/chip.dart';
+import '../../../../widgets/shared/dialog/add_edit_tag/add_edit_tag.dart';
 
 import '../../../../utils/modal.dart';
 import '../../../../widgets/base/functional/async_value_builder.dart';

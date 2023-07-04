@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mealo/utils/styling.dart';
+import '../../../utils/styling.dart';
 
 import 'divider.dart';
 

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/stores/views/home.dart';
-import 'package:mealo/utils/isar.dart';
+import '../../../../stores/views/home.dart';
+import '../../../../utils/isar.dart';
 
 import '../../../../models/meal/meal.dart';
 import '../../../../utils/router.dart';

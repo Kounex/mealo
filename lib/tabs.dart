@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/stores/shared/tabs.dart';
-import 'package:mealo/utils/styling.dart';
+import 'stores/shared/tabs.dart';
+import 'utils/styling.dart';
 
 import 'utils/router.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mealo/utils/styling.dart';
+import '../../../utils/styling.dart';
 
 class BaseChip extends StatelessWidget {
   final String? text;

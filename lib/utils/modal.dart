@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:mealo/utils/styling.dart';
+import 'styling.dart';
 
 class ModalUtils {
   static Future<T?> showBaseDialog<T>(

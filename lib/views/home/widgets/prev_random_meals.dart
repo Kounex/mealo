@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mealo/stores/views/home.dart';
-import 'package:mealo/utils/router.dart';
-import 'package:mealo/widgets/shared/meal_grid.dart';
+import '../../../stores/views/home.dart';
+import '../../../utils/router.dart';
+import '../../../widgets/shared/meal_grid.dart';
 
 import '../../../widgets/base/ui/card.dart';
 

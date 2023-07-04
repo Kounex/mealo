@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/widgets/base/ui/progress_indicator.dart';
+import '../ui/progress_indicator.dart';
 
 class BaseAsyncValueBuilder<T> extends StatelessWidget {
   final AsyncValue<T> asyncValue;

@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/views/settings/ratings_tags_management/widgets/ratings_overview.dart';
-import 'package:mealo/views/settings/ratings_tags_management/widgets/tags_overview.dart';
-import 'package:mealo/widgets/base/functional/scaffold.dart';
-import 'package:mealo/widgets/shared/dialog/add_edit_rating.dart';
-import 'package:mealo/widgets/shared/dialog/add_edit_tag/add_edit_tag.dart';
+import 'widgets/ratings_overview.dart';
+import 'widgets/tags_overview.dart';
+import '../../../widgets/base/functional/scaffold.dart';
+import '../../../widgets/shared/dialog/add_edit_rating.dart';
+import '../../../widgets/shared/dialog/add_edit_tag/add_edit_tag.dart';
 
 class RatingsTagsManagementView extends ConsumerStatefulWidget {
   const RatingsTagsManagementView({super.key});

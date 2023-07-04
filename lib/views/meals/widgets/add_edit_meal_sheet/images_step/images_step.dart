@@ -3,11 +3,11 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mealo/utils/modal.dart';
-import 'package:mealo/utils/styling.dart';
-import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/images_step/image_from_url_dialog.dart';
-import 'package:mealo/widgets/base/ui/image.dart';
-import 'package:mealo/widgets/base/ui/progress_indicator.dart';
+import '../../../../../utils/modal.dart';
+import '../../../../../utils/styling.dart';
+import 'image_from_url_dialog.dart';
+import '../../../../../widgets/base/ui/image.dart';
+import '../../../../../widgets/base/ui/progress_indicator.dart';
 
 import '../../../../../widgets/base/ui/placeholder_text.dart';
 

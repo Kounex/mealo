@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:mealo/widgets/themed/cupertino_sliver_navigation_bar.dart';
+import '../../themed/cupertino_sliver_navigation_bar.dart';
 
 import '../../../utils/styling.dart';
 import '../../flutter_modified/translucent_sliver_app_bar.dart';

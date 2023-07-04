@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:mealo/widgets/base/functional/text_form_field.dart';
+import '../text_form_field.dart';
 
 import 'suggestion_overlay.dart';
 

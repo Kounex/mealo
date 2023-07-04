@@ -1,7 +1,7 @@
 import 'package:isar/isar.dart';
-import 'package:mealo/models/ingredient/ingredient.dart';
-import 'package:mealo/models/rating/rating.dart';
-import 'package:mealo/models/tag/tag.dart';
+import '../models/ingredient/ingredient.dart';
+import '../models/rating/rating.dart';
+import '../models/tag/tag.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/settings/settings.dart';

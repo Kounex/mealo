@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:mealo/widgets/base/ui/progress_indicator.dart';
+import '../../ui/progress_indicator.dart';
 
 class BaseCameraUI extends StatefulWidget {
   final List<CameraDescription> cameras;

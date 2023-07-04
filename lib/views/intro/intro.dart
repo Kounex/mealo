@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mealo/utils/modal.dart';
-import 'package:mealo/utils/router.dart';
-import 'package:mealo/widgets/base/functional/camera/camera.dart';
+import '../../utils/modal.dart';
+import '../../utils/router.dart';
+import '../../widgets/base/functional/camera/camera.dart';
 
 class IntroView extends StatelessWidget {
   const IntroView({super.key});

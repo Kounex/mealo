@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mealo/widgets/base/ui/divider.dart';
+import '../base/ui/divider.dart';
 
 import '../../models/meal/meal.dart';
 import '../../models/rating/rating.dart';

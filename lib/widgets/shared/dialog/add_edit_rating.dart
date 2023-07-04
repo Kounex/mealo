@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/models/rating/rating.dart';
-import 'package:mealo/utils/modal.dart';
-import 'package:mealo/widgets/dialog/confirmation.dart';
+import '../../../models/rating/rating.dart';
+import '../../../utils/modal.dart';
+import '../../dialog/confirmation.dart';
 
 import '../../../../widgets/base/functional/text_form_field.dart';
 import '../../../utils/isar.dart';

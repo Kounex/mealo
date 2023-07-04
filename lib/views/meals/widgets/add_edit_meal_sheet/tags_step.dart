@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/models/tag/tag.dart';
-import 'package:mealo/utils/modal.dart';
-import 'package:mealo/widgets/base/functional/async_value_builder.dart';
-import 'package:mealo/widgets/base/functional/suggestion_text_field/suggestion_text_field.dart';
-import 'package:mealo/widgets/base/ui/chip.dart';
-import 'package:mealo/widgets/base/ui/placeholder_text.dart';
+import '../../../../models/tag/tag.dart';
+import '../../../../utils/modal.dart';
+import '../../../../widgets/base/functional/async_value_builder.dart';
+import '../../../../widgets/base/functional/suggestion_text_field/suggestion_text_field.dart';
+import '../../../../widgets/base/ui/chip.dart';
+import '../../../../widgets/base/ui/placeholder_text.dart';
 
 import '../../../../types/extensions/string.dart';
 import '../../../../widgets/shared/dialog/add_edit_tag/add_edit_tag.dart';

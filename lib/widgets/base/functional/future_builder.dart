@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mealo/widgets/base/ui/result.dart';
+import '../ui/result.dart';
 
 import '../ui/progress_indicator.dart';
 

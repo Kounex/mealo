@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mealo/models/meal/meal.dart';
-import 'package:mealo/utils/modal.dart';
+import '../../models/meal/meal.dart';
+import '../../utils/modal.dart';
 
 import '../../utils/router.dart';
 import '../../widgets/base/functional/scaffold.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mealo/models/ingredient/ingredient.dart';
+import '../../../../../models/ingredient/ingredient.dart';
 
 import '../../../../../utils/isar.dart';
 import '../../../../../utils/modal.dart';

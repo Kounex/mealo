@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mealo/widgets/base/functional/future_builder.dart';
-import 'package:mealo/widgets/base/ui/result.dart';
+import '../future_builder.dart';
+import '../../ui/result.dart';
 
 import 'ui.dart';
 

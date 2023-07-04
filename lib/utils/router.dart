@@ -2,12 +2,12 @@ import 'package:beamer/beamer.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mealo/tabs.dart';
-import 'package:mealo/views/home/home.dart';
-import 'package:mealo/views/intro/intro.dart';
-import 'package:mealo/views/meals/meals.dart';
-import 'package:mealo/views/settings/ratings_tags_management/ratings_tags_management.dart';
-import 'package:mealo/views/settings/settings.dart';
+import '../tabs.dart';
+import '../views/home/home.dart';
+import '../views/intro/intro.dart';
+import '../views/meals/meals.dart';
+import '../views/settings/ratings_tags_management/ratings_tags_management.dart';
+import '../views/settings/settings.dart';
 
 import '../views/meals/details/details.dart';
 

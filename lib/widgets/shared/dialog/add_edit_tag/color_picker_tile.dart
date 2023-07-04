@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:mealo/utils/modal.dart';
-import 'package:mealo/widgets/dialog/confirmation.dart';
+import '../../../../utils/modal.dart';
+import '../../../dialog/confirmation.dart';
 
 import '../../../../types/extensions/string.dart';
 

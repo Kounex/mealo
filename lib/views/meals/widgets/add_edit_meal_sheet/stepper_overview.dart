@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mealo/utils/styling.dart';
-import 'package:mealo/widgets/base/ui/divider.dart';
+import '../../../../utils/styling.dart';
+import '../../../../widgets/base/ui/divider.dart';
 
 class StepperOverview extends StatelessWidget {
   final int step;

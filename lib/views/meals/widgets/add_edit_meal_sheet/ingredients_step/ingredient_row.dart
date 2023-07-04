@@ -1,11 +1,11 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:mealo/models/ingredient/ingredient.dart';
-import 'package:mealo/models/meal/meal.dart';
-import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/ingredients_step/amount_text_field.dart';
-import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/ingredients_step/ingredient_suggest_field%20copy.dart';
-import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/ingredients_step/unit_suggest_field.dart';
-import 'package:mealo/widgets/base/ui/chip.dart';
+import '../../../../../models/ingredient/ingredient.dart';
+import '../../../../../models/meal/meal.dart';
+import 'amount_text_field.dart';
+import 'ingredient_suggest_field%20copy.dart';
+import 'unit_suggest_field.dart';
+import '../../../../../widgets/base/ui/chip.dart';
 
 import '../../../../../models/unit/unit.dart';
 import '../../../../../utils/validation.dart';

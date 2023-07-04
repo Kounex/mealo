@@ -2,15 +2,15 @@ import 'package:beamer/beamer.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/models/meal/meal.dart';
-import 'package:mealo/stores/views/home.dart';
-import 'package:mealo/utils/isar.dart';
-import 'package:mealo/utils/modal.dart';
-import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/add_edit_meal_sheet.dart';
-import 'package:mealo/widgets/base/functional/async_value_builder.dart';
-import 'package:mealo/widgets/base/functional/scaffold.dart';
-import 'package:mealo/widgets/base/ui/image.dart';
-import 'package:mealo/widgets/shared/meal_ratings.dart';
+import '../../../models/meal/meal.dart';
+import '../../../stores/views/home.dart';
+import '../../../utils/isar.dart';
+import '../../../utils/modal.dart';
+import '../widgets/add_edit_meal_sheet/add_edit_meal_sheet.dart';
+import '../../../widgets/base/functional/async_value_builder.dart';
+import '../../../widgets/base/functional/scaffold.dart';
+import '../../../widgets/base/ui/image.dart';
+import '../../../widgets/shared/meal_ratings.dart';
 
 import '../../../models/rating/rating.dart';
 

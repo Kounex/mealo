@@ -1,15 +1,15 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/models/meal/meal.dart';
-import 'package:mealo/stores/views/home.dart';
-import 'package:mealo/utils/styling.dart';
-import 'package:mealo/views/home/widgets/meal_randomizer/meal_shuffle.dart';
-import 'package:mealo/views/home/widgets/meal_randomizer/suggested_meal.dart';
-import 'package:mealo/widgets/animation/text_shimmer.dart';
-import 'package:mealo/widgets/base/functional/async_value_builder.dart';
-import 'package:mealo/widgets/base/ui/divider.dart';
-import 'package:mealo/widgets/base/ui/progress_indicator.dart';
+import '../../../../models/meal/meal.dart';
+import '../../../../stores/views/home.dart';
+import '../../../../utils/styling.dart';
+import 'meal_shuffle.dart';
+import 'suggested_meal.dart';
+import '../../../../widgets/animation/text_shimmer.dart';
+import '../../../../widgets/base/functional/async_value_builder.dart';
+import '../../../../widgets/base/ui/divider.dart';
+import '../../../../widgets/base/ui/progress_indicator.dart';
 
 import '../../../../widgets/base/ui/card.dart';
 

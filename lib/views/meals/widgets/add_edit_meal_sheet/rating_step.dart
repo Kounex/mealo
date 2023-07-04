@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/widgets/base/functional/async_value_builder.dart';
+import '../../../../widgets/base/functional/async_value_builder.dart';
 
 import '../../../../models/meal/meal.dart';
 import '../../../../models/rating/rating.dart';

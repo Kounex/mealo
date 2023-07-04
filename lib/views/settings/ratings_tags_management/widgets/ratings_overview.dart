@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/models/rating/rating.dart';
-import 'package:mealo/widgets/base/ui/chip.dart';
-import 'package:mealo/widgets/shared/dialog/add_edit_rating.dart';
+import '../../../../models/rating/rating.dart';
+import '../../../../widgets/base/ui/chip.dart';
+import '../../../../widgets/shared/dialog/add_edit_rating.dart';
 
 import '../../../../utils/modal.dart';
 import '../../../../widgets/base/functional/async_value_builder.dart';
