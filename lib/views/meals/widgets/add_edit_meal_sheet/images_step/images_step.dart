@@ -81,22 +81,21 @@ class _ImagesStepState extends State<ImagesStep> {
   Future? _pickFuture;
 
   Future<List<String>> _showPhotoPickerSheet([bool multiple = false]) async {
-    ImagePickerType? type = await showModalBottomSheet<ImagePickerType>(
-      context: context,
-      builder: (context) => SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: ImagePickerType.values
-              .map(
-                (type) => ListTile(
-                  title: Text(type.text),
-                  leading: Icon(type.icon),
-                  onTap: () => Navigator.of(context).pop(type),
-                ),
-              )
-              .toList(),
-        ),
+    ImagePickerType? type =
+        await ModalUtils.showBaseModalBottomSheet<ImagePickerType>(
+      context,
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: ImagePickerType.values
+            .map(
+              (type) => ListTile(
+                title: Text(type.text),
+                leading: Icon(type.icon),
+                onTap: () => Navigator.of(context).pop(type),
+              ),
+            )
+            .toList(),
       ),
     );
 

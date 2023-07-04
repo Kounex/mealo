@@ -15,7 +15,10 @@ class PressDoneTag extends StatelessWidget {
       ),
       child: Text(
         'Press Done',
-        style: Theme.of(context).textTheme.labelSmall,
+        style: Theme.of(context)
+            .textTheme
+            .labelSmall!
+            .copyWith(color: Theme.of(context).colorScheme.onPrimary),
       ),
     );
   }

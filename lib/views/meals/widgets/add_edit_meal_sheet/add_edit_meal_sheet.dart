@@ -228,11 +228,17 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                 ),
                 const SizedBox(height: 24.0),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: StepperOverview(
                     step: _step.index,
                     max: AddEditMealStep.values.length - 1,
                     size: 42,
+                    titles: const [
+                      'Images',
+                      'Tags',
+                      'Ratings',
+                      'Ingredients',
+                    ],
                     onStepTapped: (step) => setState(
                       () => _step = AddEditMealStep.values[step],
                     ),

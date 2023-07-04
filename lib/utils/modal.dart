@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:mealo/utils/styling.dart';
 
 class ModalUtils {
   static Future<T?> showBaseDialog<T>(
@@ -13,10 +14,42 @@ class ModalUtils {
         builder: (context) => dialog,
       );
 
+  static Future<T?> showBaseModalBottomSheet<T>(
+    BuildContext context,
+    Widget content, {
+    bool enableDrag = true,
+    bool showDragHandle = true,
+  }) =>
+      showModalBottomSheet<T>(
+        context: context,
+        useRootNavigator: true,
+        enableDrag: enableDrag,
+        builder: (context) => SafeArea(
+          child: enableDrag && showDragHandle
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 12.0),
+                    Container(
+                      height: 6.0,
+                      width: 48.0,
+                      decoration: BoxDecoration(
+                        color: StylingUtils.lightDisabledColor(context),
+                        borderRadius: BorderRadius.circular(6.0),
+                      ),
+                    ),
+                    content,
+                  ],
+                )
+              : content,
+        ),
+      );
+
   static Future<T?> showExpandedModalBottomSheet<T>(
     BuildContext context,
     Widget content, {
     bool fullscreen = false,
+    bool forceExpand = false,
   }) =>
       showModalBottomSheet(
         context: context,
@@ -26,8 +59,9 @@ class ModalUtils {
         isScrollControlled: true,
         constraints: !fullscreen
             ? BoxConstraints(
-                maxHeight:
-                    min(720, MediaQuery.of(context).size.height * (9 / 10)),
+                maxHeight: forceExpand
+                    ? MediaQuery.of(context).size.height * (9 / 10)
+                    : min(992, MediaQuery.of(context).size.height * (9 / 10)),
                 maxWidth: 720,
               )
             : null,

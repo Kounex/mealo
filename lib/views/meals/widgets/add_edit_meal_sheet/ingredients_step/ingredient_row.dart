@@ -1,18 +1,14 @@
 import 'package:collection/collection.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mealo/models/ingredient/ingredient.dart';
 import 'package:mealo/models/meal/meal.dart';
-import 'package:mealo/utils/isar.dart';
-import 'package:mealo/utils/modal.dart';
-import 'package:mealo/utils/validation.dart';
-import 'package:mealo/widgets/base/functional/suggestion_text_field/suggestion_text_field.dart';
-import 'package:mealo/widgets/base/functional/text_form_field.dart';
+import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/ingredients_step/amount_text_field.dart';
+import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/ingredients_step/ingredient_suggest_field%20copy.dart';
+import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/ingredients_step/unit_suggest_field.dart';
 import 'package:mealo/widgets/base/ui/chip.dart';
 
 import '../../../../../models/unit/unit.dart';
-import '../../../../../widgets/shared/dialog/add_edit_model.dart';
+import '../../../../../utils/validation.dart';
 
 class IngredientRow extends StatefulWidget {
   final IngredientMap ingredient;
@@ -40,7 +36,8 @@ class _IngredientRowState extends State<IngredientRow> {
   late Unit? _unit;
   late Ingredient? _ingredient;
 
-  bool _editAmount = true;
+  bool _editing = true;
+  bool _saveable = false;
 
   @override
   void initState() {
@@ -52,7 +49,6 @@ class _IngredientRowState extends State<IngredientRow> {
           text: amount.truncateToDouble() == amount
               ? amount.toStringAsFixed(0)
               : amount.toString());
-      _editAmount = false;
     } else {
       _amount = TextEditingController();
     }
@@ -60,196 +56,137 @@ class _IngredientRowState extends State<IngredientRow> {
         (unit) => unit.uuid == (this.widget.ingredient.uuidUnit ?? ''));
     _ingredient = this.widget.ingredients.firstWhereOrNull((ingredient) =>
         ingredient.uuid == (this.widget.ingredient.uuidIngredient ?? ''));
+
+    _checkSaveable();
+
+    if (_saveable) {
+      _editing = false;
+    }
+  }
+
+  void _checkSaveable() {
+    _saveable = ValidationUtils.number(_amount.text) == null &&
+        _unit != null &&
+        _ingredient != null;
   }
 
   void _setUnit(Unit? unit) {
     setState(() {
       _unit = unit;
-      this.widget.ingredient.uuidUnit = unit?.uuid;
     });
   }
 
   void _setIngredient(Ingredient? ingredient) {
     setState(() {
       _ingredient = ingredient;
-      this.widget.ingredient.uuidIngredient = ingredient?.uuid;
     });
+  }
+
+  void _save() {
+    this.widget.ingredient.amount = double.tryParse(_amount.text);
+    this.widget.ingredient.uuidIngredient = _ingredient?.uuid;
+    this.widget.ingredient.uuidUnit = _unit?.uuid;
   }
 
   @override
   Widget build(BuildContext context) {
     double availableWidth = MediaQuery.of(context).size.width;
 
-    Widget amountTextField = _editAmount || _amount.text.isEmpty
-        ? BaseTextFormField(
-            controller: _amount
-              ..addListener(() => this.widget.ingredient.amount =
-                  double.tryParse(_amount.text)),
-            hintText: 'Amount',
-            maxLines: 1,
-            // keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
-              TextInputFormatter.withFunction((oldValue, newValue) {
-                try {
-                  final text = newValue.text.replaceAll(RegExp(r','), '.');
-                  if (text.isNotEmpty) double.parse(text);
-                  return newValue.copyWith(text: text);
-                } catch (e) {}
-                return oldValue;
-              }),
-            ],
-            validator: ValidationUtils.number,
-            triggerSubmitOnLoseFocus: true,
-            onFieldSubmitted: (text) => text.trim().isNotEmpty
-                ? setState(() => _editAmount = false)
-                : null,
-          )
-        : BaseChip(
-            text: _amount.text,
-            onDeleted: () => setState(() => _editAmount = true),
-          );
+    _checkSaveable();
 
-    Widget unitSuggestField = _unit == null
-        ? BaseSuggestionTextField<Unit>(
-            suggestions: (text) => this
-                .widget
-                .units
-                .where(
-                  (unit) => unit.name
-                      .toLowerCase()
-                      .contains(text.toLowerCase().trim()),
-                )
-                .toList(),
-            hintText: 'Unit',
-            sort: (unit1, unit2) =>
-                unit1.name.toLowerCase().compareTo(unit2.name.toLowerCase()),
-            suggestionText: (unit) => unit.name,
-            onSuggestionTapped: (unit) => setState(() {
-              _unit = unit;
-              this.widget.ingredient.uuidUnit = unit.uuid;
-            }),
-            expandType: ExpandType.right,
-            minWidth: 350,
-            onCreateNew: (text) async {
-              Unit? unit = await ModalUtils.showBaseDialog(
-                context,
-                AddEditModelDialog<Unit>(
-                  name: text,
-                  onAdd: (name) => IsarUtils.crud(
-                    (isar) async => isar.units
-                        .get(await isar.units.put(Unit()..name = name)),
-                  ),
-                ),
-              );
-              _setUnit(unit);
-            },
-          )
-        : BaseChip(
-            text: _unit!.name,
-            onDeleted: () => setState(() {
-              _unit = null;
-              this.widget.ingredient.uuidUnit = null;
-            }),
-          );
+    Widget amountTextField = AmountTextField(controller: _amount);
 
-    Widget ingredientSuggestField = _ingredient == null
-        ? BaseSuggestionTextField<Ingredient>(
-            suggestions: (text) => this
-                .widget
-                .ingredients
-                .where(
-                  (ingredient) => ingredient.name
-                      .toLowerCase()
-                      .contains(text.toLowerCase().trim()),
-                )
-                .toList(),
-            hintText: 'Search for ingredients...',
-            sort: (ingredient1, ingredient2) => ingredient1.name
-                .toLowerCase()
-                .compareTo(ingredient2.name.toLowerCase()),
-            suggestionText: (ingredient) => ingredient.name,
-            onSuggestionTapped: (ingredient) => setState(() {
-              _ingredient = ingredient;
-              this.widget.ingredient.uuidIngredient = ingredient.uuid;
-            }),
-            onCreateNew: (text) async {
-              Ingredient? ingredient = await ModalUtils.showBaseDialog(
-                context,
-                AddEditModelDialog<Ingredient>(
-                  name: text,
-                  onAdd: (name) => IsarUtils.crud(
-                    (isar) async => isar.ingredients.get(
-                        await isar.ingredients.put(Ingredient()..name = name)),
-                  ),
-                ),
-              );
-              _setIngredient(ingredient);
-            },
-          )
-        : Align(
-            alignment: Alignment.centerLeft,
+    Widget unitSuggestField = UnitSuggestField(
+      unit: _unit,
+      units: this.widget.units,
+      setUnit: _setUnit,
+      onDeleteSelection: () => setState(() => _unit = null),
+    );
+
+    Widget ingredientSuggestField = IngredientSuggestField(
+      ingredient: _ingredient,
+      ingredients: this.widget.ingredients,
+      setIngredient: _setIngredient,
+      onDeleteSelection: () => setState(() => _ingredient = null),
+    );
+
+    return !_editing
+        ? GestureDetector(
+            onTap: () => setState(() => _editing = true),
             child: BaseChip(
-              text: _ingredient!.name,
-              onDeleted: () => setState(() {
-                _ingredient = null;
-                this.widget.ingredient.uuidIngredient = null;
-              }),
+              label: Text(
+                  '${_amount.text} ${_unit?.name ?? ""} ${_ingredient?.name ?? ""}'),
             ),
-          );
-
-    return Row(
-      children: [
-        Expanded(
-          child: availableWidth >= 700 ||
-                  (!_editAmount && _unit != null && _ingredient != null)
-              ? Row(
-                  children: [
-                    SizedBox(
-                      width: _editAmount ? 144.0 : null,
-                      child: amountTextField,
-                    ),
-                    const SizedBox(width: 12.0),
-                    SizedBox(
-                      width: _unit == null ? 108.0 : null,
-                      child: unitSuggestField,
-                    ),
-                    const SizedBox(width: 12.0),
-                    Expanded(
-                      child: ingredientSuggestField,
-                    ),
-                  ],
-                )
-              : Column(
-                  children: [
-                    Row(
+          )
+        : Column(
+            children: [
+              availableWidth >= 700
+                  ? Row(
                       children: [
                         SizedBox(
-                          width: _editAmount ? 144.0 : null,
+                          width: 144.0,
                           child: amountTextField,
                         ),
                         const SizedBox(width: 12.0),
+                        SizedBox(
+                          width: 108.0,
+                          child: unitSuggestField,
+                        ),
+                        const SizedBox(width: 12.0),
                         Expanded(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: unitSuggestField,
-                          ),
+                          child: ingredientSuggestField,
                         ),
                       ],
+                    )
+                  : Column(
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 144.0,
+                              child: amountTextField,
+                            ),
+                            const SizedBox(width: 12.0),
+                            Expanded(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: unitSuggestField,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12.0),
+                        ingredientSuggestField,
+                      ],
                     ),
-                    const SizedBox(height: 12.0),
-                    ingredientSuggestField,
-                  ],
-                ),
-        ),
-        IconButton(
-          onPressed: this.widget.onDelete,
-          icon: Icon(
-            FluentIcons.delete_dismiss_24_regular,
-            color: Theme.of(context).colorScheme.error,
-          ),
-        ),
-      ],
-    );
+              const SizedBox(height: 8.0),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _saveable
+                          ? () {
+                              _save();
+                              setState(() => _editing = false);
+                            }
+                          : null,
+                      child: const Text('Save'),
+                    ),
+                  ),
+                  const SizedBox(width: 12.0),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: this.widget.onDelete,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.error,
+                        foregroundColor: Theme.of(context).colorScheme.onError,
+                      ),
+                      child: const Text('Delete'),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          );
   }
 }

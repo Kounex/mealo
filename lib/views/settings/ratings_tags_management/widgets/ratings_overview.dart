@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mealo/models/rating/rating.dart';
+import 'package:mealo/widgets/base/ui/chip.dart';
 import 'package:mealo/widgets/shared/dialog/add_edit_rating.dart';
 
 import '../../../../utils/modal.dart';
@@ -26,7 +27,7 @@ class RatingsOverview extends ConsumerWidget {
             children: [
               ...ratings.map(
                 (rating) => GestureDetector(
-                  child: Chip(
+                  child: BaseChip(
                     label: Text(rating.name),
                   ),
                   onTap: () => ModalUtils.showBaseDialog(

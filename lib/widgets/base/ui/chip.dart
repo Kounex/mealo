@@ -31,6 +31,9 @@ class BaseChip extends StatelessWidget {
           ),
       backgroundColor: this.color,
       deleteIconColor: foregroundColor,
+      side: BorderSide(
+        color: StylingUtils.lightDisabledColor(context),
+      ),
       onDeleted: this.onDeleted,
     );
   }

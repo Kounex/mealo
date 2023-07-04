@@ -15,12 +15,16 @@ class BaseTextFormField extends StatefulWidget {
   final int? minLines;
   final int? maxLines;
 
+  final int? maxLength;
+
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final List<TextInputFormatter>? inputFormatters;
 
   final bool loseFocusOnTapOutside;
   final bool triggerSubmitOnLoseFocus;
+
+  final bool enabled;
 
   BaseTextFormField({
     super.key,
@@ -32,11 +36,13 @@ class BaseTextFormField extends StatefulWidget {
     this.autocorrect = true,
     this.minLines,
     this.maxLines,
+    this.maxLength,
     this.keyboardType,
     this.textInputAction,
     this.inputFormatters,
     this.loseFocusOnTapOutside = true,
     this.triggerSubmitOnLoseFocus = false,
+    this.enabled = true,
   });
 
   @override
@@ -70,8 +76,10 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
       focusNode: _focus,
       controller: _controller,
       autocorrect: this.widget.autocorrect,
+      enabled: this.widget.enabled,
       decoration: InputDecoration(
         hintText: this.widget.hintText,
+        counterText: '',
         suffixIcon: AnimatedSwitcher(
           duration: StylingUtils.kBaseAnimationDuration,
           child: _focus.hasFocus
@@ -87,6 +95,7 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
       validator: this.widget.validator,
       minLines: this.widget.minLines ?? 1,
       maxLines: this.widget.maxLines,
+      maxLength: this.widget.maxLength,
       keyboardType: this.widget.keyboardType,
       inputFormatters: this.widget.inputFormatters,
       textInputAction: this.widget.textInputAction ?? TextInputAction.done,

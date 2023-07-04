@@ -26,4 +26,7 @@ class StylingUtils {
         ? Colors.white
         : Colors.black;
   }
+
+  static Color lightDisabledColor(BuildContext context) =>
+      Theme.of(context).disabledColor.withOpacity(0.1);
 }

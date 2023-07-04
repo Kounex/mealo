@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:mealo/widgets/base/functional/text_form_field.dart';
@@ -11,11 +12,13 @@ enum ExpandType {
 }
 
 class BaseSuggestionTextField<T> extends StatefulWidget {
+  final String? selection;
   final List<T> Function(String text) suggestions;
   final String Function(T item)? suggestionText;
   final Widget Function(T item)? suggestionBuilder;
   final void Function(T item)? onSuggestionTapped;
   final void Function(String text)? onCreateNew;
+  final VoidCallback? onDeleteSelection;
 
   final int Function(T a, T b)? sort;
 
@@ -26,11 +29,13 @@ class BaseSuggestionTextField<T> extends StatefulWidget {
 
   const BaseSuggestionTextField({
     super.key,
+    this.selection,
     required this.suggestions,
     this.suggestionText,
     this.suggestionBuilder,
     this.onSuggestionTapped,
     this.onCreateNew,
+    this.onDeleteSelection,
     this.sort,
     this.hintText,
     this.expandType = ExpandType.left,
@@ -44,7 +49,7 @@ class BaseSuggestionTextField<T> extends StatefulWidget {
 
 class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
   final FocusNode _focus = FocusNode();
-  final TextEditingController _controller = TextEditingController();
+  late TextEditingController _controller;
 
   final GlobalKey _key = GlobalKey();
   final LayerLink _link = LayerLink();
@@ -56,6 +61,8 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
   @override
   void initState() {
     super.initState();
+
+    _controller = TextEditingController(text: this.widget.selection);
 
     _entry = OverlayEntry(
       builder: (context) => SuggestionOverlay(
@@ -88,6 +95,16 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
   }
 
   @override
+  void didUpdateWidget(covariant BaseSuggestionTextField<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if ((this.widget.selection ?? '') != _controller.text) {
+      SchedulerBinding.instance.addPostFrameCallback(
+          (timeStamp) => _controller.text = this.widget.selection ?? '');
+    }
+  }
+
+  @override
   void dispose() {
     _focus.removeListener(_handleFocusChange);
     // if (_entry.mounted) {
@@ -110,21 +127,35 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
           return true;
         },
         child: SizeChangedLayoutNotifier(
-          child: BaseTextFormField(
-            key: _key,
-            focusNode: _focus,
-            controller: _controller,
-            autocorrect: false,
-            loseFocusOnTapOutside: true,
-            maxLines: 1,
-            hintText: this.widget.hintText,
-            onFieldSubmitted: (text) {
-              if (_suggestions.length == 1) {
-                this.widget.onSuggestionTapped?.call(_suggestions.first);
-              } else if (_suggestions.isEmpty) {
-                this.widget.onCreateNew?.call(_controller.text);
-              }
-            },
+          child: Stack(
+            alignment: Alignment.centerRight,
+            children: [
+              BaseTextFormField(
+                key: _key,
+                focusNode: _focus,
+                controller: _controller,
+                enabled: this.widget.selection == null,
+                autocorrect: false,
+                loseFocusOnTapOutside: true,
+                maxLines: 1,
+                hintText: this.widget.hintText,
+                onFieldSubmitted: (text) {
+                  if (_suggestions.length == 1) {
+                    this.widget.onSuggestionTapped?.call(_suggestions.first);
+                  } else if (_suggestions.isEmpty) {
+                    this.widget.onCreateNew?.call(_controller.text);
+                  }
+                },
+              ),
+              if (this.widget.selection != null)
+                Positioned(
+                  right: 1.0,
+                  child: IconButton(
+                    onPressed: this.widget.onDeleteSelection,
+                    icon: const Icon(CupertinoIcons.clear_circled_solid),
+                  ),
+                ),
+            ],
           ),
         ),
       ),

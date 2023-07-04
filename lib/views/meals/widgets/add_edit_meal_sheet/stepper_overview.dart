@@ -8,6 +8,8 @@ class StepperOverview extends StatelessWidget {
 
   final double size;
 
+  final List<String>? titles;
+
   final void Function(int step)? onStepTapped;
 
   const StepperOverview({
@@ -16,7 +18,8 @@ class StepperOverview extends StatelessWidget {
     required this.max,
     this.size = 32.0,
     this.onStepTapped,
-  });
+    this.titles,
+  }) : assert(titles != null ? titles.length - 1 == max : true);
 
   @override
   Widget build(BuildContext context) {
@@ -24,27 +27,40 @@ class StepperOverview extends StatelessWidget {
 
     List.generate(this.max + 1, (index) {
       children.add(
-        GestureDetector(
-          onTap:
-              index != this.step ? () => this.onStepTapped?.call(index) : null,
-          child: AnimatedContainer(
-            duration: StylingUtils.kBaseAnimationDuration,
-            height: this.size,
-            width: this.size,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: index == this.step
-                  ? Theme.of(context).colorScheme.primaryContainer
-                  : Theme.of(context).disabledColor,
-              shape: BoxShape.circle,
+        Column(
+          children: [
+            GestureDetector(
+              onTap: index != this.step
+                  ? () => this.onStepTapped?.call(index)
+                  : null,
+              child: AnimatedContainer(
+                duration: StylingUtils.kBaseAnimationDuration,
+                height: this.size,
+                width: this.size,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: index == this.step
+                      ? Theme.of(context).colorScheme.primaryContainer
+                      : StylingUtils.lightDisabledColor(context),
+                  shape: BoxShape.circle,
+                ),
+                child: Text(
+                  (index + 1).toString(),
+                  style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
+                ),
+              ),
             ),
-            child: Text(
-              (index + 1).toString(),
-              style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  ),
-            ),
-          ),
+            if (this.titles != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: Text(
+                  this.titles![index],
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
+          ],
         ),
       );
       if (index < this.max) {
