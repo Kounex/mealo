@@ -48,7 +48,7 @@ class SuggestionListTile<T> extends StatelessWidget {
                             )
                           : Text(
                               this.onCreateNew != null
-                                  ? 'Create and add new'
+                                  ? 'New'
                                   : 'None matching',
                               style: TextStyle(
                                 color: Theme.of(context)
@@ -56,6 +56,7 @@ class SuggestionListTile<T> extends StatelessWidget {
                                     .headlineLarge!
                                     .color,
                                 fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                     ),

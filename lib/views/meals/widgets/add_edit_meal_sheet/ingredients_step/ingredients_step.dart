@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -55,23 +56,23 @@ class _IngredientsStepState extends ConsumerState<IngredientsStep> {
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       const SizedBox(height: 12.0),
-                      ...this.widget.ingredientMap.map(
-                            (ingredient) => IngredientRow(
+                      ...this.widget.ingredientMap.mapIndexed(
+                            (index, ingredient) => IngredientRow(
                               ingredient: ingredient,
                               ingredientMap: this.widget.ingredientMap,
                               ingredients: ingredients,
                               units: units,
                               onDelete: () => setState(
-                                () => this
-                                    .widget
-                                    .ingredientMap
-                                    .remove(ingredient),
+                                () => this.widget.ingredientMap.removeAt(index),
                               ),
                             ),
                           ),
                       if (this.widget.ingredientMap.isEmpty) ...[
                         const SizedBox(height: 24.0),
-                        const BasePlaceholder(text: 'No ingredients added yet'),
+                        const Center(
+                          child:
+                              BasePlaceholder(text: 'No ingredients added yet'),
+                        ),
                         const SizedBox(height: 24.0),
                       ],
                     ],

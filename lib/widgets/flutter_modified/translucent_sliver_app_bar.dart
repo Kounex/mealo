@@ -837,7 +837,6 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
             surfaceTintColor: surfaceTintColor,
             backgroundColor: backgroundColor,
             foregroundColor: foregroundColor,
-            brightness: brightness,
             iconTheme: iconTheme,
             actionsIconTheme: actionsIconTheme,
             primary: primary,

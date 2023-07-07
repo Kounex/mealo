@@ -154,7 +154,7 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
               ),
               if (this.widget.selection != null)
                 Positioned(
-                  right: 1.0,
+                  right: 0.0,
                   child: IconButton(
                     onPressed: this.widget.onDeleteSelection,
                     icon: const Icon(CupertinoIcons.clear_circled_solid),

@@ -6,9 +6,8 @@ import '../../../../../models/meal/meal.dart';
 import '../../../../../models/unit/unit.dart';
 import '../../../../../utils/validation.dart';
 import '../../../../../widgets/base/ui/chip.dart';
+import '../../../../../widgets/shared/model_suggestion_text_field.dart';
 import 'amount_text_field.dart';
-import 'ingredient_suggest_field%20copy.dart';
-import 'unit_suggest_field.dart';
 
 class IngredientRow extends StatefulWidget {
   final IngredientMap ingredient;
@@ -96,17 +95,25 @@ class _IngredientRowState extends State<IngredientRow> {
 
     Widget amountTextField = AmountTextField(controller: _amount);
 
-    Widget unitSuggestField = UnitSuggestField(
-      unit: _unit,
-      units: this.widget.units,
-      setUnit: _setUnit,
+    Widget unitSuggestField = ModelSuggestionTextField<Unit>(
+      value: _unit,
+      values: this.widget.units,
+      setValue: _setUnit,
+      hintText: 'Unit',
+      onAdd: (isar, name) async => isar.units.get(
+        await isar.units.put(Unit()..name = name),
+      ),
       onDeleteSelection: () => setState(() => _unit = null),
     );
 
-    Widget ingredientSuggestField = IngredientSuggestField(
-      ingredient: _ingredient,
-      ingredients: this.widget.ingredients,
-      setIngredient: _setIngredient,
+    Widget ingredientSuggestField = ModelSuggestionTextField<Ingredient>(
+      value: _ingredient,
+      values: this.widget.ingredients,
+      setValue: _setIngredient,
+      hintText: 'Ingredient',
+      onAdd: (isar, name) async => isar.ingredients.get(
+        await isar.ingredients.put(Ingredient()..name = name),
+      ),
       onDeleteSelection: () => setState(() => _ingredient = null),
     );
 
