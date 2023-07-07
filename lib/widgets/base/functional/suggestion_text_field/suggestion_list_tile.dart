@@ -40,22 +40,25 @@ class SuggestionListTile<T> extends StatelessWidget {
           Expanded(
             child: this.suggestionBuilder == null
                 ? ListTile(
-                    title: this.suggestion != null
-                        ? Text(
-                            this.suggestionText!(this.suggestion as T),
-                          )
-                        : Text(
-                            this.onCreateNew != null
-                                ? 'Create and add new'
-                                : 'None matching',
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .textTheme
-                                  .headlineLarge!
-                                  .color,
-                              fontStyle: FontStyle.italic,
+                    title: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12.0),
+                      child: this.suggestion != null
+                          ? Text(
+                              this.suggestionText!(this.suggestion as T),
+                            )
+                          : Text(
+                              this.onCreateNew != null
+                                  ? 'Create and add new'
+                                  : 'None matching',
+                              style: TextStyle(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge!
+                                    .color,
+                                fontStyle: FontStyle.italic,
+                              ),
                             ),
-                          ),
+                    ),
                     dense: true,
                   )
                 : this.suggestionBuilder!(

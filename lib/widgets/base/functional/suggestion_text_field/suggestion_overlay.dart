@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'suggestion_list_tile.dart';
-import '../../ui/divider.dart';
 
 import '../../ui/card.dart';
+import '../../ui/divider.dart';
+import 'suggestion_list_tile.dart';
 import 'suggestion_text_field.dart';
 
 class SuggestionOverlay<T> extends StatefulWidget {
@@ -146,7 +146,7 @@ class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>> {
                   thumbVisibility: true,
                   child: ListView(
                     controller: _controller,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(vertical: 0),
                     shrinkWrap: true,
                     children: [
                       ...this.widget.currentSuggestions.expandIndexed(
