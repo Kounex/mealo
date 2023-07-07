@@ -37,8 +37,8 @@ class UnitSuggestField extends StatelessWidget {
           unit1.name.toLowerCase().compareTo(unit2.name.toLowerCase()),
       suggestionText: (unit) => unit.name,
       onSuggestionTapped: (unit) => this.setUnit(unit),
-      expandType: ExpandType.right,
-      minWidth: 350,
+      anchorType: AnchorType.right,
+      minWidth: 150,
       onCreateNew: (text) async {
         Unit? unit = await ModalUtils.showBaseDialog(
           context,

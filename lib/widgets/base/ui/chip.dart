@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../utils/styling.dart';
 
 class BaseChip extends StatelessWidget {

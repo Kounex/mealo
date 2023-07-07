@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../models/tag/tag.dart';
-import '../../../../utils/modal.dart';
-import '../../../../utils/validation.dart';
-import '../../../dialog/confirmation.dart';
 
+import '../../../../models/tag/tag.dart';
 import '../../../../types/extensions/color.dart';
 import '../../../../utils/isar.dart';
+import '../../../../utils/modal.dart';
+import '../../../../utils/validation.dart';
 import '../../../../widgets/base/functional/text_form_field.dart';
+import '../../../base/ui/text_button.dart';
+import '../../../dialog/confirmation.dart';
 import 'color_picker_tile.dart';
 
 class AddEditTagDialog extends ConsumerStatefulWidget {
@@ -54,7 +55,7 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           if (this.widget.tag != null)
-            TextButton(
+            BaseTextButton(
               onPressed: () => ModalUtils.showBaseDialog(
                 context,
                 ConfirmationDialog(
@@ -70,10 +71,7 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
                   },
                 ),
               ),
-              style: ButtonStyle(
-                foregroundColor: MaterialStatePropertyAll(
-                    Theme.of(context).colorScheme.error),
-              ),
+              isDestructive: true,
               child: const Text('Delete'),
             ),
         ],
@@ -111,11 +109,11 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
         ],
       ),
       actions: [
-        TextButton(
+        BaseTextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
-        TextButton(
+        BaseTextButton(
           onPressed: () async {
             if (_form.currentState!.validate()) {
               Tag? tag = this.widget.tag ?? Tag();

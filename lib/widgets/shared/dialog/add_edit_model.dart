@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/models.dart';
 import '../../../utils/modal.dart';
 import '../../base/functional/text_form_field.dart';
+import '../../base/ui/text_button.dart';
 import '../../dialog/confirmation.dart';
 
 class AddEditModelDialog<T extends Model> extends ConsumerStatefulWidget {
@@ -68,7 +69,7 @@ class _AddEditModelDialogState<T extends Model>
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           if (this.widget.editingModel != null)
-            TextButton(
+            BaseTextButton(
               onPressed: () => ModalUtils.showBaseDialog(
                 context,
                 ConfirmationDialog(
@@ -82,10 +83,7 @@ class _AddEditModelDialogState<T extends Model>
                   },
                 ),
               ),
-              style: ButtonStyle(
-                foregroundColor: MaterialStatePropertyAll(
-                    Theme.of(context).colorScheme.error),
-              ),
+              isDestructive: true,
               child: const Text('Delete'),
             ),
         ],
@@ -106,11 +104,11 @@ class _AddEditModelDialogState<T extends Model>
         ],
       ),
       actions: [
-        TextButton(
+        BaseTextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
-        TextButton(
+        BaseTextButton(
           onPressed: _controller.text.trim().isNotEmpty &&
                   (this.widget.editingModel == null ||
                       this.widget.editingModel!.name != _controller.text.trim())

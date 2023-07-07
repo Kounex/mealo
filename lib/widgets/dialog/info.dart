@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../base/ui/text_button.dart';
+
 class InfoDialog extends StatelessWidget {
   final String title;
   final String text;
@@ -19,7 +21,7 @@ class InfoDialog extends StatelessWidget {
       title: Text(this.title),
       content: Text(this.text),
       actions: [
-        TextButton(
+        BaseTextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: Text(this.okText ?? 'Ok'),
         ),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import '../../../../utils/modal.dart';
-import '../../../dialog/confirmation.dart';
 
 import '../../../../types/extensions/string.dart';
+import '../../../../utils/modal.dart';
+import '../../../base/ui/text_button.dart';
+import '../../../dialog/confirmation.dart';
 
 class ColorPickerTile extends StatefulWidget {
   final String? colorHex;
@@ -60,7 +61,7 @@ class _ColorPickerTileState extends State<ColorPickerTile> {
             ],
           ),
           if (this.widget.colorHex != null)
-            TextButton(
+            BaseTextButton(
               onPressed: () => ModalUtils.showBaseDialog(
                 context,
                 ConfirmationDialog(
@@ -70,12 +71,7 @@ class _ColorPickerTileState extends State<ColorPickerTile> {
                   onYes: () => this.widget.onColorSet(null),
                 ),
               ),
-              style: ButtonStyle(
-                foregroundColor: MaterialStatePropertyAll(
-                    Theme.of(context).colorScheme.error),
-                overlayColor: MaterialStatePropertyAll(
-                    Theme.of(context).colorScheme.error.withOpacity(0.1)),
-              ),
+              isDestructive: true,
               child: const Text('Reset'),
             ),
         ],
@@ -94,11 +90,11 @@ class _ColorPickerTileState extends State<ColorPickerTile> {
             ),
           ),
           actions: [
-            TextButton(
+            BaseTextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: const Text('Cancel'),
             ),
-            TextButton(
+            BaseTextButton(
               onPressed: () {
                 this.widget.onColorSet(_color);
                 Navigator.of(context).pop();

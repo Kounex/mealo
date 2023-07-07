@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../utils/styling.dart';
 import '../../../../widgets/base/ui/divider.dart';
 
@@ -65,10 +66,11 @@ class StepperOverview extends StatelessWidget {
       );
       if (index < this.max) {
         children.add(
-          const Expanded(
+          Expanded(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0),
-              child: BaseDivider(),
+              padding: const EdgeInsets.symmetric(horizontal: 12.0) +
+                  const EdgeInsets.only(bottom: 20.0),
+              child: const BaseDivider(),
             ),
           ),
         );

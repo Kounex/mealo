@@ -21,7 +21,7 @@ class SuggestionOverlay<T> extends StatefulWidget {
   final void Function(T item)? onSuggestionTapped;
   final void Function(String text)? onCreateNew;
   final int Function(T a, T b)? sort;
-  final ExpandType expandType;
+  final AnchorType expandType;
   final double? minWidth;
 
   const SuggestionOverlay({
@@ -95,18 +95,18 @@ class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>> {
       width = min(screenWidth, max(width, this.widget.minWidth!));
 
       switch (this.widget.expandType) {
-        case ExpandType.left:
+        case AnchorType.left:
           width = width > (screenWidth - (pos.dx + baseOffset.dx))
               ? (screenWidth - (pos.dx + baseOffset.dx))
               : width;
           break;
-        case ExpandType.right:
+        case AnchorType.right:
           width = width > ((pos.dx + baseOffset.dx) + baseWidth)
               ? ((pos.dx + baseOffset.dx) + baseWidth)
               : width;
           offset = offset.copyWith(dx: offset.dx + baseWidth);
           break;
-        case ExpandType.center:
+        case AnchorType.center:
           width = width > (pos.dx + baseOffset.dx + baseWidth / 2)
               ? (pos.dx + baseOffset.dx + baseWidth / 2)
               : width;
@@ -121,11 +121,11 @@ class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>> {
         link: this.widget.link,
         followerAnchor: () {
           switch (this.widget.expandType) {
-            case ExpandType.left:
+            case AnchorType.left:
               return Alignment.bottomLeft;
-            case ExpandType.center:
+            case AnchorType.center:
               return Alignment.bottomCenter;
-            case ExpandType.right:
+            case AnchorType.right:
               return Alignment.bottomRight;
           }
         }(),

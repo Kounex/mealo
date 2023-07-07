@@ -1,14 +1,14 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+
 import '../../../../../models/ingredient/ingredient.dart';
 import '../../../../../models/meal/meal.dart';
+import '../../../../../models/unit/unit.dart';
+import '../../../../../utils/validation.dart';
+import '../../../../../widgets/base/ui/chip.dart';
 import 'amount_text_field.dart';
 import 'ingredient_suggest_field%20copy.dart';
 import 'unit_suggest_field.dart';
-import '../../../../../widgets/base/ui/chip.dart';
-
-import '../../../../../models/unit/unit.dart';
-import '../../../../../utils/validation.dart';
 
 class IngredientRow extends StatefulWidget {
   final IngredientMap ingredient;
@@ -118,75 +118,79 @@ class _IngredientRowState extends State<IngredientRow> {
                   '${_amount.text} ${_unit?.name ?? ""} ${_ingredient?.name ?? ""}'),
             ),
           )
-        : Column(
-            children: [
-              availableWidth >= 700
-                  ? Row(
-                      children: [
-                        SizedBox(
-                          width: 144.0,
-                          child: amountTextField,
-                        ),
-                        const SizedBox(width: 12.0),
-                        SizedBox(
-                          width: 108.0,
-                          child: unitSuggestField,
-                        ),
-                        const SizedBox(width: 12.0),
-                        Expanded(
-                          child: ingredientSuggestField,
-                        ),
-                      ],
-                    )
-                  : Column(
-                      children: [
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 144.0,
-                              child: amountTextField,
-                            ),
-                            const SizedBox(width: 12.0),
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: unitSuggestField,
+        : Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Column(
+              children: [
+                availableWidth >= 700
+                    ? Row(
+                        children: [
+                          SizedBox(
+                            width: 144.0,
+                            child: amountTextField,
+                          ),
+                          const SizedBox(width: 12.0),
+                          SizedBox(
+                            width: 108.0,
+                            child: unitSuggestField,
+                          ),
+                          const SizedBox(width: 12.0),
+                          Expanded(
+                            child: ingredientSuggestField,
+                          ),
+                        ],
+                      )
+                    : Column(
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 144.0,
+                                child: amountTextField,
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 12.0),
-                        ingredientSuggestField,
-                      ],
-                    ),
-              const SizedBox(height: 8.0),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: _saveable
-                          ? () {
-                              _save();
-                              setState(() => _editing = false);
-                            }
-                          : null,
-                      child: const Text('Save'),
-                    ),
-                  ),
-                  const SizedBox(width: 12.0),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: this.widget.onDelete,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.error,
-                        foregroundColor: Theme.of(context).colorScheme.onError,
+                              const SizedBox(width: 12.0),
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: unitSuggestField,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12.0),
+                          ingredientSuggestField,
+                        ],
                       ),
-                      child: const Text('Delete'),
+                const SizedBox(height: 8.0),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: _saveable
+                            ? () {
+                                _save();
+                                setState(() => _editing = false);
+                              }
+                            : null,
+                        child: const Text('Save'),
+                      ),
                     ),
-                  ),
-                ],
-              )
-            ],
+                    const SizedBox(width: 12.0),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: this.widget.onDelete,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).colorScheme.error,
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onError,
+                        ),
+                        child: const Text('Delete'),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
           );
   }
 }

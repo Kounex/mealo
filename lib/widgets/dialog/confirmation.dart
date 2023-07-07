@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../base/ui/text_button.dart';
+
 class ConfirmationDialog extends StatelessWidget {
   final String? title;
   final String? text;
@@ -30,28 +32,19 @@ class ConfirmationDialog extends StatelessWidget {
       content: Text(this.text ??
           'Are you sure you want to do this? This action can\'t be undone!'),
       actions: [
-        TextButton(
+        BaseTextButton(
           onPressed: () {
             Navigator.of(context).pop();
             this.onNo?.call();
           },
           child: Text(this.noText ?? 'No'),
         ),
-        TextButton(
+        BaseTextButton(
           onPressed: () {
             Navigator.of(context).pop();
             this.onYes?.call();
           },
-          style: this.isYesDestructive
-              ? ButtonStyle(
-                  foregroundColor: MaterialStatePropertyAll(
-                    Theme.of(context).colorScheme.error,
-                  ),
-                  overlayColor: MaterialStatePropertyAll(
-                    Theme.of(context).colorScheme.error.withOpacity(0.1),
-                  ),
-                )
-              : null,
+          isDestructive: this.isYesDestructive,
           child: Text(this.yesText ?? 'Yes'),
         ),
       ],

@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:mealo/widgets/base/ui/text_button.dart';
+
 import '../../../../../utils/modal.dart';
 import '../../../../../utils/validation.dart';
 import '../../../../../widgets/base/functional/text_form_field.dart';
@@ -60,11 +62,11 @@ class _ImageFromURLDialogState extends State<ImageFromURLDialog> {
         ],
       ),
       actions: [
-        TextButton(
+        BaseTextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
-        TextButton(
+        BaseTextButton(
           onPressed: () {
             if (_form.currentState!.validate()) {
               _fetchImageAndParse();

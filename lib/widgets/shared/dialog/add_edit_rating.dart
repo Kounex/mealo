@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../models/rating/rating.dart';
-import '../../../utils/modal.dart';
-import '../../dialog/confirmation.dart';
 
 import '../../../../widgets/base/functional/text_form_field.dart';
+import '../../../models/rating/rating.dart';
 import '../../../utils/isar.dart';
+import '../../../utils/modal.dart';
 import '../../../utils/validation.dart';
+import '../../base/ui/text_button.dart';
+import '../../dialog/confirmation.dart';
 
 class AddEditRatingDialog extends ConsumerStatefulWidget {
   final Rating? rating;
@@ -48,7 +49,7 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           if (this.widget.rating != null)
-            TextButton(
+            BaseTextButton(
               onPressed: () => ModalUtils.showBaseDialog(
                 context,
                 ConfirmationDialog(
@@ -65,10 +66,7 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
                   },
                 ),
               ),
-              style: ButtonStyle(
-                foregroundColor: MaterialStatePropertyAll(
-                    Theme.of(context).colorScheme.error),
-              ),
+              isDestructive: true,
               child: const Text('Delete'),
             ),
         ],
@@ -115,11 +113,11 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
         ],
       ),
       actions: [
-        TextButton(
+        BaseTextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
-        TextButton(
+        BaseTextButton(
           onPressed: () async {
             if (_form.currentState!.validate()) {
               Rating? rating = this.widget.rating ?? Rating();

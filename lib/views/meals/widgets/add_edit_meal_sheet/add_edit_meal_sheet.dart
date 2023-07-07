@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,6 +17,7 @@ import '../../../../utils/styling.dart';
 import '../../../../utils/validation.dart';
 import '../../../../widgets/base/functional/text_form_field.dart';
 import '../../../../widgets/base/ui/divider.dart';
+import '../../../../widgets/base/ui/text_button.dart';
 import '../../../../widgets/dialog/confirmation.dart';
 import 'images_step/images_step.dart';
 import 'ingredients_step/ingredients_step.dart';
@@ -188,8 +188,8 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                         ),
                         if (this.widget.meal != null)
                           Padding(
-                            padding: const EdgeInsets.only(left: 4.0),
-                            child: IconButton(
+                            padding: const EdgeInsets.only(left: 12.0),
+                            child: BaseTextButton(
                               onPressed: () => ModalUtils.showBaseDialog(
                                 context,
                                 ConfirmationDialog(
@@ -197,9 +197,8 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                                   onYes: () => _deleteMeal(),
                                 ),
                               ),
-                              icon: const Icon(
-                                  FluentIcons.delete_dismiss_24_regular),
-                              color: Theme.of(context).colorScheme.error,
+                              isDestructive: true,
+                              child: const Text('Delete'),
                             ),
                           ),
                       ],

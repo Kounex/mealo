@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import '../text_form_field.dart';
 
+import '../text_form_field.dart';
 import 'suggestion_overlay.dart';
 
-enum ExpandType {
+enum AnchorType {
   left,
   right,
   center,
@@ -24,7 +24,12 @@ class BaseSuggestionTextField<T> extends StatefulWidget {
 
   final String? hintText;
 
-  final ExpandType expandType;
+  /// Sets the anchor where the overlay will stay and therefore
+  /// align. Example: [anchorType] is [AnchorType.left] which means
+  /// if the [BaseSuggestionTextField] is shorter than the overlay
+  /// then the overlay will stay left and expand right (bigger then
+  /// the [BaseSuggestionTextField])
+  final AnchorType anchorType;
   final double? minWidth;
 
   const BaseSuggestionTextField({
@@ -38,7 +43,7 @@ class BaseSuggestionTextField<T> extends StatefulWidget {
     this.onDeleteSelection,
     this.sort,
     this.hintText,
-    this.expandType = ExpandType.left,
+    this.anchorType = AnchorType.left,
     this.minWidth,
   }) : assert(suggestionText != null || suggestionBuilder != null);
 
@@ -77,7 +82,7 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
         onSuggestionTapped: this.widget.onSuggestionTapped,
         onCreateNew: this.widget.onCreateNew,
         sort: this.widget.sort,
-        expandType: this.widget.expandType,
+        expandType: this.widget.anchorType,
         minWidth: this.widget.minWidth,
       ),
     );
