@@ -58,8 +58,10 @@ class _IngredientsStepState extends ConsumerState<IngredientsStep> {
                       const SizedBox(height: 12.0),
                       ...this.widget.ingredientMap.mapIndexed(
                             (index, ingredient) => IngredientRow(
+                              /// TODO: check why it is necessary to have a key
+                              /// here
+                              key: ValueKey(ingredient),
                               ingredient: ingredient,
-                              ingredientMap: this.widget.ingredientMap,
                               ingredients: ingredients,
                               units: units,
                               onDelete: () => setState(

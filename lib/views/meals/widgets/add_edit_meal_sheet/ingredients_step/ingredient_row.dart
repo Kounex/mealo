@@ -11,7 +11,6 @@ import 'amount_text_field.dart';
 
 class IngredientRow extends StatefulWidget {
   final IngredientMap ingredient;
-  final List<IngredientMap> ingredientMap;
   final List<Ingredient> ingredients;
   final List<Unit> units;
 
@@ -20,7 +19,6 @@ class IngredientRow extends StatefulWidget {
   const IngredientRow({
     super.key,
     required this.ingredient,
-    required this.ingredientMap,
     required this.ingredients,
     required this.units,
     required this.onDelete,
