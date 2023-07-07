@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../stores/views/home.dart';
 import '../../../utils/router.dart';
 import '../../../widgets/base/ui/card.dart';
@@ -13,8 +14,8 @@ class PrevAteMeals extends StatelessWidget {
       title: 'Previous meals',
       child: MealGrid(
         provider: prevAteMealsProvider,
-        empty: const Text('No meals have been marked as eaten yet!'),
         skipLoadingOnReload: true,
+        empty: const Text('No meals have been marked as eaten yet!'),
         onTap: (meal) => RouterUtils.beamTo(
           context,
           HomeMealDetailRoute(meal.uuid),

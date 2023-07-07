@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../../utils/styling.dart';
 
+import '../../../utils/styling.dart';
 import 'divider.dart';
 
 const double kBaseCardMaxWidth = 772.0;

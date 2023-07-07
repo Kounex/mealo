@@ -7,24 +7,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:isar/isar.dart';
-import '../../../../utils/modal.dart';
-import '../../../../utils/styling.dart';
-import '../../../../utils/validation.dart';
-import 'images_step/images_step.dart';
-import 'ingredients_step/ingredients_step.dart';
-import 'rating_step.dart';
-import 'stepper_overview.dart';
-import 'tags_step.dart';
-import '../../../../widgets/base/functional/text_form_field.dart';
-import '../../../../widgets/base/ui/divider.dart';
-import '../../../../widgets/dialog/confirmation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../models/meal/meal.dart';
 import '../../../../models/tag/tag.dart';
 import '../../../../utils/isar.dart';
+import '../../../../utils/modal.dart';
+import '../../../../utils/styling.dart';
+import '../../../../utils/validation.dart';
+import '../../../../widgets/base/functional/text_form_field.dart';
+import '../../../../widgets/base/ui/divider.dart';
+import '../../../../widgets/dialog/confirmation.dart';
+import 'images_step/images_step.dart';
+import 'ingredients_step/ingredients_step.dart';
+import 'rating_step.dart';
 import 'stepper_control.dart';
+import 'stepper_overview.dart';
+import 'tags_step.dart';
 
 enum AddEditMealStep {
   images,

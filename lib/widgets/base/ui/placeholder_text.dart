@@ -1,19 +1,19 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
-class BasePlaceholderText extends StatelessWidget {
+class BasePlaceholder extends StatelessWidget {
   final String text;
   final IconData? icon;
   final bool useIcon;
 
-  final TextAlign? textAlign;
+  final TextAlign textAlign;
 
-  const BasePlaceholderText({
+  const BasePlaceholder({
     super.key,
     required this.text,
     this.icon,
     this.useIcon = true,
-    this.textAlign,
+    this.textAlign = TextAlign.center,
   });
 
   @override

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../../../models/ingredient/ingredient.dart';
 import '../../../../../models/meal/meal.dart';
 import '../../../../../models/unit/unit.dart';
-import 'ingredient_row.dart';
 import '../../../../../widgets/base/functional/async_value_builder.dart';
 import '../../../../../widgets/base/ui/divider.dart';
 import '../../../../../widgets/base/ui/placeholder_text.dart';
+import 'ingredient_row.dart';
 
 class IngredientsStep extends ConsumerStatefulWidget {
   final List<IngredientMap> ingredientMap;
@@ -55,7 +56,7 @@ class _IngredientsStepState extends ConsumerState<IngredientsStep> {
                     ),
               if (this.widget.ingredientMap.isEmpty) ...[
                 const SizedBox(height: 8.0),
-                const BasePlaceholderText(text: 'No ingredients added yet'),
+                const BasePlaceholder(text: 'No ingredients added yet'),
                 const SizedBox(height: 12.0),
               ],
               const SizedBox(height: 12.0),

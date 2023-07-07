@@ -1,15 +1,13 @@
-import 'package:collection/collection.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../../../utils/modal.dart';
-import '../../../../../utils/styling.dart';
-import 'image_from_url_dialog.dart';
-import '../../../../../widgets/base/ui/image.dart';
-import '../../../../../widgets/base/ui/progress_indicator.dart';
 
-import '../../../../../widgets/base/ui/placeholder_text.dart';
+import '../../../../../utils/modal.dart';
+import '../../../../../widgets/base/ui/card.dart';
+import '../../../../../widgets/base/ui/progress_indicator.dart';
+import 'image_from_url_dialog.dart';
+import 'meal_images.dart';
 
 enum MealImageType {
   thumbnail,
@@ -185,108 +183,59 @@ class _ImagesStepState extends State<ImagesStep> {
         ),
         Column(
           children: [
+            const SizedBox(height: 24.0),
             Stack(
               alignment: Alignment.center,
               children: [
-                Column(
-                  children: [
-                    const SizedBox(height: 24.0),
-                    AnimatedSwitcher(
-                      duration: StylingUtils.kBaseAnimationDuration,
-                      child: () {
-                        switch (_type) {
-                          case MealImageType.thumbnail:
-                            return this.widget.thumbnailUUID.isNotEmpty ||
-                                    this.widget.thumbnailToAdd.isNotEmpty
-                                ? BaseImage(
-                                    imageUUID:
-                                        this.widget.thumbnailUUID.firstOrNull,
-                                    image:
-                                        this.widget.thumbnailToAdd.firstOrNull,
-                                    height: 172.0,
-                                    width: 172.0,
-                                    icon: CupertinoIcons.clear,
-                                    onAction: () => setState(
-                                      () {
-                                        if (this
-                                            .widget
-                                            .thumbnailUUID
-                                            .isNotEmpty) {
-                                          this.widget.imagesUUIDsToDelete.add(
-                                              this.widget.thumbnailUUID.first);
-                                        }
-                                        this.widget.thumbnailUUID.clear();
-                                        this.widget.thumbnailToAdd.clear();
-                                      },
-                                    ),
-                                  )
-                                : Container(
-                                    height: 172.0,
-                                    alignment: Alignment.center,
-                                    child: const BasePlaceholderText(
-                                      text: 'No thumbnail set yet',
-                                    ),
-                                  );
-                          case MealImageType.additional:
-                            return this.widget.imagesUUIDs.isNotEmpty ||
-                                    this.widget.imagesToAdd.isNotEmpty
-                                ? Wrap(
-                                    spacing: 24.0,
-                                    runSpacing: 24.0,
-                                    children: [
-                                        ...this.widget.imagesUUIDs.mapIndexed(
-                                              (index, imageUUID) => BaseImage(
-                                                imageUUID: imageUUID,
-                                                height: 128.0,
-                                                width: 128.0,
-                                                icon: CupertinoIcons.clear,
-                                                onAction: () => setState(
-                                                  () {
-                                                    this
-                                                        .widget
-                                                        .imagesUUIDs
-                                                        .removeAt(index);
-                                                    this
-                                                        .widget
-                                                        .imagesUUIDsToDelete
-                                                        .add(imageUUID);
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                        ...this.widget.imagesToAdd.mapIndexed(
-                                              (index, image) => BaseImage(
-                                                image: image,
-                                                height: 128.0,
-                                                width: 128.0,
-                                                icon: CupertinoIcons.clear,
-                                                onAction: () => setState(
-                                                  () => this
-                                                      .widget
-                                                      .imagesToAdd
-                                                      .removeAt(index),
-                                                ),
-                                              ),
-                                            ),
-                                      ])
-                                : Container(
-                                    height: 172.0,
-                                    alignment: Alignment.center,
-                                    child: const BasePlaceholderText(
-                                      text: 'No additional images set yet',
-                                    ),
-                                  );
+                BaseCard(
+                  topPadding: 0,
+                  bottomPadding: 0,
+                  leftPadding: 0,
+                  rightPadding: 0,
+                  child: MealImages(
+                    type: _type,
+                    thumbnailUUID: this.widget.thumbnailUUID,
+                    thumbnailToAdd: this.widget.thumbnailToAdd,
+                    imagesUUIDs: this.widget.imagesUUIDs,
+                    imagesToAdd: this.widget.imagesToAdd,
+                    imagesUUIDsToDelete: this.widget.imagesUUIDsToDelete,
+                    onThumbnailAction: () => setState(
+                      () {
+                        if (this.widget.thumbnailUUID.isNotEmpty) {
+                          this
+                              .widget
+                              .imagesUUIDsToDelete
+                              .add(this.widget.thumbnailUUID.first);
                         }
-                      }(),
+                        this.widget.thumbnailUUID.clear();
+                        this.widget.thumbnailToAdd.clear();
+                      },
                     ),
-                    const SizedBox(height: 24.0),
-                  ],
+                    onExistingImagesAction: (index, imageUUID) => setState(
+                      () {
+                        this.widget.imagesUUIDs.removeAt(index);
+                        this.widget.imagesUUIDsToDelete.add(imageUUID);
+                      },
+                    ),
+                    onNewImagesAction: (index) => setState(
+                      () => this.widget.imagesToAdd.removeAt(index),
+                    ),
+                  ),
                 ),
                 FutureBuilder(
                   future: _pickFuture,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(12.0),
+                          ),
+                          side: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
+                            width: 2.0,
+                          ),
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.all(24.0),
                           child: BaseProgressIndicator(
@@ -300,6 +249,7 @@ class _ImagesStepState extends State<ImagesStep> {
                 )
               ],
             ),
+            const SizedBox(height: 24.0),
             SizedBox(
               // width: 256,
               width: double.infinity,

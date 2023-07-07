@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import '../../utils/styling.dart';
 
 import '../../../models/meal/meal.dart';
+import '../../utils/styling.dart';
 import '../base/functional/async_value_builder.dart';
+import '../base/ui/placeholder_text.dart';
 import 'meal_card.dart';
 
 class MealGrid extends ConsumerWidget {
@@ -65,7 +66,13 @@ class MealGrid extends ConsumerWidget {
                 ),
               ),
             )
-          : this.empty ?? const Text('No meals yet! ò.ó'),
+          : this.empty ??
+              const Padding(
+                padding: EdgeInsets.only(top: 64.0),
+                child: BasePlaceholder(
+                    text:
+                        'It\'s quite empty in here.\nLet\'s start by adding some meals!'),
+              ),
     );
   }
 }

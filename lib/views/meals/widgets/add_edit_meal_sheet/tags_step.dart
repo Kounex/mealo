@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../../models/tag/tag.dart';
+import '../../../../types/extensions/string.dart';
 import '../../../../utils/modal.dart';
 import '../../../../widgets/base/functional/async_value_builder.dart';
 import '../../../../widgets/base/functional/suggestion_text_field/suggestion_text_field.dart';
+import '../../../../widgets/base/ui/card.dart';
 import '../../../../widgets/base/ui/chip.dart';
 import '../../../../widgets/base/ui/placeholder_text.dart';
-
-import '../../../../types/extensions/string.dart';
 import '../../../../widgets/shared/dialog/add_edit_tag/add_edit_tag.dart';
 
 class TagsStep extends ConsumerStatefulWidget {
@@ -74,26 +75,35 @@ class _TagsStepState extends ConsumerState<TagsStep> {
             ),
           ),
           const SizedBox(height: 24.0),
-          this.widget.tags.isNotEmpty
-              ? Wrap(
-                  spacing: 12.0,
-                  children: this
-                      .widget
-                      .tags
-                      .map(
-                        (tag) => BaseChip(
-                          text: tag.name,
-                          color: tag.colorHex?.toColor(),
-                          onDeleted: () => setState(
-                            () => this.widget.tags.remove(tag),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                )
-              : const Center(
-                  child: BasePlaceholderText(text: 'No tags added yet'),
-                ),
+          BaseCard(
+            topPadding: 0,
+            bottomPadding: 0,
+            leftPadding: 0,
+            rightPadding: 0,
+            child: this.widget.tags.isNotEmpty
+                ? Align(
+                    alignment: Alignment.centerLeft,
+                    child: Wrap(
+                      spacing: 12.0,
+                      children: this
+                          .widget
+                          .tags
+                          .map(
+                            (tag) => BaseChip(
+                              text: tag.name,
+                              color: tag.colorHex?.toColor(),
+                              onDeleted: () => setState(
+                                () => this.widget.tags.remove(tag),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  )
+                : const Center(
+                    child: BasePlaceholder(text: 'No tags added yet'),
+                  ),
+          ),
         ],
       ),
     );

@@ -1,23 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'widgets/ratings_overview.dart';
-import 'widgets/tags_overview.dart';
+
 import '../../../widgets/base/functional/scaffold.dart';
 import '../../../widgets/shared/dialog/add_edit_rating.dart';
 import '../../../widgets/shared/dialog/add_edit_tag/add_edit_tag.dart';
+import 'widgets/ratings_overview.dart';
+import 'widgets/tags_overview.dart';
 
-class RatingsTagsManagementView extends ConsumerStatefulWidget {
+class RatingsTagsManagementView extends StatelessWidget {
   const RatingsTagsManagementView({super.key});
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _RatingsTagsManagementViewState();
-}
-
-class _RatingsTagsManagementViewState
-    extends ConsumerState<RatingsTagsManagementView> {
-  final bool _editMode = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +30,6 @@ class _RatingsTagsManagementViewState
               icon: const Icon(CupertinoIcons.add),
             );
           }),
-          // IconButton(
-          //   onPressed: () => setState(() => _editMode = !_editMode),
-          //   icon: Icon(
-          //     _editMode ? CupertinoIcons.checkmark_alt : CupertinoIcons.pencil,
-          //   ),
-          // ),
         ],
       ),
       tabBarProperties: TabBarProperties(
