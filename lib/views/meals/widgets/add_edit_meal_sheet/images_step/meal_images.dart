@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../../models/meal/meal.dart';
 import '../../../../../utils/styling.dart';
 import '../../../../../widgets/base/ui/image.dart';
 import '../../../../../widgets/base/ui/placeholder_text.dart';
@@ -10,10 +11,9 @@ import 'images_step.dart';
 class MealImages extends StatelessWidget {
   final MealImageType type;
 
-  final List<String> thumbnailUUID;
-  final List<XFile> thumbnailToAdd;
+  final Meal meal;
 
-  final List<String> imagesUUIDs;
+  final List<XFile> thumbnailToAdd;
   final List<XFile> imagesToAdd;
 
   final List<String> imagesUUIDsToDelete;
@@ -25,9 +25,8 @@ class MealImages extends StatelessWidget {
   const MealImages({
     super.key,
     required this.type,
-    required this.thumbnailUUID,
+    required this.meal,
     required this.thumbnailToAdd,
-    required this.imagesUUIDs,
     required this.imagesToAdd,
     required this.imagesUUIDsToDelete,
     required this.onThumbnailAction,
@@ -42,10 +41,10 @@ class MealImages extends StatelessWidget {
       child: () {
         switch (this.type) {
           case MealImageType.thumbnail:
-            return this.thumbnailUUID.isNotEmpty ||
+            return this.meal.thumbnailUUID != null ||
                     this.thumbnailToAdd.isNotEmpty
                 ? BaseImage(
-                    imageUUID: this.thumbnailUUID.firstOrNull,
+                    imageUUID: this.meal.thumbnailUUID,
                     image: this.thumbnailToAdd.firstOrNull,
                     height: 172.0,
                     width: 172.0,
@@ -60,12 +59,13 @@ class MealImages extends StatelessWidget {
                     ),
                   );
           case MealImageType.additional:
-            return this.imagesUUIDs.isNotEmpty || this.imagesToAdd.isNotEmpty
+            return this.meal.imagesUUIDs.isNotEmpty ||
+                    this.imagesToAdd.isNotEmpty
                 ? Wrap(
                     spacing: 24.0,
                     runSpacing: 24.0,
                     children: [
-                      ...this.imagesUUIDs.mapIndexed(
+                      ...this.meal.imagesUUIDs.mapIndexed(
                             (index, imageUUID) => BaseImage(
                               imageUUID: imageUUID,
                               height: 128.0,

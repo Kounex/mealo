@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../../models/meal/meal.dart';
 import '../../../../../utils/modal.dart';
 import '../../../../../widgets/base/ui/card.dart';
 import '../../../../../widgets/base/ui/progress_indicator.dart';
@@ -52,8 +53,7 @@ enum ImagePickerType {
 }
 
 class ImagesStep extends StatefulWidget {
-  final List<String> thumbnailUUID;
-  final List<String> imagesUUIDs;
+  final Meal meal;
 
   final List<XFile> thumbnailToAdd;
   final List<XFile> imagesToAdd;
@@ -62,8 +62,7 @@ class ImagesStep extends StatefulWidget {
 
   const ImagesStep({
     super.key,
-    required this.thumbnailUUID,
-    required this.imagesUUIDs,
+    required this.meal,
     required this.thumbnailToAdd,
     required this.imagesToAdd,
     required this.imagesUUIDsToDelete,
@@ -194,26 +193,25 @@ class _ImagesStepState extends State<ImagesStep> {
                   rightPadding: 0,
                   child: MealImages(
                     type: _type,
-                    thumbnailUUID: this.widget.thumbnailUUID,
+                    meal: this.widget.meal,
                     thumbnailToAdd: this.widget.thumbnailToAdd,
-                    imagesUUIDs: this.widget.imagesUUIDs,
                     imagesToAdd: this.widget.imagesToAdd,
                     imagesUUIDsToDelete: this.widget.imagesUUIDsToDelete,
                     onThumbnailAction: () => setState(
                       () {
-                        if (this.widget.thumbnailUUID.isNotEmpty) {
+                        if (this.widget.meal.thumbnailUUID != null) {
                           this
                               .widget
                               .imagesUUIDsToDelete
-                              .add(this.widget.thumbnailUUID.first);
+                              .add(this.widget.meal.thumbnailUUID!);
                         }
-                        this.widget.thumbnailUUID.clear();
+                        this.widget.meal.thumbnailUUID = null;
                         this.widget.thumbnailToAdd.clear();
                       },
                     ),
                     onExistingImagesAction: (index, imageUUID) => setState(
                       () {
-                        this.widget.imagesUUIDs.removeAt(index);
+                        this.widget.meal.imagesUUIDs.removeAt(index);
                         this.widget.imagesUUIDsToDelete.add(imageUUID);
                       },
                     ),

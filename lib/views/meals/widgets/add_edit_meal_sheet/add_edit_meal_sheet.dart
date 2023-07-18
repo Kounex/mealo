@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +9,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../models/meal/meal.dart';
-import '../../../../models/tag/tag.dart';
 import '../../../../utils/isar.dart';
 import '../../../../utils/modal.dart';
 import '../../../../utils/styling.dart';
@@ -47,13 +45,9 @@ class AddEditMealSheet extends ConsumerStatefulWidget {
 
 class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
   final GlobalKey<FormState> _form = GlobalKey();
-  final _name = TextEditingController();
 
-  final List<String> _thumbnailUUID = [];
-  final List<String> _imagesUUIDs = [];
-  final List<Tag> _tags = [];
-  final List<RatingMap> _ratingMap = [];
-  final List<IngredientMap> _ingredientMap = [];
+  late final Meal _meal;
+  late final TextEditingController _name;
 
   final List<XFile> _thumbnailToAdd = [];
   final List<XFile> _imagesToAdd = [];
@@ -66,16 +60,9 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
   void initState() {
     super.initState();
 
-    if (this.widget.meal != null) {
-      if (this.widget.meal!.thumbnailUUID != null) {
-        _thumbnailUUID.add(this.widget.meal!.thumbnailUUID!);
-      }
-      _imagesUUIDs.addAll(this.widget.meal!.imagesUUIDs);
-      _name.text = this.widget.meal!.name;
-      _tags.addAll(this.widget.meal!.tags);
-      _ratingMap.addAll(this.widget.meal!.ratings);
-      _ingredientMap.addAll(this.widget.meal!.ingredients);
-    }
+    _meal = this.widget.meal ?? Meal();
+    _name =
+        TextEditingController(text: this.widget.meal != null ? _meal.name : '');
   }
 
   Future<void> _deleteImages(List<String> imagesUUIDsToDelete,
@@ -95,29 +82,32 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
   /// delete existing images or ones they just added and haven't persisted
   /// so far. This function will check for these and either delete or save
   /// the images
-  Future<void> _handleImages() async {
+  Future<({String? thumbnail, List<String> images})> _handleImages() async {
     String path = (await getApplicationDocumentsDirectory()).path;
 
     await _deleteImages(_imagesUUIDsToDelete);
 
+    String? thumbnailUUID;
+    List<String> imagesUUIDs = [];
+
     if (_thumbnailToAdd.isNotEmpty) {
-      String uuid = const Uuid().v4();
-      await _thumbnailToAdd.first.saveTo('$path/$uuid');
-      _thumbnailUUID.clear();
-      _thumbnailUUID.add(uuid);
+      thumbnailUUID = const Uuid().v4();
+      await _thumbnailToAdd.first.saveTo('$path/$thumbnailUUID');
     }
 
     for (XFile image in _imagesToAdd) {
       String uuid = const Uuid().v4();
       await image.saveTo('$path/$uuid');
-      _imagesUUIDs.add(uuid);
+      imagesUUIDs.add(uuid);
     }
+
+    return (thumbnail: thumbnailUUID, images: imagesUUIDs);
   }
 
   void _saveMeal() async {
     Meal meal = this.widget.meal ?? Meal();
 
-    await _handleImages();
+    final uuids = await _handleImages();
 
     await IsarUtils.crud(
       (isar) async {
@@ -125,18 +115,15 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
         /// to be handled seperately (see down below)
         int id = await isar.meals.put(
           meal
-            ..thumbnailUUID = _thumbnailUUID.firstOrNull
-            ..imagesUUIDs = _imagesUUIDs
             ..name = _name.text.trim()
-            ..ratings = _ratingMap
-            ..ingredients = _ingredientMap,
+            ..thumbnailUUID = uuids.thumbnail
+            ..imagesUUIDs = uuids.images,
         );
 
         /// [IsarLink/s] need special treatment for correct persistance
         /// which means we need to manually reset and save them to
         /// work properly - see the docs for more
-        await meal.tags.reset();
-        meal.tags.addAll(_tags);
+
         await meal.tags.save();
         return id;
       },
@@ -269,28 +256,23 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                           child: AnimatedSwitcher(
                             duration: StylingUtils.kBaseAnimationDuration,
                             child: () {
-                              switch (_step) {
-                                case AddEditMealStep.images:
-                                  return ImagesStep(
-                                    thumbnailUUID: _thumbnailUUID,
-                                    imagesUUIDs: _imagesUUIDs,
+                              return switch (_step) {
+                                AddEditMealStep.images => ImagesStep(
+                                    meal: _meal,
                                     thumbnailToAdd: _thumbnailToAdd,
                                     imagesToAdd: _imagesToAdd,
                                     imagesUUIDsToDelete: _imagesUUIDsToDelete,
-                                  );
-                                case AddEditMealStep.tags:
-                                  return TagsStep(
-                                    tags: _tags,
-                                  );
-                                case AddEditMealStep.ratings:
-                                  return RatingStep(
-                                    ratingMap: _ratingMap,
-                                  );
-                                case AddEditMealStep.ingredients:
-                                  return IngredientsStep(
-                                    ingredientMap: _ingredientMap,
-                                  );
-                              }
+                                  ),
+                                AddEditMealStep.tags => TagsStep(
+                                    meal: _meal,
+                                  ),
+                                AddEditMealStep.ratings => RatingStep(
+                                    meal: _meal,
+                                  ),
+                                AddEditMealStep.ingredients => IngredientsStep(
+                                    meal: _meal,
+                                  ),
+                              };
                             }(),
                           ),
                         ),

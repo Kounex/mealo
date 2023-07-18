@@ -11,11 +11,11 @@ import '../../../../../widgets/base/ui/placeholder_text.dart';
 import 'ingredient_row.dart';
 
 class IngredientsStep extends ConsumerStatefulWidget {
-  final List<IngredientMap> ingredientMap;
+  final Meal meal;
 
   const IngredientsStep({
     super.key,
-    required this.ingredientMap,
+    required this.meal,
   });
 
   @override
@@ -50,13 +50,13 @@ class _IngredientsStepState extends ConsumerState<IngredientsStep> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (this.widget.ingredientMap.isNotEmpty)
+                      if (this.widget.meal.ingredients.isNotEmpty)
                         Text(
                           'List of ingredients',
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       const SizedBox(height: 12.0),
-                      ...this.widget.ingredientMap.mapIndexed(
+                      ...this.widget.meal.ingredients.mapIndexed(
                             (index, ingredient) => IngredientRow(
                               /// TODO: check why it is necessary to have a key
                               /// here
@@ -65,11 +65,16 @@ class _IngredientsStepState extends ConsumerState<IngredientsStep> {
                               ingredients: ingredients,
                               units: units,
                               onDelete: () => setState(
-                                () => this.widget.ingredientMap.removeAt(index),
+                                () => this.widget.meal.ingredients = this
+                                    .widget
+                                    .meal
+                                    .ingredients
+                                    .whereNotIndexed((i, _) => i == index)
+                                    .toList(),
                               ),
                             ),
                           ),
-                      if (this.widget.ingredientMap.isEmpty) ...[
+                      if (this.widget.meal.ingredients.isEmpty) ...[
                         const SizedBox(height: 24.0),
                         const Center(
                           child:
@@ -89,7 +94,10 @@ class _IngredientsStepState extends ConsumerState<IngredientsStep> {
           width: double.infinity,
           child: ElevatedButton(
             onPressed: () => setState(
-              () => this.widget.ingredientMap.add(IngredientMap()),
+              () => this.widget.meal.ingredients = [
+                ...this.widget.meal.ingredients,
+                IngredientMap(),
+              ],
             ),
             child: const Text('Add ingredient'),
           ),

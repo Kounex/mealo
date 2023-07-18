@@ -11,11 +11,11 @@ import '../../../../widgets/shared/dialog/add_edit_rating.dart';
 import '../../../../widgets/shared/meal_ratings.dart';
 
 class RatingStep extends ConsumerStatefulWidget {
-  final List<RatingMap> ratingMap;
+  final Meal meal;
 
   const RatingStep({
     super.key,
-    required this.ratingMap,
+    required this.meal,
   });
 
   @override
@@ -25,12 +25,13 @@ class RatingStep extends ConsumerStatefulWidget {
 class _RatingStepState extends ConsumerState<RatingStep> {
   void _updateRatingMap(List<Rating> ratings) {
     for (var rating in ratings) {
-      if (!this.widget.ratingMap.any((value) => value.uuid == rating.uuid)) {
-        this.widget.ratingMap.add(
-              RatingMap()
-                ..uuid = rating.uuid
-                ..value = RatingValue.three,
-            );
+      if (!this.widget.meal.ratings.any((value) => value.uuid == rating.uuid)) {
+        this.widget.meal.ratings = [
+          ...this.widget.meal.ratings,
+          RatingMap()
+            ..uuid = rating.uuid
+            ..value = RatingValue.three,
+        ];
       }
     }
   }
@@ -68,10 +69,10 @@ class _RatingStepState extends ConsumerState<RatingStep> {
 
               return MealRatings(
                 ratings: ratings,
-                valueMap: this.widget.ratingMap,
+                valueMap: this.widget.meal.ratings,
                 onSelectionChanged: (index, ratingValue) => setState(
                   () {
-                    final value = this.widget.ratingMap.firstWhereOrNull(
+                    final value = this.widget.meal.ratings.firstWhereOrNull(
                         (value) => value.uuid == ratings[index].uuid);
                     value?.value =
                         ratingValue != value.value ? ratingValue : null;

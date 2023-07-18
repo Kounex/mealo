@@ -5,10 +5,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.19.0 <3.0.0'
+  sdk: '>=3.0.0 <4.0.0'
 
 # Globals for packages which share the same version
-isar_version: &isar_version 3.0.5
+isar_version: &isar_version 3.1.0+1
 
 dependencies:
   flutter:
