@@ -78,13 +78,27 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
     }
   }
 
-  Future<void> _handleImages() async {
-    String path = (await getApplicationDocumentsDirectory()).path;
+  Future<void> _deleteImages(List<String> imagesUUIDsToDelete,
+      [String? path]) async {
     List<Future> deletions = [];
-    for (String uuid in _imagesUUIDsToDelete) {
+
+    /// The apps root directory for custom content
+    path ??= (await getApplicationDocumentsDirectory()).path;
+
+    for (String uuid in imagesUUIDsToDelete) {
       deletions.add(File('$path/$uuid').delete());
     }
     await Future.wait(deletions);
+  }
+
+  /// While adding / editing a meal, users will delete or add images. They can
+  /// delete existing images or ones they just added and haven't persisted
+  /// so far. This function will check for these and either delete or save
+  /// the images
+  Future<void> _handleImages() async {
+    String path = (await getApplicationDocumentsDirectory()).path;
+
+    await _deleteImages(_imagesUUIDsToDelete);
 
     if (_thumbnailToAdd.isNotEmpty) {
       String uuid = const Uuid().v4();
@@ -107,6 +121,8 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
 
     await IsarUtils.crud(
       (isar) async {
+        /// Leaving out the properties which are [IsarLinks] since they need
+        /// to be handled seperately (see down below)
         int id = await isar.meals.put(
           meal
             ..thumbnailUUID = _thumbnailUUID.firstOrNull
@@ -132,16 +148,14 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
 
   void _deleteMeal() async {
     if (this.widget.meal != null) {
-      String path = (await getApplicationDocumentsDirectory()).path;
+      /// We need to gather all the image uuids which are associated with the
+      /// to be deleted meal
       List<String> imagesUUIDsToDelete = [...this.widget.meal!.imagesUUIDs];
       if (this.widget.meal!.thumbnailUUID != null) {
         imagesUUIDsToDelete.add(this.widget.meal!.thumbnailUUID!);
       }
-      List<Future> deletions = [];
-      for (String uuid in imagesUUIDsToDelete) {
-        deletions.add(File('$path/$uuid').delete());
-      }
-      await Future.wait(deletions);
+
+      await _deleteImages(imagesUUIDsToDelete);
 
       await IsarUtils.crud(
           (isar) => isar.meals.deleteByUuid(this.widget.meal!.uuid));
