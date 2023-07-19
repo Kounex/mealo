@@ -162,16 +162,21 @@ class _BaseCardState extends State<BaseCard> {
               heightFactor: _expandedTurn % 2 == 0 ? 1.0 : 0.0,
               alignment: const Alignment(0, -1),
               curve: Curves.easeInCubic,
-              child: Column(
-                children: [
-                  if (this.widget.titleWidget != null ||
-                      this.widget.title != null)
-                    const BaseDivider(),
-                  Padding(
-                    padding: this.widget.paddingChild,
-                    child: this.widget.child,
-                  ),
-                ],
+              child: AnimatedOpacity(
+                duration: StylingUtils.kBaseAnimationDuration,
+                opacity: _expandedTurn % 2 == 0 ? 1.0 : 0.0,
+                curve: Curves.easeInCubic,
+                child: Column(
+                  children: [
+                    if (this.widget.titleWidget != null ||
+                        this.widget.title != null)
+                      const BaseDivider(),
+                    Padding(
+                      padding: this.widget.paddingChild,
+                      child: this.widget.child,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
