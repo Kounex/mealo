@@ -1,9 +1,9 @@
 import 'package:isar/isar.dart';
-import '../tag/tag.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../models.dart';
 import '../persistance.dart';
+import '../tag/tag.dart';
 
 part 'meal.g.dart';
 
@@ -32,7 +32,7 @@ class Meal extends Model {
   List<String> imagesUUIDs = [];
 
   List<RatingMap> ratings = [];
-  IsarLinks<Tag> tags = IsarLinks();
+  IsarLinks<Tag> tags = IsarLinks<Tag>();
   List<IngredientMap> ingredients = [];
 }
 

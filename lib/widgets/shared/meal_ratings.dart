@@ -1,10 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../base/ui/divider.dart';
 
 import '../../models/meal/meal.dart';
 import '../../models/rating/rating.dart';
+import '../base/ui/divider.dart';
 
 class MealRatings extends StatelessWidget {
   final List<Rating> ratings;

@@ -1,13 +1,10 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/meal/meal.dart';
 import '../../../../models/rating/rating.dart';
-import '../../../../utils/modal.dart';
 import '../../../../widgets/base/functional/async_value_builder.dart';
 import '../../../../widgets/base/ui/card.dart';
-import '../../../../widgets/shared/dialog/add_edit_rating.dart';
 import '../../../../widgets/shared/meal_ratings.dart';
 
 class RatingStep extends ConsumerStatefulWidget {
@@ -23,19 +20,6 @@ class RatingStep extends ConsumerStatefulWidget {
 }
 
 class _RatingStepState extends ConsumerState<RatingStep> {
-  void _updateRatingMap(List<Rating> ratings) {
-    for (var rating in ratings) {
-      if (!this.widget.meal.ratings.any((value) => value.uuid == rating.uuid)) {
-        this.widget.meal.ratings = [
-          ...this.widget.meal.ratings,
-          RatingMap()
-            ..uuid = rating.uuid
-            ..value = RatingValue.three,
-        ];
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final AsyncValue<List<Rating>> asyncRatings = ref.watch(ratingsProvider);
@@ -64,35 +48,30 @@ class _RatingStepState extends ConsumerState<RatingStep> {
           ),
           child: BaseAsyncValueBuilder(
             asyncValue: asyncRatings,
-            data: (ratings) {
-              _updateRatingMap(ratings);
-
-              return MealRatings(
-                ratings: ratings,
-                valueMap: this.widget.meal.ratings,
-                onSelectionChanged: (index, ratingValue) => setState(
-                  () {
-                    final value = this.widget.meal.ratings.firstWhereOrNull(
-                        (value) => value.uuid == ratings[index].uuid);
-                    value?.value =
-                        ratingValue != value.value ? ratingValue : null;
-                  },
-                ),
-              );
-            },
-          ),
-        ),
-        const SizedBox(height: 24.0),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () => ModalUtils.showBaseDialog(
-              context,
-              const AddEditRatingDialog(),
+            data: (ratings) => MealRatings(
+              ratings: ratings,
+              valueMap: this.widget.meal.ratings,
+              onSelectionChanged: (index, ratingValue) => setState(
+                  () => this.widget.meal.ratings[index].value = ratingValue),
             ),
-            child: const Text('Add rating'),
           ),
         ),
+
+        /// Initially planned to be able to add new ratings here as well but
+        /// ratings apply to all meals - all existing meals will need this
+        /// new rating to be added without a value and the user *needs* to
+        /// update all -> big impact. Should not be done that easily
+        // const SizedBox(height: 24.0),
+        // SizedBox(
+        //   width: double.infinity,
+        //   child: ElevatedButton(
+        //     onPressed: () => ModalUtils.showBaseDialog(
+        //       context,
+        //       const AddEditRatingDialog(),
+        //     ),
+        //     child: const Text('Add rating'),
+        //   ),
+        // ),
       ],
     );
   }

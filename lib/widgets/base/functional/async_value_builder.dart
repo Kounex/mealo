@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../ui/progress_indicator.dart';
 
 class BaseAsyncValueBuilder<T> extends StatelessWidget {
@@ -12,6 +13,8 @@ class BaseAsyncValueBuilder<T> extends StatelessWidget {
   final Widget Function(Object error, StackTrace stackTrace)? error;
   final Widget Function()? loading;
 
+  final String? loadingText;
+
   const BaseAsyncValueBuilder({
     super.key,
     required this.asyncValue,
@@ -20,6 +23,7 @@ class BaseAsyncValueBuilder<T> extends StatelessWidget {
     required this.data,
     this.error,
     this.loading,
+    this.loadingText,
   });
 
   @override
@@ -79,7 +83,9 @@ class BaseAsyncValueBuilder<T> extends StatelessWidget {
                   ),
           loading: this.loading ??
               () => Center(
-                    child: BaseProgressIndicator(),
+                    child: BaseProgressIndicator(
+                      text: this.loadingText,
+                    ),
                   ),
         );
   }
