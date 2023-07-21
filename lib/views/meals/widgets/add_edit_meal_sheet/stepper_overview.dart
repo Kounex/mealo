@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
+import 'package:mealo/widgets/base/functional/animated_color.dart';
 
 import '../../../../utils/styling.dart';
 import '../../../../widgets/base/ui/divider.dart';
@@ -26,6 +28,8 @@ class StepperOverview extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> children = [];
 
+    timeDilation = 1.0;
+
     List.generate(this.max + 1, (index) {
       children.add(
         Column(
@@ -34,22 +38,25 @@ class StepperOverview extends StatelessWidget {
               onTap: index != this.step
                   ? () => this.onStepTapped?.call(index)
                   : null,
-              child: AnimatedContainer(
-                duration: StylingUtils.kBaseAnimationDuration,
+              child: Container(
                 height: this.size,
                 width: this.size,
                 alignment: Alignment.center,
-                decoration: BoxDecoration(
+                clipBehavior: Clip.antiAlias,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                child: AnimatedColor(
                   color: index == this.step
                       ? Theme.of(context).colorScheme.primaryContainer
                       : StylingUtils.lightDisabledColor(context),
-                  shape: BoxShape.circle,
-                ),
-                child: Text(
-                  (index + 1).toString(),
-                  style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
-                      ),
+                  child: Text(
+                    (index + 1).toString(),
+                    style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
+                        ),
+                  ),
                 ),
               ),
             ),

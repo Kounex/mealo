@@ -357,7 +357,7 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
           ],
         );
 
-    if (_meal == null) {
+    if (this.widget.meal == null) {
       final asyncRatings = ref.watch(ratingsProvider);
       return BaseAsyncValueBuilder(
         asyncValue: asyncRatings,
