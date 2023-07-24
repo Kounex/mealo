@@ -11,9 +11,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../models/meal/meal.dart';
-import '../../../../models/tag/tag.dart';
-import '../../../../utils/isar.dart';
 import '../../../../utils/modal.dart';
+import '../../../../utils/persistance.dart';
 import '../../../../utils/styling.dart';
 import '../../../../utils/validation.dart';
 import '../../../../widgets/base/functional/text_form_field.dart';
@@ -51,19 +50,12 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
 
   Meal? _meal;
 
-  /// Currently [Isar] can't handle to work with [IsarLinks] before the object
-  /// has been persisted. For example adding a [Tag] to the [IsarLinks<Tag>]
-  /// property of [_meal] does not do anything. Therefore we need to have a
-  /// seperate property which holds all the tags and we will add it once the
-  /// user decided to persist the meal...
-  final Set<Tag> _tags = {};
-
   late final TextEditingController _name;
 
   final List<XFile> _thumbnailToAdd = [];
   final List<XFile> _imagesToAdd = [];
 
-  final List<String> _imagesUUIDsToDelete = [];
+  final List<String> _imagesUuidsToDelete = [];
 
   AddEditMealStep _step = AddEditMealStep.values.first;
 
@@ -72,10 +64,6 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
     super.initState();
 
     _meal = this.widget.meal;
-
-    if (_meal != null) {
-      _tags.addAll(_meal!.tags);
-    }
 
     _name = TextEditingController(text: this.widget.meal?.name ?? '');
   }
@@ -87,8 +75,8 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
 
     meal.ratings = ratings
         .map(
-          (rating) => RatingMap()
-            ..uuid = rating.uuid
+          (rating) => RatingLink()
+            ..ratingUuid = rating.uuid
             ..value = RatingValue.three,
         )
         .toList();
@@ -96,14 +84,14 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
     return meal;
   }
 
-  Future<void> _deleteImages(List<String> imagesUUIDsToDelete,
+  Future<void> _deleteImages(List<String> imagesUuidsToDelete,
       [String? path]) async {
     List<Future> deletions = [];
 
     /// The apps root directory for custom content
     path ??= (await getApplicationDocumentsDirectory()).path;
 
-    for (String uuid in imagesUUIDsToDelete) {
+    for (String uuid in imagesUuidsToDelete) {
       deletions.add(File('$path/$uuid').delete());
     }
     await Future.wait(deletions);
@@ -116,10 +104,10 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
   Future<({String? thumbnail, List<String> images})> _handleImages() async {
     String path = (await getApplicationDocumentsDirectory()).path;
 
-    await _deleteImages(_imagesUUIDsToDelete);
+    await _deleteImages(_imagesUuidsToDelete);
 
     String? thumbnailUUID;
-    List<String> imagesUUIDs = [];
+    List<String> imagesUuids = [];
 
     if (_thumbnailToAdd.isNotEmpty) {
       await _thumbnailToAdd.first.saveTo('$path/$thumbnailUUID');
@@ -129,33 +117,33 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
     for (XFile image in _imagesToAdd) {
       String uuid = const Uuid().v4();
       await image.saveTo('$path/$uuid');
-      imagesUUIDs.add(uuid);
+      imagesUuids.add(uuid);
     }
 
-    return (thumbnail: thumbnailUUID, images: imagesUUIDs);
+    return (thumbnail: thumbnailUUID, images: imagesUuids);
   }
 
   void _saveMeal() async {
     final uuids = await _handleImages();
 
-    await IsarUtils.crud(
-      (isar) async {
+    await PersistanceUtils.crud(
+      (isar) {
         /// Leaving out the properties which are [IsarLinks] since they need
         /// to be handled seperately (see down below)
-        int id = await isar.meals.put(
+        isar.meals.put(
           _meal!
             ..name = _name.text.trim()
-            ..thumbnailUUID = uuids.thumbnail
-            ..imagesUUIDs = uuids.images,
+            ..thumbnailUuid = uuids.thumbnail
+            ..imagesUuids = uuids.images,
         );
 
         /// [IsarLink/s] need special treatment for correct persistance
         /// which means we need to manually reset and save them to
         /// work properly - see the docs for more
-        _meal!.tags.addAll(_tags);
-        await _meal!.tags.save();
+        // _meal!.tags.addAll(_tags);
+        // await _meal!.tags.save();
 
-        return id;
+        // return id;
       },
     );
     if (context.mounted) {
@@ -167,15 +155,15 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
     if (this.widget.meal != null) {
       /// We need to gather all the image uuids which are associated with the
       /// to be deleted meal
-      List<String> imagesUUIDsToDelete = [...this.widget.meal!.imagesUUIDs];
-      if (this.widget.meal!.thumbnailUUID != null) {
-        imagesUUIDsToDelete.add(this.widget.meal!.thumbnailUUID!);
+      List<String> imagesUuidsToDelete = [...this.widget.meal!.imagesUuids];
+      if (this.widget.meal!.thumbnailUuid != null) {
+        imagesUuidsToDelete.add(this.widget.meal!.thumbnailUuid!);
       }
 
-      await _deleteImages(imagesUUIDsToDelete);
+      await _deleteImages(imagesUuidsToDelete);
 
-      await IsarUtils.crud(
-          (isar) => isar.meals.deleteByUuid(this.widget.meal!.uuid));
+      await PersistanceUtils.crud(
+          (isar) => isar.meals.delete(this.widget.meal!.uuid));
     }
     if (mounted) {
       Navigator.of(context).pop('delete');
@@ -183,10 +171,10 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
   }
 
   String? _checkMealNameUnique(String name) {
-    List<Meal> meals = IsarUtils.instance.meals
-        .filter()
+    List<Meal> meals = PersistanceUtils.instance.meals
+        .where()
         .nameEqualTo(name.trim())
-        .findAllSync();
+        .findAll();
 
     if (meals.isNotEmpty &&
         meals.every((meal) => meal.uuid != this.widget.meal?.uuid)) {
@@ -291,11 +279,11 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                                         meal: _meal!,
                                         thumbnailToAdd: _thumbnailToAdd,
                                         imagesToAdd: _imagesToAdd,
-                                        imagesUUIDsToDelete:
-                                            _imagesUUIDsToDelete,
+                                        imagesUuidsToDelete:
+                                            _imagesUuidsToDelete,
                                       ),
                                     AddEditMealStep.tags => TagsStep(
-                                        tags: _tags,
+                                        meal: _meal!,
                                       ),
                                     AddEditMealStep.ratings => RatingStep(
                                         meal: _meal!,

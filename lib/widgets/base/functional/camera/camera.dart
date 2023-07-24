@@ -3,9 +3,9 @@ import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../future_builder.dart';
-import '../../ui/result.dart';
 
+import '../../ui/result.dart';
+import '../future_builder.dart';
 import 'ui.dart';
 
 class BaseCamera extends StatefulWidget {
@@ -40,7 +40,7 @@ class _BaseCameraState extends State<BaseCamera> {
                     cameras: cameras,
                   )
                 : const BaseResult(
-                    icon: BaseResultIcon.Negative,
+                    icon: BaseResultIcon.negative,
                     text: 'No camera available!',
                   ),
           ),

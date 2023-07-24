@@ -7,398 +7,196 @@ part of 'unit.dart';
 // **************************************************************************
 
 // coverage:ignore-file
-// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
+// ignore_for_file: duplicate_ignore, invalid_use_of_protected_member, lines_longer_than_80_chars, constant_identifier_names, avoid_js_rounded_ints, no_leading_underscores_for_local_identifiers, require_trailing_commas, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_in_if_null_operators, library_private_types_in_public_api
 
 extension GetUnitCollection on Isar {
-  IsarCollection<Unit> get units => this.collection();
+  IsarCollection<String, Unit> get units => this.collection();
 }
 
-const UnitSchema = CollectionSchema(
-  name: r'Unit',
-  id: 5852079958688209740,
-  properties: {
-    r'name': PropertySchema(
-      id: 0,
-      name: r'name',
-      type: IsarType.string,
-    ),
-    r'uuid': PropertySchema(
-      id: 1,
-      name: r'uuid',
-      type: IsarType.string,
-    )
-  },
-  estimateSize: _unitEstimateSize,
-  serialize: _unitSerialize,
-  deserialize: _unitDeserialize,
-  deserializeProp: _unitDeserializeProp,
-  idName: r'isarId',
-  indexes: {
-    r'uuid': IndexSchema(
-      id: 2134397340427724972,
-      name: r'uuid',
-      unique: true,
-      replace: true,
-      properties: [
-        IndexPropertySchema(
-          name: r'uuid',
-          type: IndexType.hash,
-          caseSensitive: true,
-        )
-      ],
-    )
-  },
-  links: {},
-  embeddedSchemas: {},
-  getId: _unitGetId,
-  getLinks: _unitGetLinks,
-  attach: _unitAttach,
-  version: '3.1.0+1',
+const UnitSchema = IsarCollectionSchema(
+  schema:
+      '{"name":"Unit","idName":"uuid","properties":[{"name":"name","type":"String"},{"name":"uuid","type":"String"}]}',
+  converter: IsarObjectConverter<String, Unit>(
+    serialize: serializeUnit,
+    deserialize: deserializeUnit,
+    deserializeProperty: deserializeUnitProp,
+  ),
+  embeddedSchemas: [],
+  hash: 2413271192322280844,
 );
 
-int _unitEstimateSize(
-  Unit object,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
-  var bytesCount = offsets.last;
-  bytesCount += 3 + object.name.length * 3;
-  bytesCount += 3 + object.uuid.length * 3;
-  return bytesCount;
+@isarProtected
+int serializeUnit(IsarWriter writer, Unit object) {
+  IsarCore.writeString(writer, 1, IsarCore.toNativeString(object.name));
+  IsarCore.writeString(writer, 2, IsarCore.toNativeString(object.uuid));
+  return Isar.fastHash(object.uuid);
 }
 
-void _unitSerialize(
-  Unit object,
-  IsarWriter writer,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
-  writer.writeString(offsets[0], object.name);
-  writer.writeString(offsets[1], object.uuid);
-}
-
-Unit _unitDeserialize(
-  Id id,
-  IsarReader reader,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
+@isarProtected
+Unit deserializeUnit(IsarReader reader) {
   final object = Unit();
-  object.name = reader.readString(offsets[0]);
-  object.uuid = reader.readString(offsets[1]);
+  object.name = IsarCore.readString(reader, 1) ?? '';
+  object.uuid = IsarCore.readString(reader, 2) ?? '';
   return object;
 }
 
-P _unitDeserializeProp<P>(
-  IsarReader reader,
-  int propertyId,
-  int offset,
-  Map<Type, List<int>> allOffsets,
-) {
-  switch (propertyId) {
-    case 0:
-      return (reader.readString(offset)) as P;
+@isarProtected
+dynamic deserializeUnitProp(IsarReader reader, int property) {
+  switch (property) {
     case 1:
-      return (reader.readString(offset)) as P;
+      return IsarCore.readString(reader, 1) ?? '';
+    case 2:
+      return IsarCore.readString(reader, 2) ?? '';
     default:
-      throw IsarError('Unknown property with id $propertyId');
+      throw ArgumentError('Unknown property: $property');
   }
 }
 
-Id _unitGetId(Unit object) {
-  return object.isarId;
+sealed class _UnitUpdate {
+  bool call(
+    String uuid, {
+    String? name,
+  });
 }
 
-List<IsarLinkBase<dynamic>> _unitGetLinks(Unit object) {
-  return [];
-}
+class _UnitUpdateImpl implements _UnitUpdate {
+  const _UnitUpdateImpl(this.collection);
 
-void _unitAttach(IsarCollection<dynamic> col, Id id, Unit object) {}
+  final IsarCollection<String, Unit> collection;
 
-extension UnitByIndex on IsarCollection<Unit> {
-  Future<Unit?> getByUuid(String uuid) {
-    return getByIndex(r'uuid', [uuid]);
-  }
-
-  Unit? getByUuidSync(String uuid) {
-    return getByIndexSync(r'uuid', [uuid]);
-  }
-
-  Future<bool> deleteByUuid(String uuid) {
-    return deleteByIndex(r'uuid', [uuid]);
-  }
-
-  bool deleteByUuidSync(String uuid) {
-    return deleteByIndexSync(r'uuid', [uuid]);
-  }
-
-  Future<List<Unit?>> getAllByUuid(List<String> uuidValues) {
-    final values = uuidValues.map((e) => [e]).toList();
-    return getAllByIndex(r'uuid', values);
-  }
-
-  List<Unit?> getAllByUuidSync(List<String> uuidValues) {
-    final values = uuidValues.map((e) => [e]).toList();
-    return getAllByIndexSync(r'uuid', values);
-  }
-
-  Future<int> deleteAllByUuid(List<String> uuidValues) {
-    final values = uuidValues.map((e) => [e]).toList();
-    return deleteAllByIndex(r'uuid', values);
-  }
-
-  int deleteAllByUuidSync(List<String> uuidValues) {
-    final values = uuidValues.map((e) => [e]).toList();
-    return deleteAllByIndexSync(r'uuid', values);
-  }
-
-  Future<Id> putByUuid(Unit object) {
-    return putByIndex(r'uuid', object);
-  }
-
-  Id putByUuidSync(Unit object, {bool saveLinks = true}) {
-    return putByIndexSync(r'uuid', object, saveLinks: saveLinks);
-  }
-
-  Future<List<Id>> putAllByUuid(List<Unit> objects) {
-    return putAllByIndex(r'uuid', objects);
-  }
-
-  List<Id> putAllByUuidSync(List<Unit> objects, {bool saveLinks = true}) {
-    return putAllByIndexSync(r'uuid', objects, saveLinks: saveLinks);
-  }
-}
-
-extension UnitQueryWhereSort on QueryBuilder<Unit, Unit, QWhere> {
-  QueryBuilder<Unit, Unit, QAfterWhere> anyIsarId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(const IdWhereClause.any());
-    });
-  }
-}
-
-extension UnitQueryWhere on QueryBuilder<Unit, Unit, QWhereClause> {
-  QueryBuilder<Unit, Unit, QAfterWhereClause> isarIdEqualTo(Id isarId) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: isarId,
-        upper: isarId,
-      ));
-    });
-  }
-
-  QueryBuilder<Unit, Unit, QAfterWhereClause> isarIdNotEqualTo(Id isarId) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(
-              IdWhereClause.lessThan(upper: isarId, includeUpper: false),
-            )
-            .addWhereClause(
-              IdWhereClause.greaterThan(lower: isarId, includeLower: false),
-            );
-      } else {
-        return query
-            .addWhereClause(
-              IdWhereClause.greaterThan(lower: isarId, includeLower: false),
-            )
-            .addWhereClause(
-              IdWhereClause.lessThan(upper: isarId, includeUpper: false),
-            );
-      }
-    });
-  }
-
-  QueryBuilder<Unit, Unit, QAfterWhereClause> isarIdGreaterThan(Id isarId,
-      {bool include = false}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(
-        IdWhereClause.greaterThan(lower: isarId, includeLower: include),
-      );
-    });
-  }
-
-  QueryBuilder<Unit, Unit, QAfterWhereClause> isarIdLessThan(Id isarId,
-      {bool include = false}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(
-        IdWhereClause.lessThan(upper: isarId, includeUpper: include),
-      );
-    });
-  }
-
-  QueryBuilder<Unit, Unit, QAfterWhereClause> isarIdBetween(
-    Id lowerIsarId,
-    Id upperIsarId, {
-    bool includeLower = true,
-    bool includeUpper = true,
+  @override
+  bool call(
+    String uuid, {
+    Object? name = ignore,
   }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerIsarId,
-        includeLower: includeLower,
-        upper: upperIsarId,
-        includeUpper: includeUpper,
-      ));
-    });
+    return collection.updateProperties([
+          uuid
+        ], {
+          if (name != ignore) 1: name as String?,
+        }) >
+        0;
   }
+}
 
-  QueryBuilder<Unit, Unit, QAfterWhereClause> uuidEqualTo(String uuid) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'uuid',
-        value: [uuid],
-      ));
-    });
-  }
+sealed class _UnitUpdateAll {
+  int call(
+    List<String> uuid, {
+    String? name,
+  });
+}
 
-  QueryBuilder<Unit, Unit, QAfterWhereClause> uuidNotEqualTo(String uuid) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'uuid',
-              lower: [],
-              upper: [uuid],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'uuid',
-              lower: [uuid],
-              includeLower: false,
-              upper: [],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'uuid',
-              lower: [uuid],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'uuid',
-              lower: [],
-              upper: [uuid],
-              includeUpper: false,
-            ));
-      }
+class _UnitUpdateAllImpl implements _UnitUpdateAll {
+  const _UnitUpdateAllImpl(this.collection);
+
+  final IsarCollection<String, Unit> collection;
+
+  @override
+  int call(
+    List<String> uuid, {
+    Object? name = ignore,
+  }) {
+    return collection.updateProperties(uuid, {
+      if (name != ignore) 1: name as String?,
     });
   }
+}
+
+extension UnitUpdate on IsarCollection<String, Unit> {
+  _UnitUpdate get update => _UnitUpdateImpl(this);
+
+  _UnitUpdateAll get updateAll => _UnitUpdateAllImpl(this);
 }
 
 extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
-  QueryBuilder<Unit, Unit, QAfterFilterCondition> isarIdEqualTo(Id value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'isarId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Unit, Unit, QAfterFilterCondition> isarIdGreaterThan(
-    Id value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'isarId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Unit, Unit, QAfterFilterCondition> isarIdLessThan(
-    Id value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'isarId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Unit, Unit, QAfterFilterCondition> isarIdBetween(
-    Id lower,
-    Id upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'isarId',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
   QueryBuilder<Unit, Unit, QAfterFilterCondition> nameEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        EqualCondition(
+          property: 1,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Unit, Unit, QAfterFilterCondition> nameGreaterThan(
     String value, {
-    bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        GreaterCondition(
+          property: 1,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> nameGreaterThanOrEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterOrEqualCondition(
+          property: 1,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Unit, Unit, QAfterFilterCondition> nameLessThan(
     String value, {
-    bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        LessCondition(
+          property: 1,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> nameLessThanOrEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessOrEqualCondition(
+          property: 1,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Unit, Unit, QAfterFilterCondition> nameBetween(
     String lower,
     String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'name',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        BetweenCondition(
+          property: 1,
+          lower: lower,
+          upper: upper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -407,11 +205,13 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        StartsWithCondition(
+          property: 1,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -420,51 +220,61 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        EndsWithCondition(
+          property: 1,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Unit, Unit, QAfterFilterCondition> nameContains(String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        ContainsCondition(
+          property: 1,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Unit, Unit, QAfterFilterCondition> nameMatches(String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'name',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        MatchesCondition(
+          property: 1,
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Unit, Unit, QAfterFilterCondition> nameIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'name',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        const EqualCondition(
+          property: 1,
+          value: '',
+        ),
+      );
     });
   }
 
   QueryBuilder<Unit, Unit, QAfterFilterCondition> nameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'name',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        const GreaterCondition(
+          property: 1,
+          value: '',
+        ),
+      );
     });
   }
 
@@ -473,60 +283,90 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'uuid',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        EqualCondition(
+          property: 2,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Unit, Unit, QAfterFilterCondition> uuidGreaterThan(
     String value, {
-    bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'uuid',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        GreaterCondition(
+          property: 2,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> uuidGreaterThanOrEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterOrEqualCondition(
+          property: 2,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Unit, Unit, QAfterFilterCondition> uuidLessThan(
     String value, {
-    bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'uuid',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        LessCondition(
+          property: 2,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> uuidLessThanOrEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessOrEqualCondition(
+          property: 2,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Unit, Unit, QAfterFilterCondition> uuidBetween(
     String lower,
     String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'uuid',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        BetweenCondition(
+          property: 2,
+          lower: lower,
+          upper: upper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -535,11 +375,13 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'uuid',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        StartsWithCondition(
+          property: 2,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -548,155 +390,189 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'uuid',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        EndsWithCondition(
+          property: 2,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Unit, Unit, QAfterFilterCondition> uuidContains(String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'uuid',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        ContainsCondition(
+          property: 2,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Unit, Unit, QAfterFilterCondition> uuidMatches(String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'uuid',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        MatchesCondition(
+          property: 2,
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Unit, Unit, QAfterFilterCondition> uuidIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'uuid',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        const EqualCondition(
+          property: 2,
+          value: '',
+        ),
+      );
     });
   }
 
   QueryBuilder<Unit, Unit, QAfterFilterCondition> uuidIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'uuid',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        const GreaterCondition(
+          property: 2,
+          value: '',
+        ),
+      );
     });
   }
 }
 
 extension UnitQueryObject on QueryBuilder<Unit, Unit, QFilterCondition> {}
 
-extension UnitQueryLinks on QueryBuilder<Unit, Unit, QFilterCondition> {}
-
 extension UnitQuerySortBy on QueryBuilder<Unit, Unit, QSortBy> {
-  QueryBuilder<Unit, Unit, QAfterSortBy> sortByName() {
+  QueryBuilder<Unit, Unit, QAfterSortBy> sortByName(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'name', Sort.asc);
+      return query.addSortBy(
+        1,
+        caseSensitive: caseSensitive,
+      );
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterSortBy> sortByNameDesc() {
+  QueryBuilder<Unit, Unit, QAfterSortBy> sortByNameDesc(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'name', Sort.desc);
+      return query.addSortBy(
+        1,
+        sort: Sort.desc,
+        caseSensitive: caseSensitive,
+      );
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterSortBy> sortByUuid() {
+  QueryBuilder<Unit, Unit, QAfterSortBy> sortByUuid(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'uuid', Sort.asc);
+      return query.addSortBy(
+        2,
+        caseSensitive: caseSensitive,
+      );
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterSortBy> sortByUuidDesc() {
+  QueryBuilder<Unit, Unit, QAfterSortBy> sortByUuidDesc(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'uuid', Sort.desc);
+      return query.addSortBy(
+        2,
+        sort: Sort.desc,
+        caseSensitive: caseSensitive,
+      );
     });
   }
 }
 
 extension UnitQuerySortThenBy on QueryBuilder<Unit, Unit, QSortThenBy> {
-  QueryBuilder<Unit, Unit, QAfterSortBy> thenByIsarId() {
+  QueryBuilder<Unit, Unit, QAfterSortBy> thenByName(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isarId', Sort.asc);
+      return query.addSortBy(1, caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterSortBy> thenByIsarIdDesc() {
+  QueryBuilder<Unit, Unit, QAfterSortBy> thenByNameDesc(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isarId', Sort.desc);
+      return query.addSortBy(1, sort: Sort.desc, caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterSortBy> thenByName() {
+  QueryBuilder<Unit, Unit, QAfterSortBy> thenByUuid(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'name', Sort.asc);
+      return query.addSortBy(2, caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterSortBy> thenByNameDesc() {
+  QueryBuilder<Unit, Unit, QAfterSortBy> thenByUuidDesc(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'name', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Unit, Unit, QAfterSortBy> thenByUuid() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'uuid', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Unit, Unit, QAfterSortBy> thenByUuidDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'uuid', Sort.desc);
+      return query.addSortBy(2, sort: Sort.desc, caseSensitive: caseSensitive);
     });
   }
 }
 
 extension UnitQueryWhereDistinct on QueryBuilder<Unit, Unit, QDistinct> {
-  QueryBuilder<Unit, Unit, QDistinct> distinctByName(
+  QueryBuilder<Unit, Unit, QAfterDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<Unit, Unit, QDistinct> distinctByUuid(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'uuid', caseSensitive: caseSensitive);
+      return query.addDistinctBy(1, caseSensitive: caseSensitive);
     });
   }
 }
 
-extension UnitQueryProperty on QueryBuilder<Unit, Unit, QQueryProperty> {
-  QueryBuilder<Unit, int, QQueryOperations> isarIdProperty() {
+extension UnitQueryProperty1 on QueryBuilder<Unit, Unit, QProperty> {
+  QueryBuilder<Unit, String, QAfterProperty> nameProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'isarId');
+      return query.addProperty(1);
     });
   }
 
-  QueryBuilder<Unit, String, QQueryOperations> nameProperty() {
+  QueryBuilder<Unit, String, QAfterProperty> uuidProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'name');
+      return query.addProperty(2);
+    });
+  }
+}
+
+extension UnitQueryProperty2<R> on QueryBuilder<Unit, R, QAfterProperty> {
+  QueryBuilder<Unit, (R, String), QAfterProperty> nameProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(1);
     });
   }
 
-  QueryBuilder<Unit, String, QQueryOperations> uuidProperty() {
+  QueryBuilder<Unit, (R, String), QAfterProperty> uuidProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'uuid');
+      return query.addProperty(2);
+    });
+  }
+}
+
+extension UnitQueryProperty3<R1, R2>
+    on QueryBuilder<Unit, (R1, R2), QAfterProperty> {
+  QueryBuilder<Unit, (R1, R2, String), QOperations> nameProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(1);
+    });
+  }
+
+  QueryBuilder<Unit, (R1, R2, String), QOperations> uuidProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(2);
     });
   }
 }

@@ -50,7 +50,7 @@ class _RatingStepState extends ConsumerState<RatingStep> {
             asyncValue: asyncRatings,
             data: (ratings) => MealRatings(
               ratings: ratings,
-              valueMap: this.widget.meal.ratings,
+              ratingLinks: this.widget.meal.ratings,
               onSelectionChanged: (index, ratingValue) => setState(
                   () => this.widget.meal.ratings[index].value = ratingValue),
             ),

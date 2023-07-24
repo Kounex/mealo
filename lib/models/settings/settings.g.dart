@@ -7,385 +7,172 @@ part of 'settings.dart';
 // **************************************************************************
 
 // coverage:ignore-file
-// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
+// ignore_for_file: duplicate_ignore, invalid_use_of_protected_member, lines_longer_than_80_chars, constant_identifier_names, avoid_js_rounded_ints, no_leading_underscores_for_local_identifiers, require_trailing_commas, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_in_if_null_operators, library_private_types_in_public_api
 
 extension GetSettingsCollection on Isar {
-  IsarCollection<Settings> get settings => this.collection();
+  IsarCollection<String, Settings> get settings => this.collection();
 }
 
-const SettingsSchema = CollectionSchema(
-  name: r'Settings',
-  id: -8656046621518759136,
-  properties: {
-    r'darkMode': PropertySchema(
-      id: 0,
-      name: r'darkMode',
-      type: IsarType.bool,
-    ),
-    r'firstLaunch': PropertySchema(
-      id: 1,
-      name: r'firstLaunch',
-      type: IsarType.bool,
-    ),
-    r'uuid': PropertySchema(
-      id: 2,
-      name: r'uuid',
-      type: IsarType.string,
-    )
-  },
-  estimateSize: _settingsEstimateSize,
-  serialize: _settingsSerialize,
-  deserialize: _settingsDeserialize,
-  deserializeProp: _settingsDeserializeProp,
-  idName: r'isarId',
-  indexes: {
-    r'uuid': IndexSchema(
-      id: 2134397340427724972,
-      name: r'uuid',
-      unique: true,
-      replace: true,
-      properties: [
-        IndexPropertySchema(
-          name: r'uuid',
-          type: IndexType.hash,
-          caseSensitive: true,
-        )
-      ],
-    )
-  },
-  links: {},
-  embeddedSchemas: {},
-  getId: _settingsGetId,
-  getLinks: _settingsGetLinks,
-  attach: _settingsAttach,
-  version: '3.1.0+1',
+const SettingsSchema = IsarCollectionSchema(
+  schema:
+      '{"name":"Settings","idName":"uuid","properties":[{"name":"darkMode","type":"Bool"},{"name":"firstLaunch","type":"Bool"},{"name":"uuid","type":"String"}]}',
+  converter: IsarObjectConverter<String, Settings>(
+    serialize: serializeSettings,
+    deserialize: deserializeSettings,
+    deserializeProperty: deserializeSettingsProp,
+  ),
+  embeddedSchemas: [],
+  hash: 2288885675456660844,
 );
 
-int _settingsEstimateSize(
-  Settings object,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
-  var bytesCount = offsets.last;
-  bytesCount += 3 + object.uuid.length * 3;
-  return bytesCount;
+@isarProtected
+int serializeSettings(IsarWriter writer, Settings object) {
+  {
+    final value = object.darkMode;
+    if (value == null) {
+      IsarCore.writeNull(writer, 1);
+    } else {
+      IsarCore.writeBool(writer, 1, value);
+    }
+  }
+  IsarCore.writeBool(writer, 2, object.firstLaunch);
+  IsarCore.writeString(writer, 3, IsarCore.toNativeString(object.uuid));
+  return Isar.fastHash(object.uuid);
 }
 
-void _settingsSerialize(
-  Settings object,
-  IsarWriter writer,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
-  writer.writeBool(offsets[0], object.darkMode);
-  writer.writeBool(offsets[1], object.firstLaunch);
-  writer.writeString(offsets[2], object.uuid);
-}
-
-Settings _settingsDeserialize(
-  Id id,
-  IsarReader reader,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
+@isarProtected
+Settings deserializeSettings(IsarReader reader) {
   final object = Settings();
-  object.darkMode = reader.readBoolOrNull(offsets[0]);
-  object.firstLaunch = reader.readBool(offsets[1]);
-  object.uuid = reader.readString(offsets[2]);
+  {
+    if (IsarCore.readNull(reader, 1)) {
+      object.darkMode = null;
+    } else {
+      object.darkMode = IsarCore.readBool(reader, 1);
+    }
+  }
+  object.firstLaunch = IsarCore.readBool(reader, 2);
+  object.uuid = IsarCore.readString(reader, 3) ?? '';
   return object;
 }
 
-P _settingsDeserializeProp<P>(
-  IsarReader reader,
-  int propertyId,
-  int offset,
-  Map<Type, List<int>> allOffsets,
-) {
-  switch (propertyId) {
-    case 0:
-      return (reader.readBoolOrNull(offset)) as P;
+@isarProtected
+dynamic deserializeSettingsProp(IsarReader reader, int property) {
+  switch (property) {
     case 1:
-      return (reader.readBool(offset)) as P;
+      {
+        if (IsarCore.readNull(reader, 1)) {
+          return null;
+        } else {
+          return IsarCore.readBool(reader, 1);
+        }
+      }
     case 2:
-      return (reader.readString(offset)) as P;
+      return IsarCore.readBool(reader, 2);
+    case 3:
+      return IsarCore.readString(reader, 3) ?? '';
     default:
-      throw IsarError('Unknown property with id $propertyId');
+      throw ArgumentError('Unknown property: $property');
   }
 }
 
-Id _settingsGetId(Settings object) {
-  return object.isarId;
+sealed class _SettingsUpdate {
+  bool call(
+    String uuid, {
+    bool? darkMode,
+    bool? firstLaunch,
+  });
 }
 
-List<IsarLinkBase<dynamic>> _settingsGetLinks(Settings object) {
-  return [];
-}
+class _SettingsUpdateImpl implements _SettingsUpdate {
+  const _SettingsUpdateImpl(this.collection);
 
-void _settingsAttach(IsarCollection<dynamic> col, Id id, Settings object) {}
+  final IsarCollection<String, Settings> collection;
 
-extension SettingsByIndex on IsarCollection<Settings> {
-  Future<Settings?> getByUuid(String uuid) {
-    return getByIndex(r'uuid', [uuid]);
-  }
-
-  Settings? getByUuidSync(String uuid) {
-    return getByIndexSync(r'uuid', [uuid]);
-  }
-
-  Future<bool> deleteByUuid(String uuid) {
-    return deleteByIndex(r'uuid', [uuid]);
-  }
-
-  bool deleteByUuidSync(String uuid) {
-    return deleteByIndexSync(r'uuid', [uuid]);
-  }
-
-  Future<List<Settings?>> getAllByUuid(List<String> uuidValues) {
-    final values = uuidValues.map((e) => [e]).toList();
-    return getAllByIndex(r'uuid', values);
-  }
-
-  List<Settings?> getAllByUuidSync(List<String> uuidValues) {
-    final values = uuidValues.map((e) => [e]).toList();
-    return getAllByIndexSync(r'uuid', values);
-  }
-
-  Future<int> deleteAllByUuid(List<String> uuidValues) {
-    final values = uuidValues.map((e) => [e]).toList();
-    return deleteAllByIndex(r'uuid', values);
-  }
-
-  int deleteAllByUuidSync(List<String> uuidValues) {
-    final values = uuidValues.map((e) => [e]).toList();
-    return deleteAllByIndexSync(r'uuid', values);
-  }
-
-  Future<Id> putByUuid(Settings object) {
-    return putByIndex(r'uuid', object);
-  }
-
-  Id putByUuidSync(Settings object, {bool saveLinks = true}) {
-    return putByIndexSync(r'uuid', object, saveLinks: saveLinks);
-  }
-
-  Future<List<Id>> putAllByUuid(List<Settings> objects) {
-    return putAllByIndex(r'uuid', objects);
-  }
-
-  List<Id> putAllByUuidSync(List<Settings> objects, {bool saveLinks = true}) {
-    return putAllByIndexSync(r'uuid', objects, saveLinks: saveLinks);
-  }
-}
-
-extension SettingsQueryWhereSort on QueryBuilder<Settings, Settings, QWhere> {
-  QueryBuilder<Settings, Settings, QAfterWhere> anyIsarId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(const IdWhereClause.any());
-    });
-  }
-}
-
-extension SettingsQueryWhere on QueryBuilder<Settings, Settings, QWhereClause> {
-  QueryBuilder<Settings, Settings, QAfterWhereClause> isarIdEqualTo(Id isarId) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: isarId,
-        upper: isarId,
-      ));
-    });
-  }
-
-  QueryBuilder<Settings, Settings, QAfterWhereClause> isarIdNotEqualTo(
-      Id isarId) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(
-              IdWhereClause.lessThan(upper: isarId, includeUpper: false),
-            )
-            .addWhereClause(
-              IdWhereClause.greaterThan(lower: isarId, includeLower: false),
-            );
-      } else {
-        return query
-            .addWhereClause(
-              IdWhereClause.greaterThan(lower: isarId, includeLower: false),
-            )
-            .addWhereClause(
-              IdWhereClause.lessThan(upper: isarId, includeUpper: false),
-            );
-      }
-    });
-  }
-
-  QueryBuilder<Settings, Settings, QAfterWhereClause> isarIdGreaterThan(
-      Id isarId,
-      {bool include = false}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(
-        IdWhereClause.greaterThan(lower: isarId, includeLower: include),
-      );
-    });
-  }
-
-  QueryBuilder<Settings, Settings, QAfterWhereClause> isarIdLessThan(Id isarId,
-      {bool include = false}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(
-        IdWhereClause.lessThan(upper: isarId, includeUpper: include),
-      );
-    });
-  }
-
-  QueryBuilder<Settings, Settings, QAfterWhereClause> isarIdBetween(
-    Id lowerIsarId,
-    Id upperIsarId, {
-    bool includeLower = true,
-    bool includeUpper = true,
+  @override
+  bool call(
+    String uuid, {
+    Object? darkMode = ignore,
+    Object? firstLaunch = ignore,
   }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerIsarId,
-        includeLower: includeLower,
-        upper: upperIsarId,
-        includeUpper: includeUpper,
-      ));
-    });
+    return collection.updateProperties([
+          uuid
+        ], {
+          if (darkMode != ignore) 1: darkMode as bool?,
+          if (firstLaunch != ignore) 2: firstLaunch as bool?,
+        }) >
+        0;
   }
+}
 
-  QueryBuilder<Settings, Settings, QAfterWhereClause> uuidEqualTo(String uuid) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'uuid',
-        value: [uuid],
-      ));
-    });
-  }
+sealed class _SettingsUpdateAll {
+  int call(
+    List<String> uuid, {
+    bool? darkMode,
+    bool? firstLaunch,
+  });
+}
 
-  QueryBuilder<Settings, Settings, QAfterWhereClause> uuidNotEqualTo(
-      String uuid) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'uuid',
-              lower: [],
-              upper: [uuid],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'uuid',
-              lower: [uuid],
-              includeLower: false,
-              upper: [],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'uuid',
-              lower: [uuid],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'uuid',
-              lower: [],
-              upper: [uuid],
-              includeUpper: false,
-            ));
-      }
+class _SettingsUpdateAllImpl implements _SettingsUpdateAll {
+  const _SettingsUpdateAllImpl(this.collection);
+
+  final IsarCollection<String, Settings> collection;
+
+  @override
+  int call(
+    List<String> uuid, {
+    Object? darkMode = ignore,
+    Object? firstLaunch = ignore,
+  }) {
+    return collection.updateProperties(uuid, {
+      if (darkMode != ignore) 1: darkMode as bool?,
+      if (firstLaunch != ignore) 2: firstLaunch as bool?,
     });
   }
+}
+
+extension SettingsUpdate on IsarCollection<String, Settings> {
+  _SettingsUpdate get update => _SettingsUpdateImpl(this);
+
+  _SettingsUpdateAll get updateAll => _SettingsUpdateAllImpl(this);
 }
 
 extension SettingsQueryFilter
     on QueryBuilder<Settings, Settings, QFilterCondition> {
   QueryBuilder<Settings, Settings, QAfterFilterCondition> darkModeIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'darkMode',
-      ));
+      return query.addFilterCondition(const IsNullCondition(property: 1));
     });
   }
 
   QueryBuilder<Settings, Settings, QAfterFilterCondition> darkModeIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'darkMode',
-      ));
+    return QueryBuilder.apply(not(), (query) {
+      return query.addFilterCondition(const IsNullCondition(property: 1));
     });
   }
 
   QueryBuilder<Settings, Settings, QAfterFilterCondition> darkModeEqualTo(
-      bool? value) {
+    bool? value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'darkMode',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        EqualCondition(
+          property: 1,
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<Settings, Settings, QAfterFilterCondition> firstLaunchEqualTo(
-      bool value) {
+    bool value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'firstLaunch',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Settings, Settings, QAfterFilterCondition> isarIdEqualTo(
-      Id value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'isarId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Settings, Settings, QAfterFilterCondition> isarIdGreaterThan(
-    Id value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'isarId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Settings, Settings, QAfterFilterCondition> isarIdLessThan(
-    Id value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'isarId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Settings, Settings, QAfterFilterCondition> isarIdBetween(
-    Id lower,
-    Id upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'isarId',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        EqualCondition(
+          property: 2,
+          value: value,
+        ),
+      );
     });
   }
 
@@ -394,60 +181,91 @@ extension SettingsQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'uuid',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        EqualCondition(
+          property: 3,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Settings, Settings, QAfterFilterCondition> uuidGreaterThan(
     String value, {
-    bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'uuid',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        GreaterCondition(
+          property: 3,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterFilterCondition>
+      uuidGreaterThanOrEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterOrEqualCondition(
+          property: 3,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Settings, Settings, QAfterFilterCondition> uuidLessThan(
     String value, {
-    bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'uuid',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        LessCondition(
+          property: 3,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> uuidLessThanOrEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessOrEqualCondition(
+          property: 3,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Settings, Settings, QAfterFilterCondition> uuidBetween(
     String lower,
     String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'uuid',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        BetweenCondition(
+          property: 3,
+          lower: lower,
+          upper: upper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -456,11 +274,13 @@ extension SettingsQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'uuid',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        StartsWithCondition(
+          property: 3,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -469,11 +289,13 @@ extension SettingsQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'uuid',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        EndsWithCondition(
+          property: 3,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -481,11 +303,13 @@ extension SettingsQueryFilter
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'uuid',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        ContainsCondition(
+          property: 3,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -493,29 +317,35 @@ extension SettingsQueryFilter
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'uuid',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        MatchesCondition(
+          property: 3,
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Settings, Settings, QAfterFilterCondition> uuidIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'uuid',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        const EqualCondition(
+          property: 3,
+          value: '',
+        ),
+      );
     });
   }
 
   QueryBuilder<Settings, Settings, QAfterFilterCondition> uuidIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'uuid',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        const GreaterCondition(
+          property: 3,
+          value: '',
+        ),
+      );
     });
   }
 }
@@ -523,43 +353,49 @@ extension SettingsQueryFilter
 extension SettingsQueryObject
     on QueryBuilder<Settings, Settings, QFilterCondition> {}
 
-extension SettingsQueryLinks
-    on QueryBuilder<Settings, Settings, QFilterCondition> {}
-
 extension SettingsQuerySortBy on QueryBuilder<Settings, Settings, QSortBy> {
   QueryBuilder<Settings, Settings, QAfterSortBy> sortByDarkMode() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'darkMode', Sort.asc);
+      return query.addSortBy(1);
     });
   }
 
   QueryBuilder<Settings, Settings, QAfterSortBy> sortByDarkModeDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'darkMode', Sort.desc);
+      return query.addSortBy(1, sort: Sort.desc);
     });
   }
 
   QueryBuilder<Settings, Settings, QAfterSortBy> sortByFirstLaunch() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'firstLaunch', Sort.asc);
+      return query.addSortBy(2);
     });
   }
 
   QueryBuilder<Settings, Settings, QAfterSortBy> sortByFirstLaunchDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'firstLaunch', Sort.desc);
+      return query.addSortBy(2, sort: Sort.desc);
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterSortBy> sortByUuid() {
+  QueryBuilder<Settings, Settings, QAfterSortBy> sortByUuid(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'uuid', Sort.asc);
+      return query.addSortBy(
+        3,
+        caseSensitive: caseSensitive,
+      );
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterSortBy> sortByUuidDesc() {
+  QueryBuilder<Settings, Settings, QAfterSortBy> sortByUuidDesc(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'uuid', Sort.desc);
+      return query.addSortBy(
+        3,
+        sort: Sort.desc,
+        caseSensitive: caseSensitive,
+      );
     });
   }
 }
@@ -568,98 +404,117 @@ extension SettingsQuerySortThenBy
     on QueryBuilder<Settings, Settings, QSortThenBy> {
   QueryBuilder<Settings, Settings, QAfterSortBy> thenByDarkMode() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'darkMode', Sort.asc);
+      return query.addSortBy(1);
     });
   }
 
   QueryBuilder<Settings, Settings, QAfterSortBy> thenByDarkModeDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'darkMode', Sort.desc);
+      return query.addSortBy(1, sort: Sort.desc);
     });
   }
 
   QueryBuilder<Settings, Settings, QAfterSortBy> thenByFirstLaunch() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'firstLaunch', Sort.asc);
+      return query.addSortBy(2);
     });
   }
 
   QueryBuilder<Settings, Settings, QAfterSortBy> thenByFirstLaunchDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'firstLaunch', Sort.desc);
+      return query.addSortBy(2, sort: Sort.desc);
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterSortBy> thenByIsarId() {
+  QueryBuilder<Settings, Settings, QAfterSortBy> thenByUuid(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isarId', Sort.asc);
+      return query.addSortBy(3, caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterSortBy> thenByIsarIdDesc() {
+  QueryBuilder<Settings, Settings, QAfterSortBy> thenByUuidDesc(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isarId', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Settings, Settings, QAfterSortBy> thenByUuid() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'uuid', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Settings, Settings, QAfterSortBy> thenByUuidDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'uuid', Sort.desc);
+      return query.addSortBy(3, sort: Sort.desc, caseSensitive: caseSensitive);
     });
   }
 }
 
 extension SettingsQueryWhereDistinct
     on QueryBuilder<Settings, Settings, QDistinct> {
-  QueryBuilder<Settings, Settings, QDistinct> distinctByDarkMode() {
+  QueryBuilder<Settings, Settings, QAfterDistinct> distinctByDarkMode() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'darkMode');
+      return query.addDistinctBy(1);
     });
   }
 
-  QueryBuilder<Settings, Settings, QDistinct> distinctByFirstLaunch() {
+  QueryBuilder<Settings, Settings, QAfterDistinct> distinctByFirstLaunch() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'firstLaunch');
-    });
-  }
-
-  QueryBuilder<Settings, Settings, QDistinct> distinctByUuid(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'uuid', caseSensitive: caseSensitive);
+      return query.addDistinctBy(2);
     });
   }
 }
 
-extension SettingsQueryProperty
-    on QueryBuilder<Settings, Settings, QQueryProperty> {
-  QueryBuilder<Settings, int, QQueryOperations> isarIdProperty() {
+extension SettingsQueryProperty1
+    on QueryBuilder<Settings, Settings, QProperty> {
+  QueryBuilder<Settings, bool?, QAfterProperty> darkModeProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'isarId');
+      return query.addProperty(1);
     });
   }
 
-  QueryBuilder<Settings, bool?, QQueryOperations> darkModeProperty() {
+  QueryBuilder<Settings, bool, QAfterProperty> firstLaunchProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'darkMode');
+      return query.addProperty(2);
     });
   }
 
-  QueryBuilder<Settings, bool, QQueryOperations> firstLaunchProperty() {
+  QueryBuilder<Settings, String, QAfterProperty> uuidProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'firstLaunch');
+      return query.addProperty(3);
+    });
+  }
+}
+
+extension SettingsQueryProperty2<R>
+    on QueryBuilder<Settings, R, QAfterProperty> {
+  QueryBuilder<Settings, (R, bool?), QAfterProperty> darkModeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(1);
     });
   }
 
-  QueryBuilder<Settings, String, QQueryOperations> uuidProperty() {
+  QueryBuilder<Settings, (R, bool), QAfterProperty> firstLaunchProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'uuid');
+      return query.addProperty(2);
+    });
+  }
+
+  QueryBuilder<Settings, (R, String), QAfterProperty> uuidProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(3);
+    });
+  }
+}
+
+extension SettingsQueryProperty3<R1, R2>
+    on QueryBuilder<Settings, (R1, R2), QAfterProperty> {
+  QueryBuilder<Settings, (R1, R2, bool?), QOperations> darkModeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(1);
+    });
+  }
+
+  QueryBuilder<Settings, (R1, R2, bool), QOperations> firstLaunchProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(2);
+    });
+  }
+
+  QueryBuilder<Settings, (R1, R2, String), QOperations> uuidProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(3);
     });
   }
 }
@@ -668,7 +523,7 @@ extension SettingsQueryProperty
 // RiverpodGenerator
 // **************************************************************************
 
-String _$settingsSingletonHash() => r'927e212e696684bbce3f0599ca54bc7009461fc4';
+String _$settingsSingletonHash() => r'5bf787b5f69a9bddfced0442570a4775cb5c7256';
 
 /// See also [SettingsSingleton].
 @ProviderFor(SettingsSingleton)

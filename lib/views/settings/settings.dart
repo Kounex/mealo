@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../utils/isar.dart';
+
 import '../../utils/modal.dart';
+import '../../utils/persistance.dart';
 import '../../utils/router.dart';
-import 'widgets/theme_switcher.dart';
-import '../../widgets/base/ui/card.dart';
 import '../../widgets/base/functional/scaffold.dart';
+import '../../widgets/base/ui/card.dart';
 import '../../widgets/dialog/confirmation.dart';
+import 'widgets/theme_switcher.dart';
 
 class SettingsView extends ConsumerWidget {
   final ScrollController controller;
@@ -47,8 +48,8 @@ class SettingsView extends ConsumerWidget {
                         'You are about to delete all data and set the app back to its default state. This action can\'t be undone! Are you sure about that?',
                     isYesDestructive: true,
                     onYes: () async {
-                      await IsarUtils.crud((isar) => isar.clear());
-                      await IsarUtils.init();
+                      PersistanceUtils.crud((isar) => isar.clear());
+                      await PersistanceUtils.init();
                     },
                   ),
                 ),

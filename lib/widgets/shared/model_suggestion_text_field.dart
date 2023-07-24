@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 
-import '../../models/models.dart';
-import '../../utils/isar.dart';
+import '../../models/model.dart';
 import '../../utils/modal.dart';
+import '../../utils/persistance.dart';
 import '../base/functional/suggestion_text_field/suggestion_text_field.dart';
 import 'dialog/add_edit_model.dart';
 
@@ -17,7 +17,10 @@ class ModelSuggestionTextField<T extends Model> extends StatelessWidget {
   final double? minWidth;
 
   final void Function(T? value) setValue;
-  final Future<T?> Function(Isar isar, String name) onAdd;
+
+  /// TODO: check why I can't set it to T as return type when I can do it
+  /// directly on the Isar callback
+  final dynamic Function(Isar isar, String name) onAdd;
   final VoidCallback onDeleteSelection;
 
   const ModelSuggestionTextField({
@@ -55,8 +58,8 @@ class ModelSuggestionTextField<T extends Model> extends StatelessWidget {
           context,
           AddEditModelDialog<T>(
             name: text,
-            onAdd: (name) => IsarUtils.crud(
-              (isar) async => this.onAdd(isar, name),
+            onAdd: (name) => PersistanceUtils.crud(
+              (isar) => this.onAdd(isar, name),
             ),
           ),
         );

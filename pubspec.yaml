@@ -8,7 +8,7 @@ environment:
   sdk: '>=3.0.0 <4.0.0'
 
 # Globals for packages which share the same version
-isar_version: &isar_version 3.1.0+1
+isar_version: &isar_version 4.0.0-dev.0
 
 dependencies:
   flutter:
@@ -96,7 +96,7 @@ dev_dependencies:
   riverpod_lint: ^1.1.6
 
   # Generator stuff
-  isar_generator: *isar_version
+  # isar_generator: *isar_version
   riverpod_generator: ^2.1.4
   build_runner: ^2.3.3
 

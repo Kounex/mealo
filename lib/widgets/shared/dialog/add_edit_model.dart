@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/models.dart';
+import '../../../models/model.dart';
 import '../../../utils/modal.dart';
 import '../../base/functional/text_form_field.dart';
 import '../../base/ui/text_button.dart';

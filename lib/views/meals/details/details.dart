@@ -2,17 +2,17 @@ import 'package:beamer/beamer.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../models/meal/meal.dart';
+import '../../../models/rating/rating.dart';
 import '../../../stores/views/home.dart';
-import '../../../utils/isar.dart';
 import '../../../utils/modal.dart';
-import '../widgets/add_edit_meal_sheet/add_edit_meal_sheet.dart';
+import '../../../utils/persistance.dart';
 import '../../../widgets/base/functional/async_value_builder.dart';
 import '../../../widgets/base/functional/scaffold.dart';
 import '../../../widgets/base/ui/image.dart';
 import '../../../widgets/shared/meal_ratings.dart';
-
-import '../../../models/rating/rating.dart';
+import '../widgets/add_edit_meal_sheet/add_edit_meal_sheet.dart';
 
 class MealDetailsView extends ConsumerWidget {
   final String uuid;
@@ -23,8 +23,8 @@ class MealDetailsView extends ConsumerWidget {
   });
 
   void _deleteMeal(BuildContext context) async {
-    await IsarUtils.crud(
-      (isar) => isar.meals.deleteByUuid(this.uuid),
+    await PersistanceUtils.crud(
+      (isar) => isar.meals.delete(this.uuid),
     );
     if (context.mounted) {
       Navigator.of(context).pop();
@@ -67,12 +67,12 @@ class MealDetailsView extends ConsumerWidget {
             //       ? Image.memory(base64Decode(this.meal!.thumbnailBase64!))
             //       : Image.asset('assets/images/meal-placeholder.png'),
             // ),
-            meal.thumbnailUUID != null
+            meal.thumbnailUuid != null
                 ? Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(24.0),
                     child: BaseImage(
-                      imageUUID: meal.thumbnailUUID,
+                      imageUUID: meal.thumbnailUuid,
                       height: 192.0,
                       width: 192.0,
                     ),
@@ -84,7 +84,7 @@ class MealDetailsView extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: MealRatings(
                   ratings: ratings,
-                  valueMap: meal.ratings,
+                  ratingLinks: meal.ratings,
                 ),
               ),
             ),

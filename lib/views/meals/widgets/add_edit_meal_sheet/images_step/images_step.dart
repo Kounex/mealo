@@ -58,14 +58,14 @@ class ImagesStep extends StatefulWidget {
   final List<XFile> thumbnailToAdd;
   final List<XFile> imagesToAdd;
 
-  final List<String> imagesUUIDsToDelete;
+  final List<String> imagesUuidsToDelete;
 
   const ImagesStep({
     super.key,
     required this.meal,
     required this.thumbnailToAdd,
     required this.imagesToAdd,
-    required this.imagesUUIDsToDelete,
+    required this.imagesUuidsToDelete,
   });
 
   @override
@@ -196,23 +196,23 @@ class _ImagesStepState extends State<ImagesStep> {
                     meal: this.widget.meal,
                     thumbnailToAdd: this.widget.thumbnailToAdd,
                     imagesToAdd: this.widget.imagesToAdd,
-                    imagesUUIDsToDelete: this.widget.imagesUUIDsToDelete,
+                    imagesUuidsToDelete: this.widget.imagesUuidsToDelete,
                     onThumbnailAction: () => setState(
                       () {
-                        if (this.widget.meal.thumbnailUUID != null) {
+                        if (this.widget.meal.thumbnailUuid != null) {
                           this
                               .widget
-                              .imagesUUIDsToDelete
-                              .add(this.widget.meal.thumbnailUUID!);
+                              .imagesUuidsToDelete
+                              .add(this.widget.meal.thumbnailUuid!);
                         }
-                        this.widget.meal.thumbnailUUID = null;
+                        this.widget.meal.thumbnailUuid = null;
                         this.widget.thumbnailToAdd.clear();
                       },
                     ),
                     onExistingImagesAction: (index, imageUUID) => setState(
                       () {
-                        this.widget.meal.imagesUUIDs.removeAt(index);
-                        this.widget.imagesUUIDsToDelete.add(imageUUID);
+                        this.widget.meal.imagesUuids.removeAt(index);
+                        this.widget.imagesUuidsToDelete.add(imageUUID);
                       },
                     ),
                     onNewImagesAction: (index) => setState(

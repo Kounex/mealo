@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../widgets/base/functional/text_form_field.dart';
 import '../../../models/rating/rating.dart';
-import '../../../utils/isar.dart';
 import '../../../utils/modal.dart';
+import '../../../utils/persistance.dart';
 import '../../../utils/validation.dart';
 import '../../base/ui/text_button.dart';
 import '../../dialog/confirmation.dart';
@@ -58,9 +58,8 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
                       'Aure you sure you want to delete ${this.widget.rating!.name}? This action can\'t be undone!',
                   isYesDestructive: true,
                   onYes: () {
-                    IsarUtils.crud(
-                      (isar) =>
-                          isar.ratings.deleteByUuid(this.widget.rating!.uuid),
+                    PersistanceUtils.crud(
+                      (isar) => isar.ratings.delete(this.widget.rating!.uuid),
                     );
                     Navigator.of(context).pop();
                   },
@@ -122,11 +121,9 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
             if (_form.currentState!.validate()) {
               Rating? rating = this.widget.rating ?? Rating();
 
-              rating = await IsarUtils.crud(
-                (isar) async => isar.ratings.get(
-                  await isar.ratings.put(
-                    rating!..name = _name.text.trim(),
-                  ),
+              PersistanceUtils.crud(
+                (isar) => isar.ratings.put(
+                  rating..name = _name.text.trim(),
                 ),
               );
 

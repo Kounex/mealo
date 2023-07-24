@@ -142,7 +142,7 @@ final prevAteMealsProvider = AutoDisposeFutureProvider<List<Meal>>.internal(
 
 typedef PrevAteMealsRef = AutoDisposeFutureProviderRef<List<Meal>>;
 String _$randomizedMealUUIDHash() =>
-    r'd2fede856d6a85aba550b5cd52ceb70586e4b4ba';
+    r'ce340eea81298a5a717c9b9b308ad8c36f7a6bca';
 
 /// See also [RandomizedMealUUID].
 @ProviderFor(RandomizedMealUUID)

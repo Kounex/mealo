@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import '../base/ui/image.dart';
 
 import '../../../models/meal/meal.dart';
+import '../base/ui/image.dart';
 
 class MealCard extends StatelessWidget {
   final Meal? meal;
@@ -36,9 +36,9 @@ class MealCard extends StatelessWidget {
             //       ? Image.memory(base64Decode(this.meal!.thumbnailBase64!))
             //       : Image.asset('assets/images/meal-placeholder.png'),
             // ),
-            this.meal?.thumbnailUUID != null
+            this.meal?.thumbnailUuid != null
                 ? BaseImage(
-                    imageUUID: this.meal?.thumbnailUUID,
+                    imageUUID: this.meal?.thumbnailUuid,
                     height: this.height,
                     width: this.width,
                   )

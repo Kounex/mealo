@@ -1,13 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-enum BaseResultIcon { Positive, Negative, Missing }
+enum BaseResultIcon {
+  positive,
+  negative,
+  missing,
+}
 
 extension BaseResultIconFunctions on BaseResultIcon {
   IconData get data => const {
-        BaseResultIcon.Positive: CupertinoIcons.check_mark_circled,
-        BaseResultIcon.Negative: CupertinoIcons.clear_circled,
-        BaseResultIcon.Missing: Icons.search_off,
+        BaseResultIcon.positive: CupertinoIcons.check_mark_circled,
+        BaseResultIcon.negative: CupertinoIcons.clear_circled,
+        BaseResultIcon.missing: Icons.search_off,
       }[this]!;
 }
 
@@ -21,7 +25,7 @@ class BaseResult extends StatelessWidget {
 
   const BaseResult({
     Key? key,
-    this.icon = BaseResultIcon.Positive,
+    this.icon = BaseResultIcon.positive,
     this.text,
     this.iconSize = 32.0,
     this.iconColor,

@@ -1,9 +1,8 @@
 import 'package:isar/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../models.dart';
+import '../model.dart';
 import '../persistance.dart';
-import '../tag/tag.dart';
 
 part 'meal.g.dart';
 
@@ -28,20 +27,19 @@ class Meal extends Model {
   DateTime? lastTimeAte;
 
   String? instructions;
-  String? thumbnailUUID;
-  List<String> imagesUUIDs = [];
+  String? thumbnailUuid;
+  List<String> imagesUuids = [];
 
-  List<RatingMap> ratings = [];
-  IsarLinks<Tag> tags = IsarLinks<Tag>();
-  List<IngredientMap> ingredients = [];
+  List<RatingLink> ratings = [];
+  List<String> tagUuids = [];
+  List<IngredientLink> ingredients = [];
 }
 
 @embedded
-class RatingMap {
-  String? uuid;
+class RatingLink {
+  String? ratingUuid;
 
-  @Enumerated(EnumType.name)
-  RatingValue? value;
+  RatingValue value = RatingValue.three;
 }
 
 enum RatingValue {
@@ -68,7 +66,7 @@ enum RatingValue {
 }
 
 @embedded
-class IngredientMap {
+class IngredientLink {
   String? uuidIngredient;
   String? uuidUnit;
 

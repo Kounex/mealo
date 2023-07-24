@@ -10,16 +10,16 @@ import 'models/rating/rating.dart';
 import 'models/settings/settings.dart';
 import 'models/tag/tag.dart';
 import 'models/unit/unit.dart';
-import 'utils/isar.dart';
+import 'utils/persistance.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   /// Open our [Isar] instance which will be available in sync. We need
   /// to add and maintain all schemas here
-  IsarUtils.instance = await Isar.open(
+  PersistanceUtils.instance = Isar.open(
     directory: (await getApplicationDocumentsDirectory()).path,
-    [
+    schemas: [
       MealSchema,
       SettingsSchema,
       RatingSchema,
@@ -31,8 +31,8 @@ void main() async {
 
   /// Make sure our singleton [Isar] collections are present, create one
   /// otherwise and add the default data
-  if (await IsarUtils.instance.settings.count() == 0) {
-    await IsarUtils.init();
+  if (PersistanceUtils.instance.settings.count() == 0) {
+    await PersistanceUtils.init();
   }
 
   runApp(

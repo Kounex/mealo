@@ -8,13 +8,13 @@ import '../base/ui/divider.dart';
 
 class MealRatings extends StatelessWidget {
   final List<Rating> ratings;
-  final List<RatingMap> valueMap;
+  final List<RatingLink> ratingLinks;
   final void Function(int index, RatingValue ratingValue)? onSelectionChanged;
 
   const MealRatings({
     super.key,
     required this.ratings,
-    required this.valueMap,
+    required this.ratingLinks,
     this.onSelectionChanged,
   });
 
@@ -52,9 +52,9 @@ class MealRatings extends StatelessWidget {
                       width: double.infinity,
                       child: CupertinoSlidingSegmentedControl<RatingValue?>(
                         groupValue: this
-                            .valueMap
+                            .ratingLinks
                             .firstWhereOrNull((value) =>
-                                value.uuid == this.ratings[index].uuid)!
+                                value.ratingUuid == this.ratings[index].uuid)!
                             .value,
                         padding: const EdgeInsets.all(0),
                         children: {}..addEntries(

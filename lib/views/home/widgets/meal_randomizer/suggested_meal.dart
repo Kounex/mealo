@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../stores/views/home.dart';
-import '../../../../utils/isar.dart';
 
 import '../../../../models/meal/meal.dart';
+import '../../../../stores/views/home.dart';
+import '../../../../utils/persistance.dart';
 import '../../../../utils/router.dart';
 import '../../../../widgets/shared/meal_card.dart';
 
@@ -17,8 +17,8 @@ class SuggestedMeal extends ConsumerWidget {
   });
 
   Future<void> feast(BuildContext context, WidgetRef ref) async {
-    await IsarUtils.crud(
-      (isar) => isar.meals.putByUuid(this.meal..lastTimeAte = DateTime.now()),
+    PersistanceUtils.crud(
+      (isar) => isar.meals.put(this.meal..lastTimeAte = DateTime.now()),
     );
     ref.invalidate(randomizedMealUUIDProvider);
     if (context.mounted) {

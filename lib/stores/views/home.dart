@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-import '../../utils/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../models/meal/meal.dart';
+import '../../utils/persistance.dart';
 
 part 'home.g.dart';
 
@@ -36,9 +36,9 @@ class RandomizedMealUUID extends _$RandomizedMealUUID {
         this.state = const AsyncLoading();
         this.state = await AsyncValue.guard(() async {
           await Future.delayed(duration ?? const Duration(seconds: 3));
-          await IsarUtils.crud(
-            (isar) => isar.meals
-                .putByUuid(randomMeal..lastTimeRandomized = DateTime.now()),
+          PersistanceUtils.crud(
+            (isar) =>
+                isar.meals.put(randomMeal..lastTimeRandomized = DateTime.now()),
           );
           return randomMeal.uuid;
         });

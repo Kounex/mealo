@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../ui/result.dart';
 
 import '../ui/progress_indicator.dart';
+import '../ui/result.dart';
 
 class BaseFutureBuilder<T> extends StatelessWidget {
   final Future<T>? future;
@@ -28,7 +28,7 @@ class BaseFutureBuilder<T> extends StatelessWidget {
           }
           return Center(
             child: BaseResult(
-              icon: BaseResultIcon.Negative,
+              icon: BaseResultIcon.negative,
               text: snapshot.error!.toString(),
             ),
           );

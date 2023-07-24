@@ -1,7 +1,7 @@
 import 'package:isar/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../utils/isar.dart';
+import '../utils/persistance.dart';
 
 /// Design:
 ///
@@ -23,7 +23,7 @@ mixin Persistance<T> on AutoDisposeAsyncNotifier<List<T>> {
   }
 
   void _watcher() async =>
-      IsarUtils.instance.collection<T>().watchLazy().listen(
+      PersistanceUtils.instance.collection<String, T>().watchLazy().listen(
         (_) async {
           this.state = AsyncLoading<List<T>>();
           this.state = await AsyncValue.guard(() async => _local());
@@ -32,7 +32,7 @@ mixin Persistance<T> on AutoDisposeAsyncNotifier<List<T>> {
 
   Future<List<T>> _local() async {
     List<T> entries =
-        await IsarUtils.instance.collection<T>().where().findAll();
+        PersistanceUtils.instance.collection<String, T>().where().findAll();
 
     return entries;
   }
@@ -49,7 +49,7 @@ mixin SingletonPersistance<T> on AutoDisposeAsyncNotifier<T> {
   }
 
   void _watcher() async =>
-      IsarUtils.instance.collection<T>().watchLazy().listen(
+      PersistanceUtils.instance.collection<String, T>().watchLazy().listen(
         (_) async {
           this.state = AsyncValue<T>.loading();
           this.state = await AsyncValue.guard(() async => _local());
@@ -58,7 +58,7 @@ mixin SingletonPersistance<T> on AutoDisposeAsyncNotifier<T> {
 
   Future<T> _local() async {
     List<T> entries =
-        await IsarUtils.instance.collection<T>().where().findAll();
+        PersistanceUtils.instance.collection<String, T>().where().findAll();
 
     return entries.first;
   }

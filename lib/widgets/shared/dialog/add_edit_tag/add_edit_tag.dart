@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/tag/tag.dart';
 import '../../../../types/extensions/color.dart';
-import '../../../../utils/isar.dart';
 import '../../../../utils/modal.dart';
+import '../../../../utils/persistance.dart';
 import '../../../../utils/validation.dart';
 import '../../../../widgets/base/functional/text_form_field.dart';
 import '../../../base/ui/text_button.dart';
@@ -64,8 +64,8 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
                       'Aure you sure you want to delete ${this.widget.tag!.name}? This action can\'t be undone!',
                   isYesDestructive: true,
                   onYes: () {
-                    IsarUtils.crud(
-                      (isar) => isar.tags.deleteByUuid(this.widget.tag!.uuid),
+                    PersistanceUtils.crud(
+                      (isar) => isar.tags.delete(this.widget.tag!.uuid),
                     );
                     Navigator.of(context).pop();
                   },
@@ -118,13 +118,11 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
             if (_form.currentState!.validate()) {
               Tag? tag = this.widget.tag ?? Tag();
 
-              tag = await IsarUtils.crud(
-                (isar) async => isar.tags.get(
-                  await isar.tags.put(
-                    tag!
-                      ..name = _controller.text.trim()
-                      ..colorHex = _colorHex,
-                  ),
+              PersistanceUtils.crud(
+                (isar) => isar.tags.put(
+                  tag
+                    ..name = _controller.text.trim()
+                    ..colorHex = _colorHex,
                 ),
               );
 

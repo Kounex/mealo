@@ -1,6 +1,8 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../models/meal/meal.dart';
 import '../../../../models/tag/tag.dart';
 import '../../../../types/extensions/string.dart';
 import '../../../../utils/modal.dart';
@@ -12,11 +14,11 @@ import '../../../../widgets/base/ui/placeholder_text.dart';
 import '../../../../widgets/shared/dialog/add_edit_tag/add_edit_tag.dart';
 
 class TagsStep extends ConsumerStatefulWidget {
-  final Set<Tag> tags;
+  final Meal meal;
 
   const TagsStep({
     super.key,
-    required this.tags,
+    required this.meal,
   });
 
   @override
@@ -32,8 +34,9 @@ class _TagsStepState extends ConsumerState<TagsStep> {
         /// First we check for those tags which have not been selected so far
         bool tagNotSelected = this
             .widget
-            .tags
-            .every((selectedTag) => selectedTag.uuid != tag.uuid);
+            .meal
+            .tagUuids
+            .every((selectedTagUuid) => selectedTagUuid != tag.uuid);
 
         /// Since the user can also write into the suggestion textfield to
         /// filter the tags, we will check for those tags whose name contains
@@ -75,11 +78,11 @@ class _TagsStepState extends ConsumerState<TagsStep> {
                 ),
               );
               if (tag != null) {
-                setState(() => this.widget.tags.add(tag));
+                setState(() => this.widget.meal.tagUuids.add(tag.uuid));
               }
             },
             onSuggestionTapped: (tag) =>
-                setState(() => this.widget.tags.add(tag)),
+                setState(() => this.widget.meal.tagUuids.add(tag.uuid)),
           ),
           const SizedBox(height: 24.0),
           BaseCard(
@@ -87,20 +90,28 @@ class _TagsStepState extends ConsumerState<TagsStep> {
             bottomPadding: 0,
             leftPadding: 0,
             rightPadding: 0,
-            child: this.widget.tags.isNotEmpty
+            child: this.widget.meal.tagUuids.isNotEmpty
                 ? Align(
                     alignment: Alignment.centerLeft,
                     child: Wrap(
                       spacing: 12.0,
                       children: this
                           .widget
-                          .tags
+                          .meal
+                          .tagUuids
                           .map(
-                            (tag) => BaseChip(
-                              text: tag.name,
-                              color: tag.colorHex?.toColor(),
-                              onDeleted: () =>
-                                  setState(() => this.widget.tags.remove(tag)),
+                            (tagUuid) => BaseChip(
+                              text: tags
+                                  .firstWhereOrNull(
+                                      (tag) => tag.uuid == tagUuid)
+                                  ?.name,
+                              color: tags
+                                  .firstWhereOrNull(
+                                      (tag) => tag.uuid == tagUuid)
+                                  ?.colorHex
+                                  ?.toColor(),
+                              onDeleted: () => setState(() =>
+                                  this.widget.meal.tagUuids.remove(tagUuid)),
                             ),
                           )
                           .toList(),

@@ -10,7 +10,7 @@ import '../../../../../widgets/shared/model_suggestion_text_field.dart';
 import 'amount_text_field.dart';
 
 class IngredientRow extends StatefulWidget {
-  final IngredientMap ingredient;
+  final IngredientLink ingredient;
   final List<Ingredient> ingredients;
   final List<Unit> units;
 
@@ -98,9 +98,7 @@ class _IngredientRowState extends State<IngredientRow> {
       values: this.widget.units,
       setValue: _setUnit,
       hintText: 'Unit',
-      onAdd: (isar, name) async => isar.units.get(
-        await isar.units.put(Unit()..name = name),
-      ),
+      onAdd: (isar, name) => isar.units.put(Unit()..name = name),
       onDeleteSelection: () => setState(() => _unit = null),
     );
 
@@ -109,9 +107,7 @@ class _IngredientRowState extends State<IngredientRow> {
       values: this.widget.ingredients,
       setValue: _setIngredient,
       hintText: 'Ingredient',
-      onAdd: (isar, name) async => isar.ingredients.get(
-        await isar.ingredients.put(Ingredient()..name = name),
-      ),
+      onAdd: (isar, name) => isar.ingredients.put(Ingredient()..name = name),
       onDeleteSelection: () => setState(() => _ingredient = null),
     );
 

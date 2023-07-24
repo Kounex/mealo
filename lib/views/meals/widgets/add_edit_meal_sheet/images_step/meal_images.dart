@@ -16,7 +16,7 @@ class MealImages extends StatelessWidget {
   final List<XFile> thumbnailToAdd;
   final List<XFile> imagesToAdd;
 
-  final List<String> imagesUUIDsToDelete;
+  final List<String> imagesUuidsToDelete;
 
   final VoidCallback onThumbnailAction;
   final void Function(int index, String imageUUID) onExistingImagesAction;
@@ -28,7 +28,7 @@ class MealImages extends StatelessWidget {
     required this.meal,
     required this.thumbnailToAdd,
     required this.imagesToAdd,
-    required this.imagesUUIDsToDelete,
+    required this.imagesUuidsToDelete,
     required this.onThumbnailAction,
     required this.onExistingImagesAction,
     required this.onNewImagesAction,
@@ -41,10 +41,10 @@ class MealImages extends StatelessWidget {
       child: () {
         switch (this.type) {
           case MealImageType.thumbnail:
-            return this.meal.thumbnailUUID != null ||
+            return this.meal.thumbnailUuid != null ||
                     this.thumbnailToAdd.isNotEmpty
                 ? BaseImage(
-                    imageUUID: this.meal.thumbnailUUID,
+                    imageUUID: this.meal.thumbnailUuid,
                     image: this.thumbnailToAdd.firstOrNull,
                     height: 172.0,
                     width: 172.0,
@@ -59,13 +59,13 @@ class MealImages extends StatelessWidget {
                     ),
                   );
           case MealImageType.additional:
-            return this.meal.imagesUUIDs.isNotEmpty ||
+            return this.meal.imagesUuids.isNotEmpty ||
                     this.imagesToAdd.isNotEmpty
                 ? Wrap(
                     spacing: 24.0,
                     runSpacing: 24.0,
                     children: [
-                      ...this.meal.imagesUUIDs.mapIndexed(
+                      ...this.meal.imagesUuids.mapIndexed(
                             (index, imageUUID) => BaseImage(
                               imageUUID: imageUUID,
                               height: 128.0,

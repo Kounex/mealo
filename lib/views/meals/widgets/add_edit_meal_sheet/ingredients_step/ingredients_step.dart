@@ -96,7 +96,7 @@ class _IngredientsStepState extends ConsumerState<IngredientsStep> {
             onPressed: () => setState(
               () => this.widget.meal.ingredients = [
                 ...this.widget.meal.ingredients,
-                IngredientMap(),
+                IngredientLink(),
               ],
             ),
             child: const Text('Add ingredient'),

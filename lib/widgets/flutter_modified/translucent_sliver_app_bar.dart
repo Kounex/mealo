@@ -36,14 +36,14 @@ class TransculentSliverAppBar extends StatefulWidget {
       'This property is no longer used, please use systemOverlayStyle instead. '
       'This feature was deprecated after v2.4.0-0.0.pre.',
     )
-        this.brightness,
+    this.brightness,
     this.iconTheme,
     this.actionsIconTheme,
     @Deprecated(
       'This property is no longer used, please use toolbarTextStyle and titleTextStyle instead. '
       'This feature was deprecated after v2.4.0-0.0.pre.',
     )
-        this.textTheme,
+    this.textTheme,
     this.primary = true,
     this.centerTitle,
     this.excludeHeaderSemantics = false,
@@ -63,7 +63,7 @@ class TransculentSliverAppBar extends StatefulWidget {
       'This property is obsolete and is false by default. '
       'This feature was deprecated after v2.4.0-0.0.pre.',
     )
-        this.backwardsCompatibility,
+    this.backwardsCompatibility,
     this.toolbarTextStyle,
     this.titleTextStyle,
     this.systemOverlayStyle,
