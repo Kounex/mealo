@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import '../../../../utils/styling.dart';
 import '../../ui/card.dart';
 import '../../ui/divider.dart';
 import 'suggestion_list_tile.dart';
@@ -129,7 +130,7 @@ class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>> {
               return Alignment.bottomRight;
           }
         }(),
-        offset: offset,
+        offset: offset + const Offset(0, -10),
         child: TextFieldTapRegion(
           child: BaseCard(
             paddingChild: const EdgeInsets.all(0),
@@ -193,7 +194,21 @@ class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>> {
               ),
             ),
           ),
-        ),
+        )
+            .animate()
+            .moveY(
+              begin: 10.0,
+              end: 10.0,
+              duration: Duration.zero,
+            )
+            .moveY(
+              begin: 10.0,
+              end: 0.0,
+              duration: StylingUtils.kBaseAnimationDuration,
+            )
+            .fadeIn(
+              duration: StylingUtils.kBaseAnimationDuration,
+            ),
       ),
     );
   }
