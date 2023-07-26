@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
+import 'package:mealo/models/randomized_run/randomized_run.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../models/meal/meal.dart';
-import '../../utils/persistance.dart';
 
 part 'home.g.dart';
 
@@ -16,7 +16,7 @@ FutureOr<Meal> selectedMeal(SelectedMealRef ref, String uuid) async {
 }
 
 @riverpod
-class RandomizedMealUUID extends _$RandomizedMealUUID {
+class RandomizedMealUuid extends _$RandomizedMealUuid {
   @override
   FutureOr<String?> build() => null;
 
@@ -36,10 +36,10 @@ class RandomizedMealUUID extends _$RandomizedMealUUID {
         this.state = const AsyncLoading();
         this.state = await AsyncValue.guard(() async {
           await Future.delayed(duration ?? const Duration(seconds: 3));
-          PersistanceUtils.crud(
-            (isar) =>
-                isar.meals.put(randomMeal..lastTimeRandomized = DateTime.now()),
-          );
+          // PersistanceUtils.crud(
+          //   (isar) => isar.randomizedRuns
+          //       .put(randomMeal..lastTimeRandomized = DateTime.now()),
+          // );
           return randomMeal.uuid;
         });
       }
@@ -52,17 +52,25 @@ class RandomizedMealUUID extends _$RandomizedMealUUID {
 @riverpod
 FutureOr<List<Meal>> prevRandomizedMeals(PrevRandomizedMealsRef ref) async {
   List<Meal> meals = await ref.watch(mealsProvider.future);
+  List<RandomizedRun> randomizedRuns =
+      (await ref.watch(randomizedRunsProvider.future))
+          .sorted((a, b) => b.created.compareTo(a.created));
 
-  return meals.where((meal) => meal.lastTimeRandomized != null).sorted(
-        (a, b) => b.lastTimeRandomized!.compareTo(a.lastTimeRandomized!),
-      );
+  return meals
+      .where((meal) => randomizedRuns
+          .any((randomizedRun) => randomizedRun.mealUuid == meal.uuid))
+      .toList();
 }
 
 @riverpod
 FutureOr<List<Meal>> prevAteMeals(PrevAteMealsRef ref) async {
   List<Meal> meals = await ref.watch(mealsProvider.future);
+  List<RandomizedRun> randomizedRuns =
+      (await ref.watch(randomizedRunsProvider.future))
+          .sorted((a, b) => b.created.compareTo(a.created));
 
-  return meals.where((meal) => meal.lastTimeAte != null).sorted(
-        (a, b) => b.lastTimeAte!.compareTo(a.lastTimeAte!),
-      );
+  return meals
+      .where((meal) => randomizedRuns.any((randomizedRun) =>
+          randomizedRun.mealUuid == meal.uuid && randomizedRun.feast))
+      .toList();
 }

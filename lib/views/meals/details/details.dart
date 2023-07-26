@@ -23,7 +23,7 @@ class MealDetailsView extends ConsumerWidget {
   });
 
   void _deleteMeal(BuildContext context) async {
-    await PersistanceUtils.crud(
+    await PersistanceUtils.transaction(
       (isar) => isar.meals.delete(this.uuid),
     );
     if (context.mounted) {
@@ -72,7 +72,7 @@ class MealDetailsView extends ConsumerWidget {
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(24.0),
                     child: BaseImage(
-                      imageUUID: meal.thumbnailUuid,
+                      imageUuid: meal.thumbnailUuid,
                       height: 192.0,
                       width: 192.0,
                     ),

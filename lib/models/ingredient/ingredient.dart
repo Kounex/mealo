@@ -13,4 +13,4 @@ class Ingredients extends _$Ingredients with Persistance<Ingredient> {
 }
 
 @collection
-class Ingredient extends Model {}
+class Ingredient extends CommonModel {}

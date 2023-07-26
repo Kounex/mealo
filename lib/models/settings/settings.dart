@@ -14,8 +14,9 @@ class SettingsSingleton extends _$SettingsSingleton
   FutureOr<Settings> build() async => this.init();
 
   void setDarkMode(bool darkMode) {
-    PersistanceUtils.crud(
-      (isar) => isar.settings.put(this.state.value!..darkMode = darkMode),
+    PersistanceUtils.transaction(
+      PersistanceOperation.insertUpdate,
+      [this.state.value!..darkMode = darkMode],
     );
   }
 }

@@ -3,11 +3,11 @@
 part of 'tag.dart';
 
 // **************************************************************************
-// IsarCollectionGenerator
+// _IsarCollectionGenerator
 // **************************************************************************
 
 // coverage:ignore-file
-// ignore_for_file: duplicate_ignore, invalid_use_of_protected_member, lines_longer_than_80_chars, constant_identifier_names, avoid_js_rounded_ints, no_leading_underscores_for_local_identifiers, require_trailing_commas, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_in_if_null_operators, library_private_types_in_public_api
+// ignore_for_file: duplicate_ignore, invalid_use_of_protected_member, lines_longer_than_80_chars, constant_identifier_names, avoid_js_rounded_ints, no_leading_underscores_for_local_identifiers, require_trailing_commas, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_in_if_null_operators, library_private_types_in_public_api, prefer_const_constructors
 
 extension GetTagCollection on Isar {
   IsarCollection<String, Tag> get tags => this.collection();
@@ -15,14 +15,14 @@ extension GetTagCollection on Isar {
 
 const TagSchema = IsarCollectionSchema(
   schema:
-      '{"name":"Tag","idName":"uuid","properties":[{"name":"colorHex","type":"String"},{"name":"name","type":"String"},{"name":"uuid","type":"String"}]}',
+      '{"name":"Tag","idName":"uuid","properties":[{"name":"colorHex","type":"String"},{"name":"name","type":"String"},{"name":"uuid","type":"String"},{"name":"timeCreated","type":"DateTime"},{"name":"lastTimeChanged","type":"DateTime"}]}',
   converter: IsarObjectConverter<String, Tag>(
     serialize: serializeTag,
     deserialize: deserializeTag,
     deserializeProperty: deserializeTagProp,
   ),
   embeddedSchemas: [],
-  hash: 7998782470695747732,
+  hash: -2070248618352795308,
 );
 
 @isarProtected
@@ -37,6 +37,8 @@ int serializeTag(IsarWriter writer, Tag object) {
   }
   IsarCore.writeString(writer, 2, IsarCore.toNativeString(object.name));
   IsarCore.writeString(writer, 3, IsarCore.toNativeString(object.uuid));
+  IsarCore.writeLong(writer, 4, object.created.toUtc().microsecondsSinceEpoch);
+  IsarCore.writeLong(writer, 5, object.updated.toUtc().microsecondsSinceEpoch);
   return Isar.fastHash(object.uuid);
 }
 
@@ -46,6 +48,24 @@ Tag deserializeTag(IsarReader reader) {
   object.colorHex = IsarCore.readString(reader, 1);
   object.name = IsarCore.readString(reader, 2) ?? '';
   object.uuid = IsarCore.readString(reader, 3) ?? '';
+  {
+    final value = IsarCore.readLong(reader, 4);
+    if (value == -9223372036854775808) {
+      object.created =
+          DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
+    } else {
+      object.created = DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true);
+    }
+  }
+  {
+    final value = IsarCore.readLong(reader, 5);
+    if (value == -9223372036854775808) {
+      object.updated =
+          DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
+    } else {
+      object.updated = DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true);
+    }
+  }
   return object;
 }
 
@@ -58,16 +78,36 @@ dynamic deserializeTagProp(IsarReader reader, int property) {
       return IsarCore.readString(reader, 2) ?? '';
     case 3:
       return IsarCore.readString(reader, 3) ?? '';
+    case 4:
+      {
+        final value = IsarCore.readLong(reader, 4);
+        if (value == -9223372036854775808) {
+          return DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
+        } else {
+          return DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true);
+        }
+      }
+    case 5:
+      {
+        final value = IsarCore.readLong(reader, 5);
+        if (value == -9223372036854775808) {
+          return DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
+        } else {
+          return DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true);
+        }
+      }
     default:
       throw ArgumentError('Unknown property: $property');
   }
 }
 
 sealed class _TagUpdate {
-  bool call(
-    String uuid, {
+  bool call({
+    required String uuid,
     String? colorHex,
     String? name,
+    DateTime? timeCreated,
+    DateTime? lastTimeChanged,
   });
 }
 
@@ -77,26 +117,32 @@ class _TagUpdateImpl implements _TagUpdate {
   final IsarCollection<String, Tag> collection;
 
   @override
-  bool call(
-    String uuid, {
+  bool call({
+    required String uuid,
     Object? colorHex = ignore,
     Object? name = ignore,
+    Object? timeCreated = ignore,
+    Object? lastTimeChanged = ignore,
   }) {
     return collection.updateProperties([
           uuid
         ], {
           if (colorHex != ignore) 1: colorHex as String?,
           if (name != ignore) 2: name as String?,
+          if (timeCreated != ignore) 4: timeCreated as DateTime?,
+          if (lastTimeChanged != ignore) 5: lastTimeChanged as DateTime?,
         }) >
         0;
   }
 }
 
 sealed class _TagUpdateAll {
-  int call(
-    List<String> uuid, {
+  int call({
+    required List<String> uuid,
     String? colorHex,
     String? name,
+    DateTime? timeCreated,
+    DateTime? lastTimeChanged,
   });
 }
 
@@ -106,14 +152,18 @@ class _TagUpdateAllImpl implements _TagUpdateAll {
   final IsarCollection<String, Tag> collection;
 
   @override
-  int call(
-    List<String> uuid, {
+  int call({
+    required List<String> uuid,
     Object? colorHex = ignore,
     Object? name = ignore,
+    Object? timeCreated = ignore,
+    Object? lastTimeChanged = ignore,
   }) {
     return collection.updateProperties(uuid, {
       if (colorHex != ignore) 1: colorHex as String?,
       if (name != ignore) 2: name as String?,
+      if (timeCreated != ignore) 4: timeCreated as DateTime?,
+      if (lastTimeChanged != ignore) 5: lastTimeChanged as DateTime?,
     });
   }
 }
@@ -122,6 +172,43 @@ extension TagUpdate on IsarCollection<String, Tag> {
   _TagUpdate get update => _TagUpdateImpl(this);
 
   _TagUpdateAll get updateAll => _TagUpdateAllImpl(this);
+}
+
+sealed class _TagQueryUpdate {
+  int call({
+    String? colorHex,
+    String? name,
+    DateTime? timeCreated,
+    DateTime? lastTimeChanged,
+  });
+}
+
+class _TagQueryUpdateImpl implements _TagQueryUpdate {
+  const _TagQueryUpdateImpl(this.query, {this.limit});
+
+  final IsarQuery<Tag> query;
+  final int? limit;
+
+  @override
+  int call({
+    Object? colorHex = ignore,
+    Object? name = ignore,
+    Object? timeCreated = ignore,
+    Object? lastTimeChanged = ignore,
+  }) {
+    return query.updateProperties(limit: limit, {
+      if (colorHex != ignore) 1: colorHex as String?,
+      if (name != ignore) 2: name as String?,
+      if (timeCreated != ignore) 4: timeCreated as DateTime?,
+      if (lastTimeChanged != ignore) 5: lastTimeChanged as DateTime?,
+    });
+  }
+}
+
+extension TagQueryUpdate on IsarQuery<Tag> {
+  _TagQueryUpdate get updateFirst => _TagQueryUpdateImpl(this, limit: 1);
+
+  _TagQueryUpdate get updateAll => _TagQueryUpdateImpl(this);
 }
 
 extension TagQueryFilter on QueryBuilder<Tag, Tag, QFilterCondition> {
@@ -646,6 +733,168 @@ extension TagQueryFilter on QueryBuilder<Tag, Tag, QFilterCondition> {
       );
     });
   }
+
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> timeCreatedEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        EqualCondition(
+          property: 4,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> timeCreatedGreaterThan(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterCondition(
+          property: 4,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> timeCreatedGreaterThanOrEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterOrEqualCondition(
+          property: 4,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> timeCreatedLessThan(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessCondition(
+          property: 4,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> timeCreatedLessThanOrEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessOrEqualCondition(
+          property: 4,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> timeCreatedBetween(
+    DateTime lower,
+    DateTime upper,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        BetweenCondition(
+          property: 4,
+          lower: lower,
+          upper: upper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> lastTimeChangedEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        EqualCondition(
+          property: 5,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> lastTimeChangedGreaterThan(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterCondition(
+          property: 5,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterFilterCondition>
+      lastTimeChangedGreaterThanOrEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterOrEqualCondition(
+          property: 5,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> lastTimeChangedLessThan(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessCondition(
+          property: 5,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterFilterCondition>
+      lastTimeChangedLessThanOrEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessOrEqualCondition(
+          property: 5,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> lastTimeChangedBetween(
+    DateTime lower,
+    DateTime upper,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        BetweenCondition(
+          property: 5,
+          lower: lower,
+          upper: upper,
+        ),
+      );
+    });
+  }
 }
 
 extension TagQueryObject on QueryBuilder<Tag, Tag, QFilterCondition> {}
@@ -711,6 +960,30 @@ extension TagQuerySortBy on QueryBuilder<Tag, Tag, QSortBy> {
       );
     });
   }
+
+  QueryBuilder<Tag, Tag, QAfterSortBy> sortByTimeCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(4);
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterSortBy> sortByTimeCreatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(4, sort: Sort.desc);
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterSortBy> sortByLastTimeChanged() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(5);
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterSortBy> sortByLastTimeChangedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(5, sort: Sort.desc);
+    });
+  }
 }
 
 extension TagQuerySortThenBy on QueryBuilder<Tag, Tag, QSortThenBy> {
@@ -753,6 +1026,30 @@ extension TagQuerySortThenBy on QueryBuilder<Tag, Tag, QSortThenBy> {
       return query.addSortBy(3, sort: Sort.desc, caseSensitive: caseSensitive);
     });
   }
+
+  QueryBuilder<Tag, Tag, QAfterSortBy> thenByTimeCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(4);
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterSortBy> thenByTimeCreatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(4, sort: Sort.desc);
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterSortBy> thenByLastTimeChanged() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(5);
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterSortBy> thenByLastTimeChangedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(5, sort: Sort.desc);
+    });
+  }
 }
 
 extension TagQueryWhereDistinct on QueryBuilder<Tag, Tag, QDistinct> {
@@ -767,6 +1064,18 @@ extension TagQueryWhereDistinct on QueryBuilder<Tag, Tag, QDistinct> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(2, caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterDistinct> distinctByTimeCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(4);
+    });
+  }
+
+  QueryBuilder<Tag, Tag, QAfterDistinct> distinctByLastTimeChanged() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(5);
     });
   }
 }
@@ -789,6 +1098,18 @@ extension TagQueryProperty1 on QueryBuilder<Tag, Tag, QProperty> {
       return query.addProperty(3);
     });
   }
+
+  QueryBuilder<Tag, DateTime, QAfterProperty> timeCreatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(4);
+    });
+  }
+
+  QueryBuilder<Tag, DateTime, QAfterProperty> lastTimeChangedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(5);
+    });
+  }
 }
 
 extension TagQueryProperty2<R> on QueryBuilder<Tag, R, QAfterProperty> {
@@ -807,6 +1128,18 @@ extension TagQueryProperty2<R> on QueryBuilder<Tag, R, QAfterProperty> {
   QueryBuilder<Tag, (R, String), QAfterProperty> uuidProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
+    });
+  }
+
+  QueryBuilder<Tag, (R, DateTime), QAfterProperty> timeCreatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(4);
+    });
+  }
+
+  QueryBuilder<Tag, (R, DateTime), QAfterProperty> lastTimeChangedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(5);
     });
   }
 }
@@ -828,6 +1161,18 @@ extension TagQueryProperty3<R1, R2>
   QueryBuilder<Tag, (R1, R2, String), QOperations> uuidProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
+    });
+  }
+
+  QueryBuilder<Tag, (R1, R2, DateTime), QOperations> timeCreatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(4);
+    });
+  }
+
+  QueryBuilder<Tag, (R1, R2, DateTime), QOperations> lastTimeChangedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(5);
     });
   }
 }

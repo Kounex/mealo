@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/meal/meal.dart';
 import '../../../../stores/views/home.dart';
-import '../../../../utils/persistance.dart';
 import '../../../../utils/router.dart';
 import '../../../../widgets/shared/meal_card.dart';
 
@@ -17,10 +16,10 @@ class SuggestedMeal extends ConsumerWidget {
   });
 
   Future<void> feast(BuildContext context, WidgetRef ref) async {
-    PersistanceUtils.crud(
-      (isar) => isar.meals.put(this.meal..lastTimeAte = DateTime.now()),
-    );
-    ref.invalidate(randomizedMealUUIDProvider);
+    // PersistanceUtils.crud(
+    //   (isar) => isar.meals.put(this.meal..lastTimeAte = DateTime.now()),
+    // );
+    ref.invalidate(randomizedMealUuidProvider);
     if (context.mounted) {
       RouterUtils.beamTo(
         context,

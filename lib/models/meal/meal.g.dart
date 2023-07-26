@@ -3,11 +3,11 @@
 part of 'meal.dart';
 
 // **************************************************************************
-// IsarCollectionGenerator
+// _IsarCollectionGenerator
 // **************************************************************************
 
 // coverage:ignore-file
-// ignore_for_file: duplicate_ignore, invalid_use_of_protected_member, lines_longer_than_80_chars, constant_identifier_names, avoid_js_rounded_ints, no_leading_underscores_for_local_identifiers, require_trailing_commas, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_in_if_null_operators, library_private_types_in_public_api
+// ignore_for_file: duplicate_ignore, invalid_use_of_protected_member, lines_longer_than_80_chars, constant_identifier_names, avoid_js_rounded_ints, no_leading_underscores_for_local_identifiers, require_trailing_commas, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_in_if_null_operators, library_private_types_in_public_api, prefer_const_constructors
 
 extension GetMealCollection on Isar {
   IsarCollection<String, Meal> get meals => this.collection();
@@ -15,14 +15,14 @@ extension GetMealCollection on Isar {
 
 const MealSchema = IsarCollectionSchema(
   schema:
-      '{"name":"Meal","idName":"uuid","properties":[{"name":"createdAt","type":"DateTime"},{"name":"lastTimeRandomized","type":"DateTime"},{"name":"lastTimeAte","type":"DateTime"},{"name":"instructions","type":"String"},{"name":"thumbnailUuid","type":"String"},{"name":"imagesUuids","type":"StringList"},{"name":"ratings","type":"ObjectList","target":"RatingLink"},{"name":"tagUuids","type":"StringList"},{"name":"ingredients","type":"ObjectList","target":"IngredientLink"},{"name":"name","type":"String"},{"name":"uuid","type":"String"}]}',
+      '{"name":"Meal","idName":"uuid","properties":[{"name":"createdAt","type":"DateTime"},{"name":"instructions","type":"String"},{"name":"thumbnailUuid","type":"String"},{"name":"imagesUuids","type":"StringList"},{"name":"ratings","type":"ObjectList","target":"RatingLink"},{"name":"tagUuids","type":"StringList"},{"name":"ingredients","type":"ObjectList","target":"IngredientLink"},{"name":"name","type":"String"},{"name":"uuid","type":"String"},{"name":"timeCreated","type":"DateTime"},{"name":"lastTimeChanged","type":"DateTime"}]}',
   converter: IsarObjectConverter<String, Meal>(
     serialize: serializeMeal,
     deserialize: deserializeMeal,
     deserializeProperty: deserializeMealProp,
   ),
   embeddedSchemas: [RatingLinkSchema, IngredientLinkSchema],
-  hash: ((-4784530336696610587 * 31 + ratingLinkSchemaHash) * 31 +
+  hash: ((-44173241232936838 * 31 + ratingLinkSchemaHash) * 31 +
       ingredientLinkSchemaHash),
 );
 
@@ -30,35 +30,25 @@ const MealSchema = IsarCollectionSchema(
 int serializeMeal(IsarWriter writer, Meal object) {
   IsarCore.writeLong(
       writer, 1, object.createdAt.toUtc().microsecondsSinceEpoch);
-  IsarCore.writeLong(
-      writer,
-      2,
-      object.lastTimeRandomized?.toUtc().microsecondsSinceEpoch ??
-          -9223372036854775808);
-  IsarCore.writeLong(
-      writer,
-      3,
-      object.lastTimeAte?.toUtc().microsecondsSinceEpoch ??
-          -9223372036854775808);
   {
     final value = object.instructions;
     if (value == null) {
-      IsarCore.writeNull(writer, 4);
+      IsarCore.writeNull(writer, 2);
     } else {
-      IsarCore.writeString(writer, 4, IsarCore.toNativeString(value));
+      IsarCore.writeString(writer, 2, IsarCore.toNativeString(value));
     }
   }
   {
     final value = object.thumbnailUuid;
     if (value == null) {
-      IsarCore.writeNull(writer, 5);
+      IsarCore.writeNull(writer, 3);
     } else {
-      IsarCore.writeString(writer, 5, IsarCore.toNativeString(value));
+      IsarCore.writeString(writer, 3, IsarCore.toNativeString(value));
     }
   }
   {
     final list = object.imagesUuids;
-    final listWriter = IsarCore.beginList(writer, 6, list.length);
+    final listWriter = IsarCore.beginList(writer, 4, list.length);
     for (var i = 0; i < list.length; i++) {
       IsarCore.writeString(listWriter, i, IsarCore.toNativeString(list[i]));
     }
@@ -66,7 +56,7 @@ int serializeMeal(IsarWriter writer, Meal object) {
   }
   {
     final list = object.ratings;
-    final listWriter = IsarCore.beginList(writer, 7, list.length);
+    final listWriter = IsarCore.beginList(writer, 5, list.length);
     for (var i = 0; i < list.length; i++) {
       {
         final value = list[i];
@@ -79,7 +69,7 @@ int serializeMeal(IsarWriter writer, Meal object) {
   }
   {
     final list = object.tagUuids;
-    final listWriter = IsarCore.beginList(writer, 8, list.length);
+    final listWriter = IsarCore.beginList(writer, 6, list.length);
     for (var i = 0; i < list.length; i++) {
       IsarCore.writeString(listWriter, i, IsarCore.toNativeString(list[i]));
     }
@@ -87,7 +77,7 @@ int serializeMeal(IsarWriter writer, Meal object) {
   }
   {
     final list = object.ingredients;
-    final listWriter = IsarCore.beginList(writer, 9, list.length);
+    final listWriter = IsarCore.beginList(writer, 7, list.length);
     for (var i = 0; i < list.length; i++) {
       {
         final value = list[i];
@@ -98,8 +88,10 @@ int serializeMeal(IsarWriter writer, Meal object) {
     }
     IsarCore.endList(writer, listWriter);
   }
-  IsarCore.writeString(writer, 10, IsarCore.toNativeString(object.name));
-  IsarCore.writeString(writer, 11, IsarCore.toNativeString(object.uuid));
+  IsarCore.writeString(writer, 8, IsarCore.toNativeString(object.name));
+  IsarCore.writeString(writer, 9, IsarCore.toNativeString(object.uuid));
+  IsarCore.writeLong(writer, 10, object.created.toUtc().microsecondsSinceEpoch);
+  IsarCore.writeLong(writer, 11, object.updated.toUtc().microsecondsSinceEpoch);
   return Isar.fastHash(object.uuid);
 }
 
@@ -116,28 +108,10 @@ Meal deserializeMeal(IsarReader reader) {
           DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true).toLocal();
     }
   }
+  object.instructions = IsarCore.readString(reader, 2);
+  object.thumbnailUuid = IsarCore.readString(reader, 3);
   {
-    final value = IsarCore.readLong(reader, 2);
-    if (value == -9223372036854775808) {
-      object.lastTimeRandomized = null;
-    } else {
-      object.lastTimeRandomized =
-          DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true).toLocal();
-    }
-  }
-  {
-    final value = IsarCore.readLong(reader, 3);
-    if (value == -9223372036854775808) {
-      object.lastTimeAte = null;
-    } else {
-      object.lastTimeAte =
-          DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true).toLocal();
-    }
-  }
-  object.instructions = IsarCore.readString(reader, 4);
-  object.thumbnailUuid = IsarCore.readString(reader, 5);
-  {
-    final length = IsarCore.readList(reader, 6, IsarCore.readerPtrPtr);
+    final length = IsarCore.readList(reader, 4, IsarCore.readerPtrPtr);
     {
       final reader = IsarCore.readerPtr;
       if (reader.isNull) {
@@ -153,7 +127,7 @@ Meal deserializeMeal(IsarReader reader) {
     }
   }
   {
-    final length = IsarCore.readList(reader, 7, IsarCore.readerPtrPtr);
+    final length = IsarCore.readList(reader, 5, IsarCore.readerPtrPtr);
     {
       final reader = IsarCore.readerPtr;
       if (reader.isNull) {
@@ -179,7 +153,7 @@ Meal deserializeMeal(IsarReader reader) {
     }
   }
   {
-    final length = IsarCore.readList(reader, 8, IsarCore.readerPtrPtr);
+    final length = IsarCore.readList(reader, 6, IsarCore.readerPtrPtr);
     {
       final reader = IsarCore.readerPtr;
       if (reader.isNull) {
@@ -195,7 +169,7 @@ Meal deserializeMeal(IsarReader reader) {
     }
   }
   {
-    final length = IsarCore.readList(reader, 9, IsarCore.readerPtrPtr);
+    final length = IsarCore.readList(reader, 7, IsarCore.readerPtrPtr);
     {
       final reader = IsarCore.readerPtr;
       if (reader.isNull) {
@@ -220,8 +194,26 @@ Meal deserializeMeal(IsarReader reader) {
       }
     }
   }
-  object.name = IsarCore.readString(reader, 10) ?? '';
-  object.uuid = IsarCore.readString(reader, 11) ?? '';
+  object.name = IsarCore.readString(reader, 8) ?? '';
+  object.uuid = IsarCore.readString(reader, 9) ?? '';
+  {
+    final value = IsarCore.readLong(reader, 10);
+    if (value == -9223372036854775808) {
+      object.created =
+          DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
+    } else {
+      object.created = DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true);
+    }
+  }
+  {
+    final value = IsarCore.readLong(reader, 11);
+    if (value == -9223372036854775808) {
+      object.updated =
+          DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
+    } else {
+      object.updated = DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true);
+    }
+  }
   return object;
 }
 
@@ -239,32 +231,12 @@ dynamic deserializeMealProp(IsarReader reader, int property) {
         }
       }
     case 2:
-      {
-        final value = IsarCore.readLong(reader, 2);
-        if (value == -9223372036854775808) {
-          return null;
-        } else {
-          return DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true)
-              .toLocal();
-        }
-      }
+      return IsarCore.readString(reader, 2);
     case 3:
-      {
-        final value = IsarCore.readLong(reader, 3);
-        if (value == -9223372036854775808) {
-          return null;
-        } else {
-          return DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true)
-              .toLocal();
-        }
-      }
+      return IsarCore.readString(reader, 3);
     case 4:
-      return IsarCore.readString(reader, 4);
-    case 5:
-      return IsarCore.readString(reader, 5);
-    case 6:
       {
-        final length = IsarCore.readList(reader, 6, IsarCore.readerPtrPtr);
+        final length = IsarCore.readList(reader, 4, IsarCore.readerPtrPtr);
         {
           final reader = IsarCore.readerPtr;
           if (reader.isNull) {
@@ -279,9 +251,9 @@ dynamic deserializeMealProp(IsarReader reader, int property) {
           }
         }
       }
-    case 7:
+    case 5:
       {
-        final length = IsarCore.readList(reader, 7, IsarCore.readerPtrPtr);
+        final length = IsarCore.readList(reader, 5, IsarCore.readerPtrPtr);
         {
           final reader = IsarCore.readerPtr;
           if (reader.isNull) {
@@ -306,9 +278,9 @@ dynamic deserializeMealProp(IsarReader reader, int property) {
           }
         }
       }
-    case 8:
+    case 6:
       {
-        final length = IsarCore.readList(reader, 8, IsarCore.readerPtrPtr);
+        final length = IsarCore.readList(reader, 6, IsarCore.readerPtrPtr);
         {
           final reader = IsarCore.readerPtr;
           if (reader.isNull) {
@@ -323,9 +295,9 @@ dynamic deserializeMealProp(IsarReader reader, int property) {
           }
         }
       }
-    case 9:
+    case 7:
       {
-        final length = IsarCore.readList(reader, 9, IsarCore.readerPtrPtr);
+        final length = IsarCore.readList(reader, 7, IsarCore.readerPtrPtr);
         {
           final reader = IsarCore.readerPtr;
           if (reader.isNull) {
@@ -350,24 +322,42 @@ dynamic deserializeMealProp(IsarReader reader, int property) {
           }
         }
       }
+    case 8:
+      return IsarCore.readString(reader, 8) ?? '';
+    case 9:
+      return IsarCore.readString(reader, 9) ?? '';
     case 10:
-      return IsarCore.readString(reader, 10) ?? '';
+      {
+        final value = IsarCore.readLong(reader, 10);
+        if (value == -9223372036854775808) {
+          return DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
+        } else {
+          return DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true);
+        }
+      }
     case 11:
-      return IsarCore.readString(reader, 11) ?? '';
+      {
+        final value = IsarCore.readLong(reader, 11);
+        if (value == -9223372036854775808) {
+          return DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
+        } else {
+          return DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true);
+        }
+      }
     default:
       throw ArgumentError('Unknown property: $property');
   }
 }
 
 sealed class _MealUpdate {
-  bool call(
-    String uuid, {
+  bool call({
+    required String uuid,
     DateTime? createdAt,
-    DateTime? lastTimeRandomized,
-    DateTime? lastTimeAte,
     String? instructions,
     String? thumbnailUuid,
     String? name,
+    DateTime? timeCreated,
+    DateTime? lastTimeChanged,
   });
 }
 
@@ -377,38 +367,38 @@ class _MealUpdateImpl implements _MealUpdate {
   final IsarCollection<String, Meal> collection;
 
   @override
-  bool call(
-    String uuid, {
+  bool call({
+    required String uuid,
     Object? createdAt = ignore,
-    Object? lastTimeRandomized = ignore,
-    Object? lastTimeAte = ignore,
     Object? instructions = ignore,
     Object? thumbnailUuid = ignore,
     Object? name = ignore,
+    Object? timeCreated = ignore,
+    Object? lastTimeChanged = ignore,
   }) {
     return collection.updateProperties([
           uuid
         ], {
           if (createdAt != ignore) 1: createdAt as DateTime?,
-          if (lastTimeRandomized != ignore) 2: lastTimeRandomized as DateTime?,
-          if (lastTimeAte != ignore) 3: lastTimeAte as DateTime?,
-          if (instructions != ignore) 4: instructions as String?,
-          if (thumbnailUuid != ignore) 5: thumbnailUuid as String?,
-          if (name != ignore) 10: name as String?,
+          if (instructions != ignore) 2: instructions as String?,
+          if (thumbnailUuid != ignore) 3: thumbnailUuid as String?,
+          if (name != ignore) 8: name as String?,
+          if (timeCreated != ignore) 10: timeCreated as DateTime?,
+          if (lastTimeChanged != ignore) 11: lastTimeChanged as DateTime?,
         }) >
         0;
   }
 }
 
 sealed class _MealUpdateAll {
-  int call(
-    List<String> uuid, {
+  int call({
+    required List<String> uuid,
     DateTime? createdAt,
-    DateTime? lastTimeRandomized,
-    DateTime? lastTimeAte,
     String? instructions,
     String? thumbnailUuid,
     String? name,
+    DateTime? timeCreated,
+    DateTime? lastTimeChanged,
   });
 }
 
@@ -418,22 +408,22 @@ class _MealUpdateAllImpl implements _MealUpdateAll {
   final IsarCollection<String, Meal> collection;
 
   @override
-  int call(
-    List<String> uuid, {
+  int call({
+    required List<String> uuid,
     Object? createdAt = ignore,
-    Object? lastTimeRandomized = ignore,
-    Object? lastTimeAte = ignore,
     Object? instructions = ignore,
     Object? thumbnailUuid = ignore,
     Object? name = ignore,
+    Object? timeCreated = ignore,
+    Object? lastTimeChanged = ignore,
   }) {
     return collection.updateProperties(uuid, {
       if (createdAt != ignore) 1: createdAt as DateTime?,
-      if (lastTimeRandomized != ignore) 2: lastTimeRandomized as DateTime?,
-      if (lastTimeAte != ignore) 3: lastTimeAte as DateTime?,
-      if (instructions != ignore) 4: instructions as String?,
-      if (thumbnailUuid != ignore) 5: thumbnailUuid as String?,
-      if (name != ignore) 10: name as String?,
+      if (instructions != ignore) 2: instructions as String?,
+      if (thumbnailUuid != ignore) 3: thumbnailUuid as String?,
+      if (name != ignore) 8: name as String?,
+      if (timeCreated != ignore) 10: timeCreated as DateTime?,
+      if (lastTimeChanged != ignore) 11: lastTimeChanged as DateTime?,
     });
   }
 }
@@ -442,6 +432,49 @@ extension MealUpdate on IsarCollection<String, Meal> {
   _MealUpdate get update => _MealUpdateImpl(this);
 
   _MealUpdateAll get updateAll => _MealUpdateAllImpl(this);
+}
+
+sealed class _MealQueryUpdate {
+  int call({
+    DateTime? createdAt,
+    String? instructions,
+    String? thumbnailUuid,
+    String? name,
+    DateTime? timeCreated,
+    DateTime? lastTimeChanged,
+  });
+}
+
+class _MealQueryUpdateImpl implements _MealQueryUpdate {
+  const _MealQueryUpdateImpl(this.query, {this.limit});
+
+  final IsarQuery<Meal> query;
+  final int? limit;
+
+  @override
+  int call({
+    Object? createdAt = ignore,
+    Object? instructions = ignore,
+    Object? thumbnailUuid = ignore,
+    Object? name = ignore,
+    Object? timeCreated = ignore,
+    Object? lastTimeChanged = ignore,
+  }) {
+    return query.updateProperties(limit: limit, {
+      if (createdAt != ignore) 1: createdAt as DateTime?,
+      if (instructions != ignore) 2: instructions as String?,
+      if (thumbnailUuid != ignore) 3: thumbnailUuid as String?,
+      if (name != ignore) 8: name as String?,
+      if (timeCreated != ignore) 10: timeCreated as DateTime?,
+      if (lastTimeChanged != ignore) 11: lastTimeChanged as DateTime?,
+    });
+  }
+}
+
+extension MealQueryUpdate on IsarQuery<Meal> {
+  _MealQueryUpdate get updateFirst => _MealQueryUpdateImpl(this, limit: 1);
+
+  _MealQueryUpdate get updateAll => _MealQueryUpdateImpl(this);
 }
 
 extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
@@ -525,203 +558,15 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeRandomizedIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 2));
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterFilterCondition>
-      lastTimeRandomizedIsNotNull() {
-    return QueryBuilder.apply(not(), (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 2));
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeRandomizedEqualTo(
-    DateTime? value,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        EqualCondition(
-          property: 2,
-          value: value,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeRandomizedGreaterThan(
-    DateTime? value,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        GreaterCondition(
-          property: 2,
-          value: value,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterFilterCondition>
-      lastTimeRandomizedGreaterThanOrEqualTo(
-    DateTime? value,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        GreaterOrEqualCondition(
-          property: 2,
-          value: value,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeRandomizedLessThan(
-    DateTime? value,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        LessCondition(
-          property: 2,
-          value: value,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterFilterCondition>
-      lastTimeRandomizedLessThanOrEqualTo(
-    DateTime? value,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        LessOrEqualCondition(
-          property: 2,
-          value: value,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeRandomizedBetween(
-    DateTime? lower,
-    DateTime? upper,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        BetweenCondition(
-          property: 2,
-          lower: lower,
-          upper: upper,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeAteIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 3));
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeAteIsNotNull() {
-    return QueryBuilder.apply(not(), (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 3));
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeAteEqualTo(
-    DateTime? value,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        EqualCondition(
-          property: 3,
-          value: value,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeAteGreaterThan(
-    DateTime? value,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        GreaterCondition(
-          property: 3,
-          value: value,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterFilterCondition>
-      lastTimeAteGreaterThanOrEqualTo(
-    DateTime? value,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        GreaterOrEqualCondition(
-          property: 3,
-          value: value,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeAteLessThan(
-    DateTime? value,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        LessCondition(
-          property: 3,
-          value: value,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeAteLessThanOrEqualTo(
-    DateTime? value,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        LessOrEqualCondition(
-          property: 3,
-          value: value,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeAteBetween(
-    DateTime? lower,
-    DateTime? upper,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        BetweenCondition(
-          property: 3,
-          lower: lower,
-          upper: upper,
-        ),
-      );
-    });
-  }
-
   QueryBuilder<Meal, Meal, QAfterFilterCondition> instructionsIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 4));
+      return query.addFilterCondition(const IsNullCondition(property: 2));
     });
   }
 
   QueryBuilder<Meal, Meal, QAfterFilterCondition> instructionsIsNotNull() {
     return QueryBuilder.apply(not(), (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 4));
+      return query.addFilterCondition(const IsNullCondition(property: 2));
     });
   }
 
@@ -732,7 +577,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(
-          property: 4,
+          property: 2,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -747,7 +592,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(
-          property: 4,
+          property: 2,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -763,7 +608,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterOrEqualCondition(
-          property: 4,
+          property: 2,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -778,7 +623,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(
-          property: 4,
+          property: 2,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -793,7 +638,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessOrEqualCondition(
-          property: 4,
+          property: 2,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -809,7 +654,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         BetweenCondition(
-          property: 4,
+          property: 2,
           lower: lower,
           upper: upper,
           caseSensitive: caseSensitive,
@@ -825,7 +670,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         StartsWithCondition(
-          property: 4,
+          property: 2,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -840,7 +685,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EndsWithCondition(
-          property: 4,
+          property: 2,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -854,7 +699,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         ContainsCondition(
-          property: 4,
+          property: 2,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -868,7 +713,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         MatchesCondition(
-          property: 4,
+          property: 2,
           wildcard: pattern,
           caseSensitive: caseSensitive,
         ),
@@ -880,7 +725,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const EqualCondition(
-          property: 4,
+          property: 2,
           value: '',
         ),
       );
@@ -891,7 +736,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const GreaterCondition(
-          property: 4,
+          property: 2,
           value: '',
         ),
       );
@@ -900,13 +745,13 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
 
   QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailUuidIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 5));
+      return query.addFilterCondition(const IsNullCondition(property: 3));
     });
   }
 
   QueryBuilder<Meal, Meal, QAfterFilterCondition> thumbnailUuidIsNotNull() {
     return QueryBuilder.apply(not(), (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 5));
+      return query.addFilterCondition(const IsNullCondition(property: 3));
     });
   }
 
@@ -917,7 +762,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(
-          property: 5,
+          property: 3,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -932,7 +777,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(
-          property: 5,
+          property: 3,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -948,7 +793,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterOrEqualCondition(
-          property: 5,
+          property: 3,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -963,7 +808,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(
-          property: 5,
+          property: 3,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -979,7 +824,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessOrEqualCondition(
-          property: 5,
+          property: 3,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -995,7 +840,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         BetweenCondition(
-          property: 5,
+          property: 3,
           lower: lower,
           upper: upper,
           caseSensitive: caseSensitive,
@@ -1011,7 +856,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         StartsWithCondition(
-          property: 5,
+          property: 3,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1026,7 +871,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EndsWithCondition(
-          property: 5,
+          property: 3,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1040,7 +885,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         ContainsCondition(
-          property: 5,
+          property: 3,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1054,7 +899,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         MatchesCondition(
-          property: 5,
+          property: 3,
           wildcard: pattern,
           caseSensitive: caseSensitive,
         ),
@@ -1066,7 +911,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const EqualCondition(
-          property: 5,
+          property: 3,
           value: '',
         ),
       );
@@ -1077,7 +922,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const GreaterCondition(
-          property: 5,
+          property: 3,
           value: '',
         ),
       );
@@ -1091,7 +936,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(
-          property: 6,
+          property: 4,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1106,7 +951,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(
-          property: 6,
+          property: 4,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1122,7 +967,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterOrEqualCondition(
-          property: 6,
+          property: 4,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1137,7 +982,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(
-          property: 6,
+          property: 4,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1153,7 +998,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessOrEqualCondition(
-          property: 6,
+          property: 4,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1169,7 +1014,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         BetweenCondition(
-          property: 6,
+          property: 4,
           lower: lower,
           upper: upper,
           caseSensitive: caseSensitive,
@@ -1185,7 +1030,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         StartsWithCondition(
-          property: 6,
+          property: 4,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1200,7 +1045,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EndsWithCondition(
-          property: 6,
+          property: 4,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1214,7 +1059,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         ContainsCondition(
-          property: 6,
+          property: 4,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1228,7 +1073,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         MatchesCondition(
-          property: 6,
+          property: 4,
           wildcard: pattern,
           caseSensitive: caseSensitive,
         ),
@@ -1240,7 +1085,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const EqualCondition(
-          property: 6,
+          property: 4,
           value: '',
         ),
       );
@@ -1252,7 +1097,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const GreaterCondition(
-          property: 6,
+          property: 4,
           value: '',
         ),
       );
@@ -1266,7 +1111,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
   QueryBuilder<Meal, Meal, QAfterFilterCondition> imagesUuidsIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        const GreaterOrEqualCondition(property: 6, value: null),
+        const GreaterOrEqualCondition(property: 4, value: null),
       );
     });
   }
@@ -1278,7 +1123,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
   QueryBuilder<Meal, Meal, QAfterFilterCondition> ratingsIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        const GreaterOrEqualCondition(property: 7, value: null),
+        const GreaterOrEqualCondition(property: 5, value: null),
       );
     });
   }
@@ -1290,7 +1135,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(
-          property: 8,
+          property: 6,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1305,7 +1150,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(
-          property: 8,
+          property: 6,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1321,7 +1166,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterOrEqualCondition(
-          property: 8,
+          property: 6,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1336,7 +1181,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(
-          property: 8,
+          property: 6,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1352,7 +1197,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessOrEqualCondition(
-          property: 8,
+          property: 6,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1368,7 +1213,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         BetweenCondition(
-          property: 8,
+          property: 6,
           lower: lower,
           upper: upper,
           caseSensitive: caseSensitive,
@@ -1384,7 +1229,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         StartsWithCondition(
-          property: 8,
+          property: 6,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1399,7 +1244,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EndsWithCondition(
-          property: 8,
+          property: 6,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1413,7 +1258,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         ContainsCondition(
-          property: 8,
+          property: 6,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1427,7 +1272,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         MatchesCondition(
-          property: 8,
+          property: 6,
           wildcard: pattern,
           caseSensitive: caseSensitive,
         ),
@@ -1439,7 +1284,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const EqualCondition(
-          property: 8,
+          property: 6,
           value: '',
         ),
       );
@@ -1450,7 +1295,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const GreaterCondition(
-          property: 8,
+          property: 6,
           value: '',
         ),
       );
@@ -1464,7 +1309,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
   QueryBuilder<Meal, Meal, QAfterFilterCondition> tagUuidsIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        const GreaterOrEqualCondition(property: 8, value: null),
+        const GreaterOrEqualCondition(property: 6, value: null),
       );
     });
   }
@@ -1476,7 +1321,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
   QueryBuilder<Meal, Meal, QAfterFilterCondition> ingredientsIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        const GreaterOrEqualCondition(property: 9, value: null),
+        const GreaterOrEqualCondition(property: 7, value: null),
       );
     });
   }
@@ -1488,7 +1333,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(
-          property: 10,
+          property: 8,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1503,7 +1348,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(
-          property: 10,
+          property: 8,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1518,7 +1363,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterOrEqualCondition(
-          property: 10,
+          property: 8,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1533,7 +1378,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(
-          property: 10,
+          property: 8,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1548,7 +1393,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessOrEqualCondition(
-          property: 10,
+          property: 8,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1564,7 +1409,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         BetweenCondition(
-          property: 10,
+          property: 8,
           lower: lower,
           upper: upper,
           caseSensitive: caseSensitive,
@@ -1580,7 +1425,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         StartsWithCondition(
-          property: 10,
+          property: 8,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1595,7 +1440,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EndsWithCondition(
-          property: 10,
+          property: 8,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1608,7 +1453,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         ContainsCondition(
-          property: 10,
+          property: 8,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1621,7 +1466,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         MatchesCondition(
-          property: 10,
+          property: 8,
           wildcard: pattern,
           caseSensitive: caseSensitive,
         ),
@@ -1633,7 +1478,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const EqualCondition(
-          property: 10,
+          property: 8,
           value: '',
         ),
       );
@@ -1644,7 +1489,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const GreaterCondition(
-          property: 10,
+          property: 8,
           value: '',
         ),
       );
@@ -1658,7 +1503,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(
-          property: 11,
+          property: 9,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1673,7 +1518,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(
-          property: 11,
+          property: 9,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1688,7 +1533,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterOrEqualCondition(
-          property: 11,
+          property: 9,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1703,7 +1548,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(
-          property: 11,
+          property: 9,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1718,7 +1563,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessOrEqualCondition(
-          property: 11,
+          property: 9,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1734,7 +1579,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         BetweenCondition(
-          property: 11,
+          property: 9,
           lower: lower,
           upper: upper,
           caseSensitive: caseSensitive,
@@ -1750,7 +1595,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         StartsWithCondition(
-          property: 11,
+          property: 9,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1765,7 +1610,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EndsWithCondition(
-          property: 11,
+          property: 9,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1778,7 +1623,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         ContainsCondition(
-          property: 11,
+          property: 9,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1791,7 +1636,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         MatchesCondition(
-          property: 11,
+          property: 9,
           wildcard: pattern,
           caseSensitive: caseSensitive,
         ),
@@ -1803,7 +1648,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const EqualCondition(
-          property: 11,
+          property: 9,
           value: '',
         ),
       );
@@ -1814,8 +1659,171 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const GreaterCondition(
-          property: 11,
+          property: 9,
           value: '',
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> timeCreatedEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        EqualCondition(
+          property: 10,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> timeCreatedGreaterThan(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterCondition(
+          property: 10,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterFilterCondition>
+      timeCreatedGreaterThanOrEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterOrEqualCondition(
+          property: 10,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> timeCreatedLessThan(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessCondition(
+          property: 10,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> timeCreatedLessThanOrEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessOrEqualCondition(
+          property: 10,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> timeCreatedBetween(
+    DateTime lower,
+    DateTime upper,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        BetweenCondition(
+          property: 10,
+          lower: lower,
+          upper: upper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeChangedEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        EqualCondition(
+          property: 11,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeChangedGreaterThan(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterCondition(
+          property: 11,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterFilterCondition>
+      lastTimeChangedGreaterThanOrEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterOrEqualCondition(
+          property: 11,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeChangedLessThan(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessCondition(
+          property: 11,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterFilterCondition>
+      lastTimeChangedLessThanOrEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessOrEqualCondition(
+          property: 11,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeChangedBetween(
+    DateTime lower,
+    DateTime upper,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        BetweenCondition(
+          property: 11,
+          lower: lower,
+          upper: upper,
         ),
       );
     });
@@ -1837,35 +1845,11 @@ extension MealQuerySortBy on QueryBuilder<Meal, Meal, QSortBy> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterSortBy> sortByLastTimeRandomized() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(2);
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterSortBy> sortByLastTimeRandomizedDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(2, sort: Sort.desc);
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterSortBy> sortByLastTimeAte() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(3);
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterSortBy> sortByLastTimeAteDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(3, sort: Sort.desc);
-    });
-  }
-
   QueryBuilder<Meal, Meal, QAfterSortBy> sortByInstructions(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(
-        4,
+        2,
         caseSensitive: caseSensitive,
       );
     });
@@ -1875,7 +1859,7 @@ extension MealQuerySortBy on QueryBuilder<Meal, Meal, QSortBy> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(
-        4,
+        2,
         sort: Sort.desc,
         caseSensitive: caseSensitive,
       );
@@ -1886,7 +1870,7 @@ extension MealQuerySortBy on QueryBuilder<Meal, Meal, QSortBy> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(
-        5,
+        3,
         caseSensitive: caseSensitive,
       );
     });
@@ -1896,7 +1880,7 @@ extension MealQuerySortBy on QueryBuilder<Meal, Meal, QSortBy> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(
-        5,
+        3,
         sort: Sort.desc,
         caseSensitive: caseSensitive,
       );
@@ -1907,7 +1891,7 @@ extension MealQuerySortBy on QueryBuilder<Meal, Meal, QSortBy> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(
-        10,
+        8,
         caseSensitive: caseSensitive,
       );
     });
@@ -1917,7 +1901,7 @@ extension MealQuerySortBy on QueryBuilder<Meal, Meal, QSortBy> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(
-        10,
+        8,
         sort: Sort.desc,
         caseSensitive: caseSensitive,
       );
@@ -1928,7 +1912,7 @@ extension MealQuerySortBy on QueryBuilder<Meal, Meal, QSortBy> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(
-        11,
+        9,
         caseSensitive: caseSensitive,
       );
     });
@@ -1938,10 +1922,34 @@ extension MealQuerySortBy on QueryBuilder<Meal, Meal, QSortBy> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(
-        11,
+        9,
         sort: Sort.desc,
         caseSensitive: caseSensitive,
       );
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterSortBy> sortByTimeCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(10);
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterSortBy> sortByTimeCreatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(10, sort: Sort.desc);
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterSortBy> sortByLastTimeChanged() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(11);
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterSortBy> sortByLastTimeChangedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(11, sort: Sort.desc);
     });
   }
 }
@@ -1959,83 +1967,83 @@ extension MealQuerySortThenBy on QueryBuilder<Meal, Meal, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterSortBy> thenByLastTimeRandomized() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(2);
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterSortBy> thenByLastTimeRandomizedDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(2, sort: Sort.desc);
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterSortBy> thenByLastTimeAte() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(3);
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterSortBy> thenByLastTimeAteDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(3, sort: Sort.desc);
-    });
-  }
-
   QueryBuilder<Meal, Meal, QAfterSortBy> thenByInstructions(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(4, caseSensitive: caseSensitive);
+      return query.addSortBy(2, caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<Meal, Meal, QAfterSortBy> thenByInstructionsDesc(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(4, sort: Sort.desc, caseSensitive: caseSensitive);
+      return query.addSortBy(2, sort: Sort.desc, caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<Meal, Meal, QAfterSortBy> thenByThumbnailUuid(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(5, caseSensitive: caseSensitive);
+      return query.addSortBy(3, caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<Meal, Meal, QAfterSortBy> thenByThumbnailUuidDesc(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(5, sort: Sort.desc, caseSensitive: caseSensitive);
+      return query.addSortBy(3, sort: Sort.desc, caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<Meal, Meal, QAfterSortBy> thenByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(10, caseSensitive: caseSensitive);
+      return query.addSortBy(8, caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<Meal, Meal, QAfterSortBy> thenByNameDesc(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(10, sort: Sort.desc, caseSensitive: caseSensitive);
+      return query.addSortBy(8, sort: Sort.desc, caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<Meal, Meal, QAfterSortBy> thenByUuid(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(11, caseSensitive: caseSensitive);
+      return query.addSortBy(9, caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<Meal, Meal, QAfterSortBy> thenByUuidDesc(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(11, sort: Sort.desc, caseSensitive: caseSensitive);
+      return query.addSortBy(9, sort: Sort.desc, caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterSortBy> thenByTimeCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(10);
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterSortBy> thenByTimeCreatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(10, sort: Sort.desc);
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterSortBy> thenByLastTimeChanged() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(11);
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterSortBy> thenByLastTimeChangedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(11, sort: Sort.desc);
     });
   }
 }
@@ -2047,48 +2055,48 @@ extension MealQueryWhereDistinct on QueryBuilder<Meal, Meal, QDistinct> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterDistinct> distinctByLastTimeRandomized() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(2);
-    });
-  }
-
-  QueryBuilder<Meal, Meal, QAfterDistinct> distinctByLastTimeAte() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(3);
-    });
-  }
-
   QueryBuilder<Meal, Meal, QAfterDistinct> distinctByInstructions(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(4, caseSensitive: caseSensitive);
+      return query.addDistinctBy(2, caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<Meal, Meal, QAfterDistinct> distinctByThumbnailUuid(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(5, caseSensitive: caseSensitive);
+      return query.addDistinctBy(3, caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<Meal, Meal, QAfterDistinct> distinctByImagesUuids() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(6);
+      return query.addDistinctBy(4);
     });
   }
 
   QueryBuilder<Meal, Meal, QAfterDistinct> distinctByTagUuids() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(8);
+      return query.addDistinctBy(6);
     });
   }
 
   QueryBuilder<Meal, Meal, QAfterDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(10, caseSensitive: caseSensitive);
+      return query.addDistinctBy(8, caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterDistinct> distinctByTimeCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(10);
+    });
+  }
+
+  QueryBuilder<Meal, Meal, QAfterDistinct> distinctByLastTimeChanged() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(11);
     });
   }
 }
@@ -2100,62 +2108,62 @@ extension MealQueryProperty1 on QueryBuilder<Meal, Meal, QProperty> {
     });
   }
 
-  QueryBuilder<Meal, DateTime?, QAfterProperty> lastTimeRandomizedProperty() {
+  QueryBuilder<Meal, String?, QAfterProperty> instructionsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(2);
     });
   }
 
-  QueryBuilder<Meal, DateTime?, QAfterProperty> lastTimeAteProperty() {
+  QueryBuilder<Meal, String?, QAfterProperty> thumbnailUuidProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
     });
   }
 
-  QueryBuilder<Meal, String?, QAfterProperty> instructionsProperty() {
+  QueryBuilder<Meal, List<String>, QAfterProperty> imagesUuidsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });
   }
 
-  QueryBuilder<Meal, String?, QAfterProperty> thumbnailUuidProperty() {
+  QueryBuilder<Meal, List<RatingLink>, QAfterProperty> ratingsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(5);
     });
   }
 
-  QueryBuilder<Meal, List<String>, QAfterProperty> imagesUuidsProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addProperty(6);
-    });
-  }
-
-  QueryBuilder<Meal, List<RatingLink>, QAfterProperty> ratingsProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addProperty(7);
-    });
-  }
-
   QueryBuilder<Meal, List<String>, QAfterProperty> tagUuidsProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(8);
+      return query.addProperty(6);
     });
   }
 
   QueryBuilder<Meal, List<IngredientLink>, QAfterProperty>
       ingredientsProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(9);
+      return query.addProperty(7);
     });
   }
 
   QueryBuilder<Meal, String, QAfterProperty> nameProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(10);
+      return query.addProperty(8);
     });
   }
 
   QueryBuilder<Meal, String, QAfterProperty> uuidProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(9);
+    });
+  }
+
+  QueryBuilder<Meal, DateTime, QAfterProperty> timeCreatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(10);
+    });
+  }
+
+  QueryBuilder<Meal, DateTime, QAfterProperty> lastTimeChangedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(11);
     });
@@ -2169,63 +2177,62 @@ extension MealQueryProperty2<R> on QueryBuilder<Meal, R, QAfterProperty> {
     });
   }
 
-  QueryBuilder<Meal, (R, DateTime?), QAfterProperty>
-      lastTimeRandomizedProperty() {
+  QueryBuilder<Meal, (R, String?), QAfterProperty> instructionsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(2);
     });
   }
 
-  QueryBuilder<Meal, (R, DateTime?), QAfterProperty> lastTimeAteProperty() {
+  QueryBuilder<Meal, (R, String?), QAfterProperty> thumbnailUuidProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
     });
   }
 
-  QueryBuilder<Meal, (R, String?), QAfterProperty> instructionsProperty() {
+  QueryBuilder<Meal, (R, List<String>), QAfterProperty> imagesUuidsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });
   }
 
-  QueryBuilder<Meal, (R, String?), QAfterProperty> thumbnailUuidProperty() {
+  QueryBuilder<Meal, (R, List<RatingLink>), QAfterProperty> ratingsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(5);
     });
   }
 
-  QueryBuilder<Meal, (R, List<String>), QAfterProperty> imagesUuidsProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addProperty(6);
-    });
-  }
-
-  QueryBuilder<Meal, (R, List<RatingLink>), QAfterProperty> ratingsProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addProperty(7);
-    });
-  }
-
   QueryBuilder<Meal, (R, List<String>), QAfterProperty> tagUuidsProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(8);
+      return query.addProperty(6);
     });
   }
 
   QueryBuilder<Meal, (R, List<IngredientLink>), QAfterProperty>
       ingredientsProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(9);
+      return query.addProperty(7);
     });
   }
 
   QueryBuilder<Meal, (R, String), QAfterProperty> nameProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(10);
+      return query.addProperty(8);
     });
   }
 
   QueryBuilder<Meal, (R, String), QAfterProperty> uuidProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(9);
+    });
+  }
+
+  QueryBuilder<Meal, (R, DateTime), QAfterProperty> timeCreatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(10);
+    });
+  }
+
+  QueryBuilder<Meal, (R, DateTime), QAfterProperty> lastTimeChangedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(11);
     });
@@ -2240,65 +2247,65 @@ extension MealQueryProperty3<R1, R2>
     });
   }
 
-  QueryBuilder<Meal, (R1, R2, DateTime?), QOperations>
-      lastTimeRandomizedProperty() {
+  QueryBuilder<Meal, (R1, R2, String?), QOperations> instructionsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(2);
     });
   }
 
-  QueryBuilder<Meal, (R1, R2, DateTime?), QOperations> lastTimeAteProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addProperty(3);
-    });
-  }
-
-  QueryBuilder<Meal, (R1, R2, String?), QOperations> instructionsProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addProperty(4);
-    });
-  }
-
   QueryBuilder<Meal, (R1, R2, String?), QOperations> thumbnailUuidProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(5);
+      return query.addProperty(3);
     });
   }
 
   QueryBuilder<Meal, (R1, R2, List<String>), QOperations>
       imagesUuidsProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(6);
+      return query.addProperty(4);
     });
   }
 
   QueryBuilder<Meal, (R1, R2, List<RatingLink>), QOperations>
       ratingsProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(7);
+      return query.addProperty(5);
     });
   }
 
   QueryBuilder<Meal, (R1, R2, List<String>), QOperations> tagUuidsProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(8);
+      return query.addProperty(6);
     });
   }
 
   QueryBuilder<Meal, (R1, R2, List<IngredientLink>), QOperations>
       ingredientsProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(9);
+      return query.addProperty(7);
     });
   }
 
   QueryBuilder<Meal, (R1, R2, String), QOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(10);
+      return query.addProperty(8);
     });
   }
 
   QueryBuilder<Meal, (R1, R2, String), QOperations> uuidProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(9);
+    });
+  }
+
+  QueryBuilder<Meal, (R1, R2, DateTime), QOperations> timeCreatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(10);
+    });
+  }
+
+  QueryBuilder<Meal, (R1, R2, DateTime), QOperations>
+      lastTimeChangedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(11);
     });
@@ -2306,342 +2313,11 @@ extension MealQueryProperty3<R1, R2>
 }
 
 // **************************************************************************
-// IsarEmbeddedGenerator
+// _IsarEmbeddedGenerator
 // **************************************************************************
 
 // coverage:ignore-file
-// ignore_for_file: duplicate_ignore, invalid_use_of_protected_member, lines_longer_than_80_chars, constant_identifier_names, avoid_js_rounded_ints, no_leading_underscores_for_local_identifiers, require_trailing_commas, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_in_if_null_operators, library_private_types_in_public_api
-
-const ratingLinkSchemaHash = 3831148368175904900;
-const RatingLinkSchema = IsarSchema(
-  schema:
-      '{"name":"RatingLink","idName":null,"embedded":true,"properties":[{"name":"ratingUuid","type":"String"},{"name":"value","type":"Byte","enumMap":{"one":0,"two":1,"three":2,"four":3,"five":4}}]}',
-  converter: IsarObjectConverter<void, RatingLink>(
-    serialize: serializeRatingLink,
-    deserialize: deserializeRatingLink,
-  ),
-);
-
-@isarProtected
-int serializeRatingLink(IsarWriter writer, RatingLink object) {
-  {
-    final value = object.ratingUuid;
-    if (value == null) {
-      IsarCore.writeNull(writer, 1);
-    } else {
-      IsarCore.writeString(writer, 1, IsarCore.toNativeString(value));
-    }
-  }
-  IsarCore.writeByte(writer, 2, object.value.index);
-  return 0;
-}
-
-@isarProtected
-RatingLink deserializeRatingLink(IsarReader reader) {
-  final object = RatingLink();
-  object.ratingUuid = IsarCore.readString(reader, 1);
-  {
-    final value = IsarCore.readByte(reader, 2);
-    if (value == 0) {
-      object.value = _ratingLinkValue[RatingValue.one] ?? RatingValue.one;
-    } else {
-      object.value = _ratingLinkValue[value] ?? RatingValue.one;
-    }
-  }
-  return object;
-}
-
-const _ratingLinkValue = {
-  0: RatingValue.one,
-  1: RatingValue.two,
-  2: RatingValue.three,
-  3: RatingValue.four,
-  4: RatingValue.five,
-};
-
-extension RatingLinkQueryFilter
-    on QueryBuilder<RatingLink, RatingLink, QFilterCondition> {
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition>
-      ratingUuidIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 1));
-    });
-  }
-
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition>
-      ratingUuidIsNotNull() {
-    return QueryBuilder.apply(not(), (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 1));
-    });
-  }
-
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition> ratingUuidEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        EqualCondition(
-          property: 1,
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition>
-      ratingUuidGreaterThan(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        GreaterCondition(
-          property: 1,
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition>
-      ratingUuidGreaterThanOrEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        GreaterOrEqualCondition(
-          property: 1,
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition>
-      ratingUuidLessThan(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        LessCondition(
-          property: 1,
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition>
-      ratingUuidLessThanOrEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        LessOrEqualCondition(
-          property: 1,
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition> ratingUuidBetween(
-    String? lower,
-    String? upper, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        BetweenCondition(
-          property: 1,
-          lower: lower,
-          upper: upper,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition>
-      ratingUuidStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        StartsWithCondition(
-          property: 1,
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition>
-      ratingUuidEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        EndsWithCondition(
-          property: 1,
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition>
-      ratingUuidContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        ContainsCondition(
-          property: 1,
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition> ratingUuidMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        MatchesCondition(
-          property: 1,
-          wildcard: pattern,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition>
-      ratingUuidIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const EqualCondition(
-          property: 1,
-          value: '',
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition>
-      ratingUuidIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const GreaterCondition(
-          property: 1,
-          value: '',
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition> valueEqualTo(
-    RatingValue value,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        EqualCondition(
-          property: 2,
-          value: value,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition> valueGreaterThan(
-    RatingValue value,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        GreaterCondition(
-          property: 2,
-          value: value,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition>
-      valueGreaterThanOrEqualTo(
-    RatingValue value,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        GreaterOrEqualCondition(
-          property: 2,
-          value: value,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition> valueLessThan(
-    RatingValue value,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        LessCondition(
-          property: 2,
-          value: value,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition>
-      valueLessThanOrEqualTo(
-    RatingValue value,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        LessOrEqualCondition(
-          property: 2,
-          value: value,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<RatingLink, RatingLink, QAfterFilterCondition> valueBetween(
-    RatingValue lower,
-    RatingValue upper,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        BetweenCondition(
-          property: 2,
-          lower: lower,
-          upper: upper,
-        ),
-      );
-    });
-  }
-}
-
-extension RatingLinkQueryObject
-    on QueryBuilder<RatingLink, RatingLink, QFilterCondition> {}
-
-// coverage:ignore-file
-// ignore_for_file: duplicate_ignore, invalid_use_of_protected_member, lines_longer_than_80_chars, constant_identifier_names, avoid_js_rounded_ints, no_leading_underscores_for_local_identifiers, require_trailing_commas, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_in_if_null_operators, library_private_types_in_public_api
+// ignore_for_file: duplicate_ignore, invalid_use_of_protected_member, lines_longer_than_80_chars, constant_identifier_names, avoid_js_rounded_ints, no_leading_underscores_for_local_identifiers, require_trailing_commas, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_in_if_null_operators, library_private_types_in_public_api, prefer_const_constructors
 
 const ingredientLinkSchemaHash = 1825980410966319530;
 const IngredientLinkSchema = IsarSchema(

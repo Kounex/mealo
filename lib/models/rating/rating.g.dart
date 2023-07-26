@@ -3,11 +3,11 @@
 part of 'rating.dart';
 
 // **************************************************************************
-// IsarCollectionGenerator
+// _IsarCollectionGenerator
 // **************************************************************************
 
 // coverage:ignore-file
-// ignore_for_file: duplicate_ignore, invalid_use_of_protected_member, lines_longer_than_80_chars, constant_identifier_names, avoid_js_rounded_ints, no_leading_underscores_for_local_identifiers, require_trailing_commas, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_in_if_null_operators, library_private_types_in_public_api
+// ignore_for_file: duplicate_ignore, invalid_use_of_protected_member, lines_longer_than_80_chars, constant_identifier_names, avoid_js_rounded_ints, no_leading_underscores_for_local_identifiers, require_trailing_commas, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_in_if_null_operators, library_private_types_in_public_api, prefer_const_constructors
 
 extension GetRatingCollection on Isar {
   IsarCollection<String, Rating> get ratings => this.collection();
@@ -15,14 +15,14 @@ extension GetRatingCollection on Isar {
 
 const RatingSchema = IsarCollectionSchema(
   schema:
-      '{"name":"Rating","idName":"uuid","properties":[{"name":"description","type":"String"},{"name":"name","type":"String"},{"name":"uuid","type":"String"}]}',
+      '{"name":"Rating","idName":"uuid","properties":[{"name":"description","type":"String"},{"name":"name","type":"String"},{"name":"uuid","type":"String"},{"name":"timeCreated","type":"DateTime"},{"name":"lastTimeChanged","type":"DateTime"}]}',
   converter: IsarObjectConverter<String, Rating>(
     serialize: serializeRating,
     deserialize: deserializeRating,
     deserializeProperty: deserializeRatingProp,
   ),
   embeddedSchemas: [],
-  hash: 6771144701422787813,
+  hash: -2997495130145969115,
 );
 
 @isarProtected
@@ -37,6 +37,8 @@ int serializeRating(IsarWriter writer, Rating object) {
   }
   IsarCore.writeString(writer, 2, IsarCore.toNativeString(object.name));
   IsarCore.writeString(writer, 3, IsarCore.toNativeString(object.uuid));
+  IsarCore.writeLong(writer, 4, object.created.toUtc().microsecondsSinceEpoch);
+  IsarCore.writeLong(writer, 5, object.updated.toUtc().microsecondsSinceEpoch);
   return Isar.fastHash(object.uuid);
 }
 
@@ -46,6 +48,24 @@ Rating deserializeRating(IsarReader reader) {
   object.description = IsarCore.readString(reader, 1);
   object.name = IsarCore.readString(reader, 2) ?? '';
   object.uuid = IsarCore.readString(reader, 3) ?? '';
+  {
+    final value = IsarCore.readLong(reader, 4);
+    if (value == -9223372036854775808) {
+      object.created =
+          DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
+    } else {
+      object.created = DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true);
+    }
+  }
+  {
+    final value = IsarCore.readLong(reader, 5);
+    if (value == -9223372036854775808) {
+      object.updated =
+          DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
+    } else {
+      object.updated = DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true);
+    }
+  }
   return object;
 }
 
@@ -58,16 +78,36 @@ dynamic deserializeRatingProp(IsarReader reader, int property) {
       return IsarCore.readString(reader, 2) ?? '';
     case 3:
       return IsarCore.readString(reader, 3) ?? '';
+    case 4:
+      {
+        final value = IsarCore.readLong(reader, 4);
+        if (value == -9223372036854775808) {
+          return DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
+        } else {
+          return DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true);
+        }
+      }
+    case 5:
+      {
+        final value = IsarCore.readLong(reader, 5);
+        if (value == -9223372036854775808) {
+          return DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
+        } else {
+          return DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true);
+        }
+      }
     default:
       throw ArgumentError('Unknown property: $property');
   }
 }
 
 sealed class _RatingUpdate {
-  bool call(
-    String uuid, {
+  bool call({
+    required String uuid,
     String? description,
     String? name,
+    DateTime? timeCreated,
+    DateTime? lastTimeChanged,
   });
 }
 
@@ -77,26 +117,32 @@ class _RatingUpdateImpl implements _RatingUpdate {
   final IsarCollection<String, Rating> collection;
 
   @override
-  bool call(
-    String uuid, {
+  bool call({
+    required String uuid,
     Object? description = ignore,
     Object? name = ignore,
+    Object? timeCreated = ignore,
+    Object? lastTimeChanged = ignore,
   }) {
     return collection.updateProperties([
           uuid
         ], {
           if (description != ignore) 1: description as String?,
           if (name != ignore) 2: name as String?,
+          if (timeCreated != ignore) 4: timeCreated as DateTime?,
+          if (lastTimeChanged != ignore) 5: lastTimeChanged as DateTime?,
         }) >
         0;
   }
 }
 
 sealed class _RatingUpdateAll {
-  int call(
-    List<String> uuid, {
+  int call({
+    required List<String> uuid,
     String? description,
     String? name,
+    DateTime? timeCreated,
+    DateTime? lastTimeChanged,
   });
 }
 
@@ -106,14 +152,18 @@ class _RatingUpdateAllImpl implements _RatingUpdateAll {
   final IsarCollection<String, Rating> collection;
 
   @override
-  int call(
-    List<String> uuid, {
+  int call({
+    required List<String> uuid,
     Object? description = ignore,
     Object? name = ignore,
+    Object? timeCreated = ignore,
+    Object? lastTimeChanged = ignore,
   }) {
     return collection.updateProperties(uuid, {
       if (description != ignore) 1: description as String?,
       if (name != ignore) 2: name as String?,
+      if (timeCreated != ignore) 4: timeCreated as DateTime?,
+      if (lastTimeChanged != ignore) 5: lastTimeChanged as DateTime?,
     });
   }
 }
@@ -122,6 +172,43 @@ extension RatingUpdate on IsarCollection<String, Rating> {
   _RatingUpdate get update => _RatingUpdateImpl(this);
 
   _RatingUpdateAll get updateAll => _RatingUpdateAllImpl(this);
+}
+
+sealed class _RatingQueryUpdate {
+  int call({
+    String? description,
+    String? name,
+    DateTime? timeCreated,
+    DateTime? lastTimeChanged,
+  });
+}
+
+class _RatingQueryUpdateImpl implements _RatingQueryUpdate {
+  const _RatingQueryUpdateImpl(this.query, {this.limit});
+
+  final IsarQuery<Rating> query;
+  final int? limit;
+
+  @override
+  int call({
+    Object? description = ignore,
+    Object? name = ignore,
+    Object? timeCreated = ignore,
+    Object? lastTimeChanged = ignore,
+  }) {
+    return query.updateProperties(limit: limit, {
+      if (description != ignore) 1: description as String?,
+      if (name != ignore) 2: name as String?,
+      if (timeCreated != ignore) 4: timeCreated as DateTime?,
+      if (lastTimeChanged != ignore) 5: lastTimeChanged as DateTime?,
+    });
+  }
+}
+
+extension RatingQueryUpdate on IsarQuery<Rating> {
+  _RatingQueryUpdate get updateFirst => _RatingQueryUpdateImpl(this, limit: 1);
+
+  _RatingQueryUpdate get updateAll => _RatingQueryUpdateImpl(this);
 }
 
 extension RatingQueryFilter on QueryBuilder<Rating, Rating, QFilterCondition> {
@@ -652,6 +739,171 @@ extension RatingQueryFilter on QueryBuilder<Rating, Rating, QFilterCondition> {
       );
     });
   }
+
+  QueryBuilder<Rating, Rating, QAfterFilterCondition> timeCreatedEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        EqualCondition(
+          property: 4,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Rating, Rating, QAfterFilterCondition> timeCreatedGreaterThan(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterCondition(
+          property: 4,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Rating, Rating, QAfterFilterCondition>
+      timeCreatedGreaterThanOrEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterOrEqualCondition(
+          property: 4,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Rating, Rating, QAfterFilterCondition> timeCreatedLessThan(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessCondition(
+          property: 4,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Rating, Rating, QAfterFilterCondition>
+      timeCreatedLessThanOrEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessOrEqualCondition(
+          property: 4,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Rating, Rating, QAfterFilterCondition> timeCreatedBetween(
+    DateTime lower,
+    DateTime upper,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        BetweenCondition(
+          property: 4,
+          lower: lower,
+          upper: upper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Rating, Rating, QAfterFilterCondition> lastTimeChangedEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        EqualCondition(
+          property: 5,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Rating, Rating, QAfterFilterCondition>
+      lastTimeChangedGreaterThan(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterCondition(
+          property: 5,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Rating, Rating, QAfterFilterCondition>
+      lastTimeChangedGreaterThanOrEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterOrEqualCondition(
+          property: 5,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Rating, Rating, QAfterFilterCondition> lastTimeChangedLessThan(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessCondition(
+          property: 5,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Rating, Rating, QAfterFilterCondition>
+      lastTimeChangedLessThanOrEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessOrEqualCondition(
+          property: 5,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Rating, Rating, QAfterFilterCondition> lastTimeChangedBetween(
+    DateTime lower,
+    DateTime upper,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        BetweenCondition(
+          property: 5,
+          lower: lower,
+          upper: upper,
+        ),
+      );
+    });
+  }
 }
 
 extension RatingQueryObject on QueryBuilder<Rating, Rating, QFilterCondition> {}
@@ -719,6 +971,30 @@ extension RatingQuerySortBy on QueryBuilder<Rating, Rating, QSortBy> {
       );
     });
   }
+
+  QueryBuilder<Rating, Rating, QAfterSortBy> sortByTimeCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(4);
+    });
+  }
+
+  QueryBuilder<Rating, Rating, QAfterSortBy> sortByTimeCreatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(4, sort: Sort.desc);
+    });
+  }
+
+  QueryBuilder<Rating, Rating, QAfterSortBy> sortByLastTimeChanged() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(5);
+    });
+  }
+
+  QueryBuilder<Rating, Rating, QAfterSortBy> sortByLastTimeChangedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(5, sort: Sort.desc);
+    });
+  }
 }
 
 extension RatingQuerySortThenBy on QueryBuilder<Rating, Rating, QSortThenBy> {
@@ -763,6 +1039,30 @@ extension RatingQuerySortThenBy on QueryBuilder<Rating, Rating, QSortThenBy> {
       return query.addSortBy(3, sort: Sort.desc, caseSensitive: caseSensitive);
     });
   }
+
+  QueryBuilder<Rating, Rating, QAfterSortBy> thenByTimeCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(4);
+    });
+  }
+
+  QueryBuilder<Rating, Rating, QAfterSortBy> thenByTimeCreatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(4, sort: Sort.desc);
+    });
+  }
+
+  QueryBuilder<Rating, Rating, QAfterSortBy> thenByLastTimeChanged() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(5);
+    });
+  }
+
+  QueryBuilder<Rating, Rating, QAfterSortBy> thenByLastTimeChangedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(5, sort: Sort.desc);
+    });
+  }
 }
 
 extension RatingQueryWhereDistinct on QueryBuilder<Rating, Rating, QDistinct> {
@@ -777,6 +1077,18 @@ extension RatingQueryWhereDistinct on QueryBuilder<Rating, Rating, QDistinct> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(2, caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Rating, Rating, QAfterDistinct> distinctByTimeCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(4);
+    });
+  }
+
+  QueryBuilder<Rating, Rating, QAfterDistinct> distinctByLastTimeChanged() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(5);
     });
   }
 }
@@ -799,6 +1111,18 @@ extension RatingQueryProperty1 on QueryBuilder<Rating, Rating, QProperty> {
       return query.addProperty(3);
     });
   }
+
+  QueryBuilder<Rating, DateTime, QAfterProperty> timeCreatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(4);
+    });
+  }
+
+  QueryBuilder<Rating, DateTime, QAfterProperty> lastTimeChangedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(5);
+    });
+  }
 }
 
 extension RatingQueryProperty2<R> on QueryBuilder<Rating, R, QAfterProperty> {
@@ -817,6 +1141,19 @@ extension RatingQueryProperty2<R> on QueryBuilder<Rating, R, QAfterProperty> {
   QueryBuilder<Rating, (R, String), QAfterProperty> uuidProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
+    });
+  }
+
+  QueryBuilder<Rating, (R, DateTime), QAfterProperty> timeCreatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(4);
+    });
+  }
+
+  QueryBuilder<Rating, (R, DateTime), QAfterProperty>
+      lastTimeChangedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(5);
     });
   }
 }
@@ -838,6 +1175,19 @@ extension RatingQueryProperty3<R1, R2>
   QueryBuilder<Rating, (R1, R2, String), QOperations> uuidProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
+    });
+  }
+
+  QueryBuilder<Rating, (R1, R2, DateTime), QOperations> timeCreatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(4);
+    });
+  }
+
+  QueryBuilder<Rating, (R1, R2, DateTime), QOperations>
+      lastTimeChangedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(5);
     });
   }
 }

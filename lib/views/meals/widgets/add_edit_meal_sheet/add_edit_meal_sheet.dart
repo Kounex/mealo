@@ -10,6 +10,7 @@ import 'package:mealo/widgets/base/functional/async_value_builder.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../../models/embeddings/rating_link/rating_link.dart';
 import '../../../../models/meal/meal.dart';
 import '../../../../utils/modal.dart';
 import '../../../../utils/persistance.dart';
@@ -106,12 +107,12 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
 
     await _deleteImages(_imagesUuidsToDelete);
 
-    String? thumbnailUUID;
+    String? thumbnailUuid;
     List<String> imagesUuids = [];
 
     if (_thumbnailToAdd.isNotEmpty) {
-      await _thumbnailToAdd.first.saveTo('$path/$thumbnailUUID');
-      thumbnailUUID = const Uuid().v4();
+      await _thumbnailToAdd.first.saveTo('$path/$thumbnailUuid');
+      thumbnailUuid = const Uuid().v4();
     }
 
     for (XFile image in _imagesToAdd) {
@@ -120,13 +121,13 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
       imagesUuids.add(uuid);
     }
 
-    return (thumbnail: thumbnailUUID, images: imagesUuids);
+    return (thumbnail: thumbnailUuid, images: imagesUuids);
   }
 
   void _saveMeal() async {
     final uuids = await _handleImages();
 
-    await PersistanceUtils.crud(
+    PersistanceUtils.transaction(
       (isar) {
         /// Leaving out the properties which are [IsarLinks] since they need
         /// to be handled seperately (see down below)
@@ -162,7 +163,7 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
 
       await _deleteImages(imagesUuidsToDelete);
 
-      await PersistanceUtils.crud(
+      PersistanceUtils.transaction(
           (isar) => isar.meals.delete(this.widget.meal!.uuid));
     }
     if (mounted) {

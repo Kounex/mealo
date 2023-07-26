@@ -4,15 +4,16 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+
 import '../../../utils/modal.dart';
+import '../../dialog/confirmation.dart';
 import '../functional/cached_memory_image.dart';
 import 'progress_indicator.dart';
-import '../../dialog/confirmation.dart';
-import 'package:path_provider/path_provider.dart';
 
 class BaseImage extends StatelessWidget {
   final String? imageBase64;
-  final String? imageUUID;
+  final String? imageUuid;
   final XFile? image;
 
   final double? height;
@@ -28,7 +29,7 @@ class BaseImage extends StatelessWidget {
   const BaseImage({
     super.key,
     this.imageBase64,
-    this.imageUUID,
+    this.imageUuid,
     this.image,
     this.height,
     this.width,
@@ -37,7 +38,7 @@ class BaseImage extends StatelessWidget {
     this.actionSize = 32.0,
     this.icon,
     this.onAction,
-  }) : assert(imageBase64 != null || imageUUID != null || image != null);
+  }) : assert(imageBase64 != null || imageUuid != null || image != null);
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +85,7 @@ class BaseImage extends StatelessWidget {
                     },
                   );
                 }
-                if (this.imageUUID != null) {
+                if (this.imageUuid != null) {
                   return FutureBuilder<Directory>(
                     future: getApplicationDocumentsDirectory(),
                     builder: (context, snapshot) {
@@ -92,7 +93,7 @@ class BaseImage extends StatelessWidget {
                         if (snapshot.hasData) {
                           return Image(
                             image: FileImage(
-                              File('${snapshot.data!.path}/${this.imageUUID}'),
+                              File('${snapshot.data!.path}/${this.imageUuid}'),
                             ),
                             height: this.height,
                             width: this.width,

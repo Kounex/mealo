@@ -13,4 +13,4 @@ class Units extends _$Units with Persistance<Unit> {
 }
 
 @collection
-class Unit extends Model {}
+class Unit extends CommonModel {}

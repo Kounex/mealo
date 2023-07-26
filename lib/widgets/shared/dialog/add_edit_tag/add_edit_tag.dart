@@ -64,7 +64,7 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
                       'Aure you sure you want to delete ${this.widget.tag!.name}? This action can\'t be undone!',
                   isYesDestructive: true,
                   onYes: () {
-                    PersistanceUtils.crud(
+                    PersistanceUtils.transaction(
                       (isar) => isar.tags.delete(this.widget.tag!.uuid),
                     );
                     Navigator.of(context).pop();
@@ -118,7 +118,7 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
             if (_form.currentState!.validate()) {
               Tag? tag = this.widget.tag ?? Tag();
 
-              PersistanceUtils.crud(
+              PersistanceUtils.transaction(
                 (isar) => isar.tags.put(
                   tag
                     ..name = _controller.text.trim()

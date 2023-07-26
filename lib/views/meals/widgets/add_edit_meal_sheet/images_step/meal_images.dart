@@ -19,7 +19,7 @@ class MealImages extends StatelessWidget {
   final List<String> imagesUuidsToDelete;
 
   final VoidCallback onThumbnailAction;
-  final void Function(int index, String imageUUID) onExistingImagesAction;
+  final void Function(int index, String imageUuid) onExistingImagesAction;
   final void Function(int index) onNewImagesAction;
 
   const MealImages({
@@ -44,7 +44,7 @@ class MealImages extends StatelessWidget {
             return this.meal.thumbnailUuid != null ||
                     this.thumbnailToAdd.isNotEmpty
                 ? BaseImage(
-                    imageUUID: this.meal.thumbnailUuid,
+                    imageUuid: this.meal.thumbnailUuid,
                     image: this.thumbnailToAdd.firstOrNull,
                     height: 172.0,
                     width: 172.0,
@@ -66,13 +66,13 @@ class MealImages extends StatelessWidget {
                     runSpacing: 24.0,
                     children: [
                       ...this.meal.imagesUuids.mapIndexed(
-                            (index, imageUUID) => BaseImage(
-                              imageUUID: imageUUID,
+                            (index, imageUuid) => BaseImage(
+                              imageUuid: imageUuid,
                               height: 128.0,
                               width: 128.0,
                               icon: CupertinoIcons.clear,
                               onAction: () =>
-                                  this.onExistingImagesAction(index, imageUUID),
+                                  this.onExistingImagesAction(index, imageUuid),
                             ),
                           ),
                       ...this.imagesToAdd.mapIndexed(

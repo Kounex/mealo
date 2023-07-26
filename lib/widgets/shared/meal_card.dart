@@ -38,7 +38,7 @@ class MealCard extends StatelessWidget {
             // ),
             this.meal?.thumbnailUuid != null
                 ? BaseImage(
-                    imageUUID: this.meal?.thumbnailUuid,
+                    imageUuid: this.meal?.thumbnailUuid,
                     height: this.height,
                     width: this.width,
                   )

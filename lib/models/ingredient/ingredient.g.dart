@@ -3,11 +3,11 @@
 part of 'ingredient.dart';
 
 // **************************************************************************
-// IsarCollectionGenerator
+// _IsarCollectionGenerator
 // **************************************************************************
 
 // coverage:ignore-file
-// ignore_for_file: duplicate_ignore, invalid_use_of_protected_member, lines_longer_than_80_chars, constant_identifier_names, avoid_js_rounded_ints, no_leading_underscores_for_local_identifiers, require_trailing_commas, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_in_if_null_operators, library_private_types_in_public_api
+// ignore_for_file: duplicate_ignore, invalid_use_of_protected_member, lines_longer_than_80_chars, constant_identifier_names, avoid_js_rounded_ints, no_leading_underscores_for_local_identifiers, require_trailing_commas, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_in_if_null_operators, library_private_types_in_public_api, prefer_const_constructors
 
 extension GetIngredientCollection on Isar {
   IsarCollection<String, Ingredient> get ingredients => this.collection();
@@ -15,20 +15,22 @@ extension GetIngredientCollection on Isar {
 
 const IngredientSchema = IsarCollectionSchema(
   schema:
-      '{"name":"Ingredient","idName":"uuid","properties":[{"name":"name","type":"String"},{"name":"uuid","type":"String"}]}',
+      '{"name":"Ingredient","idName":"uuid","properties":[{"name":"name","type":"String"},{"name":"uuid","type":"String"},{"name":"timeCreated","type":"DateTime"},{"name":"lastTimeChanged","type":"DateTime"}]}',
   converter: IsarObjectConverter<String, Ingredient>(
     serialize: serializeIngredient,
     deserialize: deserializeIngredient,
     deserializeProperty: deserializeIngredientProp,
   ),
   embeddedSchemas: [],
-  hash: 3048704137477157469,
+  hash: 5690711412164282349,
 );
 
 @isarProtected
 int serializeIngredient(IsarWriter writer, Ingredient object) {
   IsarCore.writeString(writer, 1, IsarCore.toNativeString(object.name));
   IsarCore.writeString(writer, 2, IsarCore.toNativeString(object.uuid));
+  IsarCore.writeLong(writer, 3, object.created.toUtc().microsecondsSinceEpoch);
+  IsarCore.writeLong(writer, 4, object.updated.toUtc().microsecondsSinceEpoch);
   return Isar.fastHash(object.uuid);
 }
 
@@ -37,6 +39,24 @@ Ingredient deserializeIngredient(IsarReader reader) {
   final object = Ingredient();
   object.name = IsarCore.readString(reader, 1) ?? '';
   object.uuid = IsarCore.readString(reader, 2) ?? '';
+  {
+    final value = IsarCore.readLong(reader, 3);
+    if (value == -9223372036854775808) {
+      object.created =
+          DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
+    } else {
+      object.created = DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true);
+    }
+  }
+  {
+    final value = IsarCore.readLong(reader, 4);
+    if (value == -9223372036854775808) {
+      object.updated =
+          DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
+    } else {
+      object.updated = DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true);
+    }
+  }
   return object;
 }
 
@@ -47,15 +67,35 @@ dynamic deserializeIngredientProp(IsarReader reader, int property) {
       return IsarCore.readString(reader, 1) ?? '';
     case 2:
       return IsarCore.readString(reader, 2) ?? '';
+    case 3:
+      {
+        final value = IsarCore.readLong(reader, 3);
+        if (value == -9223372036854775808) {
+          return DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
+        } else {
+          return DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true);
+        }
+      }
+    case 4:
+      {
+        final value = IsarCore.readLong(reader, 4);
+        if (value == -9223372036854775808) {
+          return DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
+        } else {
+          return DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true);
+        }
+      }
     default:
       throw ArgumentError('Unknown property: $property');
   }
 }
 
 sealed class _IngredientUpdate {
-  bool call(
-    String uuid, {
+  bool call({
+    required String uuid,
     String? name,
+    DateTime? timeCreated,
+    DateTime? lastTimeChanged,
   });
 }
 
@@ -65,23 +105,29 @@ class _IngredientUpdateImpl implements _IngredientUpdate {
   final IsarCollection<String, Ingredient> collection;
 
   @override
-  bool call(
-    String uuid, {
+  bool call({
+    required String uuid,
     Object? name = ignore,
+    Object? timeCreated = ignore,
+    Object? lastTimeChanged = ignore,
   }) {
     return collection.updateProperties([
           uuid
         ], {
           if (name != ignore) 1: name as String?,
+          if (timeCreated != ignore) 3: timeCreated as DateTime?,
+          if (lastTimeChanged != ignore) 4: lastTimeChanged as DateTime?,
         }) >
         0;
   }
 }
 
 sealed class _IngredientUpdateAll {
-  int call(
-    List<String> uuid, {
+  int call({
+    required List<String> uuid,
     String? name,
+    DateTime? timeCreated,
+    DateTime? lastTimeChanged,
   });
 }
 
@@ -91,12 +137,16 @@ class _IngredientUpdateAllImpl implements _IngredientUpdateAll {
   final IsarCollection<String, Ingredient> collection;
 
   @override
-  int call(
-    List<String> uuid, {
+  int call({
+    required List<String> uuid,
     Object? name = ignore,
+    Object? timeCreated = ignore,
+    Object? lastTimeChanged = ignore,
   }) {
     return collection.updateProperties(uuid, {
       if (name != ignore) 1: name as String?,
+      if (timeCreated != ignore) 3: timeCreated as DateTime?,
+      if (lastTimeChanged != ignore) 4: lastTimeChanged as DateTime?,
     });
   }
 }
@@ -105,6 +155,41 @@ extension IngredientUpdate on IsarCollection<String, Ingredient> {
   _IngredientUpdate get update => _IngredientUpdateImpl(this);
 
   _IngredientUpdateAll get updateAll => _IngredientUpdateAllImpl(this);
+}
+
+sealed class _IngredientQueryUpdate {
+  int call({
+    String? name,
+    DateTime? timeCreated,
+    DateTime? lastTimeChanged,
+  });
+}
+
+class _IngredientQueryUpdateImpl implements _IngredientQueryUpdate {
+  const _IngredientQueryUpdateImpl(this.query, {this.limit});
+
+  final IsarQuery<Ingredient> query;
+  final int? limit;
+
+  @override
+  int call({
+    Object? name = ignore,
+    Object? timeCreated = ignore,
+    Object? lastTimeChanged = ignore,
+  }) {
+    return query.updateProperties(limit: limit, {
+      if (name != ignore) 1: name as String?,
+      if (timeCreated != ignore) 3: timeCreated as DateTime?,
+      if (lastTimeChanged != ignore) 4: lastTimeChanged as DateTime?,
+    });
+  }
+}
+
+extension IngredientQueryUpdate on IsarQuery<Ingredient> {
+  _IngredientQueryUpdate get updateFirst =>
+      _IngredientQueryUpdateImpl(this, limit: 1);
+
+  _IngredientQueryUpdate get updateAll => _IngredientQueryUpdateImpl(this);
 }
 
 extension IngredientQueryFilter
@@ -456,6 +541,178 @@ extension IngredientQueryFilter
       );
     });
   }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
+      timeCreatedEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        EqualCondition(
+          property: 3,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
+      timeCreatedGreaterThan(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterCondition(
+          property: 3,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
+      timeCreatedGreaterThanOrEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterOrEqualCondition(
+          property: 3,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
+      timeCreatedLessThan(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessCondition(
+          property: 3,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
+      timeCreatedLessThanOrEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessOrEqualCondition(
+          property: 3,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
+      timeCreatedBetween(
+    DateTime lower,
+    DateTime upper,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        BetweenCondition(
+          property: 3,
+          lower: lower,
+          upper: upper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
+      lastTimeChangedEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        EqualCondition(
+          property: 4,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
+      lastTimeChangedGreaterThan(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterCondition(
+          property: 4,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
+      lastTimeChangedGreaterThanOrEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterOrEqualCondition(
+          property: 4,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
+      lastTimeChangedLessThan(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessCondition(
+          property: 4,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
+      lastTimeChangedLessThanOrEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessOrEqualCondition(
+          property: 4,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
+      lastTimeChangedBetween(
+    DateTime lower,
+    DateTime upper,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        BetweenCondition(
+          property: 4,
+          lower: lower,
+          upper: upper,
+        ),
+      );
+    });
+  }
 }
 
 extension IngredientQueryObject
@@ -504,6 +761,31 @@ extension IngredientQuerySortBy
       );
     });
   }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> sortByTimeCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(3);
+    });
+  }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> sortByTimeCreatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(3, sort: Sort.desc);
+    });
+  }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> sortByLastTimeChanged() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(4);
+    });
+  }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterSortBy>
+      sortByLastTimeChangedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(4, sort: Sort.desc);
+    });
+  }
 }
 
 extension IngredientQuerySortThenBy
@@ -535,6 +817,31 @@ extension IngredientQuerySortThenBy
       return query.addSortBy(2, sort: Sort.desc, caseSensitive: caseSensitive);
     });
   }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> thenByTimeCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(3);
+    });
+  }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> thenByTimeCreatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(3, sort: Sort.desc);
+    });
+  }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> thenByLastTimeChanged() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(4);
+    });
+  }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterSortBy>
+      thenByLastTimeChangedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(4, sort: Sort.desc);
+    });
+  }
 }
 
 extension IngredientQueryWhereDistinct
@@ -543,6 +850,19 @@ extension IngredientQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(1, caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterDistinct> distinctByTimeCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(3);
+    });
+  }
+
+  QueryBuilder<Ingredient, Ingredient, QAfterDistinct>
+      distinctByLastTimeChanged() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(4);
     });
   }
 }
@@ -560,6 +880,18 @@ extension IngredientQueryProperty1
       return query.addProperty(2);
     });
   }
+
+  QueryBuilder<Ingredient, DateTime, QAfterProperty> timeCreatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(3);
+    });
+  }
+
+  QueryBuilder<Ingredient, DateTime, QAfterProperty> lastTimeChangedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(4);
+    });
+  }
 }
 
 extension IngredientQueryProperty2<R>
@@ -575,6 +907,20 @@ extension IngredientQueryProperty2<R>
       return query.addProperty(2);
     });
   }
+
+  QueryBuilder<Ingredient, (R, DateTime), QAfterProperty>
+      timeCreatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(3);
+    });
+  }
+
+  QueryBuilder<Ingredient, (R, DateTime), QAfterProperty>
+      lastTimeChangedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(4);
+    });
+  }
 }
 
 extension IngredientQueryProperty3<R1, R2>
@@ -588,6 +934,20 @@ extension IngredientQueryProperty3<R1, R2>
   QueryBuilder<Ingredient, (R1, R2, String), QOperations> uuidProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(2);
+    });
+  }
+
+  QueryBuilder<Ingredient, (R1, R2, DateTime), QOperations>
+      timeCreatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(3);
+    });
+  }
+
+  QueryBuilder<Ingredient, (R1, R2, DateTime), QOperations>
+      lastTimeChangedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(4);
     });
   }
 }

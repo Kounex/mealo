@@ -13,6 +13,6 @@ class Tags extends _$Tags with Persistance<Tag> {
 }
 
 @collection
-class Tag extends Model {
+class Tag extends CommonModel {
   String? colorHex;
 }

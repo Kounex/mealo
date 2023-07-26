@@ -58,7 +58,7 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
                       'Aure you sure you want to delete ${this.widget.rating!.name}? This action can\'t be undone!',
                   isYesDestructive: true,
                   onYes: () {
-                    PersistanceUtils.crud(
+                    PersistanceUtils.transaction(
                       (isar) => isar.ratings.delete(this.widget.rating!.uuid),
                     );
                     Navigator.of(context).pop();
@@ -121,7 +121,7 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
             if (_form.currentState!.validate()) {
               Rating? rating = this.widget.rating ?? Rating();
 
-              PersistanceUtils.crud(
+              PersistanceUtils.transaction(
                 (isar) => isar.ratings.put(
                   rating..name = _name.text.trim(),
                 ),

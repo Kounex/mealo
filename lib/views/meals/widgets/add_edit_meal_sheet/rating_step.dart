@@ -32,7 +32,7 @@ class _RatingStepState extends ConsumerState<RatingStep> {
           leftPadding: 0,
           rightPadding: 0,
           child: Text(
-              'Ratings should always be phrased positively so that \'5\' is the best outcome while \'1\' is the worst. This will enable to correctly filter / sort meals later on.'),
+              'Ratings are meant to be positive so that \'5\' is the best outcome while \'1\' is the worst. This will enable to correctly filter and sort meals later on.'),
         ),
         const SizedBox(height: 24.0),
         BaseCard(

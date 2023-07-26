@@ -7,7 +7,7 @@ import '../../base/functional/text_form_field.dart';
 import '../../base/ui/text_button.dart';
 import '../../dialog/confirmation.dart';
 
-class AddEditModelDialog<T extends Model> extends ConsumerStatefulWidget {
+class AddEditModelDialog<T extends CommonModel> extends ConsumerStatefulWidget {
   final T? editingModel;
   final String? name;
 
@@ -32,7 +32,7 @@ class AddEditModelDialog<T extends Model> extends ConsumerStatefulWidget {
       _AddEditModelDialogState();
 }
 
-class _AddEditModelDialogState<T extends Model>
+class _AddEditModelDialogState<T extends CommonModel>
     extends ConsumerState<AddEditModelDialog<T>> {
   final GlobalKey<FormState> _form = GlobalKey();
   late TextEditingController _controller;

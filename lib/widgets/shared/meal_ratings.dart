@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/meal/meal.dart';
+import '../../models/embeddings/rating_link/rating_link.dart';
 import '../../models/rating/rating.dart';
 import '../base/ui/divider.dart';
 

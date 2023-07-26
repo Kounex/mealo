@@ -1,6 +1,7 @@
 import 'package:isar/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../embeddings/rating_link/rating_link.dart';
 import '../model.dart';
 import '../persistance.dart';
 
@@ -21,10 +22,8 @@ class Meals extends _$Meals with Persistance<Meal> {
 }
 
 @collection
-class Meal extends Model {
+class Meal extends CommonModel {
   DateTime createdAt = DateTime.now();
-  DateTime? lastTimeRandomized;
-  DateTime? lastTimeAte;
 
   String? instructions;
   String? thumbnailUuid;
@@ -33,36 +32,6 @@ class Meal extends Model {
   List<RatingLink> ratings = [];
   List<String> tagUuids = [];
   List<IngredientLink> ingredients = [];
-}
-
-@embedded
-class RatingLink {
-  String? ratingUuid;
-
-  RatingValue value = RatingValue.three;
-}
-
-enum RatingValue {
-  one,
-  two,
-  three,
-  four,
-  five;
-
-  int get number {
-    switch (this) {
-      case RatingValue.one:
-        return 1;
-      case RatingValue.two:
-        return 2;
-      case RatingValue.three:
-        return 3;
-      case RatingValue.four:
-        return 4;
-      case RatingValue.five:
-        return 5;
-    }
-  }
 }
 
 @embedded

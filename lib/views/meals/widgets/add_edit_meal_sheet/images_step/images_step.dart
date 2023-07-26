@@ -209,10 +209,10 @@ class _ImagesStepState extends State<ImagesStep> {
                         this.widget.thumbnailToAdd.clear();
                       },
                     ),
-                    onExistingImagesAction: (index, imageUUID) => setState(
+                    onExistingImagesAction: (index, imageUuid) => setState(
                       () {
                         this.widget.meal.imagesUuids.removeAt(index);
-                        this.widget.imagesUuidsToDelete.add(imageUUID);
+                        this.widget.imagesUuidsToDelete.add(imageUuid);
                       },
                     ),
                     onNewImagesAction: (index) => setState(

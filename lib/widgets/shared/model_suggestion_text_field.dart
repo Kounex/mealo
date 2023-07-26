@@ -7,7 +7,7 @@ import '../../utils/persistance.dart';
 import '../base/functional/suggestion_text_field/suggestion_text_field.dart';
 import 'dialog/add_edit_model.dart';
 
-class ModelSuggestionTextField<T extends Model> extends StatelessWidget {
+class ModelSuggestionTextField<T extends CommonModel> extends StatelessWidget {
   final T? value;
   final List<T> values;
 
@@ -58,7 +58,7 @@ class ModelSuggestionTextField<T extends Model> extends StatelessWidget {
           context,
           AddEditModelDialog<T>(
             name: text,
-            onAdd: (name) => PersistanceUtils.crud(
+            onAdd: (name) => PersistanceUtils.transaction(
               (isar) => this.onAdd(isar, name),
             ),
           ),

@@ -87,9 +87,9 @@ class _IngredientRowState extends State<IngredientRow> {
 
   @override
   Widget build(BuildContext context) {
-    double availableWidth = MediaQuery.of(context).size.width;
-
     _checkSaveable();
+
+    double availableWidth = MediaQuery.of(context).size.width;
 
     Widget amountTextField = AmountTextField(controller: _amount);
 

@@ -13,6 +13,6 @@ class Ratings extends _$Ratings with Persistance<Rating> {
 }
 
 @collection
-class Rating extends Model {
+class Rating extends CommonModel {
   String? description;
 }
