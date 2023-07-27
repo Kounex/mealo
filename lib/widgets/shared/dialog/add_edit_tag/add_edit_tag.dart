@@ -65,7 +65,8 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
                   isYesDestructive: true,
                   onYes: () {
                     PersistanceUtils.transaction(
-                      (isar) => isar.tags.delete(this.widget.tag!.uuid),
+                      PersistanceOperation.delete,
+                      [this.widget.tag!],
                     );
                     Navigator.of(context).pop();
                   },
@@ -119,11 +120,12 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
               Tag? tag = this.widget.tag ?? Tag();
 
               PersistanceUtils.transaction(
-                (isar) => isar.tags.put(
+                PersistanceOperation.insertUpdate,
+                [
                   tag
                     ..name = _controller.text.trim()
                     ..colorHex = _colorHex,
-                ),
+                ],
               );
 
               Navigator.of(context).pop(tag);

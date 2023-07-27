@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
 import 'package:mealo/models/model.dart';
+import 'package:mealo/models/randomized_run/randomized_run.dart';
 import 'package:mealo/utils/date.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -16,6 +17,7 @@ class PersistanceUtils {
 
   static final List<IsarCollectionSchema> _schemas = [
     MealSchema,
+    RandomizedRunSchema,
     SettingsSchema,
     RatingSchema,
     TagSchema,
@@ -76,10 +78,17 @@ class PersistanceUtils {
     }
   }
 
+  /// Will purge all collections and therefore data which has been persisted.
+  /// Use with care!
+  static void purge() {
+    PersistanceUtils._instance.write((isar) => isar.clear());
+    PersistanceUtils._initDefaults();
+  }
+
   static Stream<void> watch<T extends BaseModel>() =>
       PersistanceUtils._instance.collection<String, T>().watchLazy();
 
-  static T transaction<T extends BaseModel>(
+  static void transaction<T extends BaseModel>(
     PersistanceOperation operation,
     List<T> models,
   ) {
@@ -93,7 +102,7 @@ class PersistanceUtils {
       }
     }
 
-    return PersistanceUtils._instance.write<dynamic>((isar) {
+    PersistanceUtils._instance.write((isar) {
       final collection = isar.collection<String, T>();
 
       return switch (operation) {
@@ -111,7 +120,7 @@ class PersistanceUtils {
     /// Here we will add our [Settings] singleton collection and before that
     /// clear the collection itself to make sure we really only have one (just
     /// to be sure)
-    PersistanceUtils._instance.settings.clear();
+    PersistanceUtils._instance.write((isar) => isar.settings.clear());
     PersistanceUtils.transaction(
       PersistanceOperation.insertUpdate,
       [Settings()],

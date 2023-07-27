@@ -1,11 +1,14 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:mealo/utils/persistance.dart';
 
 import '../../../../../models/ingredient/ingredient.dart';
 import '../../../../../models/meal/meal.dart';
 import '../../../../../models/unit/unit.dart';
+import '../../../../../utils/modal.dart';
 import '../../../../../utils/validation.dart';
 import '../../../../../widgets/base/ui/chip.dart';
+import '../../../../../widgets/shared/dialog/add_edit_model.dart';
 import '../../../../../widgets/shared/model_suggestion_text_field.dart';
 import 'amount_text_field.dart';
 
@@ -98,7 +101,21 @@ class _IngredientRowState extends State<IngredientRow> {
       values: this.widget.units,
       setValue: _setUnit,
       hintText: 'Unit',
-      onAdd: (isar, name) => isar.units.put(Unit()..name = name),
+      onAdd: (name) => ModalUtils.showBaseDialog<Unit>(
+        context,
+        AddEditModelDialog(
+            name: name,
+            onAdd: (name) {
+              final unit = Unit()..name = name;
+
+              PersistanceUtils.transaction(
+                PersistanceOperation.insertUpdate,
+                [unit],
+              );
+
+              return unit;
+            }),
+      ),
       onDeleteSelection: () => setState(() => _unit = null),
     );
 
@@ -107,7 +124,22 @@ class _IngredientRowState extends State<IngredientRow> {
       values: this.widget.ingredients,
       setValue: _setIngredient,
       hintText: 'Ingredient',
-      onAdd: (isar, name) => isar.ingredients.put(Ingredient()..name = name),
+      onAdd: (name) => ModalUtils.showBaseDialog<Ingredient>(
+        context,
+        AddEditModelDialog(
+          name: name,
+          onAdd: (name) {
+            final ingredient = Ingredient()..name = name;
+
+            PersistanceUtils.transaction(
+              PersistanceOperation.insertUpdate,
+              [ingredient],
+            );
+
+            return ingredient;
+          },
+        ),
+      ),
       onDeleteSelection: () => setState(() => _ingredient = null),
     );
 

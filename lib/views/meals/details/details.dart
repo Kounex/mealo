@@ -7,7 +7,6 @@ import '../../../models/meal/meal.dart';
 import '../../../models/rating/rating.dart';
 import '../../../stores/views/home.dart';
 import '../../../utils/modal.dart';
-import '../../../utils/persistance.dart';
 import '../../../widgets/base/functional/async_value_builder.dart';
 import '../../../widgets/base/functional/scaffold.dart';
 import '../../../widgets/base/ui/image.dart';
@@ -21,15 +20,6 @@ class MealDetailsView extends ConsumerWidget {
     super.key,
     required this.uuid,
   });
-
-  void _deleteMeal(BuildContext context) async {
-    await PersistanceUtils.transaction(
-      (isar) => isar.meals.delete(this.uuid),
-    );
-    if (context.mounted) {
-      Navigator.of(context).pop();
-    }
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -47,10 +47,7 @@ class SettingsView extends ConsumerWidget {
                     text:
                         'You are about to delete all data and set the app back to its default state. This action can\'t be undone! Are you sure about that?',
                     isYesDestructive: true,
-                    onYes: () async {
-                      PersistanceUtils.transaction((isar) => isar.clear());
-                      await PersistanceUtils.init();
-                    },
+                    onYes: () => PersistanceUtils.purge(),
                   ),
                 ),
               ),

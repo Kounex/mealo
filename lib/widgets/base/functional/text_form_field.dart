@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../../../utils/styling.dart';
 
 class BaseTextFormField extends StatefulWidget {
@@ -8,7 +9,7 @@ class BaseTextFormField extends StatefulWidget {
   final TextEditingController? controller;
 
   final String? Function(String? text)? validator;
-  void Function(String text)? onFieldSubmitted;
+  final void Function(String text)? onFieldSubmitted;
 
   final String? hintText;
   final bool autocorrect;
@@ -26,7 +27,7 @@ class BaseTextFormField extends StatefulWidget {
 
   final bool enabled;
 
-  BaseTextFormField({
+  const BaseTextFormField({
     super.key,
     this.focusNode,
     this.controller,

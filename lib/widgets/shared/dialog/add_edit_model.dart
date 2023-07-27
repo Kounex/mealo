@@ -13,9 +13,9 @@ class AddEditModelDialog<T extends CommonModel> extends ConsumerStatefulWidget {
 
   final String? Function(String?)? validator;
 
-  final Future<T?>? Function(String name)? onAdd;
-  final Future<int?>? Function(String name)? onEdit;
-  final Future<bool?>? Function(String uuid)? onDelete;
+  final T Function(String name)? onAdd;
+  final void Function(String name)? onEdit;
+  final void Function(String uuid)? onDelete;
 
   const AddEditModelDialog({
     super.key,
@@ -118,10 +118,7 @@ class _AddEditModelDialogState<T extends CommonModel>
                     if (this.widget.editingModel != null) {
                       this.widget.onEdit?.call(_controller.text.trim());
                     } else {
-                      model = await this
-                          .widget
-                          .onAdd
-                          ?.call(_controller.text.trim());
+                      model = this.widget.onAdd?.call(_controller.text.trim());
                     }
                     if (mounted) {
                       Navigator.of(context).pop(model);

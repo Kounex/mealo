@@ -23,7 +23,7 @@ mixin Persistance<T extends BaseModel> on AutoDisposeAsyncNotifier<List<T>> {
     return _local();
   }
 
-  void _watcher() async => PersistanceUtils.watch().listen(
+  void _watcher() async => PersistanceUtils.watch<T>().listen(
         (_) async {
           this.state = AsyncLoading<List<T>>();
           this.state = await AsyncValue.guard(() async => _local());
@@ -47,7 +47,7 @@ mixin SingletonPersistance<T extends BaseModel> on AutoDisposeAsyncNotifier<T> {
     return _local();
   }
 
-  void _watcher() async => PersistanceUtils.watch().listen(
+  void _watcher() async => PersistanceUtils.watch<T>().listen(
         (_) async {
           this.state = AsyncValue<T>.loading();
           this.state = await AsyncValue.guard(() async => _local());

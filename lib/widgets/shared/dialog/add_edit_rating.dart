@@ -59,7 +59,8 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
                   isYesDestructive: true,
                   onYes: () {
                     PersistanceUtils.transaction(
-                      (isar) => isar.ratings.delete(this.widget.rating!.uuid),
+                      PersistanceOperation.delete,
+                      [this.widget.rating!],
                     );
                     Navigator.of(context).pop();
                   },
@@ -122,9 +123,10 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
               Rating? rating = this.widget.rating ?? Rating();
 
               PersistanceUtils.transaction(
-                (isar) => isar.ratings.put(
+                PersistanceOperation.insertUpdate,
+                [
                   rating..name = _name.text.trim(),
-                ),
+                ],
               );
 
               Navigator.of(context).pop(rating);

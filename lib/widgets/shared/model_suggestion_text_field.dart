@@ -1,11 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 
 import '../../models/model.dart';
-import '../../utils/modal.dart';
-import '../../utils/persistance.dart';
 import '../base/functional/suggestion_text_field/suggestion_text_field.dart';
-import 'dialog/add_edit_model.dart';
 
 class ModelSuggestionTextField<T extends CommonModel> extends StatelessWidget {
   final T? value;
@@ -20,7 +18,7 @@ class ModelSuggestionTextField<T extends CommonModel> extends StatelessWidget {
 
   /// TODO: check why I can't set it to T as return type when I can do it
   /// directly on the Isar callback
-  final dynamic Function(Isar isar, String name) onAdd;
+  final FutureOr<T?> Function(String name) onAdd;
   final VoidCallback onDeleteSelection;
 
   const ModelSuggestionTextField({
@@ -53,18 +51,9 @@ class ModelSuggestionTextField<T extends CommonModel> extends StatelessWidget {
       onSuggestionTapped: (value) => this.setValue(value),
       anchorType: this.anchorType ?? AnchorType.left,
       minWidth: this.minWidth,
-      onCreateNew: (text) async {
-        T? value = await ModalUtils.showBaseDialog(
-          context,
-          AddEditModelDialog<T>(
-            name: text,
-            onAdd: (name) => PersistanceUtils.transaction(
-              (isar) => this.onAdd(isar, name),
-            ),
-          ),
-        );
-        this.setValue(value);
-      },
+      onCreateNew: (text) async => this.setValue(
+        await this.onAdd(text),
+      ),
       onDeleteSelection: this.onDeleteSelection,
     );
   }

@@ -128,25 +128,15 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
     final uuids = await _handleImages();
 
     PersistanceUtils.transaction(
-      (isar) {
-        /// Leaving out the properties which are [IsarLinks] since they need
-        /// to be handled seperately (see down below)
-        isar.meals.put(
-          _meal!
-            ..name = _name.text.trim()
-            ..thumbnailUuid = uuids.thumbnail
-            ..imagesUuids = uuids.images,
-        );
-
-        /// [IsarLink/s] need special treatment for correct persistance
-        /// which means we need to manually reset and save them to
-        /// work properly - see the docs for more
-        // _meal!.tags.addAll(_tags);
-        // await _meal!.tags.save();
-
-        // return id;
-      },
+      PersistanceOperation.insertUpdate,
+      [
+        _meal!
+          ..name = _name.text.trim()
+          ..thumbnailUuid = uuids.thumbnail
+          ..imagesUuids = uuids.images,
+      ],
     );
+
     if (context.mounted) {
       Navigator.of(context).pop();
     }
@@ -164,7 +154,9 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
       await _deleteImages(imagesUuidsToDelete);
 
       PersistanceUtils.transaction(
-          (isar) => isar.meals.delete(this.widget.meal!.uuid));
+        PersistanceOperation.delete,
+        [this.widget.meal!],
+      );
     }
     if (mounted) {
       Navigator.of(context).pop('delete');
@@ -172,10 +164,8 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
   }
 
   String? _checkMealNameUnique(String name) {
-    List<Meal> meals = PersistanceUtils.instance.meals
-        .where()
-        .nameEqualTo(name.trim())
-        .findAll();
+    List<Meal> meals =
+        PersistanceUtils.where<Meal>().nameEqualTo(name.trim()).findAll();
 
     if (meals.isNotEmpty &&
         meals.every((meal) => meal.uuid != this.widget.meal?.uuid)) {
