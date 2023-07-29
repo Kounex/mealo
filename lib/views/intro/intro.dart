@@ -1,7 +1,8 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import '../../utils/modal.dart';
+import 'package:mealo/widgets/base/ui/placeholder_text.dart';
+
 import '../../utils/router.dart';
-import '../../widgets/base/functional/camera/camera.dart';
 
 class IntroView extends StatelessWidget {
   const IntroView({super.key});
@@ -13,20 +14,16 @@ class IntroView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const BasePlaceholder(
+              text: '',
+              icon: FluentIcons.person_accounts_24_filled,
+            ),
             ElevatedButton(
-              child: const Text('oof'),
+              child: const Text('Access'),
               onPressed: () => RouterUtils.beamTo(
                 context,
                 MealsRoute(),
                 replace: true,
-              ),
-            ),
-            ElevatedButton(
-              child: const Text('CAMERA LUL'),
-              onPressed: () => ModalUtils.showExpandedModalBottomSheet(
-                context,
-                const BaseCamera(),
-                fullscreen: true,
               ),
             ),
           ],
