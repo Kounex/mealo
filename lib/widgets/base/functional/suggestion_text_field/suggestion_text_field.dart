@@ -104,9 +104,9 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>>
     if (_focus.hasFocus && !_entry.mounted) {
       Overlay.of(context).insert(_entry);
     } else if (!_focus.hasFocus && _entry.mounted) {
+      _controller.text = this.widget.selection ?? '';
       _animController.reverse().whenComplete(() {
         _entry.remove();
-        _controller.clear();
       });
     }
   }
@@ -117,16 +117,18 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>>
 
     if ((this.widget.selection ?? '') != _controller.text) {
       SchedulerBinding.instance.addPostFrameCallback(
-          (timeStamp) => _controller.text = this.widget.selection ?? '');
+          (_) => _controller.text = this.widget.selection ?? '');
     }
   }
 
   @override
   void dispose() {
+    if (_entry.mounted) {
+      _entry.remove();
+    }
     _focus.removeListener(_handleFocusChange);
-    // if (_entry.mounted) {
-    //   _entry.remove();
-    // }
+    _animController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 

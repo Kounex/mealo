@@ -122,6 +122,7 @@ class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>> {
       width: width,
       child: CompositedTransformFollower(
         link: this.widget.link,
+        showWhenUnlinked: false,
         followerAnchor: () {
           switch (this.widget.expandType) {
             case AnchorType.left:
