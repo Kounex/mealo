@@ -88,99 +88,95 @@ class _BaseCardState extends State<BaseCard> {
 
   @override
   Widget build(BuildContext context) {
-    Widget card = Padding(
-      padding: EdgeInsets.only(
+    Widget card = Card(
+      clipBehavior: Clip.antiAlias,
+      shadowColor: this.widget.backgroundColor != null &&
+              this.widget.backgroundColor!.value == Colors.transparent.value
+          ? Colors.transparent
+          : null,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(this.widget.borderRadius),
+        side: this.widget.paintBorder
+            ? BorderSide(color: this.widget.borderColor ?? Colors.transparent)
+            : BorderSide.none,
+      ),
+      color: this.widget.backgroundColor ?? Theme.of(context).cardColor,
+      elevation: this.widget.elevation,
+      margin: EdgeInsets.only(
         top: this.widget.topPadding,
         right: this.widget.rightPadding,
         bottom: this.widget.bottomPadding,
         left: this.widget.leftPadding,
       ),
-      child: Card(
-        clipBehavior: Clip.hardEdge,
-        shadowColor: this.widget.backgroundColor != null &&
-                this.widget.backgroundColor!.value == Colors.transparent.value
-            ? Colors.transparent
-            : null,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(this.widget.borderRadius),
-          side: this.widget.paintBorder
-              ? BorderSide(color: this.widget.borderColor ?? Colors.transparent)
-              : BorderSide.none,
-        ),
-        color: this.widget.backgroundColor ?? Theme.of(context).cardColor,
-        elevation: this.widget.elevation,
-        margin: const EdgeInsets.all(0),
-        child: Column(
-          mainAxisAlignment: this.widget.centerChild
-              ? MainAxisAlignment.center
-              : MainAxisAlignment.start,
-          crossAxisAlignment: this.widget.centerChild
-              ? CrossAxisAlignment.center
-              : CrossAxisAlignment.start,
-          children: [
-            if (this.widget.titleWidget != null || this.widget.title != null)
-              Padding(
-                padding: this.widget.titlePadding,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                        child: this.widget.titleWidget == null
-                            ? Text(
-                                this.widget.title!,
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall,
-                              )
-                            : this.widget.titleWidget!),
-                    if (this.widget.expandable ||
-                        this.widget.trailingTitleWidget != null)
-                      this.widget.expandable
-                          ? AnimatedRotation(
-                              duration: StylingUtils.kBaseAnimationDuration,
-                              turns: _expandedTurn / 2,
-                              curve: Curves.easeInCubic,
-                              child: InkWell(
-                                borderRadius: BorderRadius.circular(32),
-                                onTap: () => setState(() => _expandedTurn++),
-                                // behavior: HitTestBehavior.opaque,
-                                child: const SizedBox(
-                                  height: 32.0,
-                                  width: 32.0,
-                                  child: Icon(
-                                    CupertinoIcons.chevron_up,
-                                  ),
+      child: Column(
+        mainAxisAlignment: this.widget.centerChild
+            ? MainAxisAlignment.center
+            : MainAxisAlignment.start,
+        crossAxisAlignment: this.widget.centerChild
+            ? CrossAxisAlignment.center
+            : CrossAxisAlignment.start,
+        children: [
+          if (this.widget.titleWidget != null || this.widget.title != null)
+            Padding(
+              padding: this.widget.titlePadding,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                      child: this.widget.titleWidget == null
+                          ? Text(
+                              this.widget.title!,
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            )
+                          : this.widget.titleWidget!),
+                  if (this.widget.expandable ||
+                      this.widget.trailingTitleWidget != null)
+                    this.widget.expandable
+                        ? AnimatedRotation(
+                            duration: StylingUtils.kBaseAnimationDuration,
+                            turns: _expandedTurn / 2,
+                            curve: Curves.easeInCubic,
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(32),
+                              onTap: () => setState(() => _expandedTurn++),
+                              // behavior: HitTestBehavior.opaque,
+                              child: const SizedBox(
+                                height: 32.0,
+                                width: 32.0,
+                                child: Icon(
+                                  CupertinoIcons.chevron_up,
                                 ),
                               ),
-                            )
-                          : this.widget.trailingTitleWidget!
-                  ],
-                ),
-              ),
-            AnimatedAlign(
-              duration: StylingUtils.kBaseAnimationDuration,
-              heightFactor: _expandedTurn % 2 == 0 ? 1.0 : 0.0,
-              alignment: const Alignment(0, -1),
-              curve: Curves.easeInCubic,
-              child: AnimatedOpacity(
-                duration: StylingUtils.kBaseAnimationDuration,
-                opacity: _expandedTurn % 2 == 0 ? 1.0 : 0.0,
-                curve: Curves.easeInCubic,
-                child: Column(
-                  children: [
-                    if (this.widget.titleWidget != null ||
-                        this.widget.title != null)
-                      const BaseDivider(),
-                    Padding(
-                      padding: this.widget.paddingChild,
-                      child: this.widget.child,
-                    ),
-                  ],
-                ),
+                            ),
+                          )
+                        : this.widget.trailingTitleWidget!
+                ],
               ),
             ),
-          ],
-        ),
+          AnimatedAlign(
+            duration: StylingUtils.kBaseAnimationDuration,
+            heightFactor: _expandedTurn % 2 == 0 ? 1.0 : 0.0,
+            alignment: const Alignment(0, -1),
+            curve: Curves.easeInCubic,
+            child: AnimatedOpacity(
+              duration: StylingUtils.kBaseAnimationDuration,
+              opacity: _expandedTurn % 2 == 0 ? 1.0 : 0.0,
+              curve: Curves.easeInCubic,
+              child: Column(
+                children: [
+                  if (this.widget.titleWidget != null ||
+                      this.widget.title != null)
+                    const BaseDivider(),
+                  Padding(
+                    padding: this.widget.paddingChild,
+                    child: this.widget.child,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
 

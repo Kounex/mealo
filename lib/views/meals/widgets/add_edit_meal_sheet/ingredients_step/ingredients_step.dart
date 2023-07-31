@@ -26,6 +26,8 @@ class IngredientsStep extends ConsumerStatefulWidget {
 class _IngredientsStepState extends ConsumerState<IngredientsStep> {
   final GlobalKey<FormState> _form = GlobalKey();
 
+  final Map<int, bool> _editMap = {};
+
   @override
   Widget build(BuildContext context) {
     final AsyncValue<List<Ingredient>> asyncIngredients =

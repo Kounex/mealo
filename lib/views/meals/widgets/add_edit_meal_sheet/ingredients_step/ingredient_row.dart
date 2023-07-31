@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:mealo/utils/persistance.dart';
 
@@ -7,6 +8,7 @@ import '../../../../../models/meal/meal.dart';
 import '../../../../../models/unit/unit.dart';
 import '../../../../../utils/modal.dart';
 import '../../../../../utils/validation.dart';
+import '../../../../../widgets/base/ui/card.dart';
 import '../../../../../widgets/base/ui/chip.dart';
 import '../../../../../widgets/shared/dialog/add_edit_model.dart';
 import '../../../../../widgets/shared/model_suggestion_text_field.dart';
@@ -151,8 +153,16 @@ class _IngredientRowState extends State<IngredientRow> {
                   '${_amount.text} ${_unit?.name ?? ""} ${_ingredient?.name ?? ""}'),
             ),
           )
-        : Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0),
+
+        /// TODO: check why the outer card loses its left and right elevation
+        /// if this is shown
+        : BaseCard(
+            topPadding: 12,
+            bottomPadding: 12,
+            leftPadding: 0,
+            rightPadding: 0,
+            backgroundColor:
+                Theme.of(context).colorScheme.background.lighten(2),
             child: Column(
               children: [
                 availableWidth >= 700
