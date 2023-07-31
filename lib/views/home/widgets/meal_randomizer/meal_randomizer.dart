@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mealo/models/randomized_run/randomized_run.dart';
 
 import '../../../../models/meal/meal.dart';
 import '../../../../stores/views/home.dart';
@@ -24,8 +25,8 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
   @override
   Widget build(BuildContext context) {
     AsyncValue<List<Meal>> asyncMeals = ref.watch(mealsProvider);
-    AsyncValue<String?> asyncRandomizedMeal =
-        ref.watch(randomizedMealUuidProvider);
+    AsyncValue<RandomizedRun?> asyncCurrentRandomizedRun =
+        ref.watch(currentRandomizedRunProvider);
 
     return BaseCard(
       child: Column(
@@ -36,16 +37,19 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
             data: (meals) => AnimatedSwitcher(
                 duration: StylingUtils.kBaseAnimationDuration * 4,
                 child: () {
-                  if (asyncRandomizedMeal.isLoading) {
+                  if (asyncCurrentRandomizedRun.isLoading) {
                     return const MealShuffle(
                       duration: Duration(seconds: 3),
                     );
                   }
-                  if (asyncRandomizedMeal.valueOrNull != null) {
-                    Meal? randomizedMeal = meals.firstWhereOrNull(
-                        (meal) => meal.uuid == asyncRandomizedMeal.value);
+                  if (asyncCurrentRandomizedRun.valueOrNull != null) {
+                    Meal? randomizedMeal = meals.firstWhereOrNull((meal) =>
+                        meal.uuid == asyncCurrentRandomizedRun.value!.mealUuid);
                     if (randomizedMeal != null) {
-                      return SuggestedMeal(meal: randomizedMeal);
+                      return SuggestedMeal(
+                        meal: randomizedMeal,
+                        randomizedRun: asyncCurrentRandomizedRun.value!,
+                      );
                     }
                   }
                   if (meals.isNotEmpty) {
@@ -61,14 +65,14 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: !asyncRandomizedMeal.isLoading &&
+              onPressed: !asyncCurrentRandomizedRun.isLoading &&
                       asyncMeals.asData != null &&
                       asyncMeals.value!.isNotEmpty
                   ? () {
-                      ref.read(randomizedMealUuidProvider.notifier).start();
+                      ref.read(currentRandomizedRunProvider.notifier).start();
                     }
                   : null,
-              child: asyncRandomizedMeal.isLoading
+              child: asyncCurrentRandomizedRun.isLoading
                   ? BaseProgressIndicator(size: 18.0)
                   : const Text('Randomize!'),
             ),

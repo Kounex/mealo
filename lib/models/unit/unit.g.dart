@@ -15,14 +15,14 @@ extension GetUnitCollection on Isar {
 
 const UnitSchema = IsarCollectionSchema(
   schema:
-      '{"name":"Unit","idName":"uuid","properties":[{"name":"name","type":"String"},{"name":"uuid","type":"String"},{"name":"timeCreated","type":"DateTime"},{"name":"lastTimeChanged","type":"DateTime"}]}',
+      '{"name":"Unit","idName":"uuid","properties":[{"name":"name","type":"String"},{"name":"uuid","type":"String"},{"name":"created","type":"DateTime"},{"name":"updated","type":"DateTime"}]}',
   converter: IsarObjectConverter<String, Unit>(
     serialize: serializeUnit,
     deserialize: deserializeUnit,
     deserializeProperty: deserializeUnitProp,
   ),
   embeddedSchemas: [],
-  hash: -6862651131649085860,
+  hash: 7703398083747554499,
 );
 
 @isarProtected
@@ -94,8 +94,8 @@ sealed class _UnitUpdate {
   bool call({
     required String uuid,
     String? name,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -108,15 +108,15 @@ class _UnitUpdateImpl implements _UnitUpdate {
   bool call({
     required String uuid,
     Object? name = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return collection.updateProperties([
           uuid
         ], {
           if (name != ignore) 1: name as String?,
-          if (timeCreated != ignore) 3: timeCreated as DateTime?,
-          if (lastTimeChanged != ignore) 4: lastTimeChanged as DateTime?,
+          if (created != ignore) 3: created as DateTime?,
+          if (updated != ignore) 4: updated as DateTime?,
         }) >
         0;
   }
@@ -126,8 +126,8 @@ sealed class _UnitUpdateAll {
   int call({
     required List<String> uuid,
     String? name,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -140,13 +140,13 @@ class _UnitUpdateAllImpl implements _UnitUpdateAll {
   int call({
     required List<String> uuid,
     Object? name = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return collection.updateProperties(uuid, {
       if (name != ignore) 1: name as String?,
-      if (timeCreated != ignore) 3: timeCreated as DateTime?,
-      if (lastTimeChanged != ignore) 4: lastTimeChanged as DateTime?,
+      if (created != ignore) 3: created as DateTime?,
+      if (updated != ignore) 4: updated as DateTime?,
     });
   }
 }
@@ -160,8 +160,8 @@ extension UnitUpdate on IsarCollection<String, Unit> {
 sealed class _UnitQueryUpdate {
   int call({
     String? name,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -174,13 +174,13 @@ class _UnitQueryUpdateImpl implements _UnitQueryUpdate {
   @override
   int call({
     Object? name = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return query.updateProperties(limit: limit, {
       if (name != ignore) 1: name as String?,
-      if (timeCreated != ignore) 3: timeCreated as DateTime?,
-      if (lastTimeChanged != ignore) 4: lastTimeChanged as DateTime?,
+      if (created != ignore) 3: created as DateTime?,
+      if (updated != ignore) 4: updated as DateTime?,
     });
   }
 }
@@ -532,7 +532,7 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterFilterCondition> timeCreatedEqualTo(
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> createdEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -545,7 +545,7 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterFilterCondition> timeCreatedGreaterThan(
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> createdGreaterThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -558,8 +558,7 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterFilterCondition>
-      timeCreatedGreaterThanOrEqualTo(
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> createdGreaterThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -572,7 +571,7 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterFilterCondition> timeCreatedLessThan(
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> createdLessThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -585,7 +584,7 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterFilterCondition> timeCreatedLessThanOrEqualTo(
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> createdLessThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -598,7 +597,7 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterFilterCondition> timeCreatedBetween(
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> createdBetween(
     DateTime lower,
     DateTime upper,
   ) {
@@ -613,7 +612,7 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterFilterCondition> lastTimeChangedEqualTo(
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> updatedEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -626,7 +625,7 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterFilterCondition> lastTimeChangedGreaterThan(
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> updatedGreaterThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -639,8 +638,7 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterFilterCondition>
-      lastTimeChangedGreaterThanOrEqualTo(
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> updatedGreaterThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -653,7 +651,7 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterFilterCondition> lastTimeChangedLessThan(
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> updatedLessThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -666,8 +664,7 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterFilterCondition>
-      lastTimeChangedLessThanOrEqualTo(
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> updatedLessThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -680,7 +677,7 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterFilterCondition> lastTimeChangedBetween(
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> updatedBetween(
     DateTime lower,
     DateTime upper,
   ) {
@@ -741,25 +738,25 @@ extension UnitQuerySortBy on QueryBuilder<Unit, Unit, QSortBy> {
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterSortBy> sortByTimeCreated() {
+  QueryBuilder<Unit, Unit, QAfterSortBy> sortByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(3);
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterSortBy> sortByTimeCreatedDesc() {
+  QueryBuilder<Unit, Unit, QAfterSortBy> sortByCreatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(3, sort: Sort.desc);
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterSortBy> sortByLastTimeChanged() {
+  QueryBuilder<Unit, Unit, QAfterSortBy> sortByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4);
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterSortBy> sortByLastTimeChangedDesc() {
+  QueryBuilder<Unit, Unit, QAfterSortBy> sortByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4, sort: Sort.desc);
     });
@@ -795,25 +792,25 @@ extension UnitQuerySortThenBy on QueryBuilder<Unit, Unit, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterSortBy> thenByTimeCreated() {
+  QueryBuilder<Unit, Unit, QAfterSortBy> thenByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(3);
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterSortBy> thenByTimeCreatedDesc() {
+  QueryBuilder<Unit, Unit, QAfterSortBy> thenByCreatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(3, sort: Sort.desc);
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterSortBy> thenByLastTimeChanged() {
+  QueryBuilder<Unit, Unit, QAfterSortBy> thenByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4);
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterSortBy> thenByLastTimeChangedDesc() {
+  QueryBuilder<Unit, Unit, QAfterSortBy> thenByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4, sort: Sort.desc);
     });
@@ -828,13 +825,13 @@ extension UnitQueryWhereDistinct on QueryBuilder<Unit, Unit, QDistinct> {
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterDistinct> distinctByTimeCreated() {
+  QueryBuilder<Unit, Unit, QAfterDistinct> distinctByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(3);
     });
   }
 
-  QueryBuilder<Unit, Unit, QAfterDistinct> distinctByLastTimeChanged() {
+  QueryBuilder<Unit, Unit, QAfterDistinct> distinctByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(4);
     });
@@ -854,13 +851,13 @@ extension UnitQueryProperty1 on QueryBuilder<Unit, Unit, QProperty> {
     });
   }
 
-  QueryBuilder<Unit, DateTime, QAfterProperty> timeCreatedProperty() {
+  QueryBuilder<Unit, DateTime, QAfterProperty> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
     });
   }
 
-  QueryBuilder<Unit, DateTime, QAfterProperty> lastTimeChangedProperty() {
+  QueryBuilder<Unit, DateTime, QAfterProperty> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });
@@ -880,13 +877,13 @@ extension UnitQueryProperty2<R> on QueryBuilder<Unit, R, QAfterProperty> {
     });
   }
 
-  QueryBuilder<Unit, (R, DateTime), QAfterProperty> timeCreatedProperty() {
+  QueryBuilder<Unit, (R, DateTime), QAfterProperty> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
     });
   }
 
-  QueryBuilder<Unit, (R, DateTime), QAfterProperty> lastTimeChangedProperty() {
+  QueryBuilder<Unit, (R, DateTime), QAfterProperty> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });
@@ -907,14 +904,13 @@ extension UnitQueryProperty3<R1, R2>
     });
   }
 
-  QueryBuilder<Unit, (R1, R2, DateTime), QOperations> timeCreatedProperty() {
+  QueryBuilder<Unit, (R1, R2, DateTime), QOperations> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
     });
   }
 
-  QueryBuilder<Unit, (R1, R2, DateTime), QOperations>
-      lastTimeChangedProperty() {
+  QueryBuilder<Unit, (R1, R2, DateTime), QOperations> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });

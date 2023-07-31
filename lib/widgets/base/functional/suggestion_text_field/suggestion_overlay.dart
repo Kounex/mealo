@@ -13,6 +13,7 @@ import 'suggestion_text_field.dart';
 class SuggestionOverlay<T> extends StatefulWidget {
   final GlobalKey textFieldKey;
   final LayerLink link;
+  final AnimationController animController;
   final TextEditingController controller;
   final FocusNode focus;
   final List<T> currentSuggestions;
@@ -30,6 +31,7 @@ class SuggestionOverlay<T> extends StatefulWidget {
     required this.textFieldKey,
     required this.link,
     required this.currentSuggestions,
+    required this.animController,
     required this.controller,
     required this.focus,
     required this.suggestions,
@@ -195,7 +197,7 @@ class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>> {
             ),
           ),
         )
-            .animate()
+            .animate(controller: this.widget.animController)
             .moveY(
               begin: 10.0,
               end: 10.0,

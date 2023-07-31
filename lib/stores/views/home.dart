@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:mealo/models/randomized_run/randomized_run.dart';
+import 'package:mealo/utils/persistance.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../models/meal/meal.dart';
@@ -16,33 +17,35 @@ FutureOr<Meal> selectedMeal(SelectedMealRef ref, String uuid) async {
 }
 
 @riverpod
-class RandomizedMealUuid extends _$RandomizedMealUuid {
+class CurrentRandomizedRun extends _$CurrentRandomizedRun {
   @override
-  FutureOr<String?> build() => null;
+  FutureOr<RandomizedRun?> build() => null;
 
   void start({
     Duration? duration,
-    bool immediate = false,
+
+    /// TODO: here we will add the tags, ratings etc. which we want to filter
   }) async {
     AsyncValue<List<Meal>> asyncMeals = ref.read(mealsProvider);
 
     if (asyncMeals.valueOrNull != null) {
-      Meal randomMeal = asyncMeals.value!.elementAt(
+      final randomMeal = asyncMeals.value!.elementAt(
         Random().nextInt(asyncMeals.value!.length),
       );
-      if (immediate) {
-        this.state = AsyncValue.data(randomMeal.uuid);
-      } else {
-        this.state = const AsyncLoading();
-        this.state = await AsyncValue.guard(() async {
-          await Future.delayed(duration ?? const Duration(seconds: 3));
-          // PersistanceUtils.crud(
-          //   (isar) => isar.randomizedRuns
-          //       .put(randomMeal..lastTimeRandomized = DateTime.now()),
-          // );
-          return randomMeal.uuid;
-        });
-      }
+
+      final randomizedRun = RandomizedRun()..mealUuid = randomMeal.uuid;
+
+      this.state = const AsyncLoading();
+      this.state = await AsyncValue.guard(() async {
+        await Future.delayed(duration ?? const Duration(seconds: 3));
+
+        PersistanceUtils.transaction(
+          PersistanceOperation.insertUpdate,
+          [randomizedRun],
+        );
+
+        return randomizedRun;
+      });
     } else {
       this.state = const AsyncValue.data(null);
     }

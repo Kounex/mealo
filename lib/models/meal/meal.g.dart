@@ -15,14 +15,14 @@ extension GetMealCollection on Isar {
 
 const MealSchema = IsarCollectionSchema(
   schema:
-      '{"name":"Meal","idName":"uuid","properties":[{"name":"createdAt","type":"DateTime"},{"name":"instructions","type":"String"},{"name":"thumbnailUuid","type":"String"},{"name":"imagesUuids","type":"StringList"},{"name":"ratings","type":"ObjectList","target":"RatingLink"},{"name":"tagUuids","type":"StringList"},{"name":"ingredients","type":"ObjectList","target":"IngredientLink"},{"name":"name","type":"String"},{"name":"uuid","type":"String"},{"name":"timeCreated","type":"DateTime"},{"name":"lastTimeChanged","type":"DateTime"}]}',
+      '{"name":"Meal","idName":"uuid","properties":[{"name":"createdAt","type":"DateTime"},{"name":"instructions","type":"String"},{"name":"thumbnailUuid","type":"String"},{"name":"imagesUuids","type":"StringList"},{"name":"ratings","type":"ObjectList","target":"RatingLink"},{"name":"tagUuids","type":"StringList"},{"name":"ingredients","type":"ObjectList","target":"IngredientLink"},{"name":"name","type":"String"},{"name":"uuid","type":"String"},{"name":"created","type":"DateTime"},{"name":"updated","type":"DateTime"}]}',
   converter: IsarObjectConverter<String, Meal>(
     serialize: serializeMeal,
     deserialize: deserializeMeal,
     deserializeProperty: deserializeMealProp,
   ),
   embeddedSchemas: [RatingLinkSchema, IngredientLinkSchema],
-  hash: ((-44173241232936838 * 31 + ratingLinkSchemaHash) * 31 +
+  hash: ((5463518283386865137 * 31 + ratingLinkSchemaHash) * 31 +
       ingredientLinkSchemaHash),
 );
 
@@ -356,8 +356,8 @@ sealed class _MealUpdate {
     String? instructions,
     String? thumbnailUuid,
     String? name,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -373,8 +373,8 @@ class _MealUpdateImpl implements _MealUpdate {
     Object? instructions = ignore,
     Object? thumbnailUuid = ignore,
     Object? name = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return collection.updateProperties([
           uuid
@@ -383,8 +383,8 @@ class _MealUpdateImpl implements _MealUpdate {
           if (instructions != ignore) 2: instructions as String?,
           if (thumbnailUuid != ignore) 3: thumbnailUuid as String?,
           if (name != ignore) 8: name as String?,
-          if (timeCreated != ignore) 10: timeCreated as DateTime?,
-          if (lastTimeChanged != ignore) 11: lastTimeChanged as DateTime?,
+          if (created != ignore) 10: created as DateTime?,
+          if (updated != ignore) 11: updated as DateTime?,
         }) >
         0;
   }
@@ -397,8 +397,8 @@ sealed class _MealUpdateAll {
     String? instructions,
     String? thumbnailUuid,
     String? name,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -414,16 +414,16 @@ class _MealUpdateAllImpl implements _MealUpdateAll {
     Object? instructions = ignore,
     Object? thumbnailUuid = ignore,
     Object? name = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return collection.updateProperties(uuid, {
       if (createdAt != ignore) 1: createdAt as DateTime?,
       if (instructions != ignore) 2: instructions as String?,
       if (thumbnailUuid != ignore) 3: thumbnailUuid as String?,
       if (name != ignore) 8: name as String?,
-      if (timeCreated != ignore) 10: timeCreated as DateTime?,
-      if (lastTimeChanged != ignore) 11: lastTimeChanged as DateTime?,
+      if (created != ignore) 10: created as DateTime?,
+      if (updated != ignore) 11: updated as DateTime?,
     });
   }
 }
@@ -440,8 +440,8 @@ sealed class _MealQueryUpdate {
     String? instructions,
     String? thumbnailUuid,
     String? name,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -457,16 +457,16 @@ class _MealQueryUpdateImpl implements _MealQueryUpdate {
     Object? instructions = ignore,
     Object? thumbnailUuid = ignore,
     Object? name = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return query.updateProperties(limit: limit, {
       if (createdAt != ignore) 1: createdAt as DateTime?,
       if (instructions != ignore) 2: instructions as String?,
       if (thumbnailUuid != ignore) 3: thumbnailUuid as String?,
       if (name != ignore) 8: name as String?,
-      if (timeCreated != ignore) 10: timeCreated as DateTime?,
-      if (lastTimeChanged != ignore) 11: lastTimeChanged as DateTime?,
+      if (created != ignore) 10: created as DateTime?,
+      if (updated != ignore) 11: updated as DateTime?,
     });
   }
 }
@@ -1666,7 +1666,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> timeCreatedEqualTo(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> createdEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1679,7 +1679,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> timeCreatedGreaterThan(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> createdGreaterThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1692,8 +1692,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition>
-      timeCreatedGreaterThanOrEqualTo(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> createdGreaterThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1706,7 +1705,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> timeCreatedLessThan(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> createdLessThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1719,7 +1718,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> timeCreatedLessThanOrEqualTo(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> createdLessThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1732,7 +1731,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> timeCreatedBetween(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> createdBetween(
     DateTime lower,
     DateTime upper,
   ) {
@@ -1747,7 +1746,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeChangedEqualTo(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> updatedEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1760,7 +1759,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeChangedGreaterThan(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> updatedGreaterThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1773,8 +1772,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition>
-      lastTimeChangedGreaterThanOrEqualTo(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> updatedGreaterThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1787,7 +1785,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeChangedLessThan(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> updatedLessThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1800,8 +1798,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition>
-      lastTimeChangedLessThanOrEqualTo(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> updatedLessThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1814,7 +1811,7 @@ extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterFilterCondition> lastTimeChangedBetween(
+  QueryBuilder<Meal, Meal, QAfterFilterCondition> updatedBetween(
     DateTime lower,
     DateTime upper,
   ) {
@@ -1929,25 +1926,25 @@ extension MealQuerySortBy on QueryBuilder<Meal, Meal, QSortBy> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterSortBy> sortByTimeCreated() {
+  QueryBuilder<Meal, Meal, QAfterSortBy> sortByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(10);
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterSortBy> sortByTimeCreatedDesc() {
+  QueryBuilder<Meal, Meal, QAfterSortBy> sortByCreatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(10, sort: Sort.desc);
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterSortBy> sortByLastTimeChanged() {
+  QueryBuilder<Meal, Meal, QAfterSortBy> sortByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(11);
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterSortBy> sortByLastTimeChangedDesc() {
+  QueryBuilder<Meal, Meal, QAfterSortBy> sortByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(11, sort: Sort.desc);
     });
@@ -2023,25 +2020,25 @@ extension MealQuerySortThenBy on QueryBuilder<Meal, Meal, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterSortBy> thenByTimeCreated() {
+  QueryBuilder<Meal, Meal, QAfterSortBy> thenByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(10);
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterSortBy> thenByTimeCreatedDesc() {
+  QueryBuilder<Meal, Meal, QAfterSortBy> thenByCreatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(10, sort: Sort.desc);
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterSortBy> thenByLastTimeChanged() {
+  QueryBuilder<Meal, Meal, QAfterSortBy> thenByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(11);
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterSortBy> thenByLastTimeChangedDesc() {
+  QueryBuilder<Meal, Meal, QAfterSortBy> thenByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(11, sort: Sort.desc);
     });
@@ -2088,13 +2085,13 @@ extension MealQueryWhereDistinct on QueryBuilder<Meal, Meal, QDistinct> {
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterDistinct> distinctByTimeCreated() {
+  QueryBuilder<Meal, Meal, QAfterDistinct> distinctByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(10);
     });
   }
 
-  QueryBuilder<Meal, Meal, QAfterDistinct> distinctByLastTimeChanged() {
+  QueryBuilder<Meal, Meal, QAfterDistinct> distinctByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(11);
     });
@@ -2157,13 +2154,13 @@ extension MealQueryProperty1 on QueryBuilder<Meal, Meal, QProperty> {
     });
   }
 
-  QueryBuilder<Meal, DateTime, QAfterProperty> timeCreatedProperty() {
+  QueryBuilder<Meal, DateTime, QAfterProperty> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(10);
     });
   }
 
-  QueryBuilder<Meal, DateTime, QAfterProperty> lastTimeChangedProperty() {
+  QueryBuilder<Meal, DateTime, QAfterProperty> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(11);
     });
@@ -2226,13 +2223,13 @@ extension MealQueryProperty2<R> on QueryBuilder<Meal, R, QAfterProperty> {
     });
   }
 
-  QueryBuilder<Meal, (R, DateTime), QAfterProperty> timeCreatedProperty() {
+  QueryBuilder<Meal, (R, DateTime), QAfterProperty> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(10);
     });
   }
 
-  QueryBuilder<Meal, (R, DateTime), QAfterProperty> lastTimeChangedProperty() {
+  QueryBuilder<Meal, (R, DateTime), QAfterProperty> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(11);
     });
@@ -2298,14 +2295,13 @@ extension MealQueryProperty3<R1, R2>
     });
   }
 
-  QueryBuilder<Meal, (R1, R2, DateTime), QOperations> timeCreatedProperty() {
+  QueryBuilder<Meal, (R1, R2, DateTime), QOperations> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(10);
     });
   }
 
-  QueryBuilder<Meal, (R1, R2, DateTime), QOperations>
-      lastTimeChangedProperty() {
+  QueryBuilder<Meal, (R1, R2, DateTime), QOperations> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(11);
     });

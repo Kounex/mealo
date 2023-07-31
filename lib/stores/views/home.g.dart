@@ -111,7 +111,7 @@ class SelectedMealProvider extends AutoDisposeFutureProvider<Meal> {
 }
 
 String _$prevRandomizedMealsHash() =>
-    r'7a881d952ad9dbd679d9dece3a8b9a9e05055837';
+    r'9c4c6134f76cae63435b8c67bd351b1b777aa9a0';
 
 /// See also [prevRandomizedMeals].
 @ProviderFor(prevRandomizedMeals)
@@ -127,7 +127,7 @@ final prevRandomizedMealsProvider =
 );
 
 typedef PrevRandomizedMealsRef = AutoDisposeFutureProviderRef<List<Meal>>;
-String _$prevAteMealsHash() => r'579cbf75dd8ef906bffc4cb6c2dfa49600326a52';
+String _$prevAteMealsHash() => r'e3185e9f1b0942c8a296ba9117737e75eeae2003';
 
 /// See also [prevAteMeals].
 @ProviderFor(prevAteMeals)
@@ -141,21 +141,21 @@ final prevAteMealsProvider = AutoDisposeFutureProvider<List<Meal>>.internal(
 );
 
 typedef PrevAteMealsRef = AutoDisposeFutureProviderRef<List<Meal>>;
-String _$randomizedMealUuidHash() =>
-    r'858d1595c47c81ab355c501b9f7db190ebdb5724';
+String _$currentRandomizedRunHash() =>
+    r'c31ed8ba445e16844e3303975ddf65894e655b0e';
 
-/// See also [RandomizedMealUuid].
-@ProviderFor(RandomizedMealUuid)
-final randomizedMealUuidProvider =
-    AutoDisposeAsyncNotifierProvider<RandomizedMealUuid, String?>.internal(
-  RandomizedMealUuid.new,
-  name: r'randomizedMealUuidProvider',
+/// See also [CurrentRandomizedRun].
+@ProviderFor(CurrentRandomizedRun)
+final currentRandomizedRunProvider = AutoDisposeAsyncNotifierProvider<
+    CurrentRandomizedRun, RandomizedRun?>.internal(
+  CurrentRandomizedRun.new,
+  name: r'currentRandomizedRunProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$randomizedMealUuidHash,
+      : _$currentRandomizedRunHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$RandomizedMealUuid = AutoDisposeAsyncNotifier<String?>;
+typedef _$CurrentRandomizedRun = AutoDisposeAsyncNotifier<RandomizedRun?>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

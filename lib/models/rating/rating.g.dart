@@ -15,14 +15,14 @@ extension GetRatingCollection on Isar {
 
 const RatingSchema = IsarCollectionSchema(
   schema:
-      '{"name":"Rating","idName":"uuid","properties":[{"name":"description","type":"String"},{"name":"name","type":"String"},{"name":"uuid","type":"String"},{"name":"timeCreated","type":"DateTime"},{"name":"lastTimeChanged","type":"DateTime"}]}',
+      '{"name":"Rating","idName":"uuid","properties":[{"name":"description","type":"String"},{"name":"name","type":"String"},{"name":"uuid","type":"String"},{"name":"created","type":"DateTime"},{"name":"updated","type":"DateTime"}]}',
   converter: IsarObjectConverter<String, Rating>(
     serialize: serializeRating,
     deserialize: deserializeRating,
     deserializeProperty: deserializeRatingProp,
   ),
   embeddedSchemas: [],
-  hash: -2997495130145969115,
+  hash: 3663972716626235382,
 );
 
 @isarProtected
@@ -106,8 +106,8 @@ sealed class _RatingUpdate {
     required String uuid,
     String? description,
     String? name,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -121,16 +121,16 @@ class _RatingUpdateImpl implements _RatingUpdate {
     required String uuid,
     Object? description = ignore,
     Object? name = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return collection.updateProperties([
           uuid
         ], {
           if (description != ignore) 1: description as String?,
           if (name != ignore) 2: name as String?,
-          if (timeCreated != ignore) 4: timeCreated as DateTime?,
-          if (lastTimeChanged != ignore) 5: lastTimeChanged as DateTime?,
+          if (created != ignore) 4: created as DateTime?,
+          if (updated != ignore) 5: updated as DateTime?,
         }) >
         0;
   }
@@ -141,8 +141,8 @@ sealed class _RatingUpdateAll {
     required List<String> uuid,
     String? description,
     String? name,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -156,14 +156,14 @@ class _RatingUpdateAllImpl implements _RatingUpdateAll {
     required List<String> uuid,
     Object? description = ignore,
     Object? name = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return collection.updateProperties(uuid, {
       if (description != ignore) 1: description as String?,
       if (name != ignore) 2: name as String?,
-      if (timeCreated != ignore) 4: timeCreated as DateTime?,
-      if (lastTimeChanged != ignore) 5: lastTimeChanged as DateTime?,
+      if (created != ignore) 4: created as DateTime?,
+      if (updated != ignore) 5: updated as DateTime?,
     });
   }
 }
@@ -178,8 +178,8 @@ sealed class _RatingQueryUpdate {
   int call({
     String? description,
     String? name,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -193,14 +193,14 @@ class _RatingQueryUpdateImpl implements _RatingQueryUpdate {
   int call({
     Object? description = ignore,
     Object? name = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return query.updateProperties(limit: limit, {
       if (description != ignore) 1: description as String?,
       if (name != ignore) 2: name as String?,
-      if (timeCreated != ignore) 4: timeCreated as DateTime?,
-      if (lastTimeChanged != ignore) 5: lastTimeChanged as DateTime?,
+      if (created != ignore) 4: created as DateTime?,
+      if (updated != ignore) 5: updated as DateTime?,
     });
   }
 }
@@ -740,7 +740,7 @@ extension RatingQueryFilter on QueryBuilder<Rating, Rating, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterFilterCondition> timeCreatedEqualTo(
+  QueryBuilder<Rating, Rating, QAfterFilterCondition> createdEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -753,7 +753,7 @@ extension RatingQueryFilter on QueryBuilder<Rating, Rating, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterFilterCondition> timeCreatedGreaterThan(
+  QueryBuilder<Rating, Rating, QAfterFilterCondition> createdGreaterThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -767,7 +767,7 @@ extension RatingQueryFilter on QueryBuilder<Rating, Rating, QFilterCondition> {
   }
 
   QueryBuilder<Rating, Rating, QAfterFilterCondition>
-      timeCreatedGreaterThanOrEqualTo(
+      createdGreaterThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -780,7 +780,7 @@ extension RatingQueryFilter on QueryBuilder<Rating, Rating, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterFilterCondition> timeCreatedLessThan(
+  QueryBuilder<Rating, Rating, QAfterFilterCondition> createdLessThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -793,8 +793,7 @@ extension RatingQueryFilter on QueryBuilder<Rating, Rating, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterFilterCondition>
-      timeCreatedLessThanOrEqualTo(
+  QueryBuilder<Rating, Rating, QAfterFilterCondition> createdLessThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -807,7 +806,7 @@ extension RatingQueryFilter on QueryBuilder<Rating, Rating, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterFilterCondition> timeCreatedBetween(
+  QueryBuilder<Rating, Rating, QAfterFilterCondition> createdBetween(
     DateTime lower,
     DateTime upper,
   ) {
@@ -822,7 +821,7 @@ extension RatingQueryFilter on QueryBuilder<Rating, Rating, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterFilterCondition> lastTimeChangedEqualTo(
+  QueryBuilder<Rating, Rating, QAfterFilterCondition> updatedEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -835,8 +834,7 @@ extension RatingQueryFilter on QueryBuilder<Rating, Rating, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterFilterCondition>
-      lastTimeChangedGreaterThan(
+  QueryBuilder<Rating, Rating, QAfterFilterCondition> updatedGreaterThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -850,7 +848,7 @@ extension RatingQueryFilter on QueryBuilder<Rating, Rating, QFilterCondition> {
   }
 
   QueryBuilder<Rating, Rating, QAfterFilterCondition>
-      lastTimeChangedGreaterThanOrEqualTo(
+      updatedGreaterThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -863,7 +861,7 @@ extension RatingQueryFilter on QueryBuilder<Rating, Rating, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterFilterCondition> lastTimeChangedLessThan(
+  QueryBuilder<Rating, Rating, QAfterFilterCondition> updatedLessThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -876,8 +874,7 @@ extension RatingQueryFilter on QueryBuilder<Rating, Rating, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterFilterCondition>
-      lastTimeChangedLessThanOrEqualTo(
+  QueryBuilder<Rating, Rating, QAfterFilterCondition> updatedLessThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -890,7 +887,7 @@ extension RatingQueryFilter on QueryBuilder<Rating, Rating, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterFilterCondition> lastTimeChangedBetween(
+  QueryBuilder<Rating, Rating, QAfterFilterCondition> updatedBetween(
     DateTime lower,
     DateTime upper,
   ) {
@@ -972,25 +969,25 @@ extension RatingQuerySortBy on QueryBuilder<Rating, Rating, QSortBy> {
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterSortBy> sortByTimeCreated() {
+  QueryBuilder<Rating, Rating, QAfterSortBy> sortByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4);
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterSortBy> sortByTimeCreatedDesc() {
+  QueryBuilder<Rating, Rating, QAfterSortBy> sortByCreatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4, sort: Sort.desc);
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterSortBy> sortByLastTimeChanged() {
+  QueryBuilder<Rating, Rating, QAfterSortBy> sortByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(5);
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterSortBy> sortByLastTimeChangedDesc() {
+  QueryBuilder<Rating, Rating, QAfterSortBy> sortByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(5, sort: Sort.desc);
     });
@@ -1040,25 +1037,25 @@ extension RatingQuerySortThenBy on QueryBuilder<Rating, Rating, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterSortBy> thenByTimeCreated() {
+  QueryBuilder<Rating, Rating, QAfterSortBy> thenByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4);
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterSortBy> thenByTimeCreatedDesc() {
+  QueryBuilder<Rating, Rating, QAfterSortBy> thenByCreatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4, sort: Sort.desc);
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterSortBy> thenByLastTimeChanged() {
+  QueryBuilder<Rating, Rating, QAfterSortBy> thenByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(5);
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterSortBy> thenByLastTimeChangedDesc() {
+  QueryBuilder<Rating, Rating, QAfterSortBy> thenByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(5, sort: Sort.desc);
     });
@@ -1080,13 +1077,13 @@ extension RatingQueryWhereDistinct on QueryBuilder<Rating, Rating, QDistinct> {
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterDistinct> distinctByTimeCreated() {
+  QueryBuilder<Rating, Rating, QAfterDistinct> distinctByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(4);
     });
   }
 
-  QueryBuilder<Rating, Rating, QAfterDistinct> distinctByLastTimeChanged() {
+  QueryBuilder<Rating, Rating, QAfterDistinct> distinctByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(5);
     });
@@ -1112,13 +1109,13 @@ extension RatingQueryProperty1 on QueryBuilder<Rating, Rating, QProperty> {
     });
   }
 
-  QueryBuilder<Rating, DateTime, QAfterProperty> timeCreatedProperty() {
+  QueryBuilder<Rating, DateTime, QAfterProperty> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });
   }
 
-  QueryBuilder<Rating, DateTime, QAfterProperty> lastTimeChangedProperty() {
+  QueryBuilder<Rating, DateTime, QAfterProperty> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(5);
     });
@@ -1144,14 +1141,13 @@ extension RatingQueryProperty2<R> on QueryBuilder<Rating, R, QAfterProperty> {
     });
   }
 
-  QueryBuilder<Rating, (R, DateTime), QAfterProperty> timeCreatedProperty() {
+  QueryBuilder<Rating, (R, DateTime), QAfterProperty> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });
   }
 
-  QueryBuilder<Rating, (R, DateTime), QAfterProperty>
-      lastTimeChangedProperty() {
+  QueryBuilder<Rating, (R, DateTime), QAfterProperty> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(5);
     });
@@ -1178,14 +1174,13 @@ extension RatingQueryProperty3<R1, R2>
     });
   }
 
-  QueryBuilder<Rating, (R1, R2, DateTime), QOperations> timeCreatedProperty() {
+  QueryBuilder<Rating, (R1, R2, DateTime), QOperations> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });
   }
 
-  QueryBuilder<Rating, (R1, R2, DateTime), QOperations>
-      lastTimeChangedProperty() {
+  QueryBuilder<Rating, (R1, R2, DateTime), QOperations> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(5);
     });

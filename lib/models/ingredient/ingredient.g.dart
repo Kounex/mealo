@@ -15,14 +15,14 @@ extension GetIngredientCollection on Isar {
 
 const IngredientSchema = IsarCollectionSchema(
   schema:
-      '{"name":"Ingredient","idName":"uuid","properties":[{"name":"name","type":"String"},{"name":"uuid","type":"String"},{"name":"timeCreated","type":"DateTime"},{"name":"lastTimeChanged","type":"DateTime"}]}',
+      '{"name":"Ingredient","idName":"uuid","properties":[{"name":"name","type":"String"},{"name":"uuid","type":"String"},{"name":"created","type":"DateTime"},{"name":"updated","type":"DateTime"}]}',
   converter: IsarObjectConverter<String, Ingredient>(
     serialize: serializeIngredient,
     deserialize: deserializeIngredient,
     deserializeProperty: deserializeIngredientProp,
   ),
   embeddedSchemas: [],
-  hash: 5690711412164282349,
+  hash: -2570229116953906930,
 );
 
 @isarProtected
@@ -94,8 +94,8 @@ sealed class _IngredientUpdate {
   bool call({
     required String uuid,
     String? name,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -108,15 +108,15 @@ class _IngredientUpdateImpl implements _IngredientUpdate {
   bool call({
     required String uuid,
     Object? name = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return collection.updateProperties([
           uuid
         ], {
           if (name != ignore) 1: name as String?,
-          if (timeCreated != ignore) 3: timeCreated as DateTime?,
-          if (lastTimeChanged != ignore) 4: lastTimeChanged as DateTime?,
+          if (created != ignore) 3: created as DateTime?,
+          if (updated != ignore) 4: updated as DateTime?,
         }) >
         0;
   }
@@ -126,8 +126,8 @@ sealed class _IngredientUpdateAll {
   int call({
     required List<String> uuid,
     String? name,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -140,13 +140,13 @@ class _IngredientUpdateAllImpl implements _IngredientUpdateAll {
   int call({
     required List<String> uuid,
     Object? name = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return collection.updateProperties(uuid, {
       if (name != ignore) 1: name as String?,
-      if (timeCreated != ignore) 3: timeCreated as DateTime?,
-      if (lastTimeChanged != ignore) 4: lastTimeChanged as DateTime?,
+      if (created != ignore) 3: created as DateTime?,
+      if (updated != ignore) 4: updated as DateTime?,
     });
   }
 }
@@ -160,8 +160,8 @@ extension IngredientUpdate on IsarCollection<String, Ingredient> {
 sealed class _IngredientQueryUpdate {
   int call({
     String? name,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -174,13 +174,13 @@ class _IngredientQueryUpdateImpl implements _IngredientQueryUpdate {
   @override
   int call({
     Object? name = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return query.updateProperties(limit: limit, {
       if (name != ignore) 1: name as String?,
-      if (timeCreated != ignore) 3: timeCreated as DateTime?,
-      if (lastTimeChanged != ignore) 4: lastTimeChanged as DateTime?,
+      if (created != ignore) 3: created as DateTime?,
+      if (updated != ignore) 4: updated as DateTime?,
     });
   }
 }
@@ -542,8 +542,7 @@ extension IngredientQueryFilter
     });
   }
 
-  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
-      timeCreatedEqualTo(
+  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition> createdEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -557,7 +556,7 @@ extension IngredientQueryFilter
   }
 
   QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
-      timeCreatedGreaterThan(
+      createdGreaterThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -571,7 +570,7 @@ extension IngredientQueryFilter
   }
 
   QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
-      timeCreatedGreaterThanOrEqualTo(
+      createdGreaterThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -584,8 +583,7 @@ extension IngredientQueryFilter
     });
   }
 
-  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
-      timeCreatedLessThan(
+  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition> createdLessThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -599,7 +597,7 @@ extension IngredientQueryFilter
   }
 
   QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
-      timeCreatedLessThanOrEqualTo(
+      createdLessThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -612,8 +610,7 @@ extension IngredientQueryFilter
     });
   }
 
-  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
-      timeCreatedBetween(
+  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition> createdBetween(
     DateTime lower,
     DateTime upper,
   ) {
@@ -628,8 +625,7 @@ extension IngredientQueryFilter
     });
   }
 
-  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
-      lastTimeChangedEqualTo(
+  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition> updatedEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -643,7 +639,7 @@ extension IngredientQueryFilter
   }
 
   QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
-      lastTimeChangedGreaterThan(
+      updatedGreaterThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -657,7 +653,7 @@ extension IngredientQueryFilter
   }
 
   QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
-      lastTimeChangedGreaterThanOrEqualTo(
+      updatedGreaterThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -670,8 +666,7 @@ extension IngredientQueryFilter
     });
   }
 
-  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
-      lastTimeChangedLessThan(
+  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition> updatedLessThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -685,7 +680,7 @@ extension IngredientQueryFilter
   }
 
   QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
-      lastTimeChangedLessThanOrEqualTo(
+      updatedLessThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -698,8 +693,7 @@ extension IngredientQueryFilter
     });
   }
 
-  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition>
-      lastTimeChangedBetween(
+  QueryBuilder<Ingredient, Ingredient, QAfterFilterCondition> updatedBetween(
     DateTime lower,
     DateTime upper,
   ) {
@@ -762,26 +756,25 @@ extension IngredientQuerySortBy
     });
   }
 
-  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> sortByTimeCreated() {
+  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> sortByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(3);
     });
   }
 
-  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> sortByTimeCreatedDesc() {
+  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> sortByCreatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(3, sort: Sort.desc);
     });
   }
 
-  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> sortByLastTimeChanged() {
+  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> sortByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4);
     });
   }
 
-  QueryBuilder<Ingredient, Ingredient, QAfterSortBy>
-      sortByLastTimeChangedDesc() {
+  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> sortByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4, sort: Sort.desc);
     });
@@ -818,26 +811,25 @@ extension IngredientQuerySortThenBy
     });
   }
 
-  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> thenByTimeCreated() {
+  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> thenByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(3);
     });
   }
 
-  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> thenByTimeCreatedDesc() {
+  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> thenByCreatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(3, sort: Sort.desc);
     });
   }
 
-  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> thenByLastTimeChanged() {
+  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> thenByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4);
     });
   }
 
-  QueryBuilder<Ingredient, Ingredient, QAfterSortBy>
-      thenByLastTimeChangedDesc() {
+  QueryBuilder<Ingredient, Ingredient, QAfterSortBy> thenByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4, sort: Sort.desc);
     });
@@ -853,14 +845,13 @@ extension IngredientQueryWhereDistinct
     });
   }
 
-  QueryBuilder<Ingredient, Ingredient, QAfterDistinct> distinctByTimeCreated() {
+  QueryBuilder<Ingredient, Ingredient, QAfterDistinct> distinctByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(3);
     });
   }
 
-  QueryBuilder<Ingredient, Ingredient, QAfterDistinct>
-      distinctByLastTimeChanged() {
+  QueryBuilder<Ingredient, Ingredient, QAfterDistinct> distinctByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(4);
     });
@@ -881,13 +872,13 @@ extension IngredientQueryProperty1
     });
   }
 
-  QueryBuilder<Ingredient, DateTime, QAfterProperty> timeCreatedProperty() {
+  QueryBuilder<Ingredient, DateTime, QAfterProperty> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
     });
   }
 
-  QueryBuilder<Ingredient, DateTime, QAfterProperty> lastTimeChangedProperty() {
+  QueryBuilder<Ingredient, DateTime, QAfterProperty> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });
@@ -908,15 +899,13 @@ extension IngredientQueryProperty2<R>
     });
   }
 
-  QueryBuilder<Ingredient, (R, DateTime), QAfterProperty>
-      timeCreatedProperty() {
+  QueryBuilder<Ingredient, (R, DateTime), QAfterProperty> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
     });
   }
 
-  QueryBuilder<Ingredient, (R, DateTime), QAfterProperty>
-      lastTimeChangedProperty() {
+  QueryBuilder<Ingredient, (R, DateTime), QAfterProperty> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });
@@ -937,15 +926,13 @@ extension IngredientQueryProperty3<R1, R2>
     });
   }
 
-  QueryBuilder<Ingredient, (R1, R2, DateTime), QOperations>
-      timeCreatedProperty() {
+  QueryBuilder<Ingredient, (R1, R2, DateTime), QOperations> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
     });
   }
 
-  QueryBuilder<Ingredient, (R1, R2, DateTime), QOperations>
-      lastTimeChangedProperty() {
+  QueryBuilder<Ingredient, (R1, R2, DateTime), QOperations> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });

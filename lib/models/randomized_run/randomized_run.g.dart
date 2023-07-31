@@ -15,14 +15,14 @@ extension GetRandomizedRunCollection on Isar {
 
 const RandomizedRunSchema = IsarCollectionSchema(
   schema:
-      '{"name":"RandomizedRun","idName":"uuid","properties":[{"name":"inclusiveTagsUuids","type":"StringList"},{"name":"exclusiveTagsUuids","type":"StringList"},{"name":"ratingLinks","type":"ObjectList","target":"RatingLink"},{"name":"mealNotFeastSince","type":"DateTime"},{"name":"mealUuid","type":"String"},{"name":"feast","type":"Bool"},{"name":"uuid","type":"String"},{"name":"timeCreated","type":"DateTime"},{"name":"lastTimeChanged","type":"DateTime"}]}',
+      '{"name":"RandomizedRun","idName":"uuid","properties":[{"name":"inclusiveTagsUuids","type":"StringList"},{"name":"exclusiveTagsUuids","type":"StringList"},{"name":"ratingLinks","type":"ObjectList","target":"RatingLink"},{"name":"mealNotFeastSince","type":"DateTime"},{"name":"mealUuid","type":"String"},{"name":"feast","type":"Bool"},{"name":"uuid","type":"String"},{"name":"created","type":"DateTime"},{"name":"updated","type":"DateTime"}]}',
   converter: IsarObjectConverter<String, RandomizedRun>(
     serialize: serializeRandomizedRun,
     deserialize: deserializeRandomizedRun,
     deserializeProperty: deserializeRandomizedRunProp,
   ),
   embeddedSchemas: [RatingLinkSchema],
-  hash: (7865237828267411352 * 31 + ratingLinkSchemaHash),
+  hash: (-8119236817800978489 * 31 + ratingLinkSchemaHash),
 );
 
 @isarProtected
@@ -271,8 +271,8 @@ sealed class _RandomizedRunUpdate {
     DateTime? mealNotFeastSince,
     String? mealUuid,
     bool? feast,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -287,8 +287,8 @@ class _RandomizedRunUpdateImpl implements _RandomizedRunUpdate {
     Object? mealNotFeastSince = ignore,
     Object? mealUuid = ignore,
     Object? feast = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return collection.updateProperties([
           uuid
@@ -296,8 +296,8 @@ class _RandomizedRunUpdateImpl implements _RandomizedRunUpdate {
           if (mealNotFeastSince != ignore) 4: mealNotFeastSince as DateTime?,
           if (mealUuid != ignore) 5: mealUuid as String?,
           if (feast != ignore) 6: feast as bool?,
-          if (timeCreated != ignore) 8: timeCreated as DateTime?,
-          if (lastTimeChanged != ignore) 9: lastTimeChanged as DateTime?,
+          if (created != ignore) 8: created as DateTime?,
+          if (updated != ignore) 9: updated as DateTime?,
         }) >
         0;
   }
@@ -309,8 +309,8 @@ sealed class _RandomizedRunUpdateAll {
     DateTime? mealNotFeastSince,
     String? mealUuid,
     bool? feast,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -325,15 +325,15 @@ class _RandomizedRunUpdateAllImpl implements _RandomizedRunUpdateAll {
     Object? mealNotFeastSince = ignore,
     Object? mealUuid = ignore,
     Object? feast = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return collection.updateProperties(uuid, {
       if (mealNotFeastSince != ignore) 4: mealNotFeastSince as DateTime?,
       if (mealUuid != ignore) 5: mealUuid as String?,
       if (feast != ignore) 6: feast as bool?,
-      if (timeCreated != ignore) 8: timeCreated as DateTime?,
-      if (lastTimeChanged != ignore) 9: lastTimeChanged as DateTime?,
+      if (created != ignore) 8: created as DateTime?,
+      if (updated != ignore) 9: updated as DateTime?,
     });
   }
 }
@@ -349,8 +349,8 @@ sealed class _RandomizedRunQueryUpdate {
     DateTime? mealNotFeastSince,
     String? mealUuid,
     bool? feast,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -365,15 +365,15 @@ class _RandomizedRunQueryUpdateImpl implements _RandomizedRunQueryUpdate {
     Object? mealNotFeastSince = ignore,
     Object? mealUuid = ignore,
     Object? feast = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return query.updateProperties(limit: limit, {
       if (mealNotFeastSince != ignore) 4: mealNotFeastSince as DateTime?,
       if (mealUuid != ignore) 5: mealUuid as String?,
       if (feast != ignore) 6: feast as bool?,
-      if (timeCreated != ignore) 8: timeCreated as DateTime?,
-      if (lastTimeChanged != ignore) 9: lastTimeChanged as DateTime?,
+      if (created != ignore) 8: created as DateTime?,
+      if (updated != ignore) 9: updated as DateTime?,
     });
   }
 }
@@ -1268,7 +1268,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      timeCreatedEqualTo(
+      createdEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1282,7 +1282,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      timeCreatedGreaterThan(
+      createdGreaterThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1296,7 +1296,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      timeCreatedGreaterThanOrEqualTo(
+      createdGreaterThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1310,7 +1310,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      timeCreatedLessThan(
+      createdLessThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1324,7 +1324,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      timeCreatedLessThanOrEqualTo(
+      createdLessThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1338,7 +1338,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      timeCreatedBetween(
+      createdBetween(
     DateTime lower,
     DateTime upper,
   ) {
@@ -1354,7 +1354,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      lastTimeChangedEqualTo(
+      updatedEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1368,7 +1368,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      lastTimeChangedGreaterThan(
+      updatedGreaterThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1382,7 +1382,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      lastTimeChangedGreaterThanOrEqualTo(
+      updatedGreaterThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1396,7 +1396,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      lastTimeChangedLessThan(
+      updatedLessThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1410,7 +1410,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      lastTimeChangedLessThanOrEqualTo(
+      updatedLessThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -1424,7 +1424,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      lastTimeChangedBetween(
+      updatedBetween(
     DateTime lower,
     DateTime upper,
   ) {
@@ -1513,28 +1513,25 @@ extension RandomizedRunQuerySortBy
     });
   }
 
-  QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> sortByTimeCreated() {
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> sortByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(8);
     });
   }
 
-  QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy>
-      sortByTimeCreatedDesc() {
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> sortByCreatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(8, sort: Sort.desc);
     });
   }
 
-  QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy>
-      sortByLastTimeChanged() {
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> sortByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(9);
     });
   }
 
-  QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy>
-      sortByLastTimeChangedDesc() {
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> sortByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(9, sort: Sort.desc);
     });
@@ -1597,28 +1594,25 @@ extension RandomizedRunQuerySortThenBy
     });
   }
 
-  QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> thenByTimeCreated() {
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> thenByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(8);
     });
   }
 
-  QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy>
-      thenByTimeCreatedDesc() {
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> thenByCreatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(8, sort: Sort.desc);
     });
   }
 
-  QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy>
-      thenByLastTimeChanged() {
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> thenByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(9);
     });
   }
 
-  QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy>
-      thenByLastTimeChangedDesc() {
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> thenByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(9, sort: Sort.desc);
     });
@@ -1662,14 +1656,14 @@ extension RandomizedRunQueryWhereDistinct
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterDistinct>
-      distinctByTimeCreated() {
+      distinctByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(8);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterDistinct>
-      distinctByLastTimeChanged() {
+      distinctByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(9);
     });
@@ -1724,14 +1718,13 @@ extension RandomizedRunQueryProperty1
     });
   }
 
-  QueryBuilder<RandomizedRun, DateTime, QAfterProperty> timeCreatedProperty() {
+  QueryBuilder<RandomizedRun, DateTime, QAfterProperty> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(8);
     });
   }
 
-  QueryBuilder<RandomizedRun, DateTime, QAfterProperty>
-      lastTimeChangedProperty() {
+  QueryBuilder<RandomizedRun, DateTime, QAfterProperty> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(9);
     });
@@ -1786,15 +1779,13 @@ extension RandomizedRunQueryProperty2<R>
     });
   }
 
-  QueryBuilder<RandomizedRun, (R, DateTime), QAfterProperty>
-      timeCreatedProperty() {
+  QueryBuilder<RandomizedRun, (R, DateTime), QAfterProperty> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(8);
     });
   }
 
-  QueryBuilder<RandomizedRun, (R, DateTime), QAfterProperty>
-      lastTimeChangedProperty() {
+  QueryBuilder<RandomizedRun, (R, DateTime), QAfterProperty> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(9);
     });
@@ -1851,14 +1842,14 @@ extension RandomizedRunQueryProperty3<R1, R2>
   }
 
   QueryBuilder<RandomizedRun, (R1, R2, DateTime), QOperations>
-      timeCreatedProperty() {
+      createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(8);
     });
   }
 
   QueryBuilder<RandomizedRun, (R1, R2, DateTime), QOperations>
-      lastTimeChangedProperty() {
+      updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(9);
     });

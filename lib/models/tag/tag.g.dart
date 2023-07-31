@@ -15,14 +15,14 @@ extension GetTagCollection on Isar {
 
 const TagSchema = IsarCollectionSchema(
   schema:
-      '{"name":"Tag","idName":"uuid","properties":[{"name":"colorHex","type":"String"},{"name":"name","type":"String"},{"name":"uuid","type":"String"},{"name":"timeCreated","type":"DateTime"},{"name":"lastTimeChanged","type":"DateTime"}]}',
+      '{"name":"Tag","idName":"uuid","properties":[{"name":"colorHex","type":"String"},{"name":"name","type":"String"},{"name":"uuid","type":"String"},{"name":"created","type":"DateTime"},{"name":"updated","type":"DateTime"}]}',
   converter: IsarObjectConverter<String, Tag>(
     serialize: serializeTag,
     deserialize: deserializeTag,
     deserializeProperty: deserializeTagProp,
   ),
   embeddedSchemas: [],
-  hash: -2070248618352795308,
+  hash: 7181363309658181643,
 );
 
 @isarProtected
@@ -106,8 +106,8 @@ sealed class _TagUpdate {
     required String uuid,
     String? colorHex,
     String? name,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -121,16 +121,16 @@ class _TagUpdateImpl implements _TagUpdate {
     required String uuid,
     Object? colorHex = ignore,
     Object? name = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return collection.updateProperties([
           uuid
         ], {
           if (colorHex != ignore) 1: colorHex as String?,
           if (name != ignore) 2: name as String?,
-          if (timeCreated != ignore) 4: timeCreated as DateTime?,
-          if (lastTimeChanged != ignore) 5: lastTimeChanged as DateTime?,
+          if (created != ignore) 4: created as DateTime?,
+          if (updated != ignore) 5: updated as DateTime?,
         }) >
         0;
   }
@@ -141,8 +141,8 @@ sealed class _TagUpdateAll {
     required List<String> uuid,
     String? colorHex,
     String? name,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -156,14 +156,14 @@ class _TagUpdateAllImpl implements _TagUpdateAll {
     required List<String> uuid,
     Object? colorHex = ignore,
     Object? name = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return collection.updateProperties(uuid, {
       if (colorHex != ignore) 1: colorHex as String?,
       if (name != ignore) 2: name as String?,
-      if (timeCreated != ignore) 4: timeCreated as DateTime?,
-      if (lastTimeChanged != ignore) 5: lastTimeChanged as DateTime?,
+      if (created != ignore) 4: created as DateTime?,
+      if (updated != ignore) 5: updated as DateTime?,
     });
   }
 }
@@ -178,8 +178,8 @@ sealed class _TagQueryUpdate {
   int call({
     String? colorHex,
     String? name,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -193,14 +193,14 @@ class _TagQueryUpdateImpl implements _TagQueryUpdate {
   int call({
     Object? colorHex = ignore,
     Object? name = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return query.updateProperties(limit: limit, {
       if (colorHex != ignore) 1: colorHex as String?,
       if (name != ignore) 2: name as String?,
-      if (timeCreated != ignore) 4: timeCreated as DateTime?,
-      if (lastTimeChanged != ignore) 5: lastTimeChanged as DateTime?,
+      if (created != ignore) 4: created as DateTime?,
+      if (updated != ignore) 5: updated as DateTime?,
     });
   }
 }
@@ -734,7 +734,7 @@ extension TagQueryFilter on QueryBuilder<Tag, Tag, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterFilterCondition> timeCreatedEqualTo(
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> createdEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -747,7 +747,7 @@ extension TagQueryFilter on QueryBuilder<Tag, Tag, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterFilterCondition> timeCreatedGreaterThan(
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> createdGreaterThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -760,7 +760,7 @@ extension TagQueryFilter on QueryBuilder<Tag, Tag, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterFilterCondition> timeCreatedGreaterThanOrEqualTo(
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> createdGreaterThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -773,7 +773,7 @@ extension TagQueryFilter on QueryBuilder<Tag, Tag, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterFilterCondition> timeCreatedLessThan(
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> createdLessThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -786,7 +786,7 @@ extension TagQueryFilter on QueryBuilder<Tag, Tag, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterFilterCondition> timeCreatedLessThanOrEqualTo(
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> createdLessThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -799,7 +799,7 @@ extension TagQueryFilter on QueryBuilder<Tag, Tag, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterFilterCondition> timeCreatedBetween(
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> createdBetween(
     DateTime lower,
     DateTime upper,
   ) {
@@ -814,7 +814,7 @@ extension TagQueryFilter on QueryBuilder<Tag, Tag, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterFilterCondition> lastTimeChangedEqualTo(
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> updatedEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -827,7 +827,7 @@ extension TagQueryFilter on QueryBuilder<Tag, Tag, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterFilterCondition> lastTimeChangedGreaterThan(
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> updatedGreaterThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -840,8 +840,7 @@ extension TagQueryFilter on QueryBuilder<Tag, Tag, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterFilterCondition>
-      lastTimeChangedGreaterThanOrEqualTo(
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> updatedGreaterThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -854,7 +853,7 @@ extension TagQueryFilter on QueryBuilder<Tag, Tag, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterFilterCondition> lastTimeChangedLessThan(
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> updatedLessThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -867,8 +866,7 @@ extension TagQueryFilter on QueryBuilder<Tag, Tag, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterFilterCondition>
-      lastTimeChangedLessThanOrEqualTo(
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> updatedLessThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -881,7 +879,7 @@ extension TagQueryFilter on QueryBuilder<Tag, Tag, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterFilterCondition> lastTimeChangedBetween(
+  QueryBuilder<Tag, Tag, QAfterFilterCondition> updatedBetween(
     DateTime lower,
     DateTime upper,
   ) {
@@ -961,25 +959,25 @@ extension TagQuerySortBy on QueryBuilder<Tag, Tag, QSortBy> {
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterSortBy> sortByTimeCreated() {
+  QueryBuilder<Tag, Tag, QAfterSortBy> sortByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4);
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterSortBy> sortByTimeCreatedDesc() {
+  QueryBuilder<Tag, Tag, QAfterSortBy> sortByCreatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4, sort: Sort.desc);
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterSortBy> sortByLastTimeChanged() {
+  QueryBuilder<Tag, Tag, QAfterSortBy> sortByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(5);
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterSortBy> sortByLastTimeChangedDesc() {
+  QueryBuilder<Tag, Tag, QAfterSortBy> sortByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(5, sort: Sort.desc);
     });
@@ -1027,25 +1025,25 @@ extension TagQuerySortThenBy on QueryBuilder<Tag, Tag, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterSortBy> thenByTimeCreated() {
+  QueryBuilder<Tag, Tag, QAfterSortBy> thenByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4);
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterSortBy> thenByTimeCreatedDesc() {
+  QueryBuilder<Tag, Tag, QAfterSortBy> thenByCreatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4, sort: Sort.desc);
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterSortBy> thenByLastTimeChanged() {
+  QueryBuilder<Tag, Tag, QAfterSortBy> thenByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(5);
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterSortBy> thenByLastTimeChangedDesc() {
+  QueryBuilder<Tag, Tag, QAfterSortBy> thenByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(5, sort: Sort.desc);
     });
@@ -1067,13 +1065,13 @@ extension TagQueryWhereDistinct on QueryBuilder<Tag, Tag, QDistinct> {
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterDistinct> distinctByTimeCreated() {
+  QueryBuilder<Tag, Tag, QAfterDistinct> distinctByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(4);
     });
   }
 
-  QueryBuilder<Tag, Tag, QAfterDistinct> distinctByLastTimeChanged() {
+  QueryBuilder<Tag, Tag, QAfterDistinct> distinctByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(5);
     });
@@ -1099,13 +1097,13 @@ extension TagQueryProperty1 on QueryBuilder<Tag, Tag, QProperty> {
     });
   }
 
-  QueryBuilder<Tag, DateTime, QAfterProperty> timeCreatedProperty() {
+  QueryBuilder<Tag, DateTime, QAfterProperty> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });
   }
 
-  QueryBuilder<Tag, DateTime, QAfterProperty> lastTimeChangedProperty() {
+  QueryBuilder<Tag, DateTime, QAfterProperty> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(5);
     });
@@ -1131,13 +1129,13 @@ extension TagQueryProperty2<R> on QueryBuilder<Tag, R, QAfterProperty> {
     });
   }
 
-  QueryBuilder<Tag, (R, DateTime), QAfterProperty> timeCreatedProperty() {
+  QueryBuilder<Tag, (R, DateTime), QAfterProperty> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });
   }
 
-  QueryBuilder<Tag, (R, DateTime), QAfterProperty> lastTimeChangedProperty() {
+  QueryBuilder<Tag, (R, DateTime), QAfterProperty> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(5);
     });
@@ -1164,13 +1162,13 @@ extension TagQueryProperty3<R1, R2>
     });
   }
 
-  QueryBuilder<Tag, (R1, R2, DateTime), QOperations> timeCreatedProperty() {
+  QueryBuilder<Tag, (R1, R2, DateTime), QOperations> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });
   }
 
-  QueryBuilder<Tag, (R1, R2, DateTime), QOperations> lastTimeChangedProperty() {
+  QueryBuilder<Tag, (R1, R2, DateTime), QOperations> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(5);
     });

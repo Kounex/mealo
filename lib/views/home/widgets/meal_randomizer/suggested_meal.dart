@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mealo/models/randomized_run/randomized_run.dart';
+import 'package:mealo/utils/persistance.dart';
 
 import '../../../../models/meal/meal.dart';
 import '../../../../stores/views/home.dart';
@@ -9,17 +11,20 @@ import '../../../../widgets/shared/meal_card.dart';
 
 class SuggestedMeal extends ConsumerWidget {
   final Meal meal;
+  final RandomizedRun randomizedRun;
 
   const SuggestedMeal({
     super.key,
     required this.meal,
+    required this.randomizedRun,
   });
 
   Future<void> feast(BuildContext context, WidgetRef ref) async {
-    // PersistanceUtils.crud(
-    //   (isar) => isar.meals.put(this.meal..lastTimeAte = DateTime.now()),
-    // );
-    ref.invalidate(randomizedMealUuidProvider);
+    PersistanceUtils.transaction(
+      PersistanceOperation.insertUpdate,
+      [this.randomizedRun..feast = true],
+    );
+    ref.invalidate(currentRandomizedRunProvider);
     if (context.mounted) {
       RouterUtils.beamTo(
         context,

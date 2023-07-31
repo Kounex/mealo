@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:mealo/utils/styling.dart';
 
 import '../text_form_field.dart';
 import 'suggestion_overlay.dart';
@@ -52,9 +53,12 @@ class BaseSuggestionTextField<T> extends StatefulWidget {
       _BaseSuggestionTextField<T>();
 }
 
-class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
+class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>>
+    with SingleTickerProviderStateMixin {
   final FocusNode _focus = FocusNode();
   late TextEditingController _controller;
+
+  late final AnimationController _animController;
 
   final GlobalKey _key = GlobalKey();
   final LayerLink _link = LayerLink();
@@ -69,11 +73,17 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
 
     _controller = TextEditingController(text: this.widget.selection);
 
+    _animController = AnimationController(
+      vsync: this,
+      duration: StylingUtils.kBaseAnimationDuration,
+    );
+
     _entry = OverlayEntry(
       builder: (context) => SuggestionOverlay(
         textFieldKey: _key,
         link: _link,
         controller: _controller,
+        animController: _animController,
         focus: _focus,
         currentSuggestions: _suggestions,
         suggestions: this.widget.suggestions,
@@ -94,8 +104,10 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>> {
     if (_focus.hasFocus && !_entry.mounted) {
       Overlay.of(context).insert(_entry);
     } else if (!_focus.hasFocus && _entry.mounted) {
-      _entry.remove();
-      _controller.clear();
+      _animController.reverse().whenComplete(() {
+        _entry.remove();
+        _controller.clear();
+      });
     }
   }
 

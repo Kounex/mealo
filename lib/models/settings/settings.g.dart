@@ -15,14 +15,14 @@ extension GetSettingsCollection on Isar {
 
 const SettingsSchema = IsarCollectionSchema(
   schema:
-      '{"name":"Settings","idName":"uuid","properties":[{"name":"darkMode","type":"Bool"},{"name":"firstLaunch","type":"Bool"},{"name":"uuid","type":"String"},{"name":"timeCreated","type":"DateTime"},{"name":"lastTimeChanged","type":"DateTime"}]}',
+      '{"name":"Settings","idName":"uuid","properties":[{"name":"darkMode","type":"Bool"},{"name":"firstLaunch","type":"Bool"},{"name":"uuid","type":"String"},{"name":"created","type":"DateTime"},{"name":"updated","type":"DateTime"}]}',
   converter: IsarObjectConverter<String, Settings>(
     serialize: serializeSettings,
     deserialize: deserializeSettings,
     deserializeProperty: deserializeSettingsProp,
   ),
   embeddedSchemas: [],
-  hash: 4243817307093735292,
+  hash: 4103748018061463203,
 );
 
 @isarProtected
@@ -118,8 +118,8 @@ sealed class _SettingsUpdate {
     required String uuid,
     bool? darkMode,
     bool? firstLaunch,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -133,16 +133,16 @@ class _SettingsUpdateImpl implements _SettingsUpdate {
     required String uuid,
     Object? darkMode = ignore,
     Object? firstLaunch = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return collection.updateProperties([
           uuid
         ], {
           if (darkMode != ignore) 1: darkMode as bool?,
           if (firstLaunch != ignore) 2: firstLaunch as bool?,
-          if (timeCreated != ignore) 4: timeCreated as DateTime?,
-          if (lastTimeChanged != ignore) 5: lastTimeChanged as DateTime?,
+          if (created != ignore) 4: created as DateTime?,
+          if (updated != ignore) 5: updated as DateTime?,
         }) >
         0;
   }
@@ -153,8 +153,8 @@ sealed class _SettingsUpdateAll {
     required List<String> uuid,
     bool? darkMode,
     bool? firstLaunch,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -168,14 +168,14 @@ class _SettingsUpdateAllImpl implements _SettingsUpdateAll {
     required List<String> uuid,
     Object? darkMode = ignore,
     Object? firstLaunch = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return collection.updateProperties(uuid, {
       if (darkMode != ignore) 1: darkMode as bool?,
       if (firstLaunch != ignore) 2: firstLaunch as bool?,
-      if (timeCreated != ignore) 4: timeCreated as DateTime?,
-      if (lastTimeChanged != ignore) 5: lastTimeChanged as DateTime?,
+      if (created != ignore) 4: created as DateTime?,
+      if (updated != ignore) 5: updated as DateTime?,
     });
   }
 }
@@ -190,8 +190,8 @@ sealed class _SettingsQueryUpdate {
   int call({
     bool? darkMode,
     bool? firstLaunch,
-    DateTime? timeCreated,
-    DateTime? lastTimeChanged,
+    DateTime? created,
+    DateTime? updated,
   });
 }
 
@@ -205,14 +205,14 @@ class _SettingsQueryUpdateImpl implements _SettingsQueryUpdate {
   int call({
     Object? darkMode = ignore,
     Object? firstLaunch = ignore,
-    Object? timeCreated = ignore,
-    Object? lastTimeChanged = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
   }) {
     return query.updateProperties(limit: limit, {
       if (darkMode != ignore) 1: darkMode as bool?,
       if (firstLaunch != ignore) 2: firstLaunch as bool?,
-      if (timeCreated != ignore) 4: timeCreated as DateTime?,
-      if (lastTimeChanged != ignore) 5: lastTimeChanged as DateTime?,
+      if (created != ignore) 4: created as DateTime?,
+      if (updated != ignore) 5: updated as DateTime?,
     });
   }
 }
@@ -437,7 +437,7 @@ extension SettingsQueryFilter
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterFilterCondition> timeCreatedEqualTo(
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> createdEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -450,8 +450,7 @@ extension SettingsQueryFilter
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterFilterCondition>
-      timeCreatedGreaterThan(
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> createdGreaterThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -465,7 +464,7 @@ extension SettingsQueryFilter
   }
 
   QueryBuilder<Settings, Settings, QAfterFilterCondition>
-      timeCreatedGreaterThanOrEqualTo(
+      createdGreaterThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -478,7 +477,7 @@ extension SettingsQueryFilter
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterFilterCondition> timeCreatedLessThan(
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> createdLessThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -492,7 +491,7 @@ extension SettingsQueryFilter
   }
 
   QueryBuilder<Settings, Settings, QAfterFilterCondition>
-      timeCreatedLessThanOrEqualTo(
+      createdLessThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -505,7 +504,7 @@ extension SettingsQueryFilter
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterFilterCondition> timeCreatedBetween(
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> createdBetween(
     DateTime lower,
     DateTime upper,
   ) {
@@ -520,8 +519,7 @@ extension SettingsQueryFilter
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterFilterCondition>
-      lastTimeChangedEqualTo(
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> updatedEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -534,8 +532,7 @@ extension SettingsQueryFilter
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterFilterCondition>
-      lastTimeChangedGreaterThan(
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> updatedGreaterThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -549,7 +546,7 @@ extension SettingsQueryFilter
   }
 
   QueryBuilder<Settings, Settings, QAfterFilterCondition>
-      lastTimeChangedGreaterThanOrEqualTo(
+      updatedGreaterThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -562,8 +559,7 @@ extension SettingsQueryFilter
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterFilterCondition>
-      lastTimeChangedLessThan(
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> updatedLessThan(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -577,7 +573,7 @@ extension SettingsQueryFilter
   }
 
   QueryBuilder<Settings, Settings, QAfterFilterCondition>
-      lastTimeChangedLessThanOrEqualTo(
+      updatedLessThanOrEqualTo(
     DateTime value,
   ) {
     return QueryBuilder.apply(this, (query) {
@@ -590,8 +586,7 @@ extension SettingsQueryFilter
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterFilterCondition>
-      lastTimeChangedBetween(
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> updatedBetween(
     DateTime lower,
     DateTime upper,
   ) {
@@ -656,25 +651,25 @@ extension SettingsQuerySortBy on QueryBuilder<Settings, Settings, QSortBy> {
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterSortBy> sortByTimeCreated() {
+  QueryBuilder<Settings, Settings, QAfterSortBy> sortByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4);
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterSortBy> sortByTimeCreatedDesc() {
+  QueryBuilder<Settings, Settings, QAfterSortBy> sortByCreatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4, sort: Sort.desc);
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterSortBy> sortByLastTimeChanged() {
+  QueryBuilder<Settings, Settings, QAfterSortBy> sortByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(5);
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterSortBy> sortByLastTimeChangedDesc() {
+  QueryBuilder<Settings, Settings, QAfterSortBy> sortByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(5, sort: Sort.desc);
     });
@@ -721,25 +716,25 @@ extension SettingsQuerySortThenBy
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterSortBy> thenByTimeCreated() {
+  QueryBuilder<Settings, Settings, QAfterSortBy> thenByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4);
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterSortBy> thenByTimeCreatedDesc() {
+  QueryBuilder<Settings, Settings, QAfterSortBy> thenByCreatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(4, sort: Sort.desc);
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterSortBy> thenByLastTimeChanged() {
+  QueryBuilder<Settings, Settings, QAfterSortBy> thenByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(5);
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterSortBy> thenByLastTimeChangedDesc() {
+  QueryBuilder<Settings, Settings, QAfterSortBy> thenByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(5, sort: Sort.desc);
     });
@@ -760,13 +755,13 @@ extension SettingsQueryWhereDistinct
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterDistinct> distinctByTimeCreated() {
+  QueryBuilder<Settings, Settings, QAfterDistinct> distinctByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(4);
     });
   }
 
-  QueryBuilder<Settings, Settings, QAfterDistinct> distinctByLastTimeChanged() {
+  QueryBuilder<Settings, Settings, QAfterDistinct> distinctByUpdated() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(5);
     });
@@ -793,13 +788,13 @@ extension SettingsQueryProperty1
     });
   }
 
-  QueryBuilder<Settings, DateTime, QAfterProperty> timeCreatedProperty() {
+  QueryBuilder<Settings, DateTime, QAfterProperty> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });
   }
 
-  QueryBuilder<Settings, DateTime, QAfterProperty> lastTimeChangedProperty() {
+  QueryBuilder<Settings, DateTime, QAfterProperty> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(5);
     });
@@ -826,14 +821,13 @@ extension SettingsQueryProperty2<R>
     });
   }
 
-  QueryBuilder<Settings, (R, DateTime), QAfterProperty> timeCreatedProperty() {
+  QueryBuilder<Settings, (R, DateTime), QAfterProperty> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });
   }
 
-  QueryBuilder<Settings, (R, DateTime), QAfterProperty>
-      lastTimeChangedProperty() {
+  QueryBuilder<Settings, (R, DateTime), QAfterProperty> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(5);
     });
@@ -860,15 +854,13 @@ extension SettingsQueryProperty3<R1, R2>
     });
   }
 
-  QueryBuilder<Settings, (R1, R2, DateTime), QOperations>
-      timeCreatedProperty() {
+  QueryBuilder<Settings, (R1, R2, DateTime), QOperations> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });
   }
 
-  QueryBuilder<Settings, (R1, R2, DateTime), QOperations>
-      lastTimeChangedProperty() {
+  QueryBuilder<Settings, (R1, R2, DateTime), QOperations> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(5);
     });
@@ -879,7 +871,7 @@ extension SettingsQueryProperty3<R1, R2>
 // RiverpodGenerator
 // **************************************************************************
 
-String _$settingsSingletonHash() => r'5bf787b5f69a9bddfced0442570a4775cb5c7256';
+String _$settingsSingletonHash() => r'8685798b1dd8164617ffda82345effafc32142ae';
 
 /// See also [SettingsSingleton].
 @ProviderFor(SettingsSingleton)
