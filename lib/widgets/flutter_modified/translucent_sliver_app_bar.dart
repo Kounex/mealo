@@ -5,8 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-
-import '../../utils/styling.dart';
+import 'package:mealo/utils/design_system.dart';
 
 /// Copied [SliverAppBar] implementation to override the
 /// internal [_SliverAppBarDelegate] so it is wrapped
@@ -814,8 +813,8 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       child: ClipRect(
         child: BackdropFilter(
           filter: ImageFilter.blur(
-            sigmaX: StylingUtils.kSigmaBlur,
-            sigmaY: StylingUtils.kSigmaBlur,
+            sigmaX: DesignSystem.sigmaBlur,
+            sigmaY: DesignSystem.sigmaBlur,
           ),
           child: AppBar(
             leading: leading,

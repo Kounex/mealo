@@ -1,9 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import '../../themed/cupertino_sliver_navigation_bar.dart';
+import 'package:mealo/utils/design_system.dart';
 
-import '../../../utils/styling.dart';
 import '../../flutter_modified/translucent_sliver_app_bar.dart';
+import '../../themed/cupertino_sliver_navigation_bar.dart';
 
 class CupertinoAppBarProperties {
   final Widget? middle;
@@ -115,7 +115,7 @@ class BaseScaffold extends StatelessWidget {
   Widget _body(BuildContext context) {
     if (this.tabBarProperties != null) {
       return TabBarView(
-        physics: this.physics ?? StylingUtils.platformAwareScrollPhysics,
+        physics: this.physics ?? DesignSystem.platformAwareScrollPhysics,
         children: this
             .tabBarProperties!
             .children
@@ -141,7 +141,7 @@ class BaseScaffold extends StatelessWidget {
                 : null,
             controller: this.tabBarProperties == null ? this.controller : null,
             primary: this.controller == null && this.tabBarProperties == null,
-            physics: this.physics ?? StylingUtils.platformAwareScrollPhysics,
+            physics: this.physics ?? DesignSystem.platformAwareScrollPhysics,
             slivers: [
               if (this.tabBarProperties != null)
                 SliverOverlapInjector(
@@ -260,7 +260,7 @@ class BaseScaffold extends StatelessWidget {
                   this.appBarProperties != null)
           ? NestedScrollView(
               controller: this.controller,
-              physics: this.physics ?? StylingUtils.platformAwareScrollPhysics,
+              physics: this.physics ?? DesignSystem.platformAwareScrollPhysics,
               headerSliverBuilder:
                   (BuildContext context, bool innerBoxIsScrolled) {
                 // These are the slivers that show up in the "outer" scroll view.

@@ -54,7 +54,11 @@ class PersistanceUtils {
   ];
 
   static Future<void> init() async {
-    String documentPath = (await getApplicationDocumentsDirectory()).path;
+    String documentPath = kIsWeb
+        ? Isar.sqliteInMemory
+        : (await getApplicationDocumentsDirectory()).path;
+
+    await Isar.initialize();
 
     /// [Isar] only supports web if we are using the SQLite Engine, so we need
     /// to check that and use the appropiate engine. Encryption is also

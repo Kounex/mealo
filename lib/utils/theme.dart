@@ -1,6 +1,6 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'styling.dart';
+import 'package:mealo/utils/design_system.dart';
 
 /// Base themes are based on Grey Law with Material 3 on and using
 /// Material 3 error colors
@@ -9,10 +9,10 @@ class ThemeUtils {
         scheme: FlexScheme.sanJuanBlue,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
         blendLevel: 1,
-        appBarOpacity: StylingUtils.kOpacityForBlur,
+        appBarOpacity: DesignSystem.opacityForBlur,
         subThemesData: const FlexSubThemesData(
-          bottomNavigationBarOpacity: StylingUtils.kOpacityForBlur,
-          navigationBarOpacity: StylingUtils.kOpacityForBlur,
+          bottomNavigationBarOpacity: DesignSystem.opacityForBlur,
+          navigationBarOpacity: DesignSystem.opacityForBlur,
           useM2StyleDividerInM3: true,
           defaultRadius: 12.0,
           elevatedButtonSchemeColor: SchemeColor.onPrimaryContainer,
@@ -77,10 +77,10 @@ class ThemeUtils {
         scheme: FlexScheme.sanJuanBlue,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
         blendLevel: 2,
-        appBarOpacity: StylingUtils.kOpacityForBlur,
+        appBarOpacity: DesignSystem.opacityForBlur,
         subThemesData: const FlexSubThemesData(
-          bottomNavigationBarOpacity: StylingUtils.kOpacityForBlur,
-          navigationBarOpacity: StylingUtils.kOpacityForBlur,
+          bottomNavigationBarOpacity: DesignSystem.opacityForBlur,
+          navigationBarOpacity: DesignSystem.opacityForBlur,
           blendTextTheme: true,
           useM2StyleDividerInM3: true,
           defaultRadius: 12.0,

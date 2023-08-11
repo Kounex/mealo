@@ -12,9 +12,9 @@ import 'package:uuid/uuid.dart';
 
 import '../../../../models/embeddings/rating_link/rating_link.dart';
 import '../../../../models/meal/meal.dart';
+import '../../../../utils/design_system.dart';
 import '../../../../utils/modal.dart';
 import '../../../../utils/persistance.dart';
-import '../../../../utils/styling.dart';
 import '../../../../utils/validation.dart';
 import '../../../../widgets/base/functional/text_form_field.dart';
 import '../../../../widgets/base/ui/divider.dart';
@@ -263,7 +263,8 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                             child: Padding(
                               padding: const EdgeInsets.only(top: 24.0),
                               child: AnimatedSwitcher(
-                                duration: StylingUtils.kBaseAnimationDuration,
+                                duration:
+                                    DesignSystem.animation.defaultDurationMS250,
                                 child: () {
                                   return switch (_step) {
                                     AddEditMealStep.images => ImagesStep(

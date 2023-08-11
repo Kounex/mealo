@@ -8,6 +8,7 @@ part of 'settings.dart';
 
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, invalid_use_of_protected_member, lines_longer_than_80_chars, constant_identifier_names, avoid_js_rounded_ints, no_leading_underscores_for_local_identifiers, require_trailing_commas, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_in_if_null_operators, library_private_types_in_public_api, prefer_const_constructors
+// ignore_for_file: type=lint
 
 extension GetSettingsCollection on Isar {
   IsarCollection<String, Settings> get settings => this.collection();
@@ -22,7 +23,7 @@ const SettingsSchema = IsarCollectionSchema(
     deserializeProperty: deserializeSettingsProp,
   ),
   embeddedSchemas: [],
-  hash: 4103748018061463203,
+  //hash: 4103748018061463203,
 );
 
 @isarProtected
@@ -36,7 +37,7 @@ int serializeSettings(IsarWriter writer, Settings object) {
     }
   }
   IsarCore.writeBool(writer, 2, object.firstLaunch);
-  IsarCore.writeString(writer, 3, IsarCore.toNativeString(object.uuid));
+  IsarCore.writeString(writer, 3, object.uuid);
   IsarCore.writeLong(writer, 4, object.created.toUtc().microsecondsSinceEpoch);
   IsarCore.writeLong(writer, 5, object.updated.toUtc().microsecondsSinceEpoch);
   return Isar.fastHash(object.uuid);

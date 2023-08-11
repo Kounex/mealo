@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../../models/meal/meal.dart';
-import '../../../../../utils/styling.dart';
+import '../../../../../utils/design_system.dart';
 import '../../../../../widgets/base/ui/image.dart';
 import '../../../../../widgets/base/ui/placeholder_text.dart';
 import 'images_step.dart';
@@ -37,7 +37,7 @@ class MealImages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
-      duration: StylingUtils.kBaseAnimationDuration,
+      duration: DesignSystem.animation.defaultDurationMS250,
       child: () {
         switch (this.type) {
           case MealImageType.thumbnail:

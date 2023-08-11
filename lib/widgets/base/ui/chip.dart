@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../utils/styling.dart';
+import '../../../utils/design_system.dart';
 
 class BaseChip extends StatelessWidget {
   final String? text;
@@ -21,7 +21,7 @@ class BaseChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color? foregroundColor = this.color != null
-        ? StylingUtils.surroundingAwareAccent(surroundingColor: this.color)
+        ? DesignSystem.surroundingAwareAccent(surroundingColor: this.color)
         : null;
 
     return Chip(
@@ -33,7 +33,7 @@ class BaseChip extends StatelessWidget {
       backgroundColor: this.color,
       deleteIconColor: foregroundColor,
       side: BorderSide(
-        color: StylingUtils.lightDisabledColor(context),
+        color: DesignSystem.lightDisabledColor(context),
       ),
       onDeleted: this.onDeleted,
     );

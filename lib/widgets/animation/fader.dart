@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../utils/styling.dart';
+
+import '../../utils/design_system.dart';
 
 class Fader extends StatefulWidget {
   final Widget child;
-  final Duration duration;
+  final Duration? duration;
   final Duration delay;
   final Curve curve;
   final Duration? showDuration;
@@ -11,14 +12,14 @@ class Fader extends StatefulWidget {
   const Fader({
     Key? key,
     required this.child,
-    this.duration = StylingUtils.kBaseAnimationDuration,
+    this.duration,
     this.delay = const Duration(milliseconds: 0),
     this.curve = Curves.linear,
     this.showDuration,
   }) : super(key: key);
 
   @override
-  _FaderState createState() => _FaderState();
+  State<Fader> createState() => _FaderState();
 }
 
 class _FaderState extends State<Fader> with SingleTickerProviderStateMixin {
@@ -27,8 +28,11 @@ class _FaderState extends State<Fader> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    _controller =
-        AnimationController(vsync: this, duration: this.widget.duration);
+    _controller = AnimationController(
+      vsync: this,
+      duration:
+          this.widget.duration ?? DesignSystem.animation.defaultDurationMS250,
+    );
     _animation = Tween<double>(
       begin: 0.0,
       end: 1.0,

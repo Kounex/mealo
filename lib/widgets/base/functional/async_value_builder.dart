@@ -29,7 +29,7 @@ class BaseAsyncValueBuilder<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //  return AnimatedSwitcher(
-    //   duration: StylingUtils.kBaseAnimationDuration * 2,
+    //   duration: DesignSystem.animation.defaultDurationMS250 * 2,
     //   transitionBuilder: (child, animation) => SizeTransition(
     //     sizeFactor: animation,
     //     child: FadeTransition(

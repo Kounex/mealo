@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../utils/styling.dart';
+import '../../../utils/design_system.dart';
 
 class BaseTextFormField extends StatefulWidget {
   final FocusNode? focusNode;
@@ -82,7 +82,7 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
         hintText: this.widget.hintText,
         counterText: '',
         suffixIcon: AnimatedSwitcher(
-          duration: StylingUtils.kBaseAnimationDuration,
+          duration: DesignSystem.animation.defaultDurationMS250,
           child: _focus.hasFocus
               ? IconButton(
                   onPressed: () => _controller.clear(),

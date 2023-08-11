@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import '../../../models/meal/meal.dart';
-import '../../utils/styling.dart';
+import '../../utils/design_system.dart';
 import '../base/functional/async_value_builder.dart';
 import '../base/ui/placeholder_text.dart';
 import 'meal_card.dart';
@@ -53,7 +53,7 @@ class MealGrid extends ConsumerWidget {
                 itemBuilder: (context, index) =>
                     AnimationConfiguration.staggeredGrid(
                   position: index,
-                  duration: StylingUtils.kBaseAnimationDuration,
+                  duration: DesignSystem.animation.defaultDurationMS250,
                   columnCount: columnCount,
                   child: FadeInAnimation(
                     child: MealCard(

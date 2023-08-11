@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../utils/styling.dart';
+import '../../../utils/design_system.dart';
 import 'divider.dart';
 
 const double kBaseCardMaxWidth = 772.0;
@@ -134,7 +134,8 @@ class _BaseCardState extends State<BaseCard> {
                       this.widget.trailingTitleWidget != null)
                     this.widget.expandable
                         ? AnimatedRotation(
-                            duration: StylingUtils.kBaseAnimationDuration,
+                            duration:
+                                DesignSystem.animation.defaultDurationMS250,
                             turns: _expandedTurn / 2,
                             curve: Curves.easeInCubic,
                             child: InkWell(
@@ -155,12 +156,12 @@ class _BaseCardState extends State<BaseCard> {
               ),
             ),
           AnimatedAlign(
-            duration: StylingUtils.kBaseAnimationDuration,
+            duration: DesignSystem.animation.defaultDurationMS250,
             heightFactor: _expandedTurn % 2 == 0 ? 1.0 : 0.0,
             alignment: const Alignment(0, -1),
             curve: Curves.easeInCubic,
             child: AnimatedOpacity(
-              duration: StylingUtils.kBaseAnimationDuration,
+              duration: DesignSystem.animation.defaultDurationMS250,
               opacity: _expandedTurn % 2 == 0 ? 1.0 : 0.0,
               curve: Curves.easeInCubic,
               child: Column(

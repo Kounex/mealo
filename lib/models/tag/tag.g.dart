@@ -8,6 +8,7 @@ part of 'tag.dart';
 
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, invalid_use_of_protected_member, lines_longer_than_80_chars, constant_identifier_names, avoid_js_rounded_ints, no_leading_underscores_for_local_identifiers, require_trailing_commas, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_in_if_null_operators, library_private_types_in_public_api, prefer_const_constructors
+// ignore_for_file: type=lint
 
 extension GetTagCollection on Isar {
   IsarCollection<String, Tag> get tags => this.collection();
@@ -22,7 +23,7 @@ const TagSchema = IsarCollectionSchema(
     deserializeProperty: deserializeTagProp,
   ),
   embeddedSchemas: [],
-  hash: 7181363309658181643,
+  //hash: 7181363309658181643,
 );
 
 @isarProtected
@@ -32,11 +33,11 @@ int serializeTag(IsarWriter writer, Tag object) {
     if (value == null) {
       IsarCore.writeNull(writer, 1);
     } else {
-      IsarCore.writeString(writer, 1, IsarCore.toNativeString(value));
+      IsarCore.writeString(writer, 1, value);
     }
   }
-  IsarCore.writeString(writer, 2, IsarCore.toNativeString(object.name));
-  IsarCore.writeString(writer, 3, IsarCore.toNativeString(object.uuid));
+  IsarCore.writeString(writer, 2, object.name);
+  IsarCore.writeString(writer, 3, object.uuid);
   IsarCore.writeLong(writer, 4, object.created.toUtc().microsecondsSinceEpoch);
   IsarCore.writeLong(writer, 5, object.updated.toUtc().microsecondsSinceEpoch);
   return Isar.fastHash(object.uuid);

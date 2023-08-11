@@ -8,6 +8,7 @@ part of 'meal.dart';
 
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, invalid_use_of_protected_member, lines_longer_than_80_chars, constant_identifier_names, avoid_js_rounded_ints, no_leading_underscores_for_local_identifiers, require_trailing_commas, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_in_if_null_operators, library_private_types_in_public_api, prefer_const_constructors
+// ignore_for_file: type=lint
 
 extension GetMealCollection on Isar {
   IsarCollection<String, Meal> get meals => this.collection();
@@ -22,8 +23,7 @@ const MealSchema = IsarCollectionSchema(
     deserializeProperty: deserializeMealProp,
   ),
   embeddedSchemas: [RatingLinkSchema, IngredientLinkSchema],
-  hash: ((5463518283386865137 * 31 + ratingLinkSchemaHash) * 31 +
-      ingredientLinkSchemaHash),
+  //hash: ((5463518283386865137 * 31 + ratingLinkSchemaHash) * 31 + ingredientLinkSchemaHash),
 );
 
 @isarProtected
@@ -35,7 +35,7 @@ int serializeMeal(IsarWriter writer, Meal object) {
     if (value == null) {
       IsarCore.writeNull(writer, 2);
     } else {
-      IsarCore.writeString(writer, 2, IsarCore.toNativeString(value));
+      IsarCore.writeString(writer, 2, value);
     }
   }
   {
@@ -43,14 +43,14 @@ int serializeMeal(IsarWriter writer, Meal object) {
     if (value == null) {
       IsarCore.writeNull(writer, 3);
     } else {
-      IsarCore.writeString(writer, 3, IsarCore.toNativeString(value));
+      IsarCore.writeString(writer, 3, value);
     }
   }
   {
     final list = object.imagesUuids;
     final listWriter = IsarCore.beginList(writer, 4, list.length);
     for (var i = 0; i < list.length; i++) {
-      IsarCore.writeString(listWriter, i, IsarCore.toNativeString(list[i]));
+      IsarCore.writeString(listWriter, i, list[i]);
     }
     IsarCore.endList(writer, listWriter);
   }
@@ -71,7 +71,7 @@ int serializeMeal(IsarWriter writer, Meal object) {
     final list = object.tagUuids;
     final listWriter = IsarCore.beginList(writer, 6, list.length);
     for (var i = 0; i < list.length; i++) {
-      IsarCore.writeString(listWriter, i, IsarCore.toNativeString(list[i]));
+      IsarCore.writeString(listWriter, i, list[i]);
     }
     IsarCore.endList(writer, listWriter);
   }
@@ -88,8 +88,8 @@ int serializeMeal(IsarWriter writer, Meal object) {
     }
     IsarCore.endList(writer, listWriter);
   }
-  IsarCore.writeString(writer, 8, IsarCore.toNativeString(object.name));
-  IsarCore.writeString(writer, 9, IsarCore.toNativeString(object.uuid));
+  IsarCore.writeString(writer, 8, object.name);
+  IsarCore.writeString(writer, 9, object.uuid);
   IsarCore.writeLong(writer, 10, object.created.toUtc().microsecondsSinceEpoch);
   IsarCore.writeLong(writer, 11, object.updated.toUtc().microsecondsSinceEpoch);
   return Isar.fastHash(object.uuid);
@@ -2314,8 +2314,9 @@ extension MealQueryProperty3<R1, R2>
 
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, invalid_use_of_protected_member, lines_longer_than_80_chars, constant_identifier_names, avoid_js_rounded_ints, no_leading_underscores_for_local_identifiers, require_trailing_commas, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_in_if_null_operators, library_private_types_in_public_api, prefer_const_constructors
+// ignore_for_file: type=lint
 
-const ingredientLinkSchemaHash = 1825980410966319530;
+//const ingredientLinkSchemaHash = 1825980410966319530;
 const IngredientLinkSchema = IsarSchema(
   schema:
       '{"name":"IngredientLink","idName":null,"embedded":true,"properties":[{"name":"uuidIngredient","type":"String"},{"name":"uuidUnit","type":"String"},{"name":"amount","type":"Double"}]}',
@@ -2332,7 +2333,7 @@ int serializeIngredientLink(IsarWriter writer, IngredientLink object) {
     if (value == null) {
       IsarCore.writeNull(writer, 1);
     } else {
-      IsarCore.writeString(writer, 1, IsarCore.toNativeString(value));
+      IsarCore.writeString(writer, 1, value);
     }
   }
   {
@@ -2340,7 +2341,7 @@ int serializeIngredientLink(IsarWriter writer, IngredientLink object) {
     if (value == null) {
       IsarCore.writeNull(writer, 2);
     } else {
-      IsarCore.writeString(writer, 2, IsarCore.toNativeString(value));
+      IsarCore.writeString(writer, 2, value);
     }
   }
   IsarCore.writeDouble(writer, 3, object.amount ?? double.nan);

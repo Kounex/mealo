@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
+import 'package:mealo/utils/design_system.dart';
 import 'package:mealo/widgets/base/functional/animated_color.dart';
 
-import '../../../../utils/styling.dart';
 import '../../../../widgets/base/ui/divider.dart';
 
 class StepperOverview extends StatelessWidget {
@@ -49,7 +49,7 @@ class StepperOverview extends StatelessWidget {
                 child: AnimatedColor(
                   color: index == this.step
                       ? Theme.of(context).colorScheme.primaryContainer
-                      : StylingUtils.lightDisabledColor(context),
+                      : DesignSystem.lightDisabledColor(context),
                   child: Text(
                     (index + 1).toString(),
                     style: Theme.of(context).textTheme.labelLarge!.copyWith(

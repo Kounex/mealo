@@ -4,7 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-import '../../../../utils/styling.dart';
+import '../../../../utils/design_system.dart';
 import '../../ui/card.dart';
 import '../../ui/divider.dart';
 import 'suggestion_list_tile.dart';
@@ -25,6 +25,8 @@ class SuggestionOverlay<T> extends StatefulWidget {
   final int Function(T a, T b)? sort;
   final AnchorType expandType;
   final double? minWidth;
+  final bool paintBorder;
+  final Color? borderColor;
 
   const SuggestionOverlay({
     super.key,
@@ -42,6 +44,8 @@ class SuggestionOverlay<T> extends StatefulWidget {
     this.sort,
     required this.expandType,
     this.minWidth,
+    this.paintBorder = false,
+    this.borderColor,
   });
 
   @override
@@ -76,7 +80,7 @@ class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>> {
 
   @override
   void dispose() {
-    _controller.removeListener(_handleControllerChange);
+    this.widget.controller.removeListener(_handleControllerChange);
 
     super.dispose();
   }
@@ -136,6 +140,9 @@ class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>> {
         offset: offset + const Offset(0, -10),
         child: TextFieldTapRegion(
           child: BaseCard(
+            paintBorder: this.widget.paintBorder,
+            borderColor: this.widget.borderColor ??
+                DesignSystem.lightDisabledColor(context),
             paddingChild: const EdgeInsets.all(0),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 200),
@@ -207,10 +214,10 @@ class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>> {
             .moveY(
               begin: 10.0,
               end: 0.0,
-              duration: StylingUtils.kBaseAnimationDuration,
+              duration: DesignSystem.animation.defaultDurationMS250,
             )
             .fadeIn(
-              duration: StylingUtils.kBaseAnimationDuration,
+              duration: DesignSystem.animation.defaultDurationMS250,
             ),
       ),
     );

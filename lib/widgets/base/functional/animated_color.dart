@@ -1,7 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:mealo/utils/styling.dart';
+
+import '../../../utils/design_system.dart';
 
 class AnimatedColor extends StatefulWidget {
   final Color color;
@@ -45,7 +46,8 @@ class _AnimatedColorState extends State<AnimatedColor> {
   @override
   Widget build(BuildContext context) {
     return TweenAnimationBuilder<Color>(
-      duration: this.widget.duration ?? StylingUtils.kBaseAnimationDuration,
+      duration:
+          this.widget.duration ?? DesignSystem.animation.defaultDurationMS250,
       tween: SmoothColorTween(begin: _prevColor, end: _currentColor),
       builder: (context, color, child) {
         return SizedBox.expand(

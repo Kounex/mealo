@@ -3,9 +3,9 @@ import 'dart:ui';
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'stores/shared/tabs.dart';
-import 'utils/styling.dart';
+import 'package:mealo/utils/design_system.dart';
 
+import 'stores/shared/tabs.dart';
 import 'utils/router.dart';
 
 class TabsView extends ConsumerWidget {
@@ -47,8 +47,8 @@ class TabsView extends ConsumerWidget {
                   child: ClipRect(
                     child: BackdropFilter(
                       filter: ImageFilter.blur(
-                        sigmaX: StylingUtils.kSigmaBlur,
-                        sigmaY: StylingUtils.kSigmaBlur,
+                        sigmaX: DesignSystem.sigmaBlur,
+                        sigmaY: DesignSystem.sigmaBlur,
                       ),
                       child: Container(),
                     ),
@@ -91,7 +91,7 @@ class TabsView extends ConsumerWidget {
                             .tabScrollControllerMap[TabMeta.values[index]]!
                             .animateTo(
                           0.0,
-                          duration: StylingUtils.kBaseAnimationDuration,
+                          duration: DesignSystem.animation.defaultDurationMS250,
                           curve: Curves.easeIn,
                         );
                       }

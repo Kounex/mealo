@@ -33,6 +33,9 @@ class BaseSuggestionTextField<T> extends StatefulWidget {
   final AnchorType anchorType;
   final double? minWidth;
 
+  final bool paintBorder;
+  final Color? borderColor;
+
   const BaseSuggestionTextField({
     super.key,
     this.selection,
@@ -46,6 +49,8 @@ class BaseSuggestionTextField<T> extends StatefulWidget {
     this.hintText,
     this.anchorType = AnchorType.left,
     this.minWidth,
+    this.paintBorder = true,
+    this.borderColor,
   }) : assert(suggestionText != null || suggestionBuilder != null);
 
   @override
@@ -94,6 +99,8 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>>
         sort: this.widget.sort,
         expandType: this.widget.anchorType,
         minWidth: this.widget.minWidth,
+        paintBorder: this.widget.paintBorder,
+        borderColor: this.widget.borderColor,
       ),
     );
 

@@ -8,8 +8,9 @@ part of 'rating_link.dart';
 
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, invalid_use_of_protected_member, lines_longer_than_80_chars, constant_identifier_names, avoid_js_rounded_ints, no_leading_underscores_for_local_identifiers, require_trailing_commas, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_in_if_null_operators, library_private_types_in_public_api, prefer_const_constructors
+// ignore_for_file: type=lint
 
-const ratingLinkSchemaHash = 3831148368175904900;
+//const ratingLinkSchemaHash = 3831148368175904900;
 const RatingLinkSchema = IsarSchema(
   schema:
       '{"name":"RatingLink","idName":null,"embedded":true,"properties":[{"name":"ratingUuid","type":"String"},{"name":"value","type":"Byte","enumMap":{"one":0,"two":1,"three":2,"four":3,"five":4}}]}',
@@ -26,7 +27,7 @@ int serializeRatingLink(IsarWriter writer, RatingLink object) {
     if (value == null) {
       IsarCore.writeNull(writer, 1);
     } else {
-      IsarCore.writeString(writer, 1, IsarCore.toNativeString(value));
+      IsarCore.writeString(writer, 1, value);
     }
   }
   IsarCore.writeByte(writer, 2, object.value.index);
@@ -38,11 +39,11 @@ RatingLink deserializeRatingLink(IsarReader reader) {
   final object = RatingLink();
   object.ratingUuid = IsarCore.readString(reader, 1);
   {
-    final value = IsarCore.readByte(reader, 2);
-    if (value == 0) {
-      object.value = _ratingLinkValue[RatingValue.one] ?? RatingValue.one;
+    if (IsarCore.readNull(reader, 2)) {
+      object.value = RatingValue.one;
     } else {
-      object.value = _ratingLinkValue[value] ?? RatingValue.one;
+      object.value =
+          _ratingLinkValue[IsarCore.readByte(reader, 2)] ?? RatingValue.one;
     }
   }
   return object;
@@ -258,7 +259,7 @@ extension RatingLinkQueryFilter
       return query.addFilterCondition(
         EqualCondition(
           property: 2,
-          value: value,
+          value: value.index,
         ),
       );
     });
@@ -271,7 +272,7 @@ extension RatingLinkQueryFilter
       return query.addFilterCondition(
         GreaterCondition(
           property: 2,
-          value: value,
+          value: value.index,
         ),
       );
     });
@@ -285,7 +286,7 @@ extension RatingLinkQueryFilter
       return query.addFilterCondition(
         GreaterOrEqualCondition(
           property: 2,
-          value: value,
+          value: value.index,
         ),
       );
     });
@@ -298,7 +299,7 @@ extension RatingLinkQueryFilter
       return query.addFilterCondition(
         LessCondition(
           property: 2,
-          value: value,
+          value: value.index,
         ),
       );
     });
@@ -312,7 +313,7 @@ extension RatingLinkQueryFilter
       return query.addFilterCondition(
         LessOrEqualCondition(
           property: 2,
-          value: value,
+          value: value.index,
         ),
       );
     });
@@ -326,8 +327,8 @@ extension RatingLinkQueryFilter
       return query.addFilterCondition(
         BetweenCondition(
           property: 2,
-          lower: lower,
-          upper: upper,
+          lower: lower.index,
+          upper: upper.index,
         ),
       );
     });

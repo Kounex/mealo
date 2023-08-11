@@ -2,10 +2,10 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mealo/models/randomized_run/randomized_run.dart';
+import 'package:mealo/utils/design_system.dart';
 
 import '../../../../models/meal/meal.dart';
 import '../../../../stores/views/home.dart';
-import '../../../../utils/styling.dart';
 import '../../../../widgets/animation/text_shimmer.dart';
 import '../../../../widgets/base/functional/async_value_builder.dart';
 import '../../../../widgets/base/ui/card.dart';
@@ -35,7 +35,7 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
             asyncValue: asyncMeals,
             loading: () => const TextShimmer(),
             data: (meals) => AnimatedSwitcher(
-                duration: StylingUtils.kBaseAnimationDuration * 4,
+                duration: DesignSystem.animation.defaultDurationMS250 * 4,
                 child: () {
                   if (asyncCurrentRandomizedRun.isLoading) {
                     return const MealShuffle(
