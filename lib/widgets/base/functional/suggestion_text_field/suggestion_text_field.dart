@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:mealo/utils/styling.dart';
 
+import '../../../../utils/design_system.dart';
 import '../text_form_field.dart';
 import 'suggestion_overlay.dart';
 
@@ -80,7 +80,7 @@ class _BaseSuggestionTextField<T> extends State<BaseSuggestionTextField<T>>
 
     _animController = AnimationController(
       vsync: this,
-      duration: StylingUtils.kBaseAnimationDuration,
+      duration: DesignSystem.animation.defaultDurationMS250,
     );
 
     _entry = OverlayEntry(
