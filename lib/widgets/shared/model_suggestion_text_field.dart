@@ -14,6 +14,9 @@ class ModelSuggestionTextField<T extends CommonModel> extends StatelessWidget {
   final AnchorType? anchorType;
   final double? minWidth;
 
+  final bool isSortCaseSensitive;
+  final bool isSearchCaseSensitive;
+
   final void Function(T? value) setValue;
 
   /// TODO: check why I can't set it to T as return type when I can do it
@@ -28,25 +31,40 @@ class ModelSuggestionTextField<T extends CommonModel> extends StatelessWidget {
     this.hintText,
     this.anchorType,
     this.minWidth,
+    this.isSortCaseSensitive = false,
+    this.isSearchCaseSensitive = false,
     required this.setValue,
     required this.onAdd,
     required this.onDeleteSelection,
   });
 
+  List<T> _filterSuggestions(String text) {
+    return this.values.where(
+      (model) {
+        if (this.isSearchCaseSensitive) {
+          return model.name.contains(text);
+        }
+
+        return model.name.toLowerCase().contains(text.toLowerCase());
+      },
+    ).toList();
+  }
+
+  int _sortSuggestions(T value1, T value2) {
+    if (this.isSortCaseSensitive) {
+      return value1.name.compareTo(value2.name);
+    }
+
+    return value1.name.toLowerCase().compareTo(value2.name.toLowerCase());
+  }
+
   @override
   Widget build(BuildContext context) {
     return BaseSuggestionTextField<T>(
       selection: this.value?.name,
-      suggestions: (text) => this
-          .values
-          .where(
-            (value) =>
-                value.name.toLowerCase().contains(text.toLowerCase().trim()),
-          )
-          .toList(),
+      suggestions: _filterSuggestions,
       hintText: this.hintText ?? 'Value',
-      sort: (value1, value2) =>
-          value1.name.toLowerCase().compareTo(value2.name.toLowerCase()),
+      sort: _sortSuggestions,
       suggestionText: (value) => value.name,
       onSuggestionTapped: (value) => this.setValue(value),
       anchorType: this.anchorType ?? AnchorType.left,

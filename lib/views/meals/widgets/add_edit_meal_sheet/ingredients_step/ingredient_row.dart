@@ -103,6 +103,7 @@ class _IngredientRowState extends State<IngredientRow> {
       values: this.widget.units,
       setValue: _setUnit,
       hintText: 'Unit',
+      isSearchCaseSensitive: true,
       onAdd: (name) => ModalUtils.showBaseDialog<Unit>(
         context,
         AddEditModelDialog(

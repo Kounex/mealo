@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PressDoneTag extends StatelessWidget {
@@ -6,20 +7,25 @@ class PressDoneTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 24.0,
-      width: 92.0,
+      height: 38.0,
+      width: 38.0,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(12.0),
       ),
-      child: Text(
-        'Press Done',
-        style: Theme.of(context)
-            .textTheme
-            .labelSmall!
-            .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+      child: const Icon(
+        CupertinoIcons.return_icon,
+        size: 16.0,
       ),
+      //     Text(
+      //   'Press\nDone',
+      //   textAlign: TextAlign.center,
+      //   style: Theme.of(context)
+      //       .textTheme
+      //       .labelSmall!
+      //       .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+      // ),
     );
   }
 }
