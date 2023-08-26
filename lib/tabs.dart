@@ -68,6 +68,7 @@ class TabsView extends ConsumerWidget {
                   ),
                   child: BottomNavigationBar(
                     currentIndex: tabIndex,
+                    elevation: 0,
                     items: List.from(
                       TabMeta.values.map(
                         (tab) => BottomNavigationBarItem(

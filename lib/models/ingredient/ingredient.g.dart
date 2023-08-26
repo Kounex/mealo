@@ -14,16 +14,37 @@ extension GetIngredientCollection on Isar {
   IsarCollection<String, Ingredient> get ingredients => this.collection();
 }
 
-const IngredientSchema = IsarCollectionSchema(
-  schema:
-      '{"name":"Ingredient","idName":"uuid","properties":[{"name":"name","type":"String"},{"name":"uuid","type":"String"},{"name":"created","type":"DateTime"},{"name":"updated","type":"DateTime"}]}',
+const IngredientSchema = IsarGeneratedSchema(
+  schema: IsarSchema(
+    name: 'Ingredient',
+    idName: 'uuid',
+    embedded: false,
+    properties: [
+      IsarPropertySchema(
+        name: 'name',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'uuid',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'created',
+        type: IsarType.dateTime,
+      ),
+      IsarPropertySchema(
+        name: 'updated',
+        type: IsarType.dateTime,
+      ),
+    ],
+    indexes: [],
+  ),
   converter: IsarObjectConverter<String, Ingredient>(
     serialize: serializeIngredient,
     deserialize: deserializeIngredient,
     deserializeProperty: deserializeIngredientProp,
   ),
   embeddedSchemas: [],
-  //hash: -2570229116953906930,
 );
 
 @isarProtected
@@ -191,6 +212,40 @@ extension IngredientQueryUpdate on IsarQuery<Ingredient> {
       _IngredientQueryUpdateImpl(this, limit: 1);
 
   _IngredientQueryUpdate get updateAll => _IngredientQueryUpdateImpl(this);
+}
+
+class _IngredientQueryBuilderUpdateImpl implements _IngredientQueryUpdate {
+  const _IngredientQueryBuilderUpdateImpl(this.query, {this.limit});
+
+  final QueryBuilder<Ingredient, Ingredient, QOperations> query;
+  final int? limit;
+
+  @override
+  int call({
+    Object? name = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
+  }) {
+    final q = query.build();
+    try {
+      return q.updateProperties(limit: limit, {
+        if (name != ignore) 1: name as String?,
+        if (created != ignore) 3: created as DateTime?,
+        if (updated != ignore) 4: updated as DateTime?,
+      });
+    } finally {
+      q.close();
+    }
+  }
+}
+
+extension IngredientQueryBuilderUpdate
+    on QueryBuilder<Ingredient, Ingredient, QOperations> {
+  _IngredientQueryUpdate get updateFirst =>
+      _IngredientQueryBuilderUpdateImpl(this, limit: 1);
+
+  _IngredientQueryUpdate get updateAll =>
+      _IngredientQueryBuilderUpdateImpl(this);
 }
 
 extension IngredientQueryFilter

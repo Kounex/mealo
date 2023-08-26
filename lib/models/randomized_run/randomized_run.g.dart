@@ -14,16 +14,58 @@ extension GetRandomizedRunCollection on Isar {
   IsarCollection<String, RandomizedRun> get randomizedRuns => this.collection();
 }
 
-const RandomizedRunSchema = IsarCollectionSchema(
-  schema:
-      '{"name":"RandomizedRun","idName":"uuid","properties":[{"name":"inclusiveTagsUuids","type":"StringList"},{"name":"exclusiveTagsUuids","type":"StringList"},{"name":"ratingLinks","type":"ObjectList","target":"RatingLink"},{"name":"mealNotFeastSince","type":"DateTime"},{"name":"mealUuid","type":"String"},{"name":"feast","type":"Bool"},{"name":"uuid","type":"String"},{"name":"created","type":"DateTime"},{"name":"updated","type":"DateTime"}]}',
+const RandomizedRunSchema = IsarGeneratedSchema(
+  schema: IsarSchema(
+    name: 'RandomizedRun',
+    idName: 'uuid',
+    embedded: false,
+    properties: [
+      IsarPropertySchema(
+        name: 'inclusiveTagsUuids',
+        type: IsarType.stringList,
+      ),
+      IsarPropertySchema(
+        name: 'exclusiveTagsUuids',
+        type: IsarType.stringList,
+      ),
+      IsarPropertySchema(
+        name: 'ratingLinks',
+        type: IsarType.objectList,
+        target: 'RatingLink',
+      ),
+      IsarPropertySchema(
+        name: 'mealNotFeastSince',
+        type: IsarType.dateTime,
+      ),
+      IsarPropertySchema(
+        name: 'mealUuid',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'feast',
+        type: IsarType.bool,
+      ),
+      IsarPropertySchema(
+        name: 'uuid',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'created',
+        type: IsarType.dateTime,
+      ),
+      IsarPropertySchema(
+        name: 'updated',
+        type: IsarType.dateTime,
+      ),
+    ],
+    indexes: [],
+  ),
   converter: IsarObjectConverter<String, RandomizedRun>(
     serialize: serializeRandomizedRun,
     deserialize: deserializeRandomizedRun,
     deserializeProperty: deserializeRandomizedRunProp,
   ),
   embeddedSchemas: [RatingLinkSchema],
-  //hash: (-8119236817800978489 * 31 + ratingLinkSchemaHash),
 );
 
 @isarProtected
@@ -385,6 +427,45 @@ extension RandomizedRunQueryUpdate on IsarQuery<RandomizedRun> {
 
   _RandomizedRunQueryUpdate get updateAll =>
       _RandomizedRunQueryUpdateImpl(this);
+}
+
+class _RandomizedRunQueryBuilderUpdateImpl
+    implements _RandomizedRunQueryUpdate {
+  const _RandomizedRunQueryBuilderUpdateImpl(this.query, {this.limit});
+
+  final QueryBuilder<RandomizedRun, RandomizedRun, QOperations> query;
+  final int? limit;
+
+  @override
+  int call({
+    Object? mealNotFeastSince = ignore,
+    Object? mealUuid = ignore,
+    Object? feast = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
+  }) {
+    final q = query.build();
+    try {
+      return q.updateProperties(limit: limit, {
+        if (mealNotFeastSince != ignore) 4: mealNotFeastSince as DateTime?,
+        if (mealUuid != ignore) 5: mealUuid as String?,
+        if (feast != ignore) 6: feast as bool?,
+        if (created != ignore) 8: created as DateTime?,
+        if (updated != ignore) 9: updated as DateTime?,
+      });
+    } finally {
+      q.close();
+    }
+  }
+}
+
+extension RandomizedRunQueryBuilderUpdate
+    on QueryBuilder<RandomizedRun, RandomizedRun, QOperations> {
+  _RandomizedRunQueryUpdate get updateFirst =>
+      _RandomizedRunQueryBuilderUpdateImpl(this, limit: 1);
+
+  _RandomizedRunQueryUpdate get updateAll =>
+      _RandomizedRunQueryBuilderUpdateImpl(this);
 }
 
 extension RandomizedRunQueryFilter

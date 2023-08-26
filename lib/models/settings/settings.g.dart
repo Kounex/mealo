@@ -14,16 +14,41 @@ extension GetSettingsCollection on Isar {
   IsarCollection<String, Settings> get settings => this.collection();
 }
 
-const SettingsSchema = IsarCollectionSchema(
-  schema:
-      '{"name":"Settings","idName":"uuid","properties":[{"name":"darkMode","type":"Bool"},{"name":"firstLaunch","type":"Bool"},{"name":"uuid","type":"String"},{"name":"created","type":"DateTime"},{"name":"updated","type":"DateTime"}]}',
+const SettingsSchema = IsarGeneratedSchema(
+  schema: IsarSchema(
+    name: 'Settings',
+    idName: 'uuid',
+    embedded: false,
+    properties: [
+      IsarPropertySchema(
+        name: 'darkMode',
+        type: IsarType.bool,
+      ),
+      IsarPropertySchema(
+        name: 'firstLaunch',
+        type: IsarType.bool,
+      ),
+      IsarPropertySchema(
+        name: 'uuid',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'created',
+        type: IsarType.dateTime,
+      ),
+      IsarPropertySchema(
+        name: 'updated',
+        type: IsarType.dateTime,
+      ),
+    ],
+    indexes: [],
+  ),
   converter: IsarObjectConverter<String, Settings>(
     serialize: serializeSettings,
     deserialize: deserializeSettings,
     deserializeProperty: deserializeSettingsProp,
   ),
   embeddedSchemas: [],
-  //hash: 4103748018061463203,
 );
 
 @isarProtected
@@ -223,6 +248,41 @@ extension SettingsQueryUpdate on IsarQuery<Settings> {
       _SettingsQueryUpdateImpl(this, limit: 1);
 
   _SettingsQueryUpdate get updateAll => _SettingsQueryUpdateImpl(this);
+}
+
+class _SettingsQueryBuilderUpdateImpl implements _SettingsQueryUpdate {
+  const _SettingsQueryBuilderUpdateImpl(this.query, {this.limit});
+
+  final QueryBuilder<Settings, Settings, QOperations> query;
+  final int? limit;
+
+  @override
+  int call({
+    Object? darkMode = ignore,
+    Object? firstLaunch = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
+  }) {
+    final q = query.build();
+    try {
+      return q.updateProperties(limit: limit, {
+        if (darkMode != ignore) 1: darkMode as bool?,
+        if (firstLaunch != ignore) 2: firstLaunch as bool?,
+        if (created != ignore) 4: created as DateTime?,
+        if (updated != ignore) 5: updated as DateTime?,
+      });
+    } finally {
+      q.close();
+    }
+  }
+}
+
+extension SettingsQueryBuilderUpdate
+    on QueryBuilder<Settings, Settings, QOperations> {
+  _SettingsQueryUpdate get updateFirst =>
+      _SettingsQueryBuilderUpdateImpl(this, limit: 1);
+
+  _SettingsQueryUpdate get updateAll => _SettingsQueryBuilderUpdateImpl(this);
 }
 
 extension SettingsQueryFilter

@@ -14,16 +14,41 @@ extension GetRatingCollection on Isar {
   IsarCollection<String, Rating> get ratings => this.collection();
 }
 
-const RatingSchema = IsarCollectionSchema(
-  schema:
-      '{"name":"Rating","idName":"uuid","properties":[{"name":"description","type":"String"},{"name":"name","type":"String"},{"name":"uuid","type":"String"},{"name":"created","type":"DateTime"},{"name":"updated","type":"DateTime"}]}',
+const RatingSchema = IsarGeneratedSchema(
+  schema: IsarSchema(
+    name: 'Rating',
+    idName: 'uuid',
+    embedded: false,
+    properties: [
+      IsarPropertySchema(
+        name: 'description',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'name',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'uuid',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'created',
+        type: IsarType.dateTime,
+      ),
+      IsarPropertySchema(
+        name: 'updated',
+        type: IsarType.dateTime,
+      ),
+    ],
+    indexes: [],
+  ),
   converter: IsarObjectConverter<String, Rating>(
     serialize: serializeRating,
     deserialize: deserializeRating,
     deserializeProperty: deserializeRatingProp,
   ),
   embeddedSchemas: [],
-  //hash: 3663972716626235382,
 );
 
 @isarProtected
@@ -210,6 +235,41 @@ extension RatingQueryUpdate on IsarQuery<Rating> {
   _RatingQueryUpdate get updateFirst => _RatingQueryUpdateImpl(this, limit: 1);
 
   _RatingQueryUpdate get updateAll => _RatingQueryUpdateImpl(this);
+}
+
+class _RatingQueryBuilderUpdateImpl implements _RatingQueryUpdate {
+  const _RatingQueryBuilderUpdateImpl(this.query, {this.limit});
+
+  final QueryBuilder<Rating, Rating, QOperations> query;
+  final int? limit;
+
+  @override
+  int call({
+    Object? description = ignore,
+    Object? name = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
+  }) {
+    final q = query.build();
+    try {
+      return q.updateProperties(limit: limit, {
+        if (description != ignore) 1: description as String?,
+        if (name != ignore) 2: name as String?,
+        if (created != ignore) 4: created as DateTime?,
+        if (updated != ignore) 5: updated as DateTime?,
+      });
+    } finally {
+      q.close();
+    }
+  }
+}
+
+extension RatingQueryBuilderUpdate
+    on QueryBuilder<Rating, Rating, QOperations> {
+  _RatingQueryUpdate get updateFirst =>
+      _RatingQueryBuilderUpdateImpl(this, limit: 1);
+
+  _RatingQueryUpdate get updateAll => _RatingQueryBuilderUpdateImpl(this);
 }
 
 extension RatingQueryFilter on QueryBuilder<Rating, Rating, QFilterCondition> {

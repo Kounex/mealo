@@ -14,16 +14,67 @@ extension GetMealCollection on Isar {
   IsarCollection<String, Meal> get meals => this.collection();
 }
 
-const MealSchema = IsarCollectionSchema(
-  schema:
-      '{"name":"Meal","idName":"uuid","properties":[{"name":"createdAt","type":"DateTime"},{"name":"instructions","type":"String"},{"name":"thumbnailUuid","type":"String"},{"name":"imagesUuids","type":"StringList"},{"name":"ratings","type":"ObjectList","target":"RatingLink"},{"name":"tagUuids","type":"StringList"},{"name":"ingredients","type":"ObjectList","target":"IngredientLink"},{"name":"name","type":"String"},{"name":"uuid","type":"String"},{"name":"created","type":"DateTime"},{"name":"updated","type":"DateTime"}]}',
+const MealSchema = IsarGeneratedSchema(
+  schema: IsarSchema(
+    name: 'Meal',
+    idName: 'uuid',
+    embedded: false,
+    properties: [
+      IsarPropertySchema(
+        name: 'createdAt',
+        type: IsarType.dateTime,
+      ),
+      IsarPropertySchema(
+        name: 'instructions',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'thumbnailUuid',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'imagesUuids',
+        type: IsarType.stringList,
+      ),
+      IsarPropertySchema(
+        name: 'ratings',
+        type: IsarType.objectList,
+        target: 'RatingLink',
+      ),
+      IsarPropertySchema(
+        name: 'tagUuids',
+        type: IsarType.stringList,
+      ),
+      IsarPropertySchema(
+        name: 'ingredients',
+        type: IsarType.objectList,
+        target: 'IngredientLink',
+      ),
+      IsarPropertySchema(
+        name: 'name',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'uuid',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'created',
+        type: IsarType.dateTime,
+      ),
+      IsarPropertySchema(
+        name: 'updated',
+        type: IsarType.dateTime,
+      ),
+    ],
+    indexes: [],
+  ),
   converter: IsarObjectConverter<String, Meal>(
     serialize: serializeMeal,
     deserialize: deserializeMeal,
     deserializeProperty: deserializeMealProp,
   ),
   embeddedSchemas: [RatingLinkSchema, IngredientLinkSchema],
-  //hash: ((5463518283386865137 * 31 + ratingLinkSchemaHash) * 31 + ingredientLinkSchemaHash),
 );
 
 @isarProtected
@@ -475,6 +526,44 @@ extension MealQueryUpdate on IsarQuery<Meal> {
   _MealQueryUpdate get updateFirst => _MealQueryUpdateImpl(this, limit: 1);
 
   _MealQueryUpdate get updateAll => _MealQueryUpdateImpl(this);
+}
+
+class _MealQueryBuilderUpdateImpl implements _MealQueryUpdate {
+  const _MealQueryBuilderUpdateImpl(this.query, {this.limit});
+
+  final QueryBuilder<Meal, Meal, QOperations> query;
+  final int? limit;
+
+  @override
+  int call({
+    Object? createdAt = ignore,
+    Object? instructions = ignore,
+    Object? thumbnailUuid = ignore,
+    Object? name = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
+  }) {
+    final q = query.build();
+    try {
+      return q.updateProperties(limit: limit, {
+        if (createdAt != ignore) 1: createdAt as DateTime?,
+        if (instructions != ignore) 2: instructions as String?,
+        if (thumbnailUuid != ignore) 3: thumbnailUuid as String?,
+        if (name != ignore) 8: name as String?,
+        if (created != ignore) 10: created as DateTime?,
+        if (updated != ignore) 11: updated as DateTime?,
+      });
+    } finally {
+      q.close();
+    }
+  }
+}
+
+extension MealQueryBuilderUpdate on QueryBuilder<Meal, Meal, QOperations> {
+  _MealQueryUpdate get updateFirst =>
+      _MealQueryBuilderUpdateImpl(this, limit: 1);
+
+  _MealQueryUpdate get updateAll => _MealQueryBuilderUpdateImpl(this);
 }
 
 extension MealQueryFilter on QueryBuilder<Meal, Meal, QFilterCondition> {
@@ -2316,10 +2405,26 @@ extension MealQueryProperty3<R1, R2>
 // ignore_for_file: duplicate_ignore, invalid_use_of_protected_member, lines_longer_than_80_chars, constant_identifier_names, avoid_js_rounded_ints, no_leading_underscores_for_local_identifiers, require_trailing_commas, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_in_if_null_operators, library_private_types_in_public_api, prefer_const_constructors
 // ignore_for_file: type=lint
 
-//const ingredientLinkSchemaHash = 1825980410966319530;
-const IngredientLinkSchema = IsarSchema(
-  schema:
-      '{"name":"IngredientLink","idName":null,"embedded":true,"properties":[{"name":"uuidIngredient","type":"String"},{"name":"uuidUnit","type":"String"},{"name":"amount","type":"Double"}]}',
+const IngredientLinkSchema = IsarGeneratedSchema(
+  schema: IsarSchema(
+    name: 'IngredientLink',
+    embedded: true,
+    properties: [
+      IsarPropertySchema(
+        name: 'uuidIngredient',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'uuidUnit',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'amount',
+        type: IsarType.double,
+      ),
+    ],
+    indexes: [],
+  ),
   converter: IsarObjectConverter<void, IngredientLink>(
     serialize: serializeIngredientLink,
     deserialize: deserializeIngredientLink,

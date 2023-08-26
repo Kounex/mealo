@@ -15,7 +15,7 @@ import '../models/unit/unit.dart';
 class PersistanceUtils {
   static late Isar _instance;
 
-  static final List<IsarCollectionSchema> _schemas = [
+  static final List<IsarGeneratedSchema> _schemas = [
     MealSchema,
     RandomizedRunSchema,
     SettingsSchema,

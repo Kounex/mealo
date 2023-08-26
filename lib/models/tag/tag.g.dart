@@ -14,16 +14,41 @@ extension GetTagCollection on Isar {
   IsarCollection<String, Tag> get tags => this.collection();
 }
 
-const TagSchema = IsarCollectionSchema(
-  schema:
-      '{"name":"Tag","idName":"uuid","properties":[{"name":"colorHex","type":"String"},{"name":"name","type":"String"},{"name":"uuid","type":"String"},{"name":"created","type":"DateTime"},{"name":"updated","type":"DateTime"}]}',
+const TagSchema = IsarGeneratedSchema(
+  schema: IsarSchema(
+    name: 'Tag',
+    idName: 'uuid',
+    embedded: false,
+    properties: [
+      IsarPropertySchema(
+        name: 'colorHex',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'name',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'uuid',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'created',
+        type: IsarType.dateTime,
+      ),
+      IsarPropertySchema(
+        name: 'updated',
+        type: IsarType.dateTime,
+      ),
+    ],
+    indexes: [],
+  ),
   converter: IsarObjectConverter<String, Tag>(
     serialize: serializeTag,
     deserialize: deserializeTag,
     deserializeProperty: deserializeTagProp,
   ),
   embeddedSchemas: [],
-  //hash: 7181363309658181643,
 );
 
 @isarProtected
@@ -210,6 +235,39 @@ extension TagQueryUpdate on IsarQuery<Tag> {
   _TagQueryUpdate get updateFirst => _TagQueryUpdateImpl(this, limit: 1);
 
   _TagQueryUpdate get updateAll => _TagQueryUpdateImpl(this);
+}
+
+class _TagQueryBuilderUpdateImpl implements _TagQueryUpdate {
+  const _TagQueryBuilderUpdateImpl(this.query, {this.limit});
+
+  final QueryBuilder<Tag, Tag, QOperations> query;
+  final int? limit;
+
+  @override
+  int call({
+    Object? colorHex = ignore,
+    Object? name = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
+  }) {
+    final q = query.build();
+    try {
+      return q.updateProperties(limit: limit, {
+        if (colorHex != ignore) 1: colorHex as String?,
+        if (name != ignore) 2: name as String?,
+        if (created != ignore) 4: created as DateTime?,
+        if (updated != ignore) 5: updated as DateTime?,
+      });
+    } finally {
+      q.close();
+    }
+  }
+}
+
+extension TagQueryBuilderUpdate on QueryBuilder<Tag, Tag, QOperations> {
+  _TagQueryUpdate get updateFirst => _TagQueryBuilderUpdateImpl(this, limit: 1);
+
+  _TagQueryUpdate get updateAll => _TagQueryBuilderUpdateImpl(this);
 }
 
 extension TagQueryFilter on QueryBuilder<Tag, Tag, QFilterCondition> {

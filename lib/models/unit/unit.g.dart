@@ -14,16 +14,37 @@ extension GetUnitCollection on Isar {
   IsarCollection<String, Unit> get units => this.collection();
 }
 
-const UnitSchema = IsarCollectionSchema(
-  schema:
-      '{"name":"Unit","idName":"uuid","properties":[{"name":"name","type":"String"},{"name":"uuid","type":"String"},{"name":"created","type":"DateTime"},{"name":"updated","type":"DateTime"}]}',
+const UnitSchema = IsarGeneratedSchema(
+  schema: IsarSchema(
+    name: 'Unit',
+    idName: 'uuid',
+    embedded: false,
+    properties: [
+      IsarPropertySchema(
+        name: 'name',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'uuid',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'created',
+        type: IsarType.dateTime,
+      ),
+      IsarPropertySchema(
+        name: 'updated',
+        type: IsarType.dateTime,
+      ),
+    ],
+    indexes: [],
+  ),
   converter: IsarObjectConverter<String, Unit>(
     serialize: serializeUnit,
     deserialize: deserializeUnit,
     deserializeProperty: deserializeUnitProp,
   ),
   embeddedSchemas: [],
-  //hash: 7703398083747554499,
 );
 
 @isarProtected
@@ -190,6 +211,38 @@ extension UnitQueryUpdate on IsarQuery<Unit> {
   _UnitQueryUpdate get updateFirst => _UnitQueryUpdateImpl(this, limit: 1);
 
   _UnitQueryUpdate get updateAll => _UnitQueryUpdateImpl(this);
+}
+
+class _UnitQueryBuilderUpdateImpl implements _UnitQueryUpdate {
+  const _UnitQueryBuilderUpdateImpl(this.query, {this.limit});
+
+  final QueryBuilder<Unit, Unit, QOperations> query;
+  final int? limit;
+
+  @override
+  int call({
+    Object? name = ignore,
+    Object? created = ignore,
+    Object? updated = ignore,
+  }) {
+    final q = query.build();
+    try {
+      return q.updateProperties(limit: limit, {
+        if (name != ignore) 1: name as String?,
+        if (created != ignore) 3: created as DateTime?,
+        if (updated != ignore) 4: updated as DateTime?,
+      });
+    } finally {
+      q.close();
+    }
+  }
+}
+
+extension UnitQueryBuilderUpdate on QueryBuilder<Unit, Unit, QOperations> {
+  _UnitQueryUpdate get updateFirst =>
+      _UnitQueryBuilderUpdateImpl(this, limit: 1);
+
+  _UnitQueryUpdate get updateAll => _UnitQueryBuilderUpdateImpl(this);
 }
 
 extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
