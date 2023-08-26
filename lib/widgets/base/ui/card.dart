@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import '../../../utils/design_system.dart';
 import 'divider.dart';
 
-const double kBaseCardMaxWidth = 772.0;
-const double kBaseCardBorderRadius = 12.0;
-
 class BaseCard extends StatefulWidget {
   final Widget child;
   final bool centerChild;
@@ -28,19 +25,19 @@ class BaseCard extends StatefulWidget {
 
   final Widget? trailingTitleWidget;
 
-  final double topPadding;
-  final double rightPadding;
-  final double bottomPadding;
-  final double leftPadding;
+  final double? topPadding;
+  final double? rightPadding;
+  final double? bottomPadding;
+  final double? leftPadding;
 
-  final EdgeInsetsGeometry paddingChild;
-  final EdgeInsetsGeometry titlePadding;
+  final EdgeInsetsGeometry? paddingChild;
+  final EdgeInsetsGeometry? titlePadding;
 
   final CrossAxisAlignment titleCrossAlignment;
 
   final double elevation;
 
-  final double borderRadius;
+  final double? borderRadius;
 
   const BaseCard({
     Key? key,
@@ -57,16 +54,15 @@ class BaseCard extends StatefulWidget {
     this.title,
     this.titleWidget,
     this.trailingTitleWidget,
-    this.paddingChild = const EdgeInsets.all(18.0),
-    this.topPadding = 18.0,
-    this.rightPadding = 16.0,
-    this.bottomPadding = 18.0,
-    this.leftPadding = 16.0,
-    this.titlePadding =
-        const EdgeInsets.only(left: 24.0, right: 24.0, top: 12.0, bottom: 12.0),
+    this.paddingChild,
+    this.topPadding,
+    this.rightPadding,
+    this.bottomPadding,
+    this.leftPadding,
+    this.titlePadding,
     this.titleCrossAlignment = CrossAxisAlignment.center,
     this.elevation = 1.0,
-    this.borderRadius = kBaseCardBorderRadius,
+    this.borderRadius,
   }) : super(key: key);
 
   @override
@@ -95,7 +91,8 @@ class _BaseCardState extends State<BaseCard> {
           ? Colors.transparent
           : null,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(this.widget.borderRadius),
+        borderRadius: BorderRadius.circular(
+            this.widget.borderRadius ?? DesignSystem.border.radius12),
         side: this.widget.paintBorder
             ? BorderSide(color: this.widget.borderColor ?? Colors.transparent)
             : BorderSide.none,
@@ -103,10 +100,10 @@ class _BaseCardState extends State<BaseCard> {
       color: this.widget.backgroundColor ?? Theme.of(context).cardColor,
       elevation: this.widget.elevation,
       margin: EdgeInsets.only(
-        top: this.widget.topPadding,
-        right: this.widget.rightPadding,
-        bottom: this.widget.bottomPadding,
-        left: this.widget.leftPadding,
+        top: this.widget.topPadding ?? DesignSystem.spacing.x18,
+        right: this.widget.rightPadding ?? DesignSystem.spacing.x16,
+        bottom: this.widget.bottomPadding ?? DesignSystem.spacing.x18,
+        left: this.widget.leftPadding ?? DesignSystem.spacing.x16,
       ),
       child: Column(
         mainAxisAlignment: this.widget.centerChild
@@ -118,7 +115,13 @@ class _BaseCardState extends State<BaseCard> {
         children: [
           if (this.widget.titleWidget != null || this.widget.title != null)
             Padding(
-              padding: this.widget.titlePadding,
+              padding: this.widget.titlePadding ??
+                  EdgeInsets.only(
+                    left: DesignSystem.spacing.x24,
+                    right: DesignSystem.spacing.x24,
+                    top: DesignSystem.spacing.x12,
+                    bottom: DesignSystem.spacing.x12,
+                  ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -170,7 +173,8 @@ class _BaseCardState extends State<BaseCard> {
                       this.widget.title != null)
                     const BaseDivider(),
                   Padding(
-                    padding: this.widget.paddingChild,
+                    padding: this.widget.paddingChild ??
+                        EdgeInsets.all(DesignSystem.spacing.x18),
                     child: this.widget.child,
                   ),
                 ],
@@ -185,7 +189,7 @@ class _BaseCardState extends State<BaseCard> {
 
     return Center(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: kBaseCardMaxWidth),
+        constraints: BoxConstraints(maxWidth: Breakpoint.sm.width),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

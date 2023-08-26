@@ -6,6 +6,7 @@ import 'package:mealo/utils/persistance.dart';
 import '../../../../../models/ingredient/ingredient.dart';
 import '../../../../../models/meal/meal.dart';
 import '../../../../../models/unit/unit.dart';
+import '../../../../../utils/design_system.dart';
 import '../../../../../utils/modal.dart';
 import '../../../../../utils/validation.dart';
 import '../../../../../widgets/base/ui/card.dart';
@@ -173,12 +174,12 @@ class _IngredientRowState extends State<IngredientRow> {
                             width: 144.0,
                             child: amountTextField,
                           ),
-                          const SizedBox(width: 12.0),
+                          SizedBox(width: DesignSystem.spacing.x12),
                           SizedBox(
                             width: 108.0,
                             child: unitSuggestField,
                           ),
-                          const SizedBox(width: 12.0),
+                          SizedBox(width: DesignSystem.spacing.x12),
                           Expanded(
                             child: ingredientSuggestField,
                           ),
@@ -192,7 +193,7 @@ class _IngredientRowState extends State<IngredientRow> {
                                 width: 144.0,
                                 child: amountTextField,
                               ),
-                              const SizedBox(width: 12.0),
+                              SizedBox(width: DesignSystem.spacing.x12),
                               Expanded(
                                 child: Align(
                                   alignment: Alignment.centerLeft,
@@ -201,11 +202,11 @@ class _IngredientRowState extends State<IngredientRow> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 12.0),
+                          SizedBox(height: DesignSystem.spacing.x12),
                           ingredientSuggestField,
                         ],
                       ),
-                const SizedBox(height: 8.0),
+                SizedBox(height: DesignSystem.spacing.x8),
                 Row(
                   children: [
                     Expanded(
@@ -219,7 +220,7 @@ class _IngredientRowState extends State<IngredientRow> {
                         child: const Text('Save'),
                       ),
                     ),
-                    const SizedBox(width: 12.0),
+                    SizedBox(width: DesignSystem.spacing.x12),
                     Expanded(
                       child: ElevatedButton(
                         onPressed: this.widget.onDelete,

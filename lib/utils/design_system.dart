@@ -10,6 +10,7 @@ class _Spacing {
   double get x6 => 6;
   double get x8 => 8;
   double get x12 => 12;
+  double get x16 => 16;
   double get x18 => 18;
   double get x24 => 24;
   double get x32 => 32;
@@ -18,9 +19,19 @@ class _Spacing {
   double get x64 => 64;
 }
 
+class _Size {
+  const _Size();
+
+  double get x16 => 16;
+  double get x18 => 18;
+  double get x42 => 42;
+  double get x64 => 64;
+}
+
 class _Border {
   const _Border();
 
+  double get radius6 => 6;
   double get radius12 => 12;
 
   double get width05 => 0.5;
@@ -35,11 +46,22 @@ class _Animation {
 }
 
 enum Breakpoint {
+  /// 567
   xsm,
+
+  /// 768
   sm,
+
+  /// 992
   md,
+
+  /// 1200
   lg,
+
+  /// 1400
   xl,
+
+  /// double.infinity
   xxl;
 
   double get width {
@@ -60,8 +82,9 @@ enum Breakpoint {
   bool operator <=(Breakpoint other) => index <= other.index;
 }
 
-sealed class DesignSystem {
+final class DesignSystem {
   static const spacing = _Spacing();
+  static const size = _Size();
   static const border = _Border();
   static const animation = _Animation();
 

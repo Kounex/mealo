@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mealo/widgets/base/ui/text_button.dart';
 
+import '../../../../../utils/design_system.dart';
 import '../../../../../utils/modal.dart';
 import '../../../../../utils/validation.dart';
 import '../../../../../widgets/base/functional/text_form_field.dart';
@@ -49,7 +50,7 @@ class _ImageFromURLDialogState extends State<ImageFromURLDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text('Enter the URL of the image you want to use.'),
-          const SizedBox(height: 24.0),
+          SizedBox(height: DesignSystem.spacing.x24),
           Form(
             key: _form,
             child: BaseTextFormField(

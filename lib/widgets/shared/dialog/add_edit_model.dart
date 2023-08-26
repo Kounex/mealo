@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../models/model.dart';
+import '../../../utils/design_system.dart';
 import '../../../utils/modal.dart';
 import '../../base/functional/text_form_field.dart';
 import '../../base/ui/text_button.dart';
@@ -92,7 +93,7 @@ class _AddEditModelDialogState<T extends CommonModel>
         mainAxisSize: MainAxisSize.min,
         children: [
           Text('Enter the name for the ${_getGenericBaseModelType()} entity:'),
-          const SizedBox(height: 12.0),
+          SizedBox(height: DesignSystem.spacing.x12),
           Form(
             key: _form,
             child: BaseTextFormField(

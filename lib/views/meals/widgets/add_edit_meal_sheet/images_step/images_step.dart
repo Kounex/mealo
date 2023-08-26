@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../../models/meal/meal.dart';
+import '../../../../../utils/design_system.dart';
 import '../../../../../utils/modal.dart';
 import '../../../../../widgets/base/ui/card.dart';
 import '../../../../../widgets/base/ui/progress_indicator.dart';
@@ -182,7 +183,7 @@ class _ImagesStepState extends State<ImagesStep> {
         ),
         Column(
           children: [
-            const SizedBox(height: 24.0),
+            SizedBox(height: DesignSystem.spacing.x24),
             Stack(
               alignment: Alignment.center,
               children: [
@@ -226,8 +227,8 @@ class _ImagesStepState extends State<ImagesStep> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Card(
                         shape: RoundedRectangleBorder(
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(12.0),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(DesignSystem.border.radius12),
                           ),
                           side: BorderSide(
                             color: Theme.of(context).colorScheme.primary,
@@ -235,7 +236,7 @@ class _ImagesStepState extends State<ImagesStep> {
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(24.0),
+                          padding: EdgeInsets.all(DesignSystem.spacing.x24),
                           child: BaseProgressIndicator(
                             text: 'Loading image(s)...',
                           ),
@@ -247,7 +248,7 @@ class _ImagesStepState extends State<ImagesStep> {
                 )
               ],
             ),
-            const SizedBox(height: 24.0),
+            SizedBox(height: DesignSystem.spacing.x24),
             SizedBox(
               // width: 256,
               width: double.infinity,

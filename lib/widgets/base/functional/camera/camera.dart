@@ -1,9 +1,8 @@
-import 'dart:ui';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../utils/design_system.dart';
 import '../../ui/result.dart';
 import '../future_builder.dart';
 import 'ui.dart';
@@ -45,8 +44,12 @@ class _BaseCameraState extends State<BaseCamera> {
                   ),
           ),
           Positioned(
-            right: 12.0 + window.viewPadding.right / window.devicePixelRatio,
-            top: 12.0 + window.viewPadding.top / window.devicePixelRatio,
+            right: DesignSystem.spacing.x12 +
+                View.of(context).viewPadding.right /
+                    View.of(context).devicePixelRatio,
+            top: DesignSystem.spacing.x12 +
+                View.of(context).viewPadding.top /
+                    View.of(context).devicePixelRatio,
             child: IconButton(
               onPressed: () => Navigator.of(context).pop(),
               icon: const Icon(CupertinoIcons.clear),

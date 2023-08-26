@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/meal/meal.dart';
 import '../../../models/rating/rating.dart';
 import '../../../stores/views/home.dart';
+import '../../../utils/design_system.dart';
 import '../../../utils/modal.dart';
 import '../../../widgets/base/functional/async_value_builder.dart';
 import '../../../widgets/base/functional/scaffold.dart';
@@ -60,7 +61,7 @@ class MealDetailsView extends ConsumerWidget {
             meal.thumbnailUuid != null
                 ? Container(
                     alignment: Alignment.center,
-                    padding: const EdgeInsets.all(24.0),
+                    padding: EdgeInsets.all(DesignSystem.spacing.x24),
                     child: BaseImage(
                       imageUuid: meal.thumbnailUuid,
                       height: 192.0,
@@ -71,7 +72,8 @@ class MealDetailsView extends ConsumerWidget {
             BaseAsyncValueBuilder(
               asyncValue: asyncRatings,
               data: (ratings) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                padding:
+                    EdgeInsets.symmetric(horizontal: DesignSystem.spacing.x24),
                 child: MealRatings(
                   ratings: ratings,
                   ratingLinks: meal.ratings,

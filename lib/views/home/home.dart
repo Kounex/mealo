@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'widgets/meal_randomizer/meal_randomizer.dart';
-import 'widgets/prev_random_meals.dart';
-import '../../widgets/base/functional/scaffold.dart';
 
+import '../../utils/design_system.dart';
 import '../../widgets/animation/fader.dart';
+import '../../widgets/base/functional/scaffold.dart';
+import 'widgets/meal_randomizer/meal_randomizer.dart';
 import 'widgets/prev_ate_meals.dart';
+import 'widgets/prev_random_meals.dart';
 
 class HomeView extends StatelessWidget {
   final ScrollController controller;
@@ -39,7 +40,7 @@ class HomeView extends StatelessWidget {
           ),
           background: Container(
             alignment: Alignment.bottomCenter,
-            padding: const EdgeInsets.only(bottom: 24.0),
+            padding: EdgeInsets.only(bottom: DesignSystem.spacing.x24),
             child: Image.asset(
               'assets/images/app-icon.png',
               height: 164,

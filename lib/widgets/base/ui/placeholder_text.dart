@@ -1,6 +1,8 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
+import '../../../utils/design_system.dart';
+
 class BasePlaceholder extends StatelessWidget {
   final String text;
   final IconData? icon;
@@ -24,10 +26,10 @@ class BasePlaceholder extends StatelessWidget {
         if (this.useIcon) ...[
           Icon(
             this.icon ?? FluentIcons.mail_inbox_dismiss_24_filled,
-            size: 64.0,
+            size: DesignSystem.size.x64,
             color: Theme.of(context).disabledColor,
           ),
-          const SizedBox(height: 12.0),
+          SizedBox(height: DesignSystem.spacing.x12),
         ],
         Text(
           this.text,

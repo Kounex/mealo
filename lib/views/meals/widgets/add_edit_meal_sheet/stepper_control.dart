@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../utils/design_system.dart';
+
 class StepperControl extends StatelessWidget {
   final int step;
   final int max;
@@ -27,7 +29,7 @@ class StepperControl extends StatelessWidget {
             child: const Text('Back'),
           ),
         ),
-        const SizedBox(width: 24.0),
+        SizedBox(width: DesignSystem.spacing.x24),
         Expanded(
           child: ElevatedButton(
             onPressed: () {

@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'design_system.dart';
+
 class ModalUtils {
   static Future<T?> showBaseDialog<T>(
     BuildContext context,
@@ -32,18 +34,19 @@ class ModalUtils {
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const SizedBox(height: 8.0),
+                        SizedBox(height: DesignSystem.spacing.x8),
                         content,
                       ],
                     ),
                     Positioned(
-                      top: 12.0,
+                      top: DesignSystem.spacing.x12,
                       child: Container(
                         height: 5.0,
                         width: 36.0,
                         decoration: BoxDecoration(
                           color: CupertinoColors.inactiveGray.darkColor,
-                          borderRadius: BorderRadius.circular(6.0),
+                          borderRadius: BorderRadius.circular(
+                              DesignSystem.border.radius6),
                         ),
                       ),
                     ),

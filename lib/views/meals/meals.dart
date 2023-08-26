@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../models/meal/meal.dart';
-import '../../utils/modal.dart';
 
+import '../../models/meal/meal.dart';
+import '../../utils/design_system.dart';
+import '../../utils/modal.dart';
 import '../../utils/router.dart';
 import '../../widgets/base/functional/scaffold.dart';
 import '../../widgets/shared/meal_grid.dart';
@@ -35,7 +36,7 @@ class MealsView extends StatelessWidget {
       ),
       children: [
         Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: EdgeInsets.all(DesignSystem.spacing.x24),
           child: MealGrid(
             provider: mealsProvider,
             onTap: (meal) => RouterUtils.beamTo(

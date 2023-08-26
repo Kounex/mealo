@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/tag/tag.dart';
 import '../../../../types/extensions/color.dart';
+import '../../../../utils/design_system.dart';
 import '../../../../utils/modal.dart';
 import '../../../../utils/persistance.dart';
 import '../../../../utils/validation.dart';
@@ -81,7 +82,7 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text('Enter the name for the Tag entity:'),
-          const SizedBox(height: 12.0),
+          SizedBox(height: DesignSystem.spacing.x12),
           Form(
             key: _form,
             child: BaseTextFormField(
@@ -102,7 +103,7 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
               },
             ),
           ),
-          const SizedBox(height: 12.0),
+          SizedBox(height: DesignSystem.spacing.x12),
           ColorPickerTile(
             colorHex: _colorHex,
             onColorSet: (color) => setState(() => _colorHex = color?.toHex()),

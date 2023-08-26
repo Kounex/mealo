@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../models/meal/meal.dart';
 import '../../../../models/tag/tag.dart';
 import '../../../../types/extensions/string.dart';
+import '../../../../utils/design_system.dart';
 import '../../../../utils/modal.dart';
 import '../../../../widgets/base/functional/async_value_builder.dart';
 import '../../../../widgets/base/functional/suggestion_text_field/suggestion_text_field.dart';
@@ -84,7 +85,7 @@ class _TagsStepState extends ConsumerState<TagsStep> {
             onSuggestionTapped: (tag) =>
                 setState(() => this.widget.meal.tagUuids.add(tag.uuid)),
           ),
-          const SizedBox(height: 24.0),
+          SizedBox(height: DesignSystem.spacing.x24),
           BaseCard(
             topPadding: 0,
             bottomPadding: 0,
@@ -94,7 +95,7 @@ class _TagsStepState extends ConsumerState<TagsStep> {
                 ? Align(
                     alignment: Alignment.centerLeft,
                     child: Wrap(
-                      spacing: 12.0,
+                      spacing: DesignSystem.spacing.x12,
                       children: this
                           .widget
                           .meal

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../widgets/base/functional/text_form_field.dart';
 import '../../../models/rating/rating.dart';
+import '../../../utils/design_system.dart';
 import '../../../utils/modal.dart';
 import '../../../utils/persistance.dart';
 import '../../../utils/validation.dart';
@@ -79,7 +80,7 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
           if (this.widget.rating == null)
             const Text(
                 'Ratings apply to all meals. You will need to update existing meals and set the value of the new rating.'),
-          const SizedBox(height: 12.0),
+          SizedBox(height: DesignSystem.spacing.x12),
           Form(
             key: _form,
             child: Column(
@@ -101,7 +102,7 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
                     return error;
                   },
                 ),
-                const SizedBox(height: 12.0),
+                SizedBox(height: DesignSystem.spacing.x12),
                 BaseTextFormField(
                   controller: _description,
                   hintText: 'Description...',

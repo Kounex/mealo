@@ -180,10 +180,10 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
           children: [
             Scaffold(
               body: Padding(
-                padding: const EdgeInsets.only(
-                  top: 24.0,
-                  left: 24.0,
-                  right: 24.0,
+                padding: EdgeInsets.only(
+                  top: DesignSystem.spacing.x24,
+                  left: DesignSystem.spacing.x24,
+                  right: DesignSystem.spacing.x24,
                 ),
                 child: Column(
                   children: [
@@ -198,7 +198,8 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                             ),
                             if (this.widget.meal != null)
                               Padding(
-                                padding: const EdgeInsets.only(left: 12.0),
+                                padding: EdgeInsets.only(
+                                    left: DesignSystem.spacing.x12),
                                 child: BaseTextButton(
                                   onPressed: () => ModalUtils.showBaseDialog(
                                     context,
@@ -224,7 +225,7 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 24.0),
+                    SizedBox(height: DesignSystem.spacing.x24),
                     Form(
                       key: _form,
                       child: BaseTextFormField(
@@ -235,13 +236,14 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                         hintText: 'Name',
                       ),
                     ),
-                    const SizedBox(height: 24.0),
+                    SizedBox(height: DesignSystem.spacing.x24),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: DesignSystem.spacing.x4),
                       child: StepperOverview(
                         step: _step.index,
                         max: AddEditMealStep.values.length - 1,
-                        size: 42,
+                        size: DesignSystem.size.x42,
                         titles: const [
                           'Images',
                           'Tags',
@@ -253,7 +255,7 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 12.0),
+                    SizedBox(height: DesignSystem.spacing.x12),
                     Expanded(
                       child: ListView(
                         physics: const ClampingScrollPhysics(),
@@ -261,7 +263,8 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                           Align(
                             alignment: Alignment.topCenter,
                             child: Padding(
-                              padding: const EdgeInsets.only(top: 24.0),
+                              padding: EdgeInsets.only(
+                                  top: DesignSystem.spacing.x24),
                               child: AnimatedSwitcher(
                                 duration:
                                     DesignSystem.animation.defaultDurationMS250,
@@ -311,7 +314,7 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                   const BaseDivider(),
                   Material(
                     child: Padding(
-                      padding: const EdgeInsets.all(24.0) +
+                      padding: EdgeInsets.all(DesignSystem.spacing.x24) +
                           MediaQuery.of(context).viewPadding,
                       child: StepperControl(
                         step: _step.index,

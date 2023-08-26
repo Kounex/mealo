@@ -59,9 +59,9 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
                   return const Text('You don\'t have any meals yet.');
                 }()),
           ),
-          const SizedBox(height: 12.0),
+          SizedBox(height: DesignSystem.spacing.x12),
           const BaseDivider(),
-          const SizedBox(height: 12.0),
+          SizedBox(height: DesignSystem.spacing.x12),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -73,7 +73,7 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
                     }
                   : null,
               child: asyncCurrentRandomizedRun.isLoading
-                  ? BaseProgressIndicator(size: 18.0)
+                  ? BaseProgressIndicator(size: DesignSystem.size.x18)
                   : const Text('Randomize!'),
             ),
           ),

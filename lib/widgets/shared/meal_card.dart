@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/meal/meal.dart';
+import '../../utils/design_system.dart';
 import '../base/ui/image.dart';
 
 class MealCard extends StatelessWidget {
@@ -50,7 +51,7 @@ class MealCard extends StatelessWidget {
               child: Container(
                 height:
                     this.height != null ? min(this.height! / 3, 48.0) : 48.0,
-                padding: const EdgeInsets.all(4.0),
+                padding: EdgeInsets.all(DesignSystem.spacing.x4),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primaryContainer,
                   // border: Border(

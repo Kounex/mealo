@@ -6,6 +6,7 @@ import 'package:mealo/utils/persistance.dart';
 
 import '../../../../models/meal/meal.dart';
 import '../../../../stores/views/home.dart';
+import '../../../../utils/design_system.dart';
 import '../../../../utils/router.dart';
 import '../../../../widgets/shared/meal_card.dart';
 
@@ -49,7 +50,7 @@ class SuggestedMeal extends ConsumerWidget {
               data: this.meal,
             ),
           ),
-          const SizedBox(height: 4.0),
+          SizedBox(height: DesignSystem.spacing.x4),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(

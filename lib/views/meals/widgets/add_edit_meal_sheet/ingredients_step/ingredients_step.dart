@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../models/ingredient/ingredient.dart';
 import '../../../../../models/meal/meal.dart';
 import '../../../../../models/unit/unit.dart';
+import '../../../../../utils/design_system.dart';
 import '../../../../../widgets/base/functional/async_value_builder.dart';
 import '../../../../../widgets/base/ui/card.dart';
 import '../../../../../widgets/base/ui/placeholder_text.dart';
@@ -57,7 +58,7 @@ class _IngredientsStepState extends ConsumerState<IngredientsStep> {
                           'List of ingredients',
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                      const SizedBox(height: 12.0),
+                      SizedBox(height: DesignSystem.spacing.x12),
                       ...this.widget.meal.ingredients.mapIndexed(
                             (index, ingredient) => IngredientRow(
                               /// TODO: check why it is necessary to have a key
@@ -77,12 +78,12 @@ class _IngredientsStepState extends ConsumerState<IngredientsStep> {
                             ),
                           ),
                       if (this.widget.meal.ingredients.isEmpty) ...[
-                        const SizedBox(height: 24.0),
+                        SizedBox(height: DesignSystem.spacing.x24),
                         const Center(
                           child:
                               BasePlaceholder(text: 'No ingredients added yet'),
                         ),
-                        const SizedBox(height: 24.0),
+                        SizedBox(height: DesignSystem.spacing.x24),
                       ],
                     ],
                   ),
@@ -91,7 +92,7 @@ class _IngredientsStepState extends ConsumerState<IngredientsStep> {
             ),
           ),
         ),
-        const SizedBox(height: 24.0),
+        SizedBox(height: DesignSystem.spacing.x24),
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(

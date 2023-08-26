@@ -62,7 +62,7 @@ class StepperOverview extends StatelessWidget {
             ),
             if (this.titles != null)
               Padding(
-                padding: const EdgeInsets.only(top: 4.0),
+                padding: EdgeInsets.only(top: DesignSystem.spacing.x4),
                 child: Text(
                   this.titles![index],
                   style: Theme.of(context).textTheme.bodySmall,
@@ -75,8 +75,9 @@ class StepperOverview extends StatelessWidget {
         children.add(
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0) +
-                  const EdgeInsets.only(bottom: 20.0),
+              padding:
+                  EdgeInsets.symmetric(horizontal: DesignSystem.spacing.x12) +
+                      const EdgeInsets.only(bottom: 20.0),
               child: const BaseDivider(),
             ),
           ),

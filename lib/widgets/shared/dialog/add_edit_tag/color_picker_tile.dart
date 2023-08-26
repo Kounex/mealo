@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import '../../../../types/extensions/string.dart';
+import '../../../../utils/design_system.dart';
 import '../../../../utils/modal.dart';
 import '../../../base/ui/text_button.dart';
 import '../../../dialog/confirmation.dart';
@@ -56,7 +57,7 @@ class _ColorPickerTileState extends State<ColorPickerTile> {
                   border: Border.all(color: Theme.of(context).dividerColor),
                 ),
               ),
-              const SizedBox(width: 12.0),
+              SizedBox(width: DesignSystem.spacing.x12),
               Text(this.widget.colorHex ?? 'No color set'),
             ],
           ),

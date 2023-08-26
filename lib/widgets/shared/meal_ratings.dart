@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/embeddings/rating_link/rating_link.dart';
 import '../../models/rating/rating.dart';
+import '../../utils/design_system.dart';
 import '../base/ui/divider.dart';
 
 class MealRatings extends StatelessWidget {
@@ -47,7 +48,7 @@ class MealRatings extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8.0),
+                    SizedBox(height: DesignSystem.spacing.x8),
                     SizedBox(
                       width: double.infinity,
                       child: CupertinoSlidingSegmentedControl<RatingValue?>(
@@ -99,7 +100,7 @@ class MealRatings extends StatelessWidget {
                       //       : (_) {},
                       // ),
                     ),
-                    const SizedBox(height: 24.0),
+                    SizedBox(height: DesignSystem.spacing.x24),
                   ],
                 ),
               ),

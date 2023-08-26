@@ -46,8 +46,8 @@ class MealGrid extends ConsumerWidget {
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: this.itemCrossAxisExtent,
                   mainAxisExtent: this.itemCrossAxisExtent * 3 / 4,
-                  mainAxisSpacing: 24.0,
-                  crossAxisSpacing: 24.0,
+                  mainAxisSpacing: DesignSystem.spacing.x24,
+                  crossAxisSpacing: DesignSystem.spacing.x24,
                 ),
                 itemCount: meals.length,
                 itemBuilder: (context, index) =>
@@ -67,9 +67,9 @@ class MealGrid extends ConsumerWidget {
               ),
             )
           : this.empty ??
-              const Padding(
-                padding: EdgeInsets.only(top: 64.0),
-                child: BasePlaceholder(
+              Padding(
+                padding: EdgeInsets.only(top: DesignSystem.spacing.x4),
+                child: const BasePlaceholder(
                     text:
                         'It\'s quite empty in here.\nLet\'s start by adding some meals!'),
               ),

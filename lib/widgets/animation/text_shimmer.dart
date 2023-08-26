@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../utils/design_system.dart';
+
 class TextShimmer extends StatelessWidget {
   final int rows;
 
@@ -28,12 +30,12 @@ class TextShimmer extends StatelessWidget {
                   Flexible(
                     flex: index < rows - 1 ? 10 : 4,
                     child: Container(
-                      height: 12.0,
+                      height: DesignSystem.spacing.x12,
                       width: double.infinity,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         color: Colors.black,
                         borderRadius: BorderRadius.all(
-                          Radius.circular(12.0),
+                          Radius.circular(DesignSystem.border.radius12),
                         ),
                       ),
                     ),
@@ -44,7 +46,7 @@ class TextShimmer extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: index < rows - 1 ? 8.0 : 0),
+              SizedBox(height: index < rows - 1 ? DesignSystem.spacing.x8 : 0),
             ],
           ),
         ),

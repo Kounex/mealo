@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../utils/design_system.dart';
 import 'press_done_tag.dart';
 
 class SuggestionListTile<T> extends StatelessWidget {
@@ -41,7 +42,8 @@ class SuggestionListTile<T> extends StatelessWidget {
             child: this.suggestionBuilder == null
                 ? ListTile(
                     title: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
+                      padding: EdgeInsets.symmetric(
+                          vertical: DesignSystem.spacing.x12),
                       child: this.suggestion != null
                           ? Text(
                               this.suggestionText!(this.suggestion as T),

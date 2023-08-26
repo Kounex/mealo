@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mealo/utils/design_system.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../utils/modal.dart';
@@ -19,8 +20,8 @@ class BaseImage extends StatelessWidget {
   final double? height;
   final double? width;
 
-  final double borderRadius;
-  final double borderWidth;
+  final double? borderRadius;
+  final double? borderWidth;
 
   final double actionSize;
   final IconData? icon;
@@ -33,8 +34,8 @@ class BaseImage extends StatelessWidget {
     this.image,
     this.height,
     this.width,
-    this.borderRadius = 12.0,
-    this.borderWidth = 3.0,
+    this.borderRadius,
+    this.borderWidth,
     this.actionSize = 32.0,
     this.icon,
     this.onAction,
@@ -51,12 +52,14 @@ class BaseImage extends StatelessWidget {
           foregroundDecoration: BoxDecoration(
             border: Border.all(
               color: Theme.of(context).colorScheme.primaryContainer,
-              width: this.borderWidth,
+              width: this.borderWidth ?? DesignSystem.border.width3,
             ),
-            borderRadius: BorderRadius.circular(this.borderRadius),
+            borderRadius: BorderRadius.circular(
+                this.borderRadius ?? DesignSystem.border.radius12),
           ),
           child: ClipRRect(
-              borderRadius: BorderRadius.circular(this.borderRadius),
+              borderRadius: BorderRadius.circular(
+                  this.borderRadius ?? DesignSystem.border.radius12),
               child: () {
                 if (this.imageBase64 != null) {
                   return CachedMemoryImage(
@@ -128,13 +131,15 @@ class BaseImage extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.primaryContainer,
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(this.borderRadius),
-                  topRight: Radius.circular(this.borderRadius),
+                  bottomLeft: Radius.circular(
+                      this.borderRadius ?? DesignSystem.border.radius12),
+                  topRight: Radius.circular(
+                      this.borderRadius ?? DesignSystem.border.radius12),
                 ),
               ),
               child: FittedBox(
                   child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(DesignSystem.spacing.x8),
                 child: Icon(
                   this.icon,
                   color: Theme.of(context).colorScheme.onPrimaryContainer,

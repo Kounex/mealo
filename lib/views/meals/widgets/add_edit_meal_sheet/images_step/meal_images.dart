@@ -62,8 +62,8 @@ class MealImages extends StatelessWidget {
             return this.meal.imagesUuids.isNotEmpty ||
                     this.imagesToAdd.isNotEmpty
                 ? Wrap(
-                    spacing: 24.0,
-                    runSpacing: 24.0,
+                    spacing: DesignSystem.spacing.x24,
+                    runSpacing: DesignSystem.spacing.x24,
                     children: [
                       ...this.meal.imagesUuids.mapIndexed(
                             (index, imageUuid) => BaseImage(
