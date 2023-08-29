@@ -178,130 +178,127 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
   Widget build(BuildContext context) {
     Widget view() => Stack(
           children: [
-            Scaffold(
-              body: Padding(
-                padding: EdgeInsets.only(
-                  top: DesignSystem.spacing.x24,
-                  left: DesignSystem.spacing.x24,
-                  right: DesignSystem.spacing.x24,
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              '${this.widget.meal != null ? "Edit" : "New"} Meal',
-                              style: Theme.of(context).textTheme.headlineMedium,
-                            ),
-                            if (this.widget.meal != null)
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    left: DesignSystem.spacing.x12),
-                                child: BaseTextButton(
-                                  onPressed: () => ModalUtils.showBaseDialog(
-                                    context,
-                                    ConfirmationDialog(
-                                      isYesDestructive: true,
-                                      onYes: () => _deleteMeal(),
-                                    ),
+            Padding(
+              padding: EdgeInsets.only(
+                top: DesignSystem.spacing.x24,
+                left: DesignSystem.spacing.x24,
+                right: DesignSystem.spacing.x24,
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            '${this.widget.meal != null ? "Edit" : "New"} Meal',
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
+                          if (this.widget.meal != null)
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: DesignSystem.spacing.x12),
+                              child: BaseTextButton(
+                                onPressed: () => ModalUtils.showBaseDialog(
+                                  context,
+                                  ConfirmationDialog(
+                                    isYesDestructive: true,
+                                    onYes: () => _deleteMeal(),
                                   ),
-                                  isDestructive: true,
-                                  child: const Text('Delete'),
                                 ),
+                                isDestructive: true,
+                                child: const Text('Delete'),
                               ),
-                          ],
+                            ),
+                        ],
+                      ),
+                      IconButton(
+                        icon: const Icon(CupertinoIcons.clear),
+                        onPressed: () {
+                          /// Important step - this makes sure that all changes we made
+                          /// here are set back to its original value
+                          ref.invalidate(mealsProvider);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: DesignSystem.spacing.x24),
+                  Form(
+                    key: _form,
+                    child: BaseTextFormField(
+                      controller: _name,
+                      validator: (name) =>
+                          ValidationUtils.name(name?.trim()) ??
+                          _checkMealNameUnique(name!),
+                      hintText: 'Name',
+                    ),
+                  ),
+                  SizedBox(height: DesignSystem.spacing.x24),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: DesignSystem.spacing.x4),
+                    child: StepperOverview(
+                      step: _step.index,
+                      max: AddEditMealStep.values.length - 1,
+                      size: DesignSystem.size.x42,
+                      titles: const [
+                        'Images',
+                        'Tags',
+                        'Ratings',
+                        'Ingredients',
+                      ],
+                      onStepTapped: (step) => setState(
+                        () => _step = AddEditMealStep.values[step],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: DesignSystem.spacing.x12),
+                  Expanded(
+                    child: ListView(
+                      physics: const ClampingScrollPhysics(),
+                      children: [
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Padding(
+                            padding:
+                                EdgeInsets.only(top: DesignSystem.spacing.x24),
+                            child: AnimatedSwitcher(
+                              duration:
+                                  DesignSystem.animation.defaultDurationMS250,
+                              child: () {
+                                return switch (_step) {
+                                  AddEditMealStep.images => ImagesStep(
+                                      meal: _meal!,
+                                      thumbnailToAdd: _thumbnailToAdd,
+                                      imagesToAdd: _imagesToAdd,
+                                      imagesUuidsToDelete: _imagesUuidsToDelete,
+                                    ),
+                                  AddEditMealStep.tags => TagsStep(
+                                      meal: _meal!,
+                                    ),
+                                  AddEditMealStep.ratings => RatingStep(
+                                      meal: _meal!,
+                                    ),
+                                  AddEditMealStep.ingredients =>
+                                    IngredientsStep(
+                                      meal: _meal!,
+                                    ),
+                                };
+                              }(),
+                            ),
+                          ),
                         ),
-                        IconButton(
-                          icon: const Icon(CupertinoIcons.clear),
-                          onPressed: () {
-                            /// Important step - this makes sure that all changes we made
-                            /// here are set back to its original value
-                            ref.invalidate(mealsProvider);
-                            Navigator.of(context).pop();
-                          },
+                        SizedBox(
+                          height: 36.0 +
+                              48.0 +
+                              MediaQuery.of(context).viewPadding.bottom,
                         ),
                       ],
                     ),
-                    SizedBox(height: DesignSystem.spacing.x24),
-                    Form(
-                      key: _form,
-                      child: BaseTextFormField(
-                        controller: _name,
-                        validator: (name) =>
-                            ValidationUtils.name(name?.trim()) ??
-                            _checkMealNameUnique(name!),
-                        hintText: 'Name',
-                      ),
-                    ),
-                    SizedBox(height: DesignSystem.spacing.x24),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: DesignSystem.spacing.x4),
-                      child: StepperOverview(
-                        step: _step.index,
-                        max: AddEditMealStep.values.length - 1,
-                        size: DesignSystem.size.x42,
-                        titles: const [
-                          'Images',
-                          'Tags',
-                          'Ratings',
-                          'Ingredients',
-                        ],
-                        onStepTapped: (step) => setState(
-                          () => _step = AddEditMealStep.values[step],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: DesignSystem.spacing.x12),
-                    Expanded(
-                      child: ListView(
-                        physics: const ClampingScrollPhysics(),
-                        children: [
-                          Align(
-                            alignment: Alignment.topCenter,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: DesignSystem.spacing.x24),
-                              child: AnimatedSwitcher(
-                                duration:
-                                    DesignSystem.animation.defaultDurationMS250,
-                                child: () {
-                                  return switch (_step) {
-                                    AddEditMealStep.images => ImagesStep(
-                                        meal: _meal!,
-                                        thumbnailToAdd: _thumbnailToAdd,
-                                        imagesToAdd: _imagesToAdd,
-                                        imagesUuidsToDelete:
-                                            _imagesUuidsToDelete,
-                                      ),
-                                    AddEditMealStep.tags => TagsStep(
-                                        meal: _meal!,
-                                      ),
-                                    AddEditMealStep.ratings => RatingStep(
-                                        meal: _meal!,
-                                      ),
-                                    AddEditMealStep.ingredients =>
-                                      IngredientsStep(
-                                        meal: _meal!,
-                                      ),
-                                  };
-                                }(),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 36.0 +
-                                48.0 +
-                                MediaQuery.of(context).viewPadding.bottom,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             Positioned(

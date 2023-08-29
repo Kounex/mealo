@@ -17,7 +17,7 @@ class BaseTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: this.onPressed,
-      style: this.isDestructive
+      style: this.onPressed != null && this.isDestructive
           ? ButtonStyle(
               foregroundColor: MaterialStatePropertyAll(
                 Theme.of(context).colorScheme.error,

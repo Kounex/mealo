@@ -186,12 +186,12 @@ class _SuggestionOverlayState<T> extends State<SuggestionOverlay<T>> {
                                 const BaseDivider(),
                             ],
                           ),
-                      if (this.widget.onCreateNew != null &&
-                          (this.widget.controller.text.isNotEmpty ||
+                      // if (this.widget.onCreateNew != null &&
+                      //     (this.widget.controller.text.isNotEmpty ||
+                      //         this.widget.currentSuggestions.isEmpty))
+                      if (this.widget.controller.text.isNotEmpty &&
+                          (this.widget.onCreateNew != null ||
                               this.widget.currentSuggestions.isEmpty))
-                        // if (this.widget.controller.text.isNotEmpty &&
-                        //     (this.widget.onCreateNew != null ||
-                        //         this.widget.currentSuggestions.isEmpty))
                         SuggestionListTile(
                           controller: this.widget.controller,
                           focus: this.widget.focus,

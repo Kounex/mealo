@@ -29,6 +29,7 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
         ref.watch(currentRandomizedRunProvider);
 
     return BaseCard(
+      bottomPadding: DesignSystem.spacing.x8,
       child: Column(
         children: [
           BaseAsyncValueBuilder(

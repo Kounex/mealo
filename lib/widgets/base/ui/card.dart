@@ -135,8 +135,13 @@ class _BaseCardState extends State<BaseCard> {
                           : this.widget.titleWidget!),
                   if (this.widget.expandable ||
                       this.widget.trailingTitleWidget != null)
-                    this.widget.expandable
-                        ? AnimatedRotation(
+                    Row(
+                      children: [
+                        if (this.widget.trailingTitleWidget
+                            case var trailingTitleWidget?)
+                          trailingTitleWidget,
+                        if (this.widget.expandable)
+                          AnimatedRotation(
                             duration:
                                 DesignSystem.animation.defaultDurationMS250,
                             turns: _expandedTurn / 2,
@@ -154,7 +159,8 @@ class _BaseCardState extends State<BaseCard> {
                               ),
                             ),
                           )
-                        : this.widget.trailingTitleWidget!
+                      ],
+                    ),
                 ],
               ),
             ),

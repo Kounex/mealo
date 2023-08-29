@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mealo/utils/modal.dart';
+import 'package:mealo/views/home/widgets/meal_randomizer_sheet/meal_randomizer_sheet.dart';
+import 'package:mealo/widgets/base/ui/card.dart';
 
 import '../../utils/design_system.dart';
 import '../../widgets/animation/fader.dart';
 import '../../widgets/base/functional/scaffold.dart';
-import 'widgets/meal_randomizer/meal_randomizer.dart';
 import 'widgets/prev_ate_meals.dart';
 import 'widgets/prev_random_meals.dart';
 
@@ -48,10 +50,22 @@ class HomeView extends StatelessWidget {
           ),
         ),
       ),
-      children: const [
-        MealRandomizer(),
-        PrevAteMeals(),
-        PrevRandomMeals(),
+      children: [
+        // MealRandomizer(),
+        BaseCard(
+          child: SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () => ModalUtils.showExpandedModalBottomSheet(
+                context,
+                const MealRandomizerSheet(),
+              ),
+              child: const Text('Next Meal!'),
+            ),
+          ),
+        ),
+        const PrevAteMeals(),
+        const PrevRandomMeals(),
       ],
     );
   }

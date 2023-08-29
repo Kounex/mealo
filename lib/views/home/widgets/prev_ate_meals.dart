@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mealo/utils/design_system.dart';
 
 import '../../../stores/views/home.dart';
 import '../../../utils/router.dart';
@@ -12,6 +13,7 @@ class PrevAteMeals extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseCard(
       title: 'Previous meals',
+      bottomPadding: DesignSystem.spacing.x8,
       child: MealGrid(
         provider: prevAteMealsProvider,
         skipLoadingOnReload: true,

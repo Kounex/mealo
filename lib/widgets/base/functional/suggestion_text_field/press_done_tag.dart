@@ -9,15 +9,16 @@ class PressDoneTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 38.0,
-      width: 38.0,
+      height: 32.0,
+      width: 32.0,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,
-        borderRadius: BorderRadius.circular(DesignSystem.border.radius12),
+        borderRadius: BorderRadius.circular(12.0),
       ),
       child: Icon(
         CupertinoIcons.return_icon,
+        color: Theme.of(context).colorScheme.onPrimary,
         size: DesignSystem.size.x16,
       ),
       //     Text(

@@ -73,7 +73,8 @@ class ModalUtils {
                 maxHeight: forceExpand
                     ? MediaQuery.of(context).size.height * (9 / 10)
                     : min(992, MediaQuery.of(context).size.height * (9 / 10)),
-                maxWidth: 720,
+                maxWidth: Breakpoint.sm.width,
+                minWidth: Breakpoint.sm.width,
               )
             : null,
         builder: (_) => content,
