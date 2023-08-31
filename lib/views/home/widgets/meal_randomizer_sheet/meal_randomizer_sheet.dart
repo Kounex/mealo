@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mealo/models/embeddings/rating_link/rating_link.dart';
+import 'package:mealo/models/ingredient/ingredient.dart';
 import 'package:mealo/models/rating/rating.dart';
 import 'package:mealo/models/tag/tag.dart';
 import 'package:mealo/utils/design_system.dart';
 import 'package:mealo/utils/modal.dart';
 import 'package:mealo/views/home/widgets/meal_randomizer_sheet/days_dropdown.dart';
+import 'package:mealo/views/home/widgets/meal_randomizer_sheet/ingredients_block.dart';
+import 'package:mealo/views/home/widgets/meal_randomizer_sheet/ratings_block.dart';
 import 'package:mealo/views/home/widgets/meal_randomizer_sheet/tags_block.dart';
 import 'package:mealo/widgets/base/functional/async_value_builder.dart';
 import 'package:mealo/widgets/base/ui/card.dart';
@@ -25,6 +29,8 @@ class _MealRandomizerSheetState extends ConsumerState<MealRandomizerSheet> {
 
   final List<Tag> _includedTags = [];
   final List<Tag> _excludedTags = [];
+  final List<Ingredient> _selectedIngredients = [];
+  final List<RatingLink> _selectedRatings = [];
 
   final TextEditingController _controller = TextEditingController();
   final List<int?> _daysNotEaten = [7, 30, 60, 180, null];
@@ -34,7 +40,9 @@ class _MealRandomizerSheetState extends ConsumerState<MealRandomizerSheet> {
   bool _areFiltersActive() {
     return _includedTags.isNotEmpty ||
         _excludedTags.isNotEmpty ||
-        _controller.text.isNotEmpty;
+        _controller.text.isNotEmpty ||
+        _selectedRatings.isNotEmpty ||
+        _selectedIngredients.isNotEmpty;
   }
 
   void _setFiltersDefault() {
@@ -42,6 +50,8 @@ class _MealRandomizerSheetState extends ConsumerState<MealRandomizerSheet> {
       _includedTags.clear();
       _excludedTags.clear();
       _controller.clear();
+      _selectedRatings.clear();
+      _selectedIngredients.clear();
       _selectedDay = null;
     });
   }
@@ -102,7 +112,7 @@ class _MealRandomizerSheetState extends ConsumerState<MealRandomizerSheet> {
                                       )
                                   : null,
                               isDestructive: true,
-                              child: const Text('Default'),
+                              child: const Text('Reset'),
                             ),
                             SizedBox(width: DesignSystem.spacing.x8),
                             OnOffIndicator(
@@ -133,6 +143,36 @@ class _MealRandomizerSheetState extends ConsumerState<MealRandomizerSheet> {
                                   setState(() => _excludedTags.add(tag)),
                               onRemove: (tag) =>
                                   setState(() => _excludedTags.remove(tag)),
+                            ),
+                            SizedBox(height: DesignSystem.spacing.x24),
+                            IngredientsBlock(
+                              selectedIngredients: _selectedIngredients,
+                              title:
+                                  'Which ingredients would you like to have in the meal?',
+                              onAdd: (ingredient) => setState(
+                                  () => _selectedIngredients.add(ingredient)),
+                              onRemove: (ingredient) => setState(() =>
+                                  _selectedIngredients.remove(ingredient)),
+                            ),
+                            SizedBox(height: DesignSystem.spacing.x24),
+                            Text(
+                              'Which ratings should be considered for the meal selection? (including which value it should have at least)',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            RatingsBlock(
+                              selectedRatings: _selectedRatings,
+                              onAdd: (rating) => setState(
+                                () => _selectedRatings.add(
+                                  RatingLink()
+                                    ..ratingUuid = rating.uuid
+                                    ..value = RatingValue.three,
+                                ),
+                              ),
+                              onRemove: (ratingLink) => setState(
+                                  () => _selectedRatings.remove(ratingLink)),
+                              onValueChanged: (index, ratingValue) => setState(
+                                  () => _selectedRatings[index].value =
+                                      ratingValue),
                             ),
                             SizedBox(height: DesignSystem.spacing.x24),
                             Text(

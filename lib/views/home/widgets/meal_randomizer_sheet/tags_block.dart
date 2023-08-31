@@ -46,7 +46,7 @@ class TagsBlock extends StatelessWidget {
           suggestionText: (tag) => tag.name,
           sort: (tag1, tag2) =>
               tag1.name.toLowerCase().compareTo(tag2.name.toLowerCase()),
-          onSuggestionTapped: (tag) => this.onAdd(tag),
+          onSuggestionTapped: this.onAdd,
         ),
         SizedBox(height: DesignSystem.spacing.x12),
         Wrap(

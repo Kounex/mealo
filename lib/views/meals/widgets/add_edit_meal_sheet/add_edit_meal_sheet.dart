@@ -110,8 +110,8 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
     List<String> imagesUuids = [];
 
     if (_thumbnailToAdd.isNotEmpty) {
-      await _thumbnailToAdd.first.saveTo('$path/$thumbnailUuid');
       thumbnailUuid = const Uuid().v4();
+      await _thumbnailToAdd.first.saveTo('$path/$thumbnailUuid');
     }
 
     for (XFile image in _imagesToAdd) {
