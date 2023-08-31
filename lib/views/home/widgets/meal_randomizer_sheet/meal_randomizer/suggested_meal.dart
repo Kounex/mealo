@@ -4,11 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mealo/models/randomized_run/randomized_run.dart';
 import 'package:mealo/utils/persistance.dart';
 
-import '../../../../models/meal/meal.dart';
-import '../../../../stores/views/home.dart';
-import '../../../../utils/design_system.dart';
-import '../../../../utils/router.dart';
-import '../../../../widgets/shared/meal_card.dart';
+import '../../../../../models/meal/meal.dart';
+import '../../../../../stores/views/home.dart';
+import '../../../../../utils/design_system.dart';
+import '../../../../../utils/router.dart';
+import '../../../../../widgets/shared/meal_card.dart';
 
 class SuggestedMeal extends ConsumerWidget {
   final Meal meal;
@@ -23,7 +23,7 @@ class SuggestedMeal extends ConsumerWidget {
   Future<void> feast(BuildContext context, WidgetRef ref) async {
     PersistanceUtils.transaction(
       PersistanceOperation.insertUpdate,
-      [this.randomizedRun..feast = true],
+      [this.randomizedRun..eaten = true],
     );
     ref.invalidate(currentRandomizedRunProvider);
     if (context.mounted) {

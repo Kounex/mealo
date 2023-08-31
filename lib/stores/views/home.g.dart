@@ -127,7 +127,7 @@ final prevRandomizedMealsProvider =
 );
 
 typedef PrevRandomizedMealsRef = AutoDisposeFutureProviderRef<List<Meal>>;
-String _$prevAteMealsHash() => r'e3185e9f1b0942c8a296ba9117737e75eeae2003';
+String _$prevAteMealsHash() => r'40284bc60cb44b411f64e1a5d50707c47aa4ca57';
 
 /// See also [prevAteMeals].
 @ProviderFor(prevAteMeals)
@@ -142,7 +142,7 @@ final prevAteMealsProvider = AutoDisposeFutureProvider<List<Meal>>.internal(
 
 typedef PrevAteMealsRef = AutoDisposeFutureProviderRef<List<Meal>>;
 String _$currentRandomizedRunHash() =>
-    r'c31ed8ba445e16844e3303975ddf65894e655b0e';
+    r'60cde4c2ae4533bd6b58fbf789aed6966206fc1b';
 
 /// See also [CurrentRandomizedRun].
 @ProviderFor(CurrentRandomizedRun)

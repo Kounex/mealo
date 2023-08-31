@@ -6,6 +6,7 @@ import 'package:mealo/utils/persistance.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../models/meal/meal.dart';
+import '../../types/classes/randomize_config.dart';
 
 part 'home.g.dart';
 
@@ -23,17 +24,27 @@ class CurrentRandomizedRun extends _$CurrentRandomizedRun {
 
   void start({
     Duration? duration,
-
-    /// TODO: here we will add the tags, ratings etc. which we want to filter
+    RandomizeConfig? config,
   }) async {
-    AsyncValue<List<Meal>> asyncMeals = ref.read(mealsProvider);
+    try {
+      List<Meal> meals =
+          config?.filteredMeals ?? await ref.read(mealsProvider.future);
 
-    if (asyncMeals.valueOrNull != null) {
-      final randomMeal = asyncMeals.value!.elementAt(
-        Random().nextInt(asyncMeals.value!.length),
+      final randomMeal = meals.elementAt(
+        Random().nextInt(meals.length),
       );
 
-      final randomizedRun = RandomizedRun()..mealUuid = randomMeal.uuid;
+      final randomizedRun = RandomizedRun()
+        ..mealUuid = randomMeal.uuid
+        ..includedTagsUuids =
+            config?.includedTags.map((tag) => tag.uuid).toList() ?? []
+        ..excludedTagsUuids =
+            config?.excludedtags.map((tag) => tag.uuid).toList() ?? []
+        ..ratingLinks = config?.ratings ?? []
+        ..ingredientUuids =
+            config?.ingredients.map((ingredient) => ingredient.uuid).toList() ??
+                []
+        ..daysNotEaten = config?.daysNotEaten;
 
       this.state = const AsyncLoading();
       this.state = await AsyncValue.guard(() async {
@@ -46,7 +57,7 @@ class CurrentRandomizedRun extends _$CurrentRandomizedRun {
 
         return randomizedRun;
       });
-    } else {
+    } catch (_) {
       this.state = const AsyncValue.data(null);
     }
   }
@@ -74,6 +85,6 @@ FutureOr<List<Meal>> prevAteMeals(PrevAteMealsRef ref) async {
 
   return meals
       .where((meal) => randomizedRuns.any((randomizedRun) =>
-          randomizedRun.mealUuid == meal.uuid && randomizedRun.feast))
+          randomizedRun.mealUuid == meal.uuid && randomizedRun.eaten))
       .toList();
 }

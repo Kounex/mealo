@@ -8,6 +8,7 @@ import 'package:mealo/utils/design_system.dart';
 import 'package:mealo/utils/modal.dart';
 import 'package:mealo/views/home/widgets/meal_randomizer_sheet/days_dropdown.dart';
 import 'package:mealo/views/home/widgets/meal_randomizer_sheet/ingredients_block.dart';
+import 'package:mealo/views/home/widgets/meal_randomizer_sheet/meal_randomizer/meal_randomizer.dart';
 import 'package:mealo/views/home/widgets/meal_randomizer_sheet/ratings_block.dart';
 import 'package:mealo/views/home/widgets/meal_randomizer_sheet/tags_block.dart';
 import 'package:mealo/widgets/base/functional/async_value_builder.dart';
@@ -188,6 +189,13 @@ class _MealRandomizerSheetState extends ConsumerState<MealRandomizerSheet> {
                             ),
                           ],
                         ),
+                      ),
+                      MealRandomizer(
+                        includedTags: _includedTags,
+                        excludedTags: _excludedTags,
+                        selectedRatings: _selectedRatings,
+                        selectedIngredients: _selectedIngredients,
+                        daysNotEaten: _selectedDay,
                       ),
                     ],
                   ),

@@ -16,24 +16,43 @@ class RandomizedRuns extends _$RandomizedRuns with Persistance<RandomizedRun> {
 @collection
 class RandomizedRun extends BaseModel {
   /// [Tag]s which meals should have applied
-  List<String> inclusiveTagsUuids = [];
+  List<String> includedTagsUuids = [];
 
   /// [Tag]s we don't want randomized meals to have
-  List<String> exclusiveTagsUuids = [];
+  List<String> excludedTagsUuids = [];
 
   List<RatingLink> ratingLinks = [];
 
-  /// This property will filter for those meals which haven't been feasted at
-  /// all or at least before this date so users can get randomized suggestions
-  /// of meals which haven't been feast for a selected time
-  @utc
-  DateTime? mealNotFeastSince;
+  List<String> ingredientUuids = [];
+
+  /// The amount of days how long ago we wanted to find a meal we ate the last
+  /// time
+  int? daysNotEaten;
 
   late String mealUuid;
 
+  /// We app assumes that users will eat meals based on the result of a
+  /// [RandomizedRun]. But in reality users might have just decided to eat a
+  /// meal on their own. This would make this data inaccurate since we would
+  /// assume a meal hasn't been eaten if we haven't selected a [RandomizedRun]
+  /// as eaten. Thats why it's possible to create an empty instance which will
+  /// have this flag on true which means a users just wanted to indicate that
+  /// a certain meal has been eaten without being randomized so the data keeps
+  /// being as accurate as possible for the filters later (see the named
+  /// constructor below)
+  bool manuallyEaten = false;
+
   /// Generally we assume a randomized run does not automatically mean the
-  /// user will select this meal as their next meal to feast. Once the user
-  /// indicated that this meal will be feast, we will set this to true and
+  /// user will select this meal as their next meal to eat. Once the user
+  /// indicated that this meal will be eaten, we will set this to true and
   /// we can query this later
-  bool feast = false;
+  bool eaten = false;
+
+  RandomizedRun();
+
+  RandomizedRun.manually({
+    required this.mealUuid,
+    this.manuallyEaten = true,
+    this.eaten = true,
+  });
 }
