@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -187,41 +186,27 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
               child: Column(
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            '${this.widget.meal != null ? "Edit" : "New"} Meal',
-                            style: Theme.of(context).textTheme.headlineMedium,
-                          ),
-                          if (this.widget.meal != null)
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: DesignSystem.spacing.x12),
-                              child: BaseTextButton(
-                                onPressed: () => ModalUtils.showBaseDialog(
-                                  context,
-                                  ConfirmationDialog(
-                                    isYesDestructive: true,
-                                    onYes: () => _deleteMeal(),
-                                  ),
-                                ),
-                                isDestructive: true,
-                                child: const Text('Delete'),
+                      Text(
+                        '${this.widget.meal != null ? "Edit" : "New"} Meal',
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                      if (this.widget.meal != null)
+                        Padding(
+                          padding:
+                              EdgeInsets.only(left: DesignSystem.spacing.x12),
+                          child: BaseTextButton(
+                            onPressed: () => ModalUtils.showBaseDialog(
+                              context,
+                              ConfirmationDialog(
+                                isYesDestructive: true,
+                                onYes: () => _deleteMeal(),
                               ),
                             ),
-                        ],
-                      ),
-                      IconButton(
-                        icon: const Icon(CupertinoIcons.clear),
-                        onPressed: () {
-                          /// Important step - this makes sure that all changes we made
-                          /// here are set back to its original value
-                          ref.invalidate(mealsProvider);
-                          Navigator.of(context).pop();
-                        },
-                      ),
+                            isDestructive: true,
+                            child: const Text('Delete'),
+                          ),
+                        ),
                     ],
                   ),
                   SizedBox(height: DesignSystem.spacing.x24),

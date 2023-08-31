@@ -61,6 +61,8 @@ class ModalUtils {
     Widget content, {
     bool fullscreen = false,
     bool forceExpand = false,
+    bool includeCloseButton = true,
+    void Function()? onClose,
   }) =>
       showModalBottomSheet(
         context: context,
@@ -77,6 +79,21 @@ class ModalUtils {
                 minWidth: Breakpoint.sm.width,
               )
             : null,
-        builder: (_) => content,
+        builder: (context) => Stack(
+          children: [
+            content,
+            Positioned(
+              top: DesignSystem.spacing.x18,
+              right: DesignSystem.spacing.x18,
+              child: IconButton(
+                onPressed: () {
+                  onClose?.call();
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(CupertinoIcons.clear),
+              ),
+            ),
+          ],
+        ),
       );
 }

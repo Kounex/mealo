@@ -42,6 +42,11 @@ class MealDetailsView extends ConsumerWidget {
                   AddEditMealSheet(
                     meal: meal,
                   ),
+                  onClose: () {
+                    /// Important step - this makes sure that all changes we made
+                    /// here are set back to its original value
+                    ref.invalidate(mealsProvider);
+                  },
                 ).then((value) {
                   if (value != null) {
                     Beamer.of(context).beamBack();

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/meal/meal.dart';
 import '../../utils/design_system.dart';
@@ -9,7 +10,7 @@ import '../../widgets/base/functional/scaffold.dart';
 import '../../widgets/shared/meal_grid.dart';
 import 'widgets/add_edit_meal_sheet/add_edit_meal_sheet.dart';
 
-class MealsView extends StatelessWidget {
+class MealsView extends ConsumerWidget {
   final ScrollController controller;
 
   const MealsView({
@@ -18,7 +19,7 @@ class MealsView extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return BaseScaffold(
       controller: this.controller,
       hasBottomTabBarSpacing: true,
@@ -29,6 +30,11 @@ class MealsView extends StatelessWidget {
             onPressed: () => ModalUtils.showExpandedModalBottomSheet(
               context,
               const AddEditMealSheet(),
+              onClose: () {
+                /// Important step - this makes sure that all changes we made
+                /// here are set back to its original value
+                ref.invalidate(mealsProvider);
+              },
             ),
             icon: const Icon(CupertinoIcons.add),
           ),

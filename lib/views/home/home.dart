@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mealo/utils/modal.dart';
 import 'package:mealo/views/home/widgets/meal_randomizer_sheet/meal_randomizer_sheet.dart';
-import 'package:mealo/widgets/base/ui/card.dart';
 
 import '../../utils/design_system.dart';
 import '../../widgets/animation/fader.dart';
@@ -52,7 +51,8 @@ class HomeView extends StatelessWidget {
       ),
       children: [
         // MealRandomizer(),
-        BaseCard(
+        Padding(
+          padding: EdgeInsets.all(DesignSystem.spacing.x18),
           child: SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -60,7 +60,7 @@ class HomeView extends StatelessWidget {
                 context,
                 const MealRandomizerSheet(),
               ),
-              child: const Text('Next Meal!'),
+              child: const Text('Next Meal'),
             ),
           ),
         ),
