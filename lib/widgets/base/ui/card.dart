@@ -10,6 +10,7 @@ class BaseCard extends StatefulWidget {
 
   final bool expandable;
   final bool expanded;
+  final void Function(bool expanded)? onExpand;
 
   final Widget? above;
   final Widget? below;
@@ -44,6 +45,7 @@ class BaseCard extends StatefulWidget {
     required this.child,
     this.expandable = false,
     this.expanded = true,
+    this.onExpand,
     this.above,
     this.below,
     this.centerChild = true,
@@ -73,11 +75,20 @@ class _BaseCardState extends State<BaseCard> {
   int _expandedTurn = 0;
 
   @override
+  void initState() {
+    super.initState();
+
+    if (this.widget.expandable) {
+      _expandedTurn = this.widget.expanded ? 0 : 1;
+    }
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if ((this.widget.expanded && _expandedTurn % 2 != 0) ||
-        (!this.widget.expanded && _expandedTurn % 2 == 0)) {
+    if (this.widget.expandable &&
+        this.widget.expanded != (_expandedTurn % 2 == 0)) {
       setState(() => _expandedTurn++);
     }
   }
@@ -148,7 +159,13 @@ class _BaseCardState extends State<BaseCard> {
                             curve: Curves.easeInCubic,
                             child: InkWell(
                               borderRadius: BorderRadius.circular(32),
-                              onTap: () => setState(() => _expandedTurn++),
+                              onTap: () => setState(() {
+                                _expandedTurn++;
+                                this
+                                    .widget
+                                    .onExpand
+                                    ?.call(_expandedTurn % 2 == 0);
+                              }),
                               // behavior: HitTestBehavior.opaque,
                               child: const SizedBox(
                                 height: 32.0,
