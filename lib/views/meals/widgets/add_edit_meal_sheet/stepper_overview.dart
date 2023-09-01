@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
-import 'package:mealo/utils/design_system.dart';
-import 'package:mealo/widgets/base/functional/animated_color.dart';
 
+import '../../../../utils/design_system.dart';
+import '../../../../widgets/base/functional/animated_color.dart';
 import '../../../../widgets/base/ui/divider.dart';
 
 class StepperOverview extends StatelessWidget {

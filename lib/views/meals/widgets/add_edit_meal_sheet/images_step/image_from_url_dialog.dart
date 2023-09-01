@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:mealo/widgets/base/ui/text_button.dart';
 
 import '../../../../../utils/design_system.dart';
 import '../../../../../utils/modal.dart';
 import '../../../../../utils/validation.dart';
 import '../../../../../widgets/base/functional/text_form_field.dart';
+import '../../../../../widgets/base/ui/text_button.dart';
 import '../../../../../widgets/dialog/info.dart';
 
 class ImageFromURLDialog extends StatefulWidget {

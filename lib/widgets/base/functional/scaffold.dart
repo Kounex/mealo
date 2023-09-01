@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:mealo/utils/design_system.dart';
 
+import '../../../utils/design_system.dart';
 import '../../flutter_modified/translucent_sliver_app_bar.dart';
 import '../../themed/cupertino_sliver_navigation_bar.dart';
 

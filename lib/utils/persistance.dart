@@ -1,16 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
-import 'package:mealo/models/model.dart';
-import 'package:mealo/models/randomized_run/randomized_run.dart';
-import 'package:mealo/utils/date.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../models/ingredient/ingredient.dart';
 import '../models/meal/meal.dart';
+import '../models/model.dart';
+import '../models/randomized_run/randomized_run.dart';
 import '../models/rating/rating.dart';
 import '../models/settings/settings.dart';
 import '../models/tag/tag.dart';
 import '../models/unit/unit.dart';
+import 'date.dart';
 
 class PersistanceUtils {
   static late Isar _instance;

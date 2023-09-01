@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/models/embeddings/rating_link/rating_link.dart';
-import 'package:mealo/models/ingredient/ingredient.dart';
-import 'package:mealo/models/rating/rating.dart';
-import 'package:mealo/models/tag/tag.dart';
-import 'package:mealo/utils/design_system.dart';
-import 'package:mealo/utils/modal.dart';
-import 'package:mealo/views/home/widgets/meal_randomizer_sheet/days_dropdown.dart';
-import 'package:mealo/views/home/widgets/meal_randomizer_sheet/ingredients_block.dart';
-import 'package:mealo/views/home/widgets/meal_randomizer_sheet/meal_randomizer/meal_randomizer.dart';
-import 'package:mealo/views/home/widgets/meal_randomizer_sheet/ratings_block.dart';
-import 'package:mealo/views/home/widgets/meal_randomizer_sheet/tags_block.dart';
-import 'package:mealo/widgets/base/functional/async_value_builder.dart';
-import 'package:mealo/widgets/base/ui/card.dart';
-import 'package:mealo/widgets/base/ui/on_off_indicator.dart';
-import 'package:mealo/widgets/base/ui/text_button.dart';
-import 'package:mealo/widgets/dialog/confirmation.dart';
+
+import '../../../../models/embeddings/rating_link/rating_link.dart';
+import '../../../../models/ingredient/ingredient.dart';
+import '../../../../models/rating/rating.dart';
+import '../../../../models/tag/tag.dart';
+import '../../../../utils/design_system.dart';
+import '../../../../utils/modal.dart';
+import '../../../../widgets/base/functional/async_value_builder.dart';
+import '../../../../widgets/base/ui/card.dart';
+import '../../../../widgets/base/ui/on_off_indicator.dart';
+import '../../../../widgets/base/ui/text_button.dart';
+import '../../../../widgets/dialog/confirmation.dart';
+import 'days_dropdown.dart';
+import 'ingredients_block.dart';
+import 'meal_randomizer/meal_randomizer.dart';
+import 'ratings_block.dart';
+import 'tags_block.dart';
 
 class MealRandomizerSheet extends ConsumerStatefulWidget {
   const MealRandomizerSheet({super.key});
@@ -46,9 +47,9 @@ class _MealRandomizerSheetState extends ConsumerState<MealRandomizerSheet> {
     super.initState();
 
     _scroll.addListener(() {
-      if (!_shadowForFilters && _scroll.offset >= 12) {
+      if (!_shadowForFilters && _scroll.offset >= 24) {
         setState(() => _shadowForFilters = true);
-      } else if (_shadowForFilters && _scroll.offset < 12) {
+      } else if (_shadowForFilters && _scroll.offset < 24) {
         setState(() => _shadowForFilters = false);
       }
     });
@@ -226,7 +227,7 @@ class _MealRandomizerSheetState extends ConsumerState<MealRandomizerSheet> {
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: ClipRRect(
                           child: Transform.translate(
                             offset: const Offset(0, -32),

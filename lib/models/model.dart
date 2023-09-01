@@ -1,6 +1,7 @@
 import 'package:isar/isar.dart';
-import 'package:mealo/utils/date.dart';
 import 'package:uuid/uuid.dart';
+
+import '../utils/date.dart';
 
 abstract class BaseModel {
   @id

@@ -3,9 +3,9 @@ import 'dart:ui';
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/utils/design_system.dart';
 
 import 'stores/shared/tabs.dart';
+import 'utils/design_system.dart';
 import 'utils/router.dart';
 
 class TabsView extends ConsumerWidget {

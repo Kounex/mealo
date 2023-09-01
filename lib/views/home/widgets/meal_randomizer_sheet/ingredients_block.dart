@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/models/ingredient/ingredient.dart';
-import 'package:mealo/utils/design_system.dart';
-import 'package:mealo/widgets/base/functional/async_value_builder.dart';
-import 'package:mealo/widgets/base/ui/chip.dart';
 
+import '../../../../models/ingredient/ingredient.dart';
+import '../../../../utils/design_system.dart';
+import '../../../../widgets/base/functional/async_value_builder.dart';
 import '../../../../widgets/base/functional/suggestion_text_field/suggestion_text_field.dart';
+import '../../../../widgets/base/ui/chip.dart';
 
 class IngredientsBlock extends ConsumerWidget {
   final List<Ingredient> selectedIngredients;

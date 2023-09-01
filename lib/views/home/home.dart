@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mealo/utils/modal.dart';
-import 'package:mealo/views/home/widgets/meal_randomizer_sheet/meal_randomizer_sheet.dart';
 
 import '../../utils/design_system.dart';
+import '../../utils/modal.dart';
 import '../../widgets/animation/fader.dart';
 import '../../widgets/base/functional/scaffold.dart';
+import 'widgets/meal_randomizer_sheet/meal_randomizer_sheet.dart';
 import 'widgets/prev_ate_meals.dart';
 import 'widgets/prev_random_meals.dart';
 

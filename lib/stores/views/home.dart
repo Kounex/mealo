@@ -1,12 +1,12 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-import 'package:mealo/models/randomized_run/randomized_run.dart';
-import 'package:mealo/utils/persistance.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../models/meal/meal.dart';
+import '../../models/randomized_run/randomized_run.dart';
 import '../../types/classes/randomize_config.dart';
+import '../../utils/persistance.dart';
 
 part 'home.g.dart';
 

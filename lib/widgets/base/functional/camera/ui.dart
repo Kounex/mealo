@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+
 import '../../ui/progress_indicator.dart';
 
 class BaseCameraUI extends StatefulWidget {

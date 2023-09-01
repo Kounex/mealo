@@ -5,7 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:mealo/utils/design_system.dart';
+
+import '../../utils/design_system.dart';
 
 /// Copied [SliverAppBar] implementation to override the
 /// internal [_SliverAppBarDelegate] so it is wrapped

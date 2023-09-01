@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/models/randomized_run/randomized_run.dart';
-import 'package:mealo/utils/persistance.dart';
 
 import '../../../../../models/meal/meal.dart';
+import '../../../../../models/randomized_run/randomized_run.dart';
 import '../../../../../stores/views/home.dart';
 import '../../../../../utils/design_system.dart';
+import '../../../../../utils/persistance.dart';
 import '../../../../../utils/router.dart';
 import '../../../../../widgets/shared/meal_card.dart';
 

@@ -1,14 +1,14 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/models/embeddings/rating_link/rating_link.dart';
-import 'package:mealo/models/ingredient/ingredient.dart';
-import 'package:mealo/models/randomized_run/randomized_run.dart';
-import 'package:mealo/utils/design_system.dart';
 
+import '../../../../../models/embeddings/rating_link/rating_link.dart';
+import '../../../../../models/ingredient/ingredient.dart';
 import '../../../../../models/meal/meal.dart';
+import '../../../../../models/randomized_run/randomized_run.dart';
 import '../../../../../models/tag/tag.dart';
 import '../../../../../stores/views/home.dart';
+import '../../../../../utils/design_system.dart';
 import '../../../../../widgets/animation/text_shimmer.dart';
 import '../../../../../widgets/base/functional/async_value_builder.dart';
 import '../../../../../widgets/base/ui/card.dart';

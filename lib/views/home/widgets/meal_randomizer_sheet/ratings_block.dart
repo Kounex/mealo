@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/models/embeddings/rating_link/rating_link.dart';
-import 'package:mealo/models/rating/rating.dart';
-import 'package:mealo/widgets/base/functional/async_value_builder.dart';
-import 'package:mealo/widgets/shared/meal_ratings.dart';
 
+import '../../../../models/embeddings/rating_link/rating_link.dart';
+import '../../../../models/rating/rating.dart';
 import '../../../../utils/design_system.dart';
+import '../../../../widgets/base/functional/async_value_builder.dart';
 import '../../../../widgets/base/functional/suggestion_text_field/suggestion_text_field.dart';
+import '../../../../widgets/shared/meal_ratings.dart';
 
 class RatingsBlock extends ConsumerWidget {
   final String? title;

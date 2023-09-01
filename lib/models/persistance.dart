@@ -1,8 +1,8 @@
 import 'package:isar/isar.dart';
-import 'package:mealo/models/model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../utils/persistance.dart';
+import 'model.dart';
 
 /// Design:
 ///

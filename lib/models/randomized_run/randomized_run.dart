@@ -1,8 +1,8 @@
 import 'package:isar/isar.dart';
-import 'package:mealo/models/model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../embeddings/rating_link/rating_link.dart';
+import '../model.dart';
 import '../persistance.dart';
 
 part 'randomized_run.g.dart';
