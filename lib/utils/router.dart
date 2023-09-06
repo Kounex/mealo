@@ -56,7 +56,7 @@ class RouterUtils {
     }
     Beamer.of(context).beamToNamed(
       route.path,
-      beamBackOnPop: true,
+      beamBackOnPop: route.beamBackOnPop,
       data: data,
     );
   }
@@ -288,8 +288,12 @@ enum TabMeta {
 
 abstract class BaseRoute {
   String path;
+  bool beamBackOnPop;
 
-  BaseRoute(this.path);
+  BaseRoute(
+    this.path, {
+    this.beamBackOnPop = true,
+  });
 }
 
 class HomeRoute extends BaseRoute {

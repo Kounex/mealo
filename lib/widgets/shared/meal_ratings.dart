@@ -10,12 +10,15 @@ import '../base/ui/divider.dart';
 class MealRatings extends StatelessWidget {
   final List<Rating> ratings;
   final List<RatingLink> ratingLinks;
-  final void Function(int index, RatingValue ratingValue)? onSelectionChanged;
+  final void Function(Rating rating, RatingValue ratingValue)?
+      onSelectionChanged;
+  final void Function(Rating rating)? onRemove;
 
   const MealRatings({
     super.key,
     required this.ratings,
     required this.ratingLinks,
+    this.onRemove,
     this.onSelectionChanged,
   });
 
@@ -43,8 +46,21 @@ class MealRatings extends StatelessWidget {
                             style: Theme.of(context).textTheme.labelLarge,
                           ),
                         ),
-                        const Expanded(
-                          child: BaseDivider(),
+                        Expanded(
+                          child: Row(
+                            children: [
+                              const Expanded(
+                                child: BaseDivider(),
+                              ),
+                              if (this.onRemove case final onRemove?) ...[
+                                SizedBox(width: DesignSystem.spacing.x8),
+                                IconButton(
+                                  onPressed: () => onRemove(rating),
+                                  icon: const Icon(CupertinoIcons.clear),
+                                ),
+                              ],
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -72,7 +88,7 @@ class MealRatings extends StatelessWidget {
                           ),
                         onValueChanged: (value) =>
                             this.onSelectionChanged != null
-                                ? this.onSelectionChanged!(index, value!)
+                                ? this.onSelectionChanged!(rating, value!)
                                 : {},
                       ),
                       // SegmentedButton<RatingValue?>(

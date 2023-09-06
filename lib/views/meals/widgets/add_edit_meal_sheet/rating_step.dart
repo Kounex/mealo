@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -52,8 +53,13 @@ class _RatingStepState extends ConsumerState<RatingStep> {
             data: (ratings) => MealRatings(
               ratings: ratings,
               ratingLinks: this.widget.meal.ratings,
-              onSelectionChanged: (index, ratingValue) => setState(
-                  () => this.widget.meal.ratings[index].value = ratingValue),
+              onSelectionChanged: (rating, ratingValue) => setState(() => this
+                  .widget
+                  .meal
+                  .ratings
+                  .firstWhereOrNull(
+                      (ratingLink) => ratingLink.ratingUuid == rating.uuid)
+                  ?.value = ratingValue),
             ),
           ),
         ),

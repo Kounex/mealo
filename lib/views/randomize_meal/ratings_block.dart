@@ -14,9 +14,9 @@ class RatingsBlock extends ConsumerWidget {
   final List<RatingLink> selectedRatings;
 
   final void Function(Rating rating) onAdd;
-  final void Function(RatingLink rating) onRemove;
+  final void Function(Rating rating) onRemove;
 
-  final void Function(int index, RatingValue ratingValue) onValueChanged;
+  final void Function(Rating rating, RatingValue ratingValue) onValueChanged;
 
   const RatingsBlock({
     super.key,
@@ -65,6 +65,7 @@ class RatingsBlock extends ConsumerWidget {
                       (ratingLink) => ratingLink.ratingUuid == rating.uuid))
                   .toList(),
               ratingLinks: this.selectedRatings,
+              onRemove: this.onRemove,
             ),
             // Wrap(
             //   direction: Axis.horizontal,

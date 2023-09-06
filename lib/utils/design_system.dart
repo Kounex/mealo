@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 class _Spacing {
   const _Spacing();
 
+  double get x2 => 2;
   double get x4 => 4;
   double get x6 => 6;
   double get x8 => 8;

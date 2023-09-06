@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -42,7 +43,7 @@ class _MealRandomizerSheetState extends ConsumerState<RandomizeMealView> {
   final List<RatingLink> _selectedRatings = [];
 
   final TextEditingController _controller = TextEditingController();
-  final List<int?> _daysNotEaten = [7, 30, 60, 180, null];
+  final List<int> _daysNotEaten = [7, 30, 60, 180];
 
   int? _selectedDay;
 
@@ -219,11 +220,15 @@ class _MealRandomizerSheetState extends ConsumerState<RandomizeMealView> {
                                       ..value = RatingValue.three,
                                   ),
                                 ),
-                                onRemove: (ratingLink) => setState(
-                                    () => _selectedRatings.remove(ratingLink)),
-                                onValueChanged: (index, ratingValue) =>
-                                    setState(() => _selectedRatings[index]
-                                        .value = ratingValue),
+                                onRemove: (rating) => setState(() =>
+                                    _selectedRatings.removeWhere((ratingLink) =>
+                                        ratingLink.ratingUuid == rating.uuid)),
+                                onValueChanged: (rating, ratingValue) =>
+                                    setState(() => _selectedRatings
+                                        .firstWhereOrNull((ratingLink) =>
+                                            ratingLink.ratingUuid ==
+                                            rating.uuid)
+                                        ?.value = ratingValue),
                               ),
                               SizedBox(height: DesignSystem.spacing.x24),
                               Text(
@@ -236,6 +241,8 @@ class _MealRandomizerSheetState extends ConsumerState<RandomizeMealView> {
                                 daysNotEaten: _daysNotEaten,
                                 onSelected: (day) =>
                                     setState(() => _selectedDay = day),
+                                onClear: () =>
+                                    setState(() => _controller.clear()),
                               ),
                             ],
                           ),
