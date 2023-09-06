@@ -9,6 +9,7 @@ class BaseCard extends StatefulWidget {
   final bool centerChild;
 
   final bool expandable;
+  final bool? initialExpandState;
   final bool expanded;
   final void Function(bool expanded)? onExpand;
 
@@ -44,7 +45,8 @@ class BaseCard extends StatefulWidget {
     Key? key,
     required this.child,
     this.expandable = false,
-    this.expanded = true,
+    this.initialExpandState,
+    this.expanded = false,
     this.onExpand,
     this.above,
     this.below,
@@ -79,7 +81,8 @@ class _BaseCardState extends State<BaseCard> {
     super.initState();
 
     if (this.widget.expandable) {
-      _expandedTurn = this.widget.expanded ? 0 : 1;
+      _expandedTurn =
+          this.widget.initialExpandState ?? this.widget.expanded ? 0 : 1;
     }
   }
 
@@ -88,6 +91,7 @@ class _BaseCardState extends State<BaseCard> {
     super.didChangeDependencies();
 
     if (this.widget.expandable &&
+        this.widget.initialExpandState == null &&
         this.widget.expanded != (_expandedTurn % 2 == 0)) {
       setState(() => _expandedTurn++);
     }

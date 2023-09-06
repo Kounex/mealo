@@ -113,7 +113,6 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
             List<Meal> filteredMeals = _filterMeals(meals, randomizedRuns);
 
             return BaseCard(
-              topPadding: DesignSystem.spacing.x12,
               child: Column(
                 children: [
                   AnimatedSwitcher(

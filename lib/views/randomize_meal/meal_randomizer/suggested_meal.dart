@@ -20,16 +20,16 @@ class SuggestedMeal extends ConsumerWidget {
     required this.randomizedRun,
   });
 
-  Future<void> feast(BuildContext context, WidgetRef ref) async {
+  Future<void> _feast(BuildContext context, WidgetRef ref) async {
     PersistanceUtils.transaction(
       PersistanceOperation.insertUpdate,
       [this.randomizedRun..eaten = true],
     );
     ref.invalidate(currentRandomizedRunProvider);
     if (context.mounted) {
-      RouterUtils.beamTo(
+      RouterUtils.goTo(
         context,
-        HomeMealDetailRoute(meal.uuid),
+        HomeRandomizedMealDetailRoute(meal.uuid),
       );
     }
   }
@@ -44,9 +44,9 @@ class SuggestedMeal extends ConsumerWidget {
             meal: this.meal,
             height: 200.0,
             width: 250.0,
-            onTap: () => RouterUtils.beamTo(
+            onTap: () => RouterUtils.goTo(
               context,
-              HomeMealDetailRoute(this.meal.uuid),
+              HomeRandomizedMealDetailRoute(this.meal.uuid),
               data: this.meal,
             ),
           ),
@@ -54,7 +54,7 @@ class SuggestedMeal extends ConsumerWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
-              onPressed: () => feast(context, ref),
+              onPressed: () => _feast(context, ref),
               style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Colors.green)),
               icon: const Icon(CupertinoIcons.checkmark_alt_circle),

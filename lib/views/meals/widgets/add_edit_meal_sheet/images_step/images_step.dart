@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../../models/meal/meal.dart';
 import '../../../../../utils/design_system.dart';
 import '../../../../../utils/modal.dart';
-import '../../../../../widgets/base/ui/card.dart';
 import '../../../../../widgets/base/ui/progress_indicator.dart';
 import 'image_from_url_dialog.dart';
 import 'meal_images.dart';
@@ -187,11 +186,9 @@ class _ImagesStepState extends State<ImagesStep> {
             Stack(
               alignment: Alignment.center,
               children: [
-                BaseCard(
-                  topPadding: 0,
-                  bottomPadding: 0,
-                  leftPadding: 0,
-                  rightPadding: 0,
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: DesignSystem.spacing.x24),
                   child: MealImages(
                     type: _type,
                     meal: this.widget.meal,
@@ -221,6 +218,13 @@ class _ImagesStepState extends State<ImagesStep> {
                     ),
                   ),
                 ),
+                // BaseCard(
+                //   topPadding: 0,
+                //   bottomPadding: 0,
+                //   leftPadding: 0,
+                //   rightPadding: 0,
+                //   child:
+                // ),
                 FutureBuilder(
                   future: _pickFuture,
                   builder: (context, snapshot) {

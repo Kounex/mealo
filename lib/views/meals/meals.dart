@@ -45,7 +45,7 @@ class MealsView extends ConsumerWidget {
           padding: EdgeInsets.all(DesignSystem.spacing.x24),
           child: MealGrid(
             provider: mealsProvider,
-            onTap: (meal) => RouterUtils.beamTo(
+            onTap: (meal) => RouterUtils.goTo(
               context,
               MealDetailRoute(meal.uuid),
             ),

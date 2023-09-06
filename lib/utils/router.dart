@@ -1,15 +1,15 @@
 import 'package:beamer/beamer.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import '../tabs.dart';
 import '../views/home/home.dart';
 import '../views/intro/intro.dart';
+import '../views/meals/details/details.dart';
 import '../views/meals/meals.dart';
+import '../views/randomize_meal/randomize_meal.dart';
 import '../views/settings/ratings_tags_management/ratings_tags_management.dart';
 import '../views/settings/settings.dart';
-
-import '../views/meals/details/details.dart';
 
 typedef BeamerPageBuilder = dynamic Function(
     BuildContext context, BeamState state, Object? data);
@@ -49,13 +49,14 @@ class RouterUtils {
     );
 
   /// *The* function to navigate throughout the app to ensure consitency
-  static void beamTo(BuildContext context, BaseRoute route,
+  static void goTo(BuildContext context, BaseRoute route,
       {Object? data, bool replace = false}) {
     if (replace) {
       Beamer.of(context).removeLastHistoryElement();
     }
     Beamer.of(context).beamToNamed(
       route.path,
+      beamBackOnPop: true,
       data: data,
     );
   }
@@ -65,6 +66,7 @@ class RouterUtils {
   static BeamPage _basePage(String path, Widget view, {BeamPageType? type}) =>
       BeamPage(
         key: ValueKey(path),
+        name: path,
         type: type ?? BeamPageType.cupertino,
         child: view,
       );
@@ -82,7 +84,12 @@ class RouterUtils {
     assert(view != null || builder != null);
     return MapEntry(
       path,
-      builder ?? (context, state, data) => _basePage(path, view!, type: type),
+      builder ??
+          (context, state, data) => _basePage(
+                path,
+                view!,
+                type: type,
+              ),
     );
   }
 
@@ -211,6 +218,21 @@ enum TabMeta {
                     );
                   },
                 ),
+                RouterUtils._routeEntry(
+                  HomeRandomizeMealRoute.blueprint,
+                  view: RandomizeMealView(
+                    controller: RouterUtils.tabScrollControllerMap[this]!,
+                  ),
+                ),
+                RouterUtils._routeEntry(
+                  HomeRandomizedMealDetailRoute.blueprint,
+                  builder: (context, state, data) {
+                    return RouterUtils._basePage(
+                      HomeRandomizedMealDetailRoute.blueprint,
+                      MealDetailsView(uuid: state.pathParameters['uuid']!),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -277,9 +299,25 @@ class HomeRoute extends BaseRoute {
 }
 
 class HomeMealDetailRoute extends HomeRoute {
-  static String blueprint = '/home/:uuid';
+  static String blueprint = '/home/meals/:uuid';
 
   HomeMealDetailRoute(String uuid) : super() {
+    this.path += '/meals/$uuid';
+  }
+}
+
+class HomeRandomizeMealRoute extends HomeRoute {
+  static String blueprint = '/home/randomize-meal';
+
+  HomeRandomizeMealRoute() : super() {
+    this.path += '/randomize-meal';
+  }
+}
+
+class HomeRandomizedMealDetailRoute extends HomeRandomizeMealRoute {
+  static String blueprint = '/home/randomize-meal/:uuid';
+
+  HomeRandomizedMealDetailRoute(String uuid) : super() {
     this.path += '/$uuid';
   }
 }
@@ -291,7 +329,7 @@ class MealsRoute extends BaseRoute {
 }
 
 class MealDetailRoute extends MealsRoute {
-  static String blueprint = '/meals/:uuid';
+  static String blueprint = 'meals/:uuid';
 
   MealDetailRoute(String uuid) : super() {
     this.path += '/$uuid';
@@ -305,7 +343,7 @@ class SettingsRoute extends BaseRoute {
 }
 
 class RatingsTagsManagementRoute extends SettingsRoute {
-  static String blueprint = '/settings/ratings-tags-management';
+  static String blueprint = 'settings/ratings-tags-management';
 
   RatingsTagsManagementRoute() : super() {
     this.path += '/ratings-tags-management';

@@ -35,7 +35,7 @@ class SettingsView extends ConsumerWidget {
                 title: const Text('Ratings & Tags'),
                 trailing: const CupertinoListTileChevron(),
                 onTap: () =>
-                    RouterUtils.beamTo(context, RatingsTagsManagementRoute()),
+                    RouterUtils.goTo(context, RatingsTagsManagementRoute()),
               ),
               const ThemeSwitcher(),
               ListTile(

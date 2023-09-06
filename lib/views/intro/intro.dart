@@ -20,7 +20,7 @@ class IntroView extends StatelessWidget {
             ),
             ElevatedButton(
               child: const Text('Access'),
-              onPressed: () => RouterUtils.beamTo(
+              onPressed: () => RouterUtils.goTo(
                 context,
                 MealsRoute(),
                 replace: true,

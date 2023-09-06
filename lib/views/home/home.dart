@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/design_system.dart';
-import '../../utils/modal.dart';
+import '../../utils/router.dart';
 import '../../widgets/animation/fader.dart';
 import '../../widgets/base/functional/scaffold.dart';
-import 'widgets/meal_randomizer_sheet/meal_randomizer_sheet.dart';
 import 'widgets/prev_ate_meals.dart';
 import 'widgets/prev_random_meals.dart';
 
@@ -56,9 +55,9 @@ class HomeView extends StatelessWidget {
           child: SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () => ModalUtils.showExpandedModalBottomSheet(
+              onPressed: () => RouterUtils.goTo(
                 context,
-                const MealRandomizerSheet(),
+                HomeRandomizeMealRoute(),
               ),
               child: const Text('Next Meal'),
             ),
