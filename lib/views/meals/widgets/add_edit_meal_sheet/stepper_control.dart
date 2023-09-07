@@ -1,3 +1,4 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../utils/design_system.dart';
@@ -44,7 +45,14 @@ class StepperControl extends StatelessWidget {
                   ? const MaterialStatePropertyAll(Colors.green)
                   : null,
             ),
-            child: Text(this.step >= this.max ? 'Save' : 'Next'),
+            child: Text(
+              this.step >= this.max ? 'Save' : 'Next',
+              style: TextStyle(
+                color: this.step >= this.max
+                    ? Colors.green.onColor
+                    : Theme.of(context).colorScheme.primaryContainer.onColor,
+              ),
+            ),
           ),
         ),
       ],

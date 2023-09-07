@@ -27,7 +27,14 @@ class MealCard extends StatelessWidget {
     return GestureDetector(
       onTap: this.onTap,
       child: Card(
-        // elevation: 10,
+        elevation: 8,
+        shadowColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            color: Theme.of(context).dividerColor.withOpacity(0.05),
+          ),
+          borderRadius: BorderRadius.circular(DesignSystem.border.radius12),
+        ),
         child: Stack(
           clipBehavior: Clip.none,
           children: [
@@ -60,7 +67,7 @@ class MealCard extends StatelessWidget {
                   boxShadow: const [
                     BoxShadow(
                       blurRadius: 12.0,
-                      offset: Offset(0, 10),
+                      offset: Offset(0, 12),
                     ),
                   ],
                 ),

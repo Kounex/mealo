@@ -12,6 +12,7 @@ class PrevAteMeals extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseCard(
+      topPadding: 0,
       title: 'Previous meals',
       bottomPadding: DesignSystem.spacing.x8,
       child: MealGrid(

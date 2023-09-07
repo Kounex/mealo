@@ -10,15 +10,12 @@ import '../../../../widgets/base/ui/chip.dart';
 class IngredientsBlock extends ConsumerWidget {
   final List<Ingredient> selectedIngredients;
 
-  final String? title;
-
   final void Function(Ingredient tag) onAdd;
   final void Function(Ingredient tag) onRemove;
 
   const IngredientsBlock({
     super.key,
     required this.selectedIngredients,
-    this.title,
     required this.onAdd,
     required this.onRemove,
   });
@@ -33,11 +30,10 @@ class IngredientsBlock extends ConsumerWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (this.title case var title?)
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
+              Text(
+                'Which ingredients would you like to have in the meal?',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
               SizedBox(height: DesignSystem.spacing.x12),
               BaseSuggestionTextField<Ingredient>(
                 suggestions: (text) => ingredients

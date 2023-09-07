@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mealo/types/classes/randomize_config.dart';
 
 import '../../../../../models/embeddings/rating_link/rating_link.dart';
 import '../../../../../models/ingredient/ingredient.dart';
@@ -159,7 +160,16 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
                           ? () {
                               ref
                                   .read(currentRandomizedRunProvider.notifier)
-                                  .start();
+                                  .start(
+                                    config: RandomizeConfig(
+                                      filteredMeals,
+                                      this.widget.includedTags,
+                                      this.widget.excludedTags,
+                                      this.widget.selectedRatings,
+                                      this.widget.selectedIngredients,
+                                      this.widget.daysNotEaten,
+                                    ),
+                                  );
                             }
                           : null,
                       child: asyncCurrentRandomizedRun.isLoading

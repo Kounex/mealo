@@ -9,8 +9,6 @@ import '../../../../widgets/base/functional/suggestion_text_field/suggestion_tex
 import '../../../../widgets/shared/meal_ratings.dart';
 
 class RatingsBlock extends ConsumerWidget {
-  final String? title;
-
   final List<RatingLink> selectedRatings;
 
   final void Function(Rating rating) onAdd;
@@ -20,7 +18,6 @@ class RatingsBlock extends ConsumerWidget {
 
   const RatingsBlock({
     super.key,
-    this.title,
     required this.selectedRatings,
     required this.onAdd,
     required this.onRemove,
@@ -37,11 +34,10 @@ class RatingsBlock extends ConsumerWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (this.title case var title?)
-              Text(
-                title,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+            Text(
+              'Which ratings should be considered for the meal selection? (including which value it should have at least)',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             SizedBox(height: DesignSystem.spacing.x12),
             BaseSuggestionTextField<Rating>(
               suggestions: (text) => ratings

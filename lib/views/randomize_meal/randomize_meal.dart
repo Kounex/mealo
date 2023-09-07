@@ -198,18 +198,12 @@ class _MealRandomizerSheetState extends ConsumerState<RandomizeMealView> {
                               SizedBox(height: DesignSystem.spacing.x24),
                               IngredientsBlock(
                                 selectedIngredients: _selectedIngredients,
-                                title:
-                                    'Which ingredients would you like to have in the meal?',
                                 onAdd: (ingredient) => setState(
                                     () => _selectedIngredients.add(ingredient)),
                                 onRemove: (ingredient) => setState(() =>
                                     _selectedIngredients.remove(ingredient)),
                               ),
                               SizedBox(height: DesignSystem.spacing.x24),
-                              Text(
-                                'Which ratings should be considered for the meal selection? (including which value it should have at least)',
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
                               RatingsBlock(
                                 selectedRatings: _selectedRatings,
                                 onAdd: (rating) => setState(
@@ -230,11 +224,6 @@ class _MealRandomizerSheetState extends ConsumerState<RandomizeMealView> {
                                         ?.value = ratingValue),
                               ),
                               SizedBox(height: DesignSystem.spacing.x24),
-                              Text(
-                                'How long should it at least be since you last ate the meal we\'ll select?',
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                              SizedBox(height: DesignSystem.spacing.x12),
                               DaysDropdown(
                                 controller: _controller,
                                 daysNotEaten: _daysNotEaten,
