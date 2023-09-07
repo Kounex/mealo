@@ -143,8 +143,7 @@ class _MealRandomizerSheetState extends ConsumerState<RandomizeMealView> {
                         BaseCard(
                           topPadding: DesignSystem.spacing.x12,
                           title: 'Filters',
-                          expandable: true,
-                          initialExpandState: false,
+                          initialExpanded: false,
                           onExpand: (expanded) => !expanded
                               ? setState(() => _shadowForFilters = false)
                               : null,

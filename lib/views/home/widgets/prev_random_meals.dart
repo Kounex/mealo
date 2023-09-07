@@ -12,8 +12,7 @@ class PrevRandomMeals extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseCard(
       title: 'Randomized meals',
-      expandable: true,
-      initialExpandState: false,
+      initialExpanded: false,
       child: MealGrid(
         provider: prevRandomizedMealsProvider,
         itemCrossAxisExtent: 150,

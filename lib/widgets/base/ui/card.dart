@@ -8,9 +8,8 @@ class BaseCard extends StatefulWidget {
   final Widget child;
   final bool centerChild;
 
-  final bool expandable;
-  final bool? initialExpandState;
-  final bool expanded;
+  final bool? initialExpanded;
+  final bool? expanded;
   final void Function(bool expanded)? onExpand;
 
   final Widget? above;
@@ -44,9 +43,8 @@ class BaseCard extends StatefulWidget {
   const BaseCard({
     Key? key,
     required this.child,
-    this.expandable = false,
-    this.initialExpandState,
-    this.expanded = false,
+    this.initialExpanded,
+    this.expanded,
     this.onExpand,
     this.above,
     this.below,
@@ -80,18 +78,17 @@ class _BaseCardState extends State<BaseCard> {
   void initState() {
     super.initState();
 
-    if (this.widget.expandable) {
+    if (this.widget.initialExpanded != null || this.widget.expanded != null) {
       _expandedTurn =
-          this.widget.initialExpandState ?? this.widget.expanded ? 0 : 1;
+          (this.widget.initialExpanded ?? this.widget.expanded != null) ? 0 : 1;
     }
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void didUpdateWidget(covariant BaseCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
 
-    if (this.widget.expandable &&
-        this.widget.initialExpandState == null &&
+    if (this.widget.expanded != oldWidget.expanded &&
         this.widget.expanded != (_expandedTurn % 2 == 0)) {
       setState(() => _expandedTurn++);
     }
@@ -148,14 +145,16 @@ class _BaseCardState extends State<BaseCard> {
                               style: Theme.of(context).textTheme.headlineSmall,
                             )
                           : this.widget.titleWidget!),
-                  if (this.widget.expandable ||
+                  if (this.widget.initialExpanded != null ||
+                      this.widget.expanded != null ||
                       this.widget.trailingTitleWidget != null)
                     Row(
                       children: [
                         if (this.widget.trailingTitleWidget
                             case var trailingTitleWidget?)
                           trailingTitleWidget,
-                        if (this.widget.expandable)
+                        if (this.widget.initialExpanded != null ||
+                            this.widget.expanded != null)
                           AnimatedRotation(
                             duration:
                                 DesignSystem.animation.defaultDurationMS250,
