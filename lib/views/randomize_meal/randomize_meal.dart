@@ -30,10 +30,10 @@ class RandomizeMealView extends ConsumerStatefulWidget {
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _MealRandomizerSheetState();
+      _RandomizeMealViewState();
 }
 
-class _MealRandomizerSheetState extends ConsumerState<RandomizeMealView> {
+class _RandomizeMealViewState extends ConsumerState<RandomizeMealView> {
   final ScrollController _scroll = ScrollController();
   bool _shadowForFilters = false;
 

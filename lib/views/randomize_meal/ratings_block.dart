@@ -63,21 +63,6 @@ class RatingsBlock extends ConsumerWidget {
               ratingLinks: this.selectedRatings,
               onRemove: this.onRemove,
             ),
-            // Wrap(
-            //   direction: Axis.horizontal,
-            //   spacing: DesignSystem.spacing.x8,
-            //   children: this.selectedRatings.map(
-            //     (ratingLink) {
-            //       Rating rating = ratings.firstWhere(
-            //           (rating) => rating.uuid == ratingLink.ratingUuid);
-
-            //       return BaseChip(
-            //         text: rating.name,
-            //         onDeleted: () => this.onRemove(ratingLink),
-            //       );
-            //     },
-            //   ).toList(),
-            // ),
           ],
         );
       },

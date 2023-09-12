@@ -51,7 +51,7 @@ class DaysDropdown extends StatelessWidget {
               if (this.onClear != null && this.controller.text.isNotEmpty)
                 Positioned(
                   top: DesignSystem.spacing.x8,
-                  right: DesignSystem.spacing.x2,
+                  right: DesignSystem.spacing.x4,
                   child: IconButton(
                     onPressed: this.onClear,
                     icon: const Icon(CupertinoIcons.clear_circled_solid),
