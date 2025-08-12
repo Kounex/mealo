@@ -1,21 +1,21 @@
 import 'package:isar/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../utils/persistance.dart';
+import '../../utils/persistence.dart';
 import '../model.dart';
-import '../persistance.dart';
+import '../persistence.dart';
 
 part 'settings.g.dart';
 
 @riverpod
 class SettingsSingleton extends _$SettingsSingleton
-    with SingletonPersistance<Settings> {
+    with SingletonPersistence<Settings> {
   @override
   FutureOr<Settings> build() async => this.init();
 
   void setDarkMode(bool darkMode) {
-    PersistanceUtils.transaction(
-      PersistanceOperation.insertUpdate,
+    PersistenceUtils.transaction(
+      PersistenceOperation.insertUpdate,
       [this.state.value!..darkMode = darkMode],
     );
   }

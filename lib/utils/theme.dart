@@ -1,11 +1,58 @@
+import 'package:base_components/base_components.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'design_system.dart';
 
 /// Base themes are based on Grey Law with Material 3 on and using
 /// Material 3 error colors
 class ThemeUtils {
+  static ThemeData get shadBlueLight => FlexThemeData.light(
+        // Using FlexColorScheme built-in FlexScheme enum based colors
+        scheme: FlexScheme.shadBlue,
+        // Component theme configurations for light mode.
+        surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+        blendLevel: 1,
+        appBarOpacity: DesignSystem.opacityForBlur,
+        subThemesData: const FlexSubThemesData(
+          bottomNavigationBarOpacity: DesignSystem.opacityForBlur,
+          navigationBarOpacity: DesignSystem.opacityForBlur,
+          interactionEffects: true,
+          tintedDisabledControls: true,
+          useM2StyleDividerInM3: true,
+          inputDecoratorIsFilled: true,
+          inputDecoratorBorderType: FlexInputBorderType.outline,
+          alignedDropdown: true,
+          navigationRailUseIndicator: true,
+        ),
+        // Direct ThemeData properties.
+        visualDensity: FlexColorScheme.comfortablePlatformDensity,
+        cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
+      );
+
+  static ThemeData get shadBlueDark => FlexThemeData.dark(
+        // Using FlexColorScheme built-in FlexScheme enum based colors.
+        scheme: FlexScheme.shadBlue,
+        // Component theme configurations for dark mode.
+        surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+        blendLevel: 1,
+        appBarOpacity: DesignSystem.opacityForBlur,
+        subThemesData: const FlexSubThemesData(
+          bottomNavigationBarOpacity: DesignSystem.opacityForBlur,
+          navigationBarOpacity: DesignSystem.opacityForBlur,
+          interactionEffects: true,
+          tintedDisabledControls: true,
+          blendOnColors: true,
+          useM2StyleDividerInM3: true,
+          inputDecoratorIsFilled: true,
+          inputDecoratorBorderType: FlexInputBorderType.outline,
+          alignedDropdown: true,
+          navigationRailUseIndicator: true,
+        ),
+        // Direct ThemeData properties.
+        visualDensity: FlexColorScheme.comfortablePlatformDensity,
+        cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
+      );
+
   static ThemeData get baseLight => FlexThemeData.light(
         scheme: FlexScheme.sanJuanBlue,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
@@ -24,9 +71,10 @@ class ThemeUtils {
           segmentedButtonBorderSchemeColor: SchemeColor.primary,
           unselectedToggleIsColored: true,
           sliderValueTinted: true,
+          inputDecoratorBorderType: FlexInputBorderType.outline,
           inputDecoratorSchemeColor: SchemeColor.primary,
           inputDecoratorBackgroundAlpha: 31,
-          inputDecoratorUnfocusedHasBorder: false,
+          inputDecoratorUnfocusedHasBorder: true,
           inputDecoratorFocusedBorderWidth: 1.0,
           inputDecoratorPrefixIconSchemeColor: SchemeColor.primary,
           fabUseShape: true,
@@ -93,9 +141,10 @@ class ThemeUtils {
           segmentedButtonBorderSchemeColor: SchemeColor.primary,
           unselectedToggleIsColored: true,
           sliderValueTinted: true,
+          inputDecoratorBorderType: FlexInputBorderType.outline,
           inputDecoratorSchemeColor: SchemeColor.primary,
           inputDecoratorBackgroundAlpha: 43,
-          inputDecoratorUnfocusedHasBorder: false,
+          inputDecoratorUnfocusedHasBorder: true,
           inputDecoratorFocusedBorderWidth: 1.0,
           inputDecoratorPrefixIconSchemeColor: SchemeColor.primary,
           fabUseShape: true,

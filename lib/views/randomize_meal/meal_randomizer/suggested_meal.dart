@@ -1,3 +1,4 @@
+import 'package:base_components/base_components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,10 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../models/meal/meal.dart';
 import '../../../../../models/randomized_run/randomized_run.dart';
 import '../../../../../stores/views/home.dart';
-import '../../../../../utils/design_system.dart';
-import '../../../../../utils/persistance.dart';
 import '../../../../../utils/router.dart';
 import '../../../../../widgets/shared/meal_card.dart';
+import '../../../utils/persistence.dart';
 
 class SuggestedMeal extends ConsumerWidget {
   final Meal meal;
@@ -21,8 +21,8 @@ class SuggestedMeal extends ConsumerWidget {
   });
 
   Future<void> _feast(BuildContext context, WidgetRef ref) async {
-    PersistanceUtils.transaction(
-      PersistanceOperation.insertUpdate,
+    PersistenceUtils.transaction(
+      PersistenceOperation.insertUpdate,
       [this.randomizedRun..eaten = true],
     );
     ref.invalidate(currentRandomizedRunProvider);
@@ -56,7 +56,7 @@ class SuggestedMeal extends ConsumerWidget {
             child: ElevatedButton.icon(
               onPressed: () => _feast(context, ref),
               style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Colors.green)),
+                  backgroundColor: WidgetStatePropertyAll(Colors.green)),
               icon: const Icon(CupertinoIcons.checkmark_alt_circle),
               label: const Text('Let\'s feast!'),
             ),

@@ -1,11 +1,10 @@
+import 'package:base_components/base_components.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/embeddings/rating_link/rating_link.dart';
 import '../../models/rating/rating.dart';
-import '../../utils/design_system.dart';
-import '../base/ui/divider.dart';
 
 class MealRatings extends StatelessWidget {
   final List<Rating> ratings;
@@ -26,13 +25,11 @@ class MealRatings extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ...this
-            .ratings
-            .mapIndexed(
+        ...this.ratings.mapIndexed(
               (index, rating) => SizedBox(
                 width: double.infinity,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -42,7 +39,7 @@ class MealRatings extends StatelessWidget {
                         ),
                         Flexible(
                           child: Text(
-                            this.ratings[index].name,
+                            rating.name,
                             style: Theme.of(context).textTheme.labelLarge,
                           ),
                         ),
@@ -64,14 +61,23 @@ class MealRatings extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: DesignSystem.spacing.x8),
+                    if (rating.description != null &&
+                        rating.description!.trim().isNotEmpty) ...[
+                      SizedBox(height: DesignSystem.spacing.x4),
+                      Text(
+                        rating.description!,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      )
+                    ],
+                    SizedBox(height: DesignSystem.spacing.x12),
                     SizedBox(
                       width: double.infinity,
-                      child: CupertinoSlidingSegmentedControl<RatingValue?>(
+                      child: CupertinoSlidingSegmentedControl<RatingValue>(
                         groupValue: this
                             .ratingLinks
-                            .firstWhereOrNull((value) =>
-                                value.ratingUuid == this.ratings[index].uuid)!
+                            .firstWhereOrNull(
+                                (value) => value.ratingUuid == rating.uuid)!
                             .value,
                         padding: const EdgeInsets.all(0),
                         children: {}..addEntries(
@@ -120,8 +126,7 @@ class MealRatings extends StatelessWidget {
                   ],
                 ),
               ),
-            )
-            .toList(),
+            ),
       ],
     );
   }

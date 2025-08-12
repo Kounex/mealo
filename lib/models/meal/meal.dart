@@ -3,12 +3,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../embeddings/rating_link/rating_link.dart';
 import '../model.dart';
-import '../persistance.dart';
+import '../persistence.dart';
 
 part 'meal.g.dart';
 
 @riverpod
-class Meals extends _$Meals with Persistance<Meal> {
+class Meals extends _$Meals with Persistence<Meal> {
   @override
   FutureOr<List<Meal>> build() async => this.init();
 

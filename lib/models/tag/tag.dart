@@ -2,12 +2,12 @@ import 'package:isar/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../model.dart';
-import '../persistance.dart';
+import '../persistence.dart';
 
 part 'tag.g.dart';
 
 @riverpod
-class Tags extends _$Tags with Persistance<Tag> {
+class Tags extends _$Tags with Persistence<Tag> {
   @override
   FutureOr<List<Tag>> build() async => this.init();
 }

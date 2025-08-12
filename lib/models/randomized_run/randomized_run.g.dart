@@ -108,7 +108,7 @@ int serializeRandomizedRun(IsarWriter writer, RandomizedRun object) {
     IsarCore.endList(writer, listWriter);
   }
   {
-    final list = object.ingredientUuids;
+    final list = object.includedIngredientUuids;
     final listWriter = IsarCore.beginList(writer, 4, list.length);
     for (var i = 0; i < list.length; i++) {
       IsarCore.writeString(listWriter, i, list[i]);
@@ -191,14 +191,14 @@ RandomizedRun deserializeRandomizedRun(IsarReader reader) {
     {
       final reader = IsarCore.readerPtr;
       if (reader.isNull) {
-        object.ingredientUuids = const <String>[];
+        object.includedIngredientUuids = const <String>[];
       } else {
         final list = List<String>.filled(length, '', growable: true);
         for (var i = 0; i < length; i++) {
           list[i] = IsarCore.readString(reader, i) ?? '';
         }
         IsarCore.freeReader(reader);
-        object.ingredientUuids = list;
+        object.includedIngredientUuids = list;
       }
     }
   }

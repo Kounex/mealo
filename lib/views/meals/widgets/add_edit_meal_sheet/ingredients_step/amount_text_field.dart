@@ -1,7 +1,6 @@
+import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../../../../../widgets/base/functional/text_form_field.dart';
 
 class AmountTextField extends StatelessWidget {
   final TextEditingController controller;

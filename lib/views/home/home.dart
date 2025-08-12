@@ -1,9 +1,7 @@
+import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 
-import '../../utils/design_system.dart';
 import '../../utils/router.dart';
-import '../../widgets/animation/fader.dart';
-import '../../widgets/base/functional/scaffold.dart';
 import 'widgets/prev_ate_meals.dart';
 import 'widgets/prev_random_meals.dart';
 
@@ -32,7 +30,7 @@ class HomeView extends StatelessWidget {
                     child: Text(
                       'Mealo',
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.onBackground,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                   )

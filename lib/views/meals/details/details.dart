@@ -1,3 +1,4 @@
+import 'package:base_components/base_components.dart';
 import 'package:beamer/beamer.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/meal/meal.dart';
 import '../../../models/rating/rating.dart';
 import '../../../stores/views/home.dart';
-import '../../../utils/design_system.dart';
-import '../../../utils/modal.dart';
-import '../../../widgets/base/functional/async_value_builder.dart';
-import '../../../widgets/base/functional/scaffold.dart';
-import '../../../widgets/base/ui/image.dart';
 import '../../../widgets/shared/meal_ratings.dart';
 import '../widgets/add_edit_meal_sheet/add_edit_meal_sheet.dart';
 

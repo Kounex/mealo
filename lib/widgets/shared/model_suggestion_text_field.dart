@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/model.dart';
-import '../base/functional/suggestion_text_field/suggestion_text_field.dart';
 
 class ModelSuggestionTextField<T extends CommonModel> extends StatelessWidget {
   final T? value;

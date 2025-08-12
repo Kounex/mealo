@@ -1,7 +1,6 @@
+import 'package:base_components/base_components.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../utils/design_system.dart';
 
 class StepperControl extends StatelessWidget {
   final int step;
@@ -42,7 +41,7 @@ class StepperControl extends StatelessWidget {
             },
             style: ButtonStyle(
               backgroundColor: this.step >= this.max
-                  ? const MaterialStatePropertyAll(Colors.green)
+                  ? const WidgetStatePropertyAll(Colors.green)
                   : null,
             ),
             child: Text(

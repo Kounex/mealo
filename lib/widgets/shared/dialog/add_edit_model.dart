@@ -1,11 +1,8 @@
+import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../models/model.dart';
-import '../../../utils/design_system.dart';
-import '../../../utils/modal.dart';
-import '../../base/functional/text_form_field.dart';
-import '../../base/ui/text_button.dart';
 import '../../dialog/confirmation.dart';
 
 class AddEditModelDialog<T extends CommonModel> extends ConsumerStatefulWidget {
@@ -93,7 +90,7 @@ class _AddEditModelDialogState<T extends CommonModel>
         mainAxisSize: MainAxisSize.min,
         children: [
           Text('Enter the name for the ${_getGenericBaseModelType()} entity:'),
-          SizedBox(height: DesignSystem.spacing.x12),
+          SizedBox(height: DesignSystem.spacing.x24),
           Form(
             key: _form,
             child: BaseTextFormField(

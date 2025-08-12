@@ -1,3 +1,4 @@
+import 'package:base_components/base_components.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,14 +7,7 @@ import '../../../../models/embeddings/rating_link/rating_link.dart';
 import '../../../../models/ingredient/ingredient.dart';
 import '../../../../models/rating/rating.dart';
 import '../../../../models/tag/tag.dart';
-import '../../../../utils/design_system.dart';
-import '../../../../utils/modal.dart';
-import '../../../../widgets/base/functional/async_value_builder.dart';
-import '../../../../widgets/base/ui/card.dart';
-import '../../../../widgets/base/ui/on_off_indicator.dart';
-import '../../../../widgets/base/ui/text_button.dart';
 import '../../../../widgets/dialog/confirmation.dart';
-import '../../widgets/base/functional/scaffold.dart';
 import 'days_dropdown.dart';
 import 'ingredients_block.dart';
 import 'meal_randomizer/meal_randomizer.dart';
@@ -39,7 +33,8 @@ class _RandomizeMealViewState extends ConsumerState<RandomizeMealView> {
 
   final List<Tag> _includedTags = [];
   final List<Tag> _excludedTags = [];
-  final List<Ingredient> _selectedIngredients = [];
+  final List<Ingredient> _includedIngredients = [];
+  final List<Ingredient> _excludedIngredients = [];
   final List<RatingLink> _selectedRatings = [];
 
   final TextEditingController _controller = TextEditingController();
@@ -63,19 +58,21 @@ class _RandomizeMealViewState extends ConsumerState<RandomizeMealView> {
   bool _areFiltersActive() {
     return _includedTags.isNotEmpty ||
         _excludedTags.isNotEmpty ||
-        _controller.text.isNotEmpty ||
+        _includedIngredients.isNotEmpty ||
+        _excludedIngredients.isNotEmpty ||
         _selectedRatings.isNotEmpty ||
-        _selectedIngredients.isNotEmpty;
+        _controller.text.isNotEmpty;
   }
 
   void _setFiltersDefault() {
     setState(() {
       _includedTags.clear();
       _excludedTags.clear();
-      _controller.clear();
+      _includedIngredients.clear();
+      _excludedIngredients.clear();
       _selectedRatings.clear();
-      _selectedIngredients.clear();
       _selectedDay = null;
+      _controller.clear();
     });
   }
 
@@ -128,137 +125,142 @@ class _RandomizeMealViewState extends ConsumerState<RandomizeMealView> {
                 MealRandomizer(
                   includedTags: _includedTags,
                   excludedTags: _excludedTags,
+                  includedIngredients: _includedIngredients,
+                  excludedIngredients: _excludedIngredients,
                   selectedRatings: _selectedRatings,
-                  selectedIngredients: _selectedIngredients,
                   daysNotEaten: _selectedDay,
                 ),
-                Stack(
-                  alignment: Alignment.topCenter,
-                  children: [
-                    Column(
-                      // ListView(
-                      //   controller: _scroll,
-                      //   physics: const AlwaysScrollableScrollPhysics(),
-                      children: [
-                        BaseCard(
-                          topPadding: DesignSystem.spacing.x12,
-                          title: 'Filters',
-                          initialExpanded: false,
-                          onExpand: (expanded) => !expanded
-                              ? setState(() => _shadowForFilters = false)
-                              : null,
-                          trailingTitleWidget: Row(
-                            children: [
-                              BaseTextButton(
-                                onPressed: _areFiltersActive()
-                                    ? () => ModalUtils.showBaseDialog(
-                                          context,
-                                          ConfirmationDialog(
-                                            onYes: () => _setFiltersDefault(),
-                                            title: 'Reset Filters',
-                                            text:
-                                                'Are you sure you want to reset the filters? This action can\'t be undone!',
-                                            isYesDestructive: true,
-                                          ),
-                                        )
-                                    : null,
-                                isDestructive: true,
-                                child: const Text('Reset'),
-                              ),
-                              SizedBox(width: DesignSystem.spacing.x8),
-                              OnOffIndicator(
-                                on: _areFiltersActive(),
-                              ),
-                              SizedBox(width: DesignSystem.spacing.x18),
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              TagsBlock(
-                                tags: [...tags]..removeWhere(
-                                    (tag) => _excludedTags.contains(tag)),
-                                selectedTags: _includedTags,
-                                title: 'Which tags should be included?',
-                                onAdd: (tag) =>
-                                    setState(() => _includedTags.add(tag)),
-                                onRemove: (tag) =>
-                                    setState(() => _includedTags.remove(tag)),
-                              ),
-                              SizedBox(height: DesignSystem.spacing.x24),
-                              TagsBlock(
-                                tags: [...tags]..removeWhere(
-                                    (tag) => _includedTags.contains(tag)),
-                                selectedTags: _excludedTags,
-                                title: 'Which tags should NOT be included?',
-                                onAdd: (tag) =>
-                                    setState(() => _excludedTags.add(tag)),
-                                onRemove: (tag) =>
-                                    setState(() => _excludedTags.remove(tag)),
-                              ),
-                              SizedBox(height: DesignSystem.spacing.x24),
-                              IngredientsBlock(
-                                selectedIngredients: _selectedIngredients,
-                                onAdd: (ingredient) => setState(
-                                    () => _selectedIngredients.add(ingredient)),
-                                onRemove: (ingredient) => setState(() =>
-                                    _selectedIngredients.remove(ingredient)),
-                              ),
-                              SizedBox(height: DesignSystem.spacing.x24),
-                              RatingsBlock(
-                                selectedRatings: _selectedRatings,
-                                onAdd: (rating) => setState(
-                                  () => _selectedRatings.add(
-                                    RatingLink()
-                                      ..ratingUuid = rating.uuid
-                                      ..value = RatingValue.three,
+                BaseCard(
+                  topPadding: DesignSystem.spacing.x12,
+                  title: 'Filters',
+                  expandable: true,
+                  trailingTitleWidget: Row(
+                    children: [
+                      BaseTextButton(
+                        onPressed: _areFiltersActive()
+                            ? () => ModalUtils.showBaseDialog(
+                                  context,
+                                  ConfirmationDialog(
+                                    onYes: () => _setFiltersDefault(),
+                                    title: 'Reset Filters',
+                                    text:
+                                        'Are you sure you want to reset the filters? This action can\'t be undone!',
+                                    isYesDestructive: true,
                                   ),
-                                ),
-                                onRemove: (rating) => setState(() =>
-                                    _selectedRatings.removeWhere((ratingLink) =>
-                                        ratingLink.ratingUuid == rating.uuid)),
-                                onValueChanged: (rating, ratingValue) =>
-                                    setState(() => _selectedRatings
-                                        .firstWhereOrNull((ratingLink) =>
-                                            ratingLink.ratingUuid ==
-                                            rating.uuid)
-                                        ?.value = ratingValue),
-                              ),
-                              SizedBox(height: DesignSystem.spacing.x24),
-                              DaysDropdown(
-                                controller: _controller,
-                                daysNotEaten: _daysNotEaten,
-                                onSelected: (day) =>
-                                    setState(() => _selectedDay = day),
-                                onClear: () =>
-                                    setState(() => _controller.clear()),
-                              ),
-                            ],
+                                )
+                            : null,
+                        isDestructive: true,
+                        child: const Text('Reset'),
+                      ),
+                      SizedBox(width: DesignSystem.spacing.x8),
+                      OnOffIndicator(
+                        on: _areFiltersActive(),
+                      ),
+                      SizedBox(width: DesignSystem.spacing.x18),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      TagsBlock(
+                        tags: [...tags]
+                          ..removeWhere((tag) => _excludedTags.contains(tag)),
+                        selectedTags: _includedTags,
+                        title: 'Which tags should be included?',
+                        onAdd: (tag) => setState(() => _includedTags.add(tag)),
+                        onRemove: (tag) =>
+                            setState(() => _includedTags.remove(tag)),
+                      ),
+                      SizedBox(height: DesignSystem.spacing.x24),
+                      TagsBlock(
+                        tags: [...tags]
+                          ..removeWhere((tag) => _includedTags.contains(tag)),
+                        selectedTags: _excludedTags,
+                        title: 'Which tags should NOT be included?',
+                        onAdd: (tag) => setState(() => _excludedTags.add(tag)),
+                        onRemove: (tag) =>
+                            setState(() => _excludedTags.remove(tag)),
+                      ),
+                      SizedBox(height: DesignSystem.spacing.x24),
+                      IngredientsBlock(
+                        selectedIngredients: _includedIngredients,
+                        text:
+                            'Which ingredients would you like to have in the meal?',
+                        onAdd: (ingredient) => setState(
+                            () => _includedIngredients.add(ingredient)),
+                        onRemove: (ingredient) => setState(
+                            () => _includedIngredients.remove(ingredient)),
+                      ),
+                      SizedBox(height: DesignSystem.spacing.x24),
+                      IngredientsBlock(
+                        selectedIngredients: _excludedIngredients,
+                        text: 'Which ingredients should NOT be in the meal?',
+                        onAdd: (ingredient) => setState(
+                            () => _excludedIngredients.add(ingredient)),
+                        onRemove: (ingredient) => setState(
+                            () => _excludedIngredients.remove(ingredient)),
+                      ),
+                      SizedBox(height: DesignSystem.spacing.x24),
+                      RatingsBlock(
+                        selectedRatings: _selectedRatings,
+                        onAdd: (rating) => setState(
+                          () => _selectedRatings.add(
+                            RatingLink()
+                              ..ratingUuid = rating.uuid
+                              ..value = RatingValue.three,
                           ),
                         ),
-                      ],
-                    ),
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    //   child: ClipRRect(
-                    //     child: Transform.translate(
-                    //       offset: const Offset(0, -32),
-                    //       child: AnimatedContainer(
-                    //         duration:
-                    //             DesignSystem.animation.defaultDurationMS250,
-                    //         width: double.infinity,
-                    //         height: 24,
-                    //         alignment: Alignment.topCenter,
-                    //         decoration: BoxDecoration(
-                    //           boxShadow: _shadowForFilters
-                    //               ? kElevationToShadow[12]
-                    //               : null,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                  ],
+                        onRemove: (rating) => setState(() =>
+                            _selectedRatings.removeWhere((ratingLink) =>
+                                ratingLink.ratingUuid == rating.uuid)),
+                        onValueChanged: (rating, ratingValue) => setState(() =>
+                            _selectedRatings
+                                .firstWhereOrNull((ratingLink) =>
+                                    ratingLink.ratingUuid == rating.uuid)
+                                ?.value = ratingValue),
+                      ),
+                      SizedBox(height: DesignSystem.spacing.x24),
+                      DaysDropdown(
+                        controller: _controller,
+                        daysNotEaten: _daysNotEaten,
+                        onSelected: (day) => setState(() => _selectedDay = day),
+                        onClear: () => setState(() => _controller.clear()),
+                      ),
+                    ],
+                  ),
                 ),
+                // Stack(
+                //   alignment: Alignment.topCenter,
+                //   children: [
+                //     Column(
+                //       // ListView(
+                //       //   controller: _scroll,
+                //       //   physics: const AlwaysScrollableScrollPhysics(),
+                //       children: [
+
+                //       ],
+                //     ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                //   child: ClipRRect(
+                //     child: Transform.translate(
+                //       offset: const Offset(0, -32),
+                //       child: AnimatedContainer(
+                //         duration:
+                //             DesignSystem.animation.defaultDurationMS250,
+                //         width: double.infinity,
+                //         height: 24,
+                //         alignment: Alignment.topCenter,
+                //         decoration: BoxDecoration(
+                //           boxShadow: _shadowForFilters
+                //               ? kElevationToShadow[12]
+                //               : null,
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                //   ],
+                // ),
               ],
             );
           },

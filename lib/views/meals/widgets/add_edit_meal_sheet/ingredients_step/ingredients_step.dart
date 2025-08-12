@@ -1,3 +1,4 @@
+import 'package:base_components/base_components.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,10 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../models/ingredient/ingredient.dart';
 import '../../../../../models/meal/meal.dart';
 import '../../../../../models/unit/unit.dart';
-import '../../../../../utils/design_system.dart';
-import '../../../../../widgets/base/functional/async_value_builder.dart';
-import '../../../../../widgets/base/ui/card.dart';
-import '../../../../../widgets/base/ui/placeholder_text.dart';
 import 'ingredient_row.dart';
 
 class IngredientsStep extends ConsumerStatefulWidget {

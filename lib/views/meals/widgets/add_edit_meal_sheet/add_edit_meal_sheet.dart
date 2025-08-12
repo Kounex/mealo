@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,14 +11,7 @@ import 'package:uuid/uuid.dart';
 import '../../../../models/embeddings/rating_link/rating_link.dart';
 import '../../../../models/meal/meal.dart';
 import '../../../../models/rating/rating.dart';
-import '../../../../utils/design_system.dart';
-import '../../../../utils/modal.dart';
-import '../../../../utils/persistance.dart';
-import '../../../../utils/validation.dart';
-import '../../../../widgets/base/functional/async_value_builder.dart';
-import '../../../../widgets/base/functional/text_form_field.dart';
-import '../../../../widgets/base/ui/divider.dart';
-import '../../../../widgets/base/ui/text_button.dart';
+import '../../../../utils/persistence.dart';
 import '../../../../widgets/dialog/confirmation.dart';
 import 'images_step/images_step.dart';
 import 'ingredients_step/ingredients_step.dart';
@@ -126,8 +120,8 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
   void _saveMeal() async {
     final uuids = await _handleImages();
 
-    PersistanceUtils.transaction(
-      PersistanceOperation.insertUpdate,
+    PersistenceUtils.transaction(
+      PersistenceOperation.insertUpdate,
       [
         _meal!
           ..name = _name.text.trim()
@@ -152,8 +146,8 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
 
       await _deleteImages(imagesUuidsToDelete);
 
-      PersistanceUtils.transaction(
-        PersistanceOperation.delete,
+      PersistenceUtils.transaction(
+        PersistenceOperation.delete,
         [this.widget.meal!],
       );
     }
@@ -164,7 +158,7 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
 
   String? _checkMealNameUnique(String name) {
     List<Meal> meals =
-        PersistanceUtils.where<Meal>().nameEqualTo(name.trim()).findAll();
+        PersistenceUtils.where<Meal>().nameEqualTo(name.trim()).findAll();
 
     if (meals.isNotEmpty &&
         meals.every((meal) => meal.uuid != this.widget.meal?.uuid)) {

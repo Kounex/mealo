@@ -1,11 +1,9 @@
+import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import '../../../models/meal/meal.dart';
-import '../../utils/design_system.dart';
-import '../base/functional/async_value_builder.dart';
-import '../base/ui/placeholder_text.dart';
 import 'meal_card.dart';
 
 class MealGrid extends ConsumerWidget {

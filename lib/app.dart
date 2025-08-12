@@ -1,5 +1,4 @@
 import 'package:beamer/beamer.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,15 +14,6 @@ class App extends ConsumerWidget {
     bool? darkMode = ref.watch(
       settingsSingletonProvider.select((value) => value.valueOrNull?.darkMode),
     );
-
-    ThemeData light = ThemeUtils.baseLight;
-    ThemeData dark = ThemeUtils.baseDark;
-
-    CupertinoThemeData cupertino =
-        CupertinoThemeData(primaryColor: light.colorScheme.primary);
-
-    light = light.copyWith(cupertinoOverrideTheme: cupertino);
-    dark = dark.copyWith(cupertinoOverrideTheme: cupertino);
 
     return MaterialApp.router(
       routerDelegate: RouterUtils.router,

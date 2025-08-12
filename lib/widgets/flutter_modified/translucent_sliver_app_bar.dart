@@ -1,12 +1,11 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
+import 'package:base_components/base_components.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-
-import '../../utils/design_system.dart';
 
 /// Copied [SliverAppBar] implementation to override the
 /// internal [_SliverAppBarDelegate] so it is wrapped

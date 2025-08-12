@@ -1,3 +1,4 @@
+import 'package:base_components/base_components.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,19 +10,14 @@ import '../../../../../models/meal/meal.dart';
 import '../../../../../models/randomized_run/randomized_run.dart';
 import '../../../../../models/tag/tag.dart';
 import '../../../../../stores/views/home.dart';
-import '../../../../../utils/design_system.dart';
-import '../../../../../widgets/animation/text_shimmer.dart';
-import '../../../../../widgets/base/functional/async_value_builder.dart';
-import '../../../../../widgets/base/ui/card.dart';
-import '../../../../../widgets/base/ui/divider.dart';
-import '../../../../../widgets/base/ui/progress_indicator.dart';
 import 'meal_shuffle.dart';
 import 'suggested_meal.dart';
 
 class MealRandomizer extends ConsumerStatefulWidget {
   final List<Tag> includedTags;
   final List<Tag> excludedTags;
-  final List<Ingredient> selectedIngredients;
+  final List<Ingredient> includedIngredients;
+  final List<Ingredient> excludedIngredients;
   final List<RatingLink> selectedRatings;
   final int? daysNotEaten;
 
@@ -29,7 +25,8 @@ class MealRandomizer extends ConsumerStatefulWidget {
     super.key,
     required this.includedTags,
     required this.excludedTags,
-    required this.selectedIngredients,
+    required this.includedIngredients,
+    required this.excludedIngredients,
     required this.selectedRatings,
     required this.daysNotEaten,
   });
@@ -47,6 +44,18 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
       .excludedTags
       .every((tag) => !meal.tagUuids.contains(tag.uuid));
 
+  bool _hasIncludedIngredients(Meal meal) => this
+      .widget
+      .includedIngredients
+      .every((ingredient) => meal.ingredients.any((ingredientLink) =>
+          ingredientLink.uuidIngredient == ingredient.uuid));
+
+  bool _hasNotExcludedIngredients(Meal meal) => this
+      .widget
+      .excludedIngredients
+      .every((ingredient) => meal.ingredients.every((ingredientLink) =>
+          ingredientLink.uuidIngredient != ingredient.uuid));
+
   bool _hasRatingsWithValue(Meal meal) =>
       this.widget.selectedRatings.every((rating) {
         RatingLink? ratingLink = meal.ratings.firstWhereOrNull(
@@ -58,10 +67,6 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
 
         return false;
       });
-
-  bool _hasIngredients(Meal meal) => this.widget.selectedIngredients.every(
-      (ingredient) => meal.ingredients.any((ingredientLink) =>
-          ingredientLink.uuidIngredient == ingredient.uuid));
 
   bool _hasNotBeenEatenSince(Meal meal, List<RandomizedRun> randomizedRuns) {
     DateTime? hasNotBeenEatenSince = this.widget.daysNotEaten != null
@@ -91,8 +96,9 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
         .where((meal) =>
             _hasIncludedTags(meal) &&
             _hasNotExcludedTags(meal) &&
+            _hasIncludedIngredients(meal) &&
+            _hasNotExcludedIngredients(meal) &&
             _hasRatingsWithValue(meal) &&
-            _hasIngredients(meal) &&
             _hasNotBeenEatenSince(meal, randomizedRuns))
         .toList();
   }
@@ -146,8 +152,25 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
                           return const Text(
                               'There is no meal available which fits the given filters. Please adjust so a meal can be selected for you!');
                         }
-                        return Text(
-                            'Did you set the filters to your liking? There are currently ${filteredMeals.length} meals which fit the given filters. If you are ready, press the button and let\'s see which meal will be selected for you!');
+                        return Column(
+                          children: [
+                            Text(
+                              'There are currently',
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: DesignSystem.spacing.x12),
+                            Text(
+                              '${filteredMeals.length} meals',
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
+                            SizedBox(height: DesignSystem.spacing.x12),
+                            Text(
+                              'available for randomizing! Make sure to adjust the filters at the bottom to your liking!',
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        );
                       }()),
                   SizedBox(height: DesignSystem.spacing.x12),
                   const BaseDivider(),
@@ -165,8 +188,9 @@ class _MealRandomizerState extends ConsumerState<MealRandomizer> {
                                       filteredMeals,
                                       this.widget.includedTags,
                                       this.widget.excludedTags,
+                                      this.widget.includedIngredients,
+                                      this.widget.excludedIngredients,
                                       this.widget.selectedRatings,
-                                      this.widget.selectedIngredients,
                                       this.widget.daysNotEaten,
                                     ),
                                   );

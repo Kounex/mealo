@@ -1,12 +1,10 @@
+import 'package:base_components/base_components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/meal/meal.dart';
-import '../../utils/design_system.dart';
-import '../../utils/modal.dart';
 import '../../utils/router.dart';
-import '../../widgets/base/functional/scaffold.dart';
 import '../../widgets/shared/meal_grid.dart';
 import 'widgets/add_edit_meal_sheet/add_edit_meal_sheet.dart';
 

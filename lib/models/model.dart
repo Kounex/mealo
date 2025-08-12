@@ -12,7 +12,7 @@ abstract class BaseModel {
 
   /// We don't want [updated] to be nullable and also be able to distinguish
   /// if a model is new (will be inserted) or already exists (will be updated).
-  /// [updated] will be changed solely in the [PersistanceUtils.transaction]
+  /// [updated] will be changed solely in the [PersistenceUtils.transaction]
   /// function to remain integrity and with this approach we know how to handle
   /// this property correctly. If a model will be used for the [transaction]
   /// function with this value, we know it's a new one or an existing one a and

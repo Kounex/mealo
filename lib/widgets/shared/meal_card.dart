@@ -1,11 +1,10 @@
 import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/meal/meal.dart';
-import '../../utils/design_system.dart';
-import '../base/ui/image.dart';
 
 class MealCard extends StatelessWidget {
   final Meal? meal;

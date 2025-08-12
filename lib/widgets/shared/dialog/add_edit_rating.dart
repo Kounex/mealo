@@ -1,13 +1,9 @@
+import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../widgets/base/functional/text_form_field.dart';
 import '../../../models/rating/rating.dart';
-import '../../../utils/design_system.dart';
-import '../../../utils/modal.dart';
-import '../../../utils/persistance.dart';
-import '../../../utils/validation.dart';
-import '../../base/ui/text_button.dart';
+import '../../../utils/persistence.dart';
 import '../../dialog/confirmation.dart';
 
 class AddEditRatingDialog extends ConsumerStatefulWidget {
@@ -56,11 +52,11 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
                 ConfirmationDialog(
                   title: 'Delete Rating',
                   text:
-                      'Aure you sure you want to delete ${this.widget.rating!.name}? This action can\'t be undone!',
+                      'Are you sure you want to delete ${this.widget.rating!.name}? This action can\'t be undone!',
                   isYesDestructive: true,
                   onYes: () {
-                    PersistanceUtils.transaction(
-                      PersistanceOperation.delete,
+                    PersistenceUtils.transaction(
+                      PersistenceOperation.delete,
                       [this.widget.rating!],
                     );
                     Navigator.of(context).pop();
@@ -80,7 +76,7 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
           if (this.widget.rating == null)
             const Text(
                 'Ratings apply to all meals. You will need to update existing meals and set the value of the new rating.'),
-          SizedBox(height: DesignSystem.spacing.x12),
+          SizedBox(height: DesignSystem.spacing.x24),
           Form(
             key: _form,
             child: Column(
@@ -123,10 +119,12 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
             if (_form.currentState!.validate()) {
               Rating? rating = this.widget.rating ?? Rating();
 
-              PersistanceUtils.transaction(
-                PersistanceOperation.insertUpdate,
+              PersistenceUtils.transaction(
+                PersistenceOperation.insertUpdate,
                 [
-                  rating..name = _name.text.trim(),
+                  rating
+                    ..name = _name.text.trim()
+                    ..description = _description.text.trim(),
                 ],
               );
 

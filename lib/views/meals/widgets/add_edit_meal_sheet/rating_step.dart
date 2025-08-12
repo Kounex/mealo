@@ -1,12 +1,10 @@
+import 'package:base_components/base_components.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/meal/meal.dart';
 import '../../../../models/rating/rating.dart';
-import '../../../../utils/design_system.dart';
-import '../../../../widgets/base/functional/async_value_builder.dart';
-import '../../../../widgets/base/ui/card.dart';
 import '../../../../widgets/shared/meal_ratings.dart';
 
 class RatingStep extends ConsumerStatefulWidget {

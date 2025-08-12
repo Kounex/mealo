@@ -1,16 +1,11 @@
+import 'package:base_components/base_components.dart';
 import 'package:collection/collection.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../models/ingredient/ingredient.dart';
 import '../../../../../models/meal/meal.dart';
 import '../../../../../models/unit/unit.dart';
-import '../../../../../utils/design_system.dart';
-import '../../../../../utils/modal.dart';
-import '../../../../../utils/persistance.dart';
-import '../../../../../utils/validation.dart';
-import '../../../../../widgets/base/ui/card.dart';
-import '../../../../../widgets/base/ui/chip.dart';
+import '../../../../../utils/persistence.dart';
 import '../../../../../widgets/shared/dialog/add_edit_model.dart';
 import '../../../../../widgets/shared/model_suggestion_text_field.dart';
 import 'amount_text_field.dart';
@@ -112,8 +107,8 @@ class _IngredientRowState extends State<IngredientRow> {
             onAdd: (name) {
               final unit = Unit()..name = name;
 
-              PersistanceUtils.transaction(
-                PersistanceOperation.insertUpdate,
+              PersistenceUtils.transaction(
+                PersistenceOperation.insertUpdate,
                 [unit],
               );
 
@@ -135,8 +130,8 @@ class _IngredientRowState extends State<IngredientRow> {
           onAdd: (name) {
             final ingredient = Ingredient()..name = name;
 
-            PersistanceUtils.transaction(
-              PersistanceOperation.insertUpdate,
+            PersistenceUtils.transaction(
+              PersistenceOperation.insertUpdate,
               [ingredient],
             );
 
@@ -163,8 +158,7 @@ class _IngredientRowState extends State<IngredientRow> {
             bottomPadding: 12,
             leftPadding: 0,
             rightPadding: 0,
-            backgroundColor:
-                Theme.of(context).colorScheme.background.lighten(2),
+            backgroundColor: Theme.of(context).colorScheme.surface.lighten(2),
             child: Column(
               children: [
                 availableWidth >= 700

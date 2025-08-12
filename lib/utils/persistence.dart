@@ -12,7 +12,7 @@ import '../models/tag/tag.dart';
 import '../models/unit/unit.dart';
 import 'date.dart';
 
-class PersistanceUtils {
+class PersistenceUtils {
   static late Isar _instance;
 
   static final List<IsarGeneratedSchema> _schemas = [
@@ -28,7 +28,7 @@ class PersistanceUtils {
   static final List<Rating> _ratingDefaults = [
     Rating()..name = 'Effort',
     Rating()..name = 'Time',
-    Rating()..name = 'Tastyness',
+    Rating()..name = 'Tastiness',
   ];
 
   static final List<Tag> _tagDefaults = [
@@ -61,42 +61,42 @@ class PersistanceUtils {
     await Isar.initialize();
 
     /// [Isar] only supports web if we are using the SQLite Engine, so we need
-    /// to check that and use the appropiate engine. Encryption is also
+    /// to check that and use the appropriate engine. Encryption is also
     /// (at least currently) only available via SQLite Engine so if we decide
     /// to make use of encryption, we can use the SQLite version for all use
     /// cases.
     ///
     /// Just to know though: the best performance of [Isar] is accomplished by
-    /// using the NoSQL verison (as generally intended). SQLite will still
+    /// using the NoSQL version (as generally intended). SQLite will still
     /// perform great overall :)
-    PersistanceUtils._instance = Isar.open(
-      schemas: PersistanceUtils._schemas,
+    PersistenceUtils._instance = Isar.open(
+      schemas: PersistenceUtils._schemas,
       directory: documentPath,
       engine: kIsWeb ? IsarEngine.sqlite : IsarEngine.isar,
     );
 
     /// Make sure our singleton [Isar] collection is present, create one
     /// otherwise and add the default data
-    if (PersistanceUtils._instance.settings.count() == 0) {
-      PersistanceUtils._initDefaults();
+    if (PersistenceUtils._instance.settings.count() == 0) {
+      PersistenceUtils._initDefaults();
     }
   }
 
   /// Will purge all collections and therefore data which has been persisted.
   /// Use with care!
   static void purge() {
-    PersistanceUtils._instance.write((isar) => isar.clear());
-    PersistanceUtils._initDefaults();
+    PersistenceUtils._instance.write((isar) => isar.clear());
+    PersistenceUtils._initDefaults();
   }
 
   static Stream<void> watch<T extends BaseModel>() =>
-      PersistanceUtils._instance.collection<String, T>().watchLazy();
+      PersistenceUtils._instance.collection<String, T>().watchLazy();
 
   static void transaction<T extends BaseModel>(
-    PersistanceOperation operation,
+    PersistenceOperation operation,
     List<T> models,
   ) {
-    if (operation != PersistanceOperation.delete) {
+    if (operation != PersistenceOperation.delete) {
       for (var model in models) {
         /// Check if updated is the default, not changed [DateUtils.zero] value
         /// and therefore a new model which has not been persisted or an
@@ -106,53 +106,53 @@ class PersistanceUtils {
       }
     }
 
-    PersistanceUtils._instance.write((isar) {
+    PersistenceUtils._instance.write((isar) {
       final collection = isar.collection<String, T>();
 
       return switch (operation) {
-        PersistanceOperation.insertUpdate => collection.putAll(models),
-        PersistanceOperation.delete =>
+        PersistenceOperation.insertUpdate => collection.putAll(models),
+        PersistenceOperation.delete =>
           collection.deleteAll(models.map((model) => model.uuid).toList()),
       };
     });
   }
 
   static QueryBuilder<T, T, QStart> where<T extends BaseModel>() =>
-      PersistanceUtils._instance.collection<String, T>().where();
+      PersistenceUtils._instance.collection<String, T>().where();
 
   static void _initDefaults() {
     /// Here we will add our [Settings] singleton collection and before that
     /// clear the collection itself to make sure we really only have one (just
     /// to be sure)
-    PersistanceUtils._instance.write((isar) => isar.settings.clear());
-    PersistanceUtils.transaction(
-      PersistanceOperation.insertUpdate,
+    PersistenceUtils._instance.write((isar) => isar.settings.clear());
+    PersistenceUtils.transaction(
+      PersistenceOperation.insertUpdate,
       [Settings()],
     );
 
     /// Since one of our singletons (in this case [Settings]) was
     /// not present, this was the first launch of the app and we
     /// will add the default elements for some collections
-    PersistanceUtils.transaction(
-      PersistanceOperation.insertUpdate,
+    PersistenceUtils.transaction(
+      PersistenceOperation.insertUpdate,
       _ratingDefaults,
     );
-    PersistanceUtils.transaction(
-      PersistanceOperation.insertUpdate,
+    PersistenceUtils.transaction(
+      PersistenceOperation.insertUpdate,
       _tagDefaults,
     );
-    PersistanceUtils.transaction(
-      PersistanceOperation.insertUpdate,
+    PersistenceUtils.transaction(
+      PersistenceOperation.insertUpdate,
       _unitDefaults,
     );
-    PersistanceUtils.transaction(
-      PersistanceOperation.insertUpdate,
+    PersistenceUtils.transaction(
+      PersistenceOperation.insertUpdate,
       _ingredientDefaults,
     );
   }
 }
 
-enum PersistanceOperation {
+enum PersistenceOperation {
   insertUpdate,
   delete,
 }

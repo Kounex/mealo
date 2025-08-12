@@ -1,10 +1,7 @@
+import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-import '../../../../types/extensions/string.dart';
-import '../../../../utils/design_system.dart';
-import '../../../../utils/modal.dart';
-import '../../../base/ui/text_button.dart';
 import '../../../dialog/confirmation.dart';
 
 class ColorPickerTile extends StatefulWidget {

@@ -1,7 +1,7 @@
+import 'package:base_components/base_components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../widgets/base/functional/scaffold.dart';
 import '../../../widgets/shared/dialog/add_edit_rating.dart';
 import '../../../widgets/shared/dialog/add_edit_tag/add_edit_tag.dart';
 import 'widgets/ratings_overview.dart';

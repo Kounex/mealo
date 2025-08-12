@@ -6,17 +6,19 @@ import '../../models/tag/tag.dart';
 class RandomizeConfig {
   final List<Meal> filteredMeals;
   final List<Tag> includedTags;
-  final List<Tag> excludedtags;
+  final List<Tag> excludedTags;
+  final List<Ingredient> includedIngredients;
+  final List<Ingredient> excludedIngredients;
   final List<RatingLink> ratings;
-  final List<Ingredient> ingredients;
   final int? daysNotEaten;
 
   RandomizeConfig(
     this.filteredMeals,
     this.includedTags,
-    this.excludedtags,
+    this.excludedTags,
+    this.includedIngredients,
+    this.excludedIngredients,
     this.ratings,
-    this.ingredients,
     this.daysNotEaten,
   );
 }

@@ -1,8 +1,8 @@
+import 'package:base_components/base_components.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/router.dart';
-import '../../widgets/base/ui/placeholder_text.dart';
 
 class IntroView extends StatelessWidget {
   const IntroView({super.key});

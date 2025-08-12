@@ -1,14 +1,9 @@
+import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/tag/tag.dart';
-import '../../../../types/extensions/color.dart';
-import '../../../../utils/design_system.dart';
-import '../../../../utils/modal.dart';
-import '../../../../utils/persistance.dart';
-import '../../../../utils/validation.dart';
-import '../../../../widgets/base/functional/text_form_field.dart';
-import '../../../base/ui/text_button.dart';
+import '../../../../utils/persistence.dart';
 import '../../../dialog/confirmation.dart';
 import 'color_picker_tile.dart';
 
@@ -65,8 +60,8 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
                       'Aure you sure you want to delete ${this.widget.tag!.name}? This action can\'t be undone!',
                   isYesDestructive: true,
                   onYes: () {
-                    PersistanceUtils.transaction(
-                      PersistanceOperation.delete,
+                    PersistenceUtils.transaction(
+                      PersistenceOperation.delete,
                       [this.widget.tag!],
                     );
                     Navigator.of(context).pop();
@@ -82,7 +77,7 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text('Enter the name for the Tag entity:'),
-          SizedBox(height: DesignSystem.spacing.x12),
+          SizedBox(height: DesignSystem.spacing.x24),
           Form(
             key: _form,
             child: BaseTextFormField(
@@ -120,8 +115,8 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
             if (_form.currentState!.validate()) {
               Tag? tag = this.widget.tag ?? Tag();
 
-              PersistanceUtils.transaction(
-                PersistanceOperation.insertUpdate,
+              PersistenceUtils.transaction(
+                PersistenceOperation.insertUpdate,
                 [
                   tag
                     ..name = _controller.text.trim()

@@ -1,12 +1,10 @@
+import 'package:base_components/base_components.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../../models/meal/meal.dart';
-import '../../../../../utils/design_system.dart';
-import '../../../../../utils/modal.dart';
-import '../../../../../widgets/base/ui/progress_indicator.dart';
 import 'image_from_url_dialog.dart';
 import 'meal_images.dart';
 
@@ -169,7 +167,7 @@ class _ImagesStepState extends State<ImagesStep> {
         SizedBox(
           // width: 256,
           width: double.infinity,
-          child: CupertinoSlidingSegmentedControl(
+          child: CupertinoSlidingSegmentedControl<MealImageType>(
             groupValue: _type,
             children: {}..addEntries(
                 MealImageType.values.map(

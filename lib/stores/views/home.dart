@@ -1,12 +1,13 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../models/meal/meal.dart';
 import '../../models/randomized_run/randomized_run.dart';
 import '../../types/classes/randomize_config.dart';
-import '../../utils/persistance.dart';
+import '../../utils/persistence.dart';
 
 part 'home.g.dart';
 
@@ -39,19 +40,24 @@ class CurrentRandomizedRun extends _$CurrentRandomizedRun {
         ..includedTagsUuids =
             config?.includedTags.map((tag) => tag.uuid).toList() ?? []
         ..excludedTagsUuids =
-            config?.excludedtags.map((tag) => tag.uuid).toList() ?? []
+            config?.excludedTags.map((tag) => tag.uuid).toList() ?? []
+        ..includedIngredientUuids = config?.includedIngredients
+                .map((ingredient) => ingredient.uuid)
+                .toList() ??
+            []
+        ..excludedIngredientUuids = config?.excludedIngredients
+                .map((ingredient) => ingredient.uuid)
+                .toList() ??
+            []
         ..ratingLinks = config?.ratings ?? []
-        ..ingredientUuids =
-            config?.ingredients.map((ingredient) => ingredient.uuid).toList() ??
-                []
         ..daysNotEaten = config?.daysNotEaten;
 
       this.state = const AsyncLoading();
       this.state = await AsyncValue.guard(() async {
         await Future.delayed(duration ?? const Duration(seconds: 3));
 
-        PersistanceUtils.transaction(
-          PersistanceOperation.insertUpdate,
+        PersistenceUtils.transaction(
+          PersistenceOperation.insertUpdate,
           [randomizedRun],
         );
 
@@ -64,7 +70,7 @@ class CurrentRandomizedRun extends _$CurrentRandomizedRun {
 }
 
 @riverpod
-FutureOr<List<Meal>> prevRandomizedMeals(PrevRandomizedMealsRef ref) async {
+FutureOr<List<Meal>> prevRandomizedMeals(Ref ref) async {
   List<Meal> meals = await ref.watch(mealsProvider.future);
   List<RandomizedRun> randomizedRuns =
       (await ref.watch(randomizedRunsProvider.future))
@@ -77,7 +83,7 @@ FutureOr<List<Meal>> prevRandomizedMeals(PrevRandomizedMealsRef ref) async {
 }
 
 @riverpod
-FutureOr<List<Meal>> prevAteMeals(PrevAteMealsRef ref) async {
+FutureOr<List<Meal>> prevAteMeals(Ref ref) async {
   List<Meal> meals = await ref.watch(mealsProvider.future);
   List<RandomizedRun> randomizedRuns =
       (await ref.watch(randomizedRunsProvider.future))

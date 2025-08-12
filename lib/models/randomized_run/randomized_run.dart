@@ -3,12 +3,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../embeddings/rating_link/rating_link.dart';
 import '../model.dart';
-import '../persistance.dart';
+import '../persistence.dart';
 
 part 'randomized_run.g.dart';
 
 @riverpod
-class RandomizedRuns extends _$RandomizedRuns with Persistance<RandomizedRun> {
+class RandomizedRuns extends _$RandomizedRuns with Persistence<RandomizedRun> {
   @override
   FutureOr<List<RandomizedRun>> build() async => this.init();
 }
@@ -21,9 +21,11 @@ class RandomizedRun extends BaseModel {
   /// [Tag]s we don't want randomized meals to have
   List<String> excludedTagsUuids = [];
 
-  List<RatingLink> ratingLinks = [];
+  List<String> includedIngredientUuids = [];
 
-  List<String> ingredientUuids = [];
+  List<String> excludedIngredientUuids = [];
+
+  List<RatingLink> ratingLinks = [];
 
   /// The amount of days how long ago we wanted to find a meal we ate the last
   /// time

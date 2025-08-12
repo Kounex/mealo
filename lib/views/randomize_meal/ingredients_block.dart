@@ -1,13 +1,12 @@
+import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/ingredient/ingredient.dart';
-import '../../../../utils/design_system.dart';
-import '../../../../widgets/base/functional/async_value_builder.dart';
-import '../../../../widgets/base/functional/suggestion_text_field/suggestion_text_field.dart';
-import '../../../../widgets/base/ui/chip.dart';
 
 class IngredientsBlock extends ConsumerWidget {
+  final String text;
+
   final List<Ingredient> selectedIngredients;
 
   final void Function(Ingredient tag) onAdd;
@@ -15,6 +14,7 @@ class IngredientsBlock extends ConsumerWidget {
 
   const IngredientsBlock({
     super.key,
+    required this.text,
     required this.selectedIngredients,
     required this.onAdd,
     required this.onRemove,
@@ -31,7 +31,7 @@ class IngredientsBlock extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Which ingredients would you like to have in the meal?',
+                this.text,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               SizedBox(height: DesignSystem.spacing.x12),

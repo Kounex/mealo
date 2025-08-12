@@ -1,10 +1,8 @@
+import 'package:base_components/base_components.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../models/tag/tag.dart';
-import '../../../../utils/design_system.dart';
-import '../../../../widgets/base/functional/suggestion_text_field/suggestion_text_field.dart';
-import '../../../../widgets/base/ui/chip.dart';
 
 class TagsBlock extends StatelessWidget {
   final List<Tag> tags;

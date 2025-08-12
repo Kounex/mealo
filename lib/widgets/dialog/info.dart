@@ -1,6 +1,5 @@
+import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
-
-import '../base/ui/text_button.dart';
 
 class InfoDialog extends StatelessWidget {
   final String title;

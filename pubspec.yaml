@@ -16,6 +16,12 @@ dependencies:
 
   cupertino_icons: ^1.0.2
 
+  # Base components
+  base_components:
+    git:
+      url: https://github.com/Kounex/base_components.git
+      ref: main
+
   # Unique identifier for our models
   uuid: ^3.0.7
 
@@ -24,15 +30,16 @@ dependencies:
   freezed_annotation: ^2.2.0
 
   # JSON parser and serializer
-  crimson: ^0.2.1
+  # crimson: ^0.2.1
 
   # State management
-  flutter_riverpod: ^2.3.2
-  riverpod_annotation: ^2.0.2
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
 
   # Local storage
   isar: *isar_version
   isar_flutter_libs: *isar_version
+
   shared_preferences: ^2.0.17
 
   # Navigator 2.0
@@ -44,11 +51,8 @@ dependencies:
   # Enable camera access and handling
   camera: ^0.10.3
 
-  # Enable photo gallery access
-  image_picker: ^0.8.7+1
-
   # Enable selecting files
-  file_picker: ^5.2.5
+  file_picker: ^10.2.2
 
   # HTTP client
   dio: ^5.1.1
@@ -61,7 +65,7 @@ dependencies:
 
   # UI
   # Consistent theming
-  flex_color_scheme: ^7.0.0-dev.3
+  flex_color_scheme: ^8.2.0
 
   # Power up slivers
   sliver_tools: ^0.2.8
@@ -73,10 +77,7 @@ dependencies:
   fluentui_system_icons: ^1.1.190
 
   # Adjust text size correctly
-  auto_size_text: ^3.0.0
-
-  # Loading shimmering
-  shimmer: ^2.0.0
+  auto_size_text: ^3.0.0 
 
   # Powered-up animations
   flutter_animate: ^4.0.0
@@ -88,17 +89,18 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.1
+  flutter_lints:
+  custom_lint:
+  build_runner:
 
   # analyzer: ^5.5.0
   # analyzer_plugin: ^0.11.2
-  custom_lint: ^0.3.2
-  riverpod_lint: ^1.1.6
+  riverpod_lint: ^2.6.1
 
   # Generator stuff
   # isar_generator: *isar_version
-  riverpod_generator: ^2.1.4
-  build_runner: ^2.3.3
+
+  riverpod_generator: ^2.6.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

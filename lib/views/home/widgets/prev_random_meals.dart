@@ -1,8 +1,8 @@
+import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 
 import '../../../stores/views/home.dart';
 import '../../../utils/router.dart';
-import '../../../widgets/base/ui/card.dart';
 import '../../../widgets/shared/meal_grid.dart';
 
 class PrevRandomMeals extends StatelessWidget {
@@ -12,7 +12,7 @@ class PrevRandomMeals extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseCard(
       title: 'Randomized meals',
-      initialExpanded: false,
+      expandable: true,
       child: MealGrid(
         provider: prevRandomizedMealsProvider,
         itemCrossAxisExtent: 150,
