@@ -10,14 +10,14 @@ import '../../../../../widgets/shared/dialog/add_edit_model.dart';
 import '../../../../../widgets/shared/model_suggestion_text_field.dart';
 import 'amount_text_field.dart';
 
-class IngredientRow extends StatefulWidget {
+class IngredientRowFull extends StatefulWidget {
   final IngredientLink ingredient;
   final List<Ingredient> ingredients;
   final List<Unit> units;
 
   final void Function() onDelete;
 
-  const IngredientRow({
+  const IngredientRowFull({
     super.key,
     required this.ingredient,
     required this.ingredients,
@@ -26,10 +26,10 @@ class IngredientRow extends StatefulWidget {
   });
 
   @override
-  State<IngredientRow> createState() => _IngredientRowState();
+  State<IngredientRowFull> createState() => _IngredientRowFullState();
 }
 
-class _IngredientRowState extends State<IngredientRow> {
+class _IngredientRowFullState extends State<IngredientRowFull> {
   late TextEditingController _amount;
   late Unit? _unit;
   late Ingredient? _ingredient;

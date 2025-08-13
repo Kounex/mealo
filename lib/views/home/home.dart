@@ -39,9 +39,26 @@ class HomeView extends StatelessWidget {
           background: Container(
             alignment: Alignment.bottomCenter,
             padding: EdgeInsets.only(bottom: DesignSystem.spacing.x24),
-            child: Image.asset(
-              'assets/images/app-icon.png',
-              height: 164,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Align(
+                  child: ClipRRect(
+                    borderRadius:
+                        BorderRadius.circular(DesignSystem.border.radius12),
+                    clipBehavior: Clip.hardEdge,
+                    child: Image.asset(
+                      'assets/images/app-icon.jpeg',
+                      height: DesignSystem.size.x92,
+                    ),
+                  ),
+                ),
+                SizedBox(height: DesignSystem.spacing.x12),
+                Text(
+                  'Mealo',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ],
             ),
           ),
         ),

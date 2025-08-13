@@ -85,6 +85,12 @@ dependencies:
   # Pre-built color picker because it is a pain in the ass to do on my own
   flutter_colorpicker: ^1.0.3
 
+  # App Icon
+  flutter_launcher_icons: ^0.14.4
+
+  # Native Splash Screen for initializing
+  flutter_native_splash: ^2.4.6
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

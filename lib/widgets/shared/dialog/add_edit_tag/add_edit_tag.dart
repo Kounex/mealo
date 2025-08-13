@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/tag/tag.dart';
 import '../../../../utils/persistence.dart';
-import '../../../dialog/confirmation.dart';
+import '../confirmation.dart';
 import 'color_picker_tile.dart';
 
 class AddEditTagDialog extends ConsumerStatefulWidget {
@@ -54,12 +54,12 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
             BaseTextButton(
               onPressed: () => ModalUtils.showBaseDialog(
                 context,
-                ConfirmationDialog(
+                MealoConfirmationDialog(
                   title: 'Delete Tag',
-                  text:
-                      'Aure you sure you want to delete ${this.widget.tag!.name}? This action can\'t be undone!',
+                  body:
+                      'Are you sure you want to delete ${this.widget.tag!.name}? This action can\'t be undone!',
                   isYesDestructive: true,
-                  onYes: () {
+                  onYes: (_) {
                     PersistenceUtils.transaction(
                       PersistenceOperation.delete,
                       [this.widget.tag!],

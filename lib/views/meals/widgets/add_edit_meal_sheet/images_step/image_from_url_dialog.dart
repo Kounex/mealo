@@ -1,8 +1,7 @@
 import 'package:base_components/base_components.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../../widgets/dialog/info.dart';
+import 'package:mealo/widgets/shared/dialog/info.dart';
 
 class ImageFromURLDialog extends StatefulWidget {
   const ImageFromURLDialog({super.key});
@@ -29,9 +28,9 @@ class _ImageFromURLDialogState extends State<ImageFromURLDialog> {
       } else {
         ModalUtils.showBaseDialog(
           context,
-          const InfoDialog(
+          const MealoInfoDialog(
               title: 'Invalid',
-              text:
+              body:
                   'Even though the URL seems to be alright, it\'s not possible to retrieve an image from it. Make sure the URL is directly pointing to the image and is publicly available!'),
         );
       }

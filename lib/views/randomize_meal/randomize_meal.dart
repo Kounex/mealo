@@ -7,7 +7,7 @@ import '../../../../models/embeddings/rating_link/rating_link.dart';
 import '../../../../models/ingredient/ingredient.dart';
 import '../../../../models/rating/rating.dart';
 import '../../../../models/tag/tag.dart';
-import '../../../../widgets/dialog/confirmation.dart';
+import '../../widgets/shared/dialog/confirmation.dart';
 import 'days_dropdown.dart';
 import 'ingredients_block.dart';
 import 'meal_randomizer/meal_randomizer.dart';
@@ -140,10 +140,10 @@ class _RandomizeMealViewState extends ConsumerState<RandomizeMealView> {
                         onPressed: _areFiltersActive()
                             ? () => ModalUtils.showBaseDialog(
                                   context,
-                                  ConfirmationDialog(
-                                    onYes: () => _setFiltersDefault(),
+                                  MealoConfirmationDialog(
+                                    onYes: (_) => _setFiltersDefault(),
                                     title: 'Reset Filters',
-                                    text:
+                                    body:
                                         'Are you sure you want to reset the filters? This action can\'t be undone!',
                                     isYesDestructive: true,
                                   ),

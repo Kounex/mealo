@@ -2,7 +2,7 @@ import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-import '../../../dialog/confirmation.dart';
+import '../confirmation.dart';
 
 class ColorPickerTile extends StatefulWidget {
   final String? colorHex;
@@ -62,11 +62,12 @@ class _ColorPickerTileState extends State<ColorPickerTile> {
             BaseTextButton(
               onPressed: () => ModalUtils.showBaseDialog(
                 context,
-                ConfirmationDialog(
-                  text:
+                MealoConfirmationDialog(
+                  title: 'Reset Color',
+                  body:
                       'Are you sure you want to reset your selected Tag color? It will return back to default which is based on the app theme!',
                   isYesDestructive: true,
-                  onYes: () => this.widget.onColorSet(null),
+                  onYes: (_) => this.widget.onColorSet(null),
                 ),
               ),
               isDestructive: true,

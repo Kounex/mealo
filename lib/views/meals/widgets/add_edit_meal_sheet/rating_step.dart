@@ -26,11 +26,12 @@ class _RatingStepState extends ConsumerState<RatingStep> {
 
     return Column(
       children: [
-        const BaseCard(
+        BaseCard(
           topPadding: 0,
           bottomPadding: 0,
           leftPadding: 0,
           rightPadding: 0,
+          backgroundColor: Theme.of(context).cardColor.lighten(2),
           child: Text(
               'Ratings are meant to be positive so that \'5\' is the best outcome while \'1\' is the worst. This will enable to correctly filter and sort meals later on.'),
         ),
@@ -40,6 +41,7 @@ class _RatingStepState extends ConsumerState<RatingStep> {
           bottomPadding: 0,
           leftPadding: 0,
           rightPadding: 0,
+          backgroundColor: Theme.of(context).cardColor.lighten(2),
           paddingChild: const EdgeInsets.only(
             top: 18,
             left: 18,

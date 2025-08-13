@@ -2,16 +2,16 @@ import 'package:base_components/base_components.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/ingredients_step_long/ingredient_row.dart';
 
 import '../../../../../models/ingredient/ingredient.dart';
 import '../../../../../models/meal/meal.dart';
 import '../../../../../models/unit/unit.dart';
-import 'ingredient_row.dart';
 
-class IngredientsStep extends ConsumerStatefulWidget {
+class IngredientsStepLong extends ConsumerStatefulWidget {
   final Meal meal;
 
-  const IngredientsStep({
+  const IngredientsStepLong({
     super.key,
     required this.meal,
   });
@@ -21,10 +21,10 @@ class IngredientsStep extends ConsumerStatefulWidget {
       _IngredientsStepState();
 }
 
-class _IngredientsStepState extends ConsumerState<IngredientsStep> {
+class _IngredientsStepState extends ConsumerState<IngredientsStepLong> {
   final GlobalKey<FormState> _form = GlobalKey();
 
-  final Map<int, bool> _editMap = {};
+  // final Map<int, bool> _editMap = {};
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +39,7 @@ class _IngredientsStepState extends ConsumerState<IngredientsStep> {
           bottomPadding: 0,
           leftPadding: 0,
           rightPadding: 0,
+          backgroundColor: Theme.of(context).cardColor.lighten(2),
           child: BaseAsyncValueBuilder(
             asyncValue: asyncIngredients,
             data: (ingredients) => BaseAsyncValueBuilder(
@@ -62,8 +63,15 @@ class _IngredientsStepState extends ConsumerState<IngredientsStep> {
                               /// here
                               key: ValueKey(ingredient),
                               ingredient: ingredient,
-                              ingredients: ingredients,
-                              units: units,
+                              ingredients: List.from(
+                                ingredients.whereNot((baseIngredient) => this
+                                    .widget
+                                    .meal
+                                    .ingredients
+                                    .any((mealIngredient) =>
+                                        baseIngredient.uuid ==
+                                        mealIngredient.uuidIngredient)),
+                              ),
                               onDelete: () => setState(
                                 () => this.widget.meal.ingredients = this
                                     .widget

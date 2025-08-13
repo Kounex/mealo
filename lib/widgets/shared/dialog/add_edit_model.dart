@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../models/model.dart';
-import '../../dialog/confirmation.dart';
+import 'confirmation.dart';
 
 class AddEditModelDialog<T extends CommonModel> extends ConsumerStatefulWidget {
   final T? editingModel;
@@ -70,12 +70,12 @@ class _AddEditModelDialogState<T extends CommonModel>
             BaseTextButton(
               onPressed: () => ModalUtils.showBaseDialog(
                 context,
-                ConfirmationDialog(
+                MealoConfirmationDialog(
                   title: 'Delete ${_getGenericBaseModelType()}',
-                  text:
+                  body:
                       'Aure you sure you want to delete ${this.widget.editingModel!.name}? This action can\'t be undone!',
                   isYesDestructive: true,
-                  onYes: () {
+                  onYes: (_) {
                     this.widget.onDelete?.call(this.widget.editingModel!.uuid);
                     Navigator.of(context).pop();
                   },

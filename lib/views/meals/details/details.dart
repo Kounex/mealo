@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/meal/meal.dart';
 import '../../../models/rating/rating.dart';
 import '../../../stores/views/home.dart';
+import '../../../widgets/shared/dialog/confirmation.dart';
 import '../../../widgets/shared/meal_ratings.dart';
 import '../widgets/add_edit_meal_sheet/add_edit_meal_sheet.dart';
 
@@ -38,10 +39,25 @@ class MealDetailsView extends ConsumerWidget {
                   AddEditMealSheet(
                     meal: meal,
                   ),
+                  popOnClose: false,
                   onClose: () {
-                    /// Important step - this makes sure that all changes we made
-                    /// here are set back to its original value
-                    ref.invalidate(mealsProvider);
+                    ModalUtils.showBaseDialog(
+                      context,
+                      Builder(builder: (context) {
+                        return MealoConfirmationDialog(
+                          title: 'Close Sheet',
+                          body:
+                              'Are you sure you want to close this sheet? All your changes will not be saved!',
+                          isYesDestructive: true,
+                          onYes: (_) {
+                            /// Important step - this makes sure that all changes we made
+                            /// here are set back to its original value
+                            Navigator.of(context).pop();
+                            ref.invalidate(mealsProvider);
+                          },
+                        );
+                      }),
+                    );
                   },
                 ).then((value) {
                   if (value != null) {

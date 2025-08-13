@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:isar/isar.dart';
+import 'package:mealo/widgets/shared/dialog/confirmation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -12,9 +13,8 @@ import '../../../../models/embeddings/rating_link/rating_link.dart';
 import '../../../../models/meal/meal.dart';
 import '../../../../models/rating/rating.dart';
 import '../../../../utils/persistence.dart';
-import '../../../../widgets/dialog/confirmation.dart';
-import 'images_step/images_step.dart';
-import 'ingredients_step/ingredients_step.dart';
+import 'images_step/images_step_old.dart';
+import 'ingredient_step.dart';
 import 'rating_step.dart';
 import 'stepper_control.dart';
 import 'stepper_overview.dart';
@@ -22,9 +22,16 @@ import 'tags_step.dart';
 
 enum AddEditMealStep {
   images,
-  tags,
   ratings,
   ingredients,
+  tags;
+
+  String get title => switch (this) {
+        AddEditMealStep.images => 'Images',
+        AddEditMealStep.ratings => 'Ratings',
+        AddEditMealStep.ingredients => 'Ingredients',
+        AddEditMealStep.tags => 'Tags',
+      };
 }
 
 class AddEditMealSheet extends ConsumerStatefulWidget {
@@ -169,7 +176,14 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
 
   @override
   Widget build(BuildContext context) {
-    Widget view() => Stack(
+    final asyncRatings = ref.watch(ratingsProvider);
+    return BaseAsyncValueBuilder(
+      asyncValue: asyncRatings,
+      loadingText: 'Warming up the meal...',
+      data: (ratings) {
+        _meal ??= _initMeal(ratings);
+
+        return Stack(
           children: [
             Padding(
               padding: EdgeInsets.only(
@@ -192,9 +206,12 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                           child: BaseTextButton(
                             onPressed: () => ModalUtils.showBaseDialog(
                               context,
-                              ConfirmationDialog(
+                              MealoConfirmationDialog(
+                                title: 'Delete Meal',
+                                body:
+                                    'Are you sure you want to delete this meal? This action can\'t be undone!',
                                 isYesDestructive: true,
-                                onYes: () => _deleteMeal(),
+                                onYes: (_) => _deleteMeal(),
                               ),
                             ),
                             isDestructive: true,
@@ -222,12 +239,8 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                       step: _step.index,
                       max: AddEditMealStep.values.length - 1,
                       size: DesignSystem.size.x42,
-                      titles: const [
-                        'Images',
-                        'Tags',
-                        'Ratings',
-                        'Ingredients',
-                      ],
+                      titles: List.from(
+                          AddEditMealStep.values.map((step) => step.title)),
                       onStepTapped: (step) => setState(
                         () => _step = AddEditMealStep.values[step],
                       ),
@@ -246,26 +259,23 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                             child: AnimatedSwitcher(
                               duration:
                                   DesignSystem.animation.defaultDurationMS250,
-                              child: () {
-                                return switch (_step) {
-                                  AddEditMealStep.images => ImagesStep(
-                                      meal: _meal!,
-                                      thumbnailToAdd: _thumbnailToAdd,
-                                      imagesToAdd: _imagesToAdd,
-                                      imagesUuidsToDelete: _imagesUuidsToDelete,
-                                    ),
-                                  AddEditMealStep.tags => TagsStep(
-                                      meal: _meal!,
-                                    ),
-                                  AddEditMealStep.ratings => RatingStep(
-                                      meal: _meal!,
-                                    ),
-                                  AddEditMealStep.ingredients =>
-                                    IngredientsStep(
-                                      meal: _meal!,
-                                    ),
-                                };
-                              }(),
+                              child: switch (_step) {
+                                AddEditMealStep.images => ImagesStepOld(
+                                    meal: _meal!,
+                                    thumbnailToAdd: _thumbnailToAdd,
+                                    imagesToAdd: _imagesToAdd,
+                                    imagesUuidsToDelete: _imagesUuidsToDelete,
+                                  ),
+                                AddEditMealStep.ratings => RatingStep(
+                                    meal: _meal!,
+                                  ),
+                                AddEditMealStep.ingredients => IngredientStep(
+                                    meal: _meal!,
+                                  ),
+                                AddEditMealStep.tags => TagsStep(
+                                    meal: _meal!,
+                                  ),
+                              },
                             ),
                           ),
                         ),
@@ -315,20 +325,7 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
             ),
           ],
         );
-
-    if (this.widget.meal == null) {
-      final asyncRatings = ref.watch(ratingsProvider);
-      return BaseAsyncValueBuilder(
-        asyncValue: asyncRatings,
-        loadingText: 'Warming up the meal...',
-        data: (ratings) {
-          _meal ??= _initMeal(ratings);
-
-          return view();
-        },
-      );
-    }
-
-    return view();
+      },
+    );
   }
 }

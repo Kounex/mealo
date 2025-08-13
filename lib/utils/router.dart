@@ -17,7 +17,7 @@ typedef RouteEntry = MapEntry<Pattern, BeamerPageBuilder>;
 
 class RouterUtils {
   static final router = BeamerDelegate(
-    initialPath: '/intro',
+    initialPath: MealsRoute().path,
     locationBuilder: RoutesLocationBuilder(
       routes: RouterUtils._routes(
         [
@@ -32,7 +32,7 @@ class RouterUtils {
           ),
         ],
       ),
-    ),
+    ).call,
   );
 
   static final Map<TabMeta, BeamerDelegate> tabRouterMap = {}..addEntries(
@@ -235,7 +235,7 @@ enum TabMeta {
                 ),
               ],
             ),
-          ),
+          ).call,
         );
       case TabMeta.meals:
         return BeamerDelegate(
@@ -260,7 +260,7 @@ enum TabMeta {
                 ),
               ],
             ),
-          ),
+          ).call,
         );
       case TabMeta.settings:
         return BeamerDelegate(
@@ -280,7 +280,7 @@ enum TabMeta {
                 ),
               ],
             ),
-          ),
+          ).call,
         );
     }
   }
@@ -367,5 +367,3 @@ class RatingsTagsManagementRoute extends SettingsRoute {
 //     path += '/details';
 //   }
 // }
-
-

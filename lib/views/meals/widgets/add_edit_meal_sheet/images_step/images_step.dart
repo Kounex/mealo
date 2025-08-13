@@ -1,26 +1,12 @@
 import 'package:base_components/base_components.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../../models/meal/meal.dart';
 import 'image_from_url_dialog.dart';
+import 'images_step_old.dart';
 import 'meal_images.dart';
-
-enum MealImageType {
-  thumbnail,
-  additional;
-
-  String get text {
-    switch (this) {
-      case MealImageType.thumbnail:
-        return 'Thumbnail';
-      case MealImageType.additional:
-        return 'Images';
-    }
-  }
-}
 
 enum ImagePickerType {
   camera,
@@ -71,11 +57,9 @@ class ImagesStep extends StatefulWidget {
 }
 
 class _ImagesStepState extends State<ImagesStep> {
-  MealImageType _type = MealImageType.thumbnail;
-
   Future? _pickFuture;
 
-  Future<List<String>> _showPhotoPickerSheet([bool multiple = false]) async {
+  Future<List<String>> _showPhotoPickerSheet() async {
     ImagePickerType? type =
         await ModalUtils.showBaseModalBottomSheet<ImagePickerType>(
       context,
@@ -99,7 +83,7 @@ class _ImagesStepState extends State<ImagesStep> {
       switch (type) {
         case ImagePickerType.camera:
         case ImagePickerType.gallery:
-          images = await _pickImages(type, multiple);
+          images = await _pickImages(type, true);
           break;
         case ImagePickerType.url:
           XFile? image = XFile.fromData(await ModalUtils.showBaseDialog(
@@ -111,17 +95,7 @@ class _ImagesStepState extends State<ImagesStep> {
           break;
       }
       if (images.isNotEmpty) {
-        setState(
-          () {
-            if (multiple) {
-              this.widget.imagesToAdd.addAll(images);
-            } else {
-              this.widget.thumbnailToAdd
-                ..clear()
-                ..add(images.first);
-            }
-          },
-        );
+        setState(() => this.widget.imagesToAdd.addAll(images));
       }
     }
 
@@ -164,105 +138,86 @@ class _ImagesStepState extends State<ImagesStep> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(height: DesignSystem.spacing.x24),
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: DesignSystem.spacing.x24),
+              child: MealImages(
+                type: MealImageType.additional,
+                meal: this.widget.meal,
+                thumbnailToAdd: this.widget.thumbnailToAdd,
+                imagesToAdd: this.widget.imagesToAdd,
+                imagesUuidsToDelete: this.widget.imagesUuidsToDelete,
+                onThumbnailAction: () => setState(
+                  () {
+                    if (this.widget.meal.thumbnailUuid != null) {
+                      this
+                          .widget
+                          .imagesUuidsToDelete
+                          .add(this.widget.meal.thumbnailUuid!);
+                    }
+                    this.widget.meal.thumbnailUuid = null;
+                    this.widget.thumbnailToAdd.clear();
+                  },
+                ),
+                onExistingImagesAction: (index, imageUuid) => setState(
+                  () {
+                    this.widget.meal.imagesUuids.removeAt(index);
+                    this.widget.imagesUuidsToDelete.add(imageUuid);
+                  },
+                ),
+                onNewImagesAction: (index) => setState(
+                  () => this.widget.imagesToAdd.removeAt(index),
+                ),
+              ),
+            ),
+            // BaseCard(
+            //   topPadding: 0,
+            //   bottomPadding: 0,
+            //   leftPadding: 0,
+            //   rightPadding: 0,
+            //   child:
+            // ),
+            FutureBuilder(
+              future: _pickFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(DesignSystem.border.radius12),
+                      ),
+                      side: BorderSide(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 2.0,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(DesignSystem.spacing.x24),
+                      child: BaseProgressIndicator(
+                        text: 'Loading image(s)...',
+                      ),
+                    ),
+                  );
+                }
+                return const SizedBox();
+              },
+            )
+          ],
+        ),
+        SizedBox(height: DesignSystem.spacing.x24),
         SizedBox(
           // width: 256,
           width: double.infinity,
-          child: CupertinoSlidingSegmentedControl<MealImageType>(
-            groupValue: _type,
-            children: {}..addEntries(
-                MealImageType.values.map(
-                  (type) => MapEntry(type, Text(type.text)),
-                ),
-              ),
-            onValueChanged: (type) =>
-                setState(() => _type = type ?? MealImageType.thumbnail),
+          child: ElevatedButton(
+            onPressed: () {
+              _showPhotoPickerSheet();
+            },
+            child: const Text('Select photo(s)'),
           ),
         ),
-        Column(
-          children: [
-            SizedBox(height: DesignSystem.spacing.x24),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: DesignSystem.spacing.x24),
-                  child: MealImages(
-                    type: _type,
-                    meal: this.widget.meal,
-                    thumbnailToAdd: this.widget.thumbnailToAdd,
-                    imagesToAdd: this.widget.imagesToAdd,
-                    imagesUuidsToDelete: this.widget.imagesUuidsToDelete,
-                    onThumbnailAction: () => setState(
-                      () {
-                        if (this.widget.meal.thumbnailUuid != null) {
-                          this
-                              .widget
-                              .imagesUuidsToDelete
-                              .add(this.widget.meal.thumbnailUuid!);
-                        }
-                        this.widget.meal.thumbnailUuid = null;
-                        this.widget.thumbnailToAdd.clear();
-                      },
-                    ),
-                    onExistingImagesAction: (index, imageUuid) => setState(
-                      () {
-                        this.widget.meal.imagesUuids.removeAt(index);
-                        this.widget.imagesUuidsToDelete.add(imageUuid);
-                      },
-                    ),
-                    onNewImagesAction: (index) => setState(
-                      () => this.widget.imagesToAdd.removeAt(index),
-                    ),
-                  ),
-                ),
-                // BaseCard(
-                //   topPadding: 0,
-                //   bottomPadding: 0,
-                //   leftPadding: 0,
-                //   rightPadding: 0,
-                //   child:
-                // ),
-                FutureBuilder(
-                  future: _pickFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(DesignSystem.border.radius12),
-                          ),
-                          side: BorderSide(
-                            color: Theme.of(context).colorScheme.primary,
-                            width: 2.0,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(DesignSystem.spacing.x24),
-                          child: BaseProgressIndicator(
-                            text: 'Loading image(s)...',
-                          ),
-                        ),
-                      );
-                    }
-                    return const SizedBox();
-                  },
-                )
-              ],
-            ),
-            SizedBox(height: DesignSystem.spacing.x24),
-            SizedBox(
-              // width: 256,
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  _showPhotoPickerSheet(_type == MealImageType.additional);
-                },
-                child: const Text('Select photo(s)'),
-              ),
-            ),
-          ],
-        )
       ],
     );
   }

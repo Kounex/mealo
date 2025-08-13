@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../utils/persistence.dart';
 import '../../utils/router.dart';
-import '../../widgets/dialog/confirmation.dart';
+import '../../widgets/shared/dialog/confirmation.dart';
 import 'widgets/theme_switcher.dart';
 
 class SettingsView extends ConsumerWidget {
@@ -40,12 +40,12 @@ class SettingsView extends ConsumerWidget {
                 title: const Text('Delete all data'),
                 onTap: () => ModalUtils.showBaseDialog(
                   context,
-                  ConfirmationDialog(
+                  MealoConfirmationDialog(
                     title: 'Danger zone!',
-                    text:
+                    body:
                         'You are about to delete all data and set the app back to its default state. This action can\'t be undone! Are you sure about that?',
                     isYesDestructive: true,
-                    onYes: () => PersistenceUtils.purge(),
+                    onYes: (_) => PersistenceUtils.purge(),
                   ),
                 ),
               ),

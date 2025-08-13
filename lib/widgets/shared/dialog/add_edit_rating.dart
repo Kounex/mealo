@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../models/rating/rating.dart';
 import '../../../utils/persistence.dart';
-import '../../dialog/confirmation.dart';
+import 'confirmation.dart';
 
 class AddEditRatingDialog extends ConsumerStatefulWidget {
   final Rating? rating;
@@ -49,12 +49,12 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
             BaseTextButton(
               onPressed: () => ModalUtils.showBaseDialog(
                 context,
-                ConfirmationDialog(
+                MealoConfirmationDialog(
                   title: 'Delete Rating',
-                  text:
+                  body:
                       'Are you sure you want to delete ${this.widget.rating!.name}? This action can\'t be undone!',
                   isYesDestructive: true,
-                  onYes: () {
+                  onYes: (_) {
                     PersistenceUtils.transaction(
                       PersistenceOperation.delete,
                       [this.widget.rating!],

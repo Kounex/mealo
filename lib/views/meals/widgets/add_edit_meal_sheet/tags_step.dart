@@ -85,6 +85,7 @@ class _TagsStepState extends ConsumerState<TagsStep> {
             bottomPadding: 0,
             leftPadding: 0,
             rightPadding: 0,
+            backgroundColor: Theme.of(context).cardColor.lighten(2),
             child: this.widget.meal.tagUuids.isNotEmpty
                 ? Align(
                     alignment: Alignment.centerLeft,
