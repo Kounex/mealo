@@ -5,7 +5,6 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../../models/meal/meal.dart';
 import 'image_from_url_dialog.dart';
-import 'images_step_old.dart';
 import 'meal_images.dart';
 
 enum ImagePickerType {
@@ -38,8 +37,6 @@ enum ImagePickerType {
 
 class ImagesStep extends StatefulWidget {
   final Meal meal;
-
-  final List<XFile> thumbnailToAdd;
   final List<XFile> imagesToAdd;
 
   final List<String> imagesUuidsToDelete;
@@ -47,7 +44,6 @@ class ImagesStep extends StatefulWidget {
   const ImagesStep({
     super.key,
     required this.meal,
-    required this.thumbnailToAdd,
     required this.imagesToAdd,
     required this.imagesUuidsToDelete,
   });
@@ -138,39 +134,21 @@ class _ImagesStepState extends State<ImagesStep> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: DesignSystem.spacing.x24),
         Stack(
           alignment: Alignment.center,
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: DesignSystem.spacing.x24),
-              child: MealImages(
-                type: MealImageType.additional,
-                meal: this.widget.meal,
-                thumbnailToAdd: this.widget.thumbnailToAdd,
-                imagesToAdd: this.widget.imagesToAdd,
-                imagesUuidsToDelete: this.widget.imagesUuidsToDelete,
-                onThumbnailAction: () => setState(
-                  () {
-                    if (this.widget.meal.thumbnailUuid != null) {
-                      this
-                          .widget
-                          .imagesUuidsToDelete
-                          .add(this.widget.meal.thumbnailUuid!);
-                    }
-                    this.widget.meal.thumbnailUuid = null;
-                    this.widget.thumbnailToAdd.clear();
-                  },
-                ),
-                onExistingImagesAction: (index, imageUuid) => setState(
-                  () {
-                    this.widget.meal.imagesUuids.removeAt(index);
-                    this.widget.imagesUuidsToDelete.add(imageUuid);
-                  },
-                ),
-                onNewImagesAction: (index) => setState(
-                  () => this.widget.imagesToAdd.removeAt(index),
-                ),
+            MealImages(
+              meal: this.widget.meal,
+              imagesToAdd: this.widget.imagesToAdd,
+              imagesUuidsToDelete: this.widget.imagesUuidsToDelete,
+              onExistingImagesAction: (index, imageUuid) => setState(
+                () {
+                  this.widget.meal.imagesUuids.removeAt(index);
+                  this.widget.imagesUuidsToDelete.add(imageUuid);
+                },
+              ),
+              onNewImagesAction: (index) => setState(
+                () => this.widget.imagesToAdd.removeAt(index),
               ),
             ),
             // BaseCard(

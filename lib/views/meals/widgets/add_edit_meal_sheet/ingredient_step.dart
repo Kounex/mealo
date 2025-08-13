@@ -122,7 +122,9 @@ class _IngredientStepState extends ConsumerState<IngredientStep> {
                           .toList(),
                     ),
                   )
-                : const Center(
+                : Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: DesignSystem.spacing.x24),
                     child: BasePlaceholder(text: 'No ingredients added yet'),
                   ),
           ),

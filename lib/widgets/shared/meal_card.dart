@@ -43,9 +43,12 @@ class MealCard extends StatelessWidget {
             //       ? Image.memory(base64Decode(this.meal!.thumbnailBase64!))
             //       : Image.asset('assets/images/meal-placeholder.png'),
             // ),
-            this.meal?.thumbnailUuid != null
+            this.meal?.thumbnailUuid != null ||
+                    (this.meal?.imagesUuids != null &&
+                        this.meal!.imagesUuids.isNotEmpty)
                 ? BaseImage(
-                    imageUuid: this.meal?.thumbnailUuid,
+                    imageUuid: this.meal?.thumbnailUuid ??
+                        this.meal!.imagesUuids.first,
                     height: this.height,
                     width: this.width,
                   )

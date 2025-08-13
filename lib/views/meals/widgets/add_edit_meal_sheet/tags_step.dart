@@ -113,7 +113,9 @@ class _TagsStepState extends ConsumerState<TagsStep> {
                           .toList(),
                     ),
                   )
-                : const Center(
+                : Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: DesignSystem.spacing.x24),
                     child: BasePlaceholder(text: 'No tags added yet'),
                   ),
           ),

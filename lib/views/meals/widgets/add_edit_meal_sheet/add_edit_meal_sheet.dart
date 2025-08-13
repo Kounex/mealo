@@ -13,7 +13,7 @@ import '../../../../models/embeddings/rating_link/rating_link.dart';
 import '../../../../models/meal/meal.dart';
 import '../../../../models/rating/rating.dart';
 import '../../../../utils/persistence.dart';
-import 'images_step/images_step_old.dart';
+import 'images_step/images_step.dart';
 import 'ingredient_step.dart';
 import 'rating_step.dart';
 import 'stepper_control.dart';
@@ -260,9 +260,8 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                               duration:
                                   DesignSystem.animation.defaultDurationMS250,
                               child: switch (_step) {
-                                AddEditMealStep.images => ImagesStepOld(
+                                AddEditMealStep.images => ImagesStep(
                                     meal: _meal!,
-                                    thumbnailToAdd: _thumbnailToAdd,
                                     imagesToAdd: _imagesToAdd,
                                     imagesUuidsToDelete: _imagesUuidsToDelete,
                                   ),
