@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mealo/models/meal/meal.dart';
 import 'package:mealo/utils/theme.dart';
-
-import 'models/settings/settings.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 
 class Init extends ConsumerStatefulWidget {
   final Widget child;
@@ -29,25 +32,85 @@ class _InitState extends ConsumerState<Init> {
     await Future.delayed(Duration(seconds: 1));
 
     FlutterNativeSplash.remove();
-    await _checkImages();
+
+    await _createFolders();
+    await _moveImages();
+    await _cleanUpMealImages();
+
+    await Future.delayed(Duration(seconds: 2));
+  }
+
+  bool _isUuidV4(String s) {
+    try {
+      return ((Uuid.parse(s)[6] >> 4) & 0x0f) == 4;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<void> _createFolders() async {
+    Directory baseDir = await getApplicationDocumentsDirectory();
+
+    /// Folder for the images of all the meals
+    Directory dir = Directory('${baseDir.path}/${Meal.subPathForImages}');
+
+    await dir.create();
+  }
+
+  /// Only necessary due to the fact that the folder structure changed and I
+  /// need to make sure to move them correctly
+  ///
+  /// Can be deleted later
+  Future<void> _moveImages() async {
+    Directory imagesDir = await getApplicationDocumentsDirectory();
+
+    List<FileSystemEntity> files = imagesDir.listSync();
+
+    List<Future<FileSystemEntity>> renamings = [];
+    for (final file in files) {
+      if (_isUuidV4(file.path.split('/').last)) {
+        renamings.add(
+          file.rename(
+              '${imagesDir.path}/${Meal.subPathForImages}/${file.path.split('/').last}'),
+        );
+      }
+    }
+
+    await Future.wait(renamings);
   }
 
   /// Due to various reasons (most of the time not intended and due to crashes
   /// or similar) we could end up with having images persisted, which are not
   /// referenced anymore. At app startup we will check for those and delete
   /// them
-  Future<void> _checkImages() async {
-    await Future.delayed(Duration(seconds: 3));
+  Future<void> _cleanUpMealImages() async {
+    Directory baseDir = await getApplicationDocumentsDirectory();
+
+    /// Folder for the images of all the meals
+    Directory mealImagesDir =
+        Directory('${baseDir.path}/${Meal.subPathForImages}');
+
+    List<FileSystemEntity> imagesUuidsFiles = mealImagesDir.listSync();
+
+    List<Future<FileSystemEntity>> deletions = [];
+
+    List<Meal> meals = await ref.read(mealsProvider.future);
+
+    for (final imageUuidFile in imagesUuidsFiles) {
+      String imageUuid = imageUuidFile.path.split('/').last;
+
+      if (!meals.any((meal) =>
+          meal.imagesUuids.contains(imageUuid) ||
+          meal.thumbnailUuid == imageUuid)) {
+        deletions.add(imageUuidFile.delete());
+      }
+    }
+
+    await Future.wait(deletions);
   }
 
   @override
   Widget build(BuildContext context) {
-    bool? darkMode = ref.watch(
-          settingsSingletonProvider
-              .select((value) => value.valueOrNull?.darkMode),
-        ) ??
-        true;
-
     return Theme(
       data: ThemeUtils.baseDark,
       child: Directionality(

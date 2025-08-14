@@ -54,7 +54,7 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
             BaseTextButton(
               onPressed: () => ModalUtils.showBaseDialog(
                 context,
-                MealoConfirmationDialog(
+                MealoBaseConfirmationDialog(
                   title: 'Delete Tag',
                   body:
                       'Are you sure you want to delete ${this.widget.tag!.name}? This action can\'t be undone!',

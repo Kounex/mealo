@@ -34,7 +34,7 @@ class MealsView extends ConsumerWidget {
                 ModalUtils.showBaseDialog(
                   context,
                   Builder(builder: (context) {
-                    return MealoConfirmationDialog(
+                    return MealoBaseConfirmationDialog(
                       title: 'Close Sheet',
                       body:
                           'Are you sure you want to close this sheet? All your changes will not be saved!',

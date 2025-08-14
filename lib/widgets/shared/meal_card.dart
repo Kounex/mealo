@@ -5,6 +5,7 @@ import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/meal/meal.dart';
+import 'image.dart';
 
 class MealCard extends StatelessWidget {
   final Meal? meal;
@@ -46,9 +47,10 @@ class MealCard extends StatelessWidget {
             this.meal?.thumbnailUuid != null ||
                     (this.meal?.imagesUuids != null &&
                         this.meal!.imagesUuids.isNotEmpty)
-                ? BaseImage(
+                ? MealoBaseImage(
                     imageUuid: this.meal?.thumbnailUuid ??
                         this.meal!.imagesUuids.first,
+                    subPath: Meal.subPathForImages,
                     height: this.height,
                     width: this.width,
                   )

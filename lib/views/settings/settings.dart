@@ -40,7 +40,7 @@ class SettingsView extends ConsumerWidget {
                 title: const Text('Delete all data'),
                 onTap: () => ModalUtils.showBaseDialog(
                   context,
-                  MealoConfirmationDialog(
+                  MealoBaseConfirmationDialog(
                     title: 'Danger zone!',
                     body:
                         'You are about to delete all data and set the app back to its default state. This action can\'t be undone! Are you sure about that?',

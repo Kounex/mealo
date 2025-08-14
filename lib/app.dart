@@ -11,18 +11,16 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    bool? darkMode = ref.watch(
-      settingsSingletonProvider.select((value) => value.valueOrNull?.darkMode),
-    );
+    bool darkMode = ref.watch(
+          settingsSingletonProvider
+              .select((value) => value.valueOrNull?.darkMode),
+        ) ??
+        true;
 
     return MaterialApp.router(
       routerDelegate: RouterUtils.router,
       routeInformationParser: BeamerParser(),
-      themeMode: darkMode != null
-          ? darkMode
-              ? ThemeMode.dark
-              : ThemeMode.light
-          : ThemeMode.system,
+      themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
       theme: ThemeUtils.baseLight,
       darkTheme: ThemeUtils.baseDark,
     );

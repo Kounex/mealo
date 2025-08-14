@@ -53,7 +53,6 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
 
   late final TextEditingController _name;
 
-  final List<XFile> _thumbnailToAdd = [];
   final List<XFile> _imagesToAdd = [];
 
   final List<String> _imagesUuidsToDelete = [];
@@ -93,7 +92,7 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
     path ??= (await getApplicationDocumentsDirectory()).path;
 
     for (String uuid in imagesUuidsToDelete) {
-      deletions.add(File('$path/$uuid').delete());
+      deletions.add(File('$path/${Meal.subPathForImages}/$uuid').delete());
     }
     await Future.wait(deletions);
   }
@@ -102,38 +101,31 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
   /// delete existing images or ones they just added and haven't persisted
   /// so far. This function will check for these and either delete or save
   /// the images
-  Future<({String? thumbnail, List<String> images})> _handleImages() async {
+  Future<List<String>> _handleImages() async {
     String path = (await getApplicationDocumentsDirectory()).path;
 
     await _deleteImages(_imagesUuidsToDelete);
 
-    String? thumbnailUuid;
     List<String> imagesUuids = [];
-
-    if (_thumbnailToAdd.isNotEmpty) {
-      thumbnailUuid = const Uuid().v4();
-      await _thumbnailToAdd.first.saveTo('$path/$thumbnailUuid');
-    }
 
     for (XFile image in _imagesToAdd) {
       String uuid = const Uuid().v4();
-      await image.saveTo('$path/$uuid');
+      await image.saveTo('$path/${Meal.subPathForImages}/$uuid');
       imagesUuids.add(uuid);
     }
 
-    return (thumbnail: thumbnailUuid, images: imagesUuids);
+    return imagesUuids;
   }
 
   void _saveMeal() async {
-    final uuids = await _handleImages();
+    final imagesUuids = await _handleImages();
 
     PersistenceUtils.transaction(
       PersistenceOperation.insertUpdate,
       [
         _meal!
           ..name = _name.text.trim()
-          ..thumbnailUuid = uuids.thumbnail
-          ..imagesUuids = uuids.images,
+          ..imagesUuids = imagesUuids,
       ],
     );
 
@@ -206,7 +198,7 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                           child: BaseTextButton(
                             onPressed: () => ModalUtils.showBaseDialog(
                               context,
-                              MealoConfirmationDialog(
+                              MealoBaseConfirmationDialog(
                                 title: 'Delete Meal',
                                 body:
                                     'Are you sure you want to delete this meal? This action can\'t be undone!',

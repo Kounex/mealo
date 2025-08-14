@@ -75,7 +75,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "279fe6aa6f48a9fab9d5dbbac003b8d9c5d08c88"
+      resolved-ref: "4be675e7d82203a72c3ad198d5550f9616e85739"
       url: "https://github.com/Kounex/base_components.git"
     source: git
     version: "1.0.0"
@@ -958,6 +958,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.0"
+  reorderables:
+    dependency: "direct main"
+    description:
+      name: reorderables
+      sha256: "004a886e4878df1ee27321831c838bc1c976311f4ca6a74ce7d561e506540a77"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.0"
   riverpod:
     dependency: transitive
     description:

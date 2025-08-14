@@ -62,7 +62,7 @@ class _ColorPickerTileState extends State<ColorPickerTile> {
             BaseTextButton(
               onPressed: () => ModalUtils.showBaseDialog(
                 context,
-                MealoConfirmationDialog(
+                MealoBaseConfirmationDialog(
                   title: 'Reset Color',
                   body:
                       'Are you sure you want to reset your selected Tag color? It will return back to default which is based on the app theme!',

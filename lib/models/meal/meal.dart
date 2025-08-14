@@ -23,6 +23,8 @@ class Meals extends _$Meals with Persistence<Meal> {
 
 @collection
 class Meal extends CommonModel {
+  static String subPathForImages = 'meal-images';
+
   DateTime createdAt = DateTime.now();
 
   String? instructions;

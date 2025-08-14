@@ -49,7 +49,7 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
             BaseTextButton(
               onPressed: () => ModalUtils.showBaseDialog(
                 context,
-                MealoConfirmationDialog(
+                MealoBaseConfirmationDialog(
                   title: 'Delete Rating',
                   body:
                       'Are you sure you want to delete ${this.widget.rating!.name}? This action can\'t be undone!',

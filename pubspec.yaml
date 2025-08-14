@@ -91,6 +91,9 @@ dependencies:
   # Native Splash Screen for initializing
   flutter_native_splash: ^2.4.6
 
+  # Reorder everything
+  reorderables: ^0.6.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

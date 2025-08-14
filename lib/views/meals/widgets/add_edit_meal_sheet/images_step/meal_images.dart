@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../../models/meal/meal.dart';
+import '../../../../../widgets/shared/image.dart';
 
 class MealImages extends StatelessWidget {
   final Meal meal;
@@ -33,8 +34,9 @@ class MealImages extends StatelessWidget {
               runSpacing: DesignSystem.spacing.x24,
               children: [
                 ...this.meal.imagesUuids.mapIndexed(
-                      (index, imageUuid) => BaseImage(
+                      (index, imageUuid) => MealoBaseImage(
                         imageUuid: imageUuid,
+                        subPath: Meal.subPathForImages,
                         height: 128.0,
                         width: 128.0,
                         icon: CupertinoIcons.clear,
@@ -43,7 +45,7 @@ class MealImages extends StatelessWidget {
                       ),
                     ),
                 ...this.imagesToAdd.mapIndexed(
-                      (index, image) => BaseImage(
+                      (index, image) => MealoBaseImage(
                         image: image,
                         height: 128.0,
                         width: 128.0,

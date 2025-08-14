@@ -70,7 +70,7 @@ class _AddEditModelDialogState<T extends CommonModel>
             BaseTextButton(
               onPressed: () => ModalUtils.showBaseDialog(
                 context,
-                MealoConfirmationDialog(
+                MealoBaseConfirmationDialog(
                   title: 'Delete ${_getGenericBaseModelType()}',
                   body:
                       'Aure you sure you want to delete ${this.widget.editingModel!.name}? This action can\'t be undone!',

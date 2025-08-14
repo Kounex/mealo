@@ -140,7 +140,7 @@ class _RandomizeMealViewState extends ConsumerState<RandomizeMealView> {
                         onPressed: _areFiltersActive()
                             ? () => ModalUtils.showBaseDialog(
                                   context,
-                                  MealoConfirmationDialog(
+                                  MealoBaseConfirmationDialog(
                                     onYes: (_) => _setFiltersDefault(),
                                     title: 'Reset Filters',
                                     body:

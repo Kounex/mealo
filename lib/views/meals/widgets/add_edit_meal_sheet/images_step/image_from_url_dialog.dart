@@ -28,7 +28,7 @@ class _ImageFromURLDialogState extends State<ImageFromURLDialog> {
       } else {
         ModalUtils.showBaseDialog(
           context,
-          const MealoInfoDialog(
+          const MealoBaseInfoDialog(
               title: 'Invalid',
               body:
                   'Even though the URL seems to be alright, it\'s not possible to retrieve an image from it. Make sure the URL is directly pointing to the image and is publicly available!'),

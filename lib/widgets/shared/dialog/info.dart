@@ -1,11 +1,11 @@
 import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 
-class MealoInfoDialog extends StatelessWidget {
+class MealoBaseInfoDialog extends StatelessWidget {
   final String? title;
   final String body;
 
-  const MealoInfoDialog({
+  const MealoBaseInfoDialog({
     super.key,
     this.title,
     required this.body,

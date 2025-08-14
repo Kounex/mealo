@@ -1,7 +1,7 @@
 import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 
-class MealoConfirmationDialog extends StatelessWidget {
+class MealoBaseConfirmationDialog extends StatelessWidget {
   final String? title;
   final String? body;
 
@@ -9,7 +9,7 @@ class MealoConfirmationDialog extends StatelessWidget {
 
   final void Function(bool isDontShowAgainChecked) onYes;
 
-  const MealoConfirmationDialog({
+  const MealoBaseConfirmationDialog({
     super.key,
     this.title,
     this.body,

@@ -8,6 +8,7 @@ import '../../../models/meal/meal.dart';
 import '../../../models/rating/rating.dart';
 import '../../../stores/views/home.dart';
 import '../../../widgets/shared/dialog/confirmation.dart';
+import '../../../widgets/shared/image.dart';
 import '../../../widgets/shared/meal_ratings.dart';
 import '../widgets/add_edit_meal_sheet/add_edit_meal_sheet.dart';
 
@@ -44,7 +45,7 @@ class MealDetailsView extends ConsumerWidget {
                     ModalUtils.showBaseDialog(
                       context,
                       Builder(builder: (context) {
-                        return MealoConfirmationDialog(
+                        return MealoBaseConfirmationDialog(
                           title: 'Close Sheet',
                           body:
                               'Are you sure you want to close this sheet? All your changes will not be saved!',
@@ -75,12 +76,14 @@ class MealDetailsView extends ConsumerWidget {
             //       ? Image.memory(base64Decode(this.meal!.thumbnailBase64!))
             //       : Image.asset('assets/images/meal-placeholder.png'),
             // ),
-            meal.thumbnailUuid != null
+            meal.thumbnailUuid != null || meal.imagesUuids.isNotEmpty
                 ? Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(DesignSystem.spacing.x24),
-                    child: BaseImage(
-                      imageUuid: meal.thumbnailUuid,
+                    child: MealoBaseImage(
+                      imageUuid:
+                          meal.thumbnailUuid ?? meal.imagesUuids.firstOrNull,
+                      subPath: Meal.subPathForImages,
                       height: 192.0,
                       width: 192.0,
                     ),
