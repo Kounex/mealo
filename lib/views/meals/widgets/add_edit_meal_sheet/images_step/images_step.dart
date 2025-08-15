@@ -2,6 +2,8 @@ import 'package:base_components/base_components.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../../models/meal/meal.dart';
 import 'image_from_url_dialog.dart';
@@ -36,16 +38,16 @@ enum ImagePickerType {
 }
 
 class ImagesStep extends StatefulWidget {
-  final Meal meal;
-  final List<XFile> imagesToAdd;
+  final ScrollController controller;
 
-  final List<String> imagesUuidsToDelete;
+  final Meal meal;
+  final List<String> imagesToDelete;
 
   const ImagesStep({
     super.key,
+    required this.controller,
     required this.meal,
-    required this.imagesToAdd,
-    required this.imagesUuidsToDelete,
+    required this.imagesToDelete,
   });
 
   @override
@@ -55,7 +57,21 @@ class ImagesStep extends StatefulWidget {
 class _ImagesStepState extends State<ImagesStep> {
   Future? _pickFuture;
 
-  Future<List<String>> _showPhotoPickerSheet() async {
+  Future<void> _saveImages(List<XFile> images) async {
+    String path = (await getApplicationDocumentsDirectory()).path;
+
+    List<Future<void>> imagesToSave = [];
+
+    for (XFile image in images) {
+      String uuid = const Uuid().v4();
+      imagesToSave.add(image.saveTo('$path/${Meal.subPathForImages}/$uuid'));
+      this.widget.meal.imagesUuids.add(uuid);
+    }
+
+    await Future.wait(imagesToSave);
+  }
+
+  Future<void> _showPhotoPickerSheet() async {
     ImagePickerType? type =
         await ModalUtils.showBaseModalBottomSheet<ImagePickerType>(
       context,
@@ -91,11 +107,10 @@ class _ImagesStepState extends State<ImagesStep> {
           break;
       }
       if (images.isNotEmpty) {
-        setState(() => this.widget.imagesToAdd.addAll(images));
+        await _saveImages(images);
+        setState(() {});
       }
     }
-
-    return [];
   }
 
   Future<List<XFile>> _pickImages(ImagePickerType type,
@@ -130,6 +145,19 @@ class _ImagesStepState extends State<ImagesStep> {
     return photos.whereType<XFile>().toList();
   }
 
+  /// We are deleting this image only from the [meal] object and not
+  /// on storage yet since the user might not save this state. When the
+  /// user saves the [meal] we will actually delete it
+  void _deleteImage(String imageUuid) {
+    setState(() {
+      this.widget.imagesToDelete.add(imageUuid);
+      this.widget.meal.imagesUuids.remove(imageUuid);
+      if (this.widget.meal.thumbnailUuid == imageUuid) {
+        this.widget.meal.thumbnailUuid = null;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -139,25 +167,8 @@ class _ImagesStepState extends State<ImagesStep> {
           children: [
             MealImages(
               meal: this.widget.meal,
-              imagesToAdd: this.widget.imagesToAdd,
-              imagesUuidsToDelete: this.widget.imagesUuidsToDelete,
-              onExistingImagesAction: (index, imageUuid) => setState(
-                () {
-                  this.widget.meal.imagesUuids.removeAt(index);
-                  this.widget.imagesUuidsToDelete.add(imageUuid);
-                },
-              ),
-              onNewImagesAction: (index) => setState(
-                () => this.widget.imagesToAdd.removeAt(index),
-              ),
+              onImageAction: _deleteImage,
             ),
-            // BaseCard(
-            //   topPadding: 0,
-            //   bottomPadding: 0,
-            //   leftPadding: 0,
-            //   rightPadding: 0,
-            //   child:
-            // ),
             FutureBuilder(
               future: _pickFuture,
               builder: (context, snapshot) {
@@ -190,9 +201,7 @@ class _ImagesStepState extends State<ImagesStep> {
           // width: 256,
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: () {
-              _showPhotoPickerSheet();
-            },
+            onPressed: _showPhotoPickerSheet,
             child: const Text('Select photo(s)'),
           ),
         ),

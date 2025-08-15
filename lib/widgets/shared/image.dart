@@ -15,15 +15,22 @@ class MealoBaseImage extends StatelessWidget {
 
   final void Function()? onAction;
 
-  const MealoBaseImage(
-      {super.key,
-      this.image,
-      this.imageUuid,
-      this.subPath,
-      this.height,
-      this.width,
-      this.icon,
-      this.onAction});
+  final IconData? additionalIcon;
+
+  final Color? borderColor;
+
+  const MealoBaseImage({
+    super.key,
+    this.image,
+    this.imageUuid,
+    this.subPath,
+    this.height,
+    this.width,
+    this.icon,
+    this.onAction,
+    this.additionalIcon,
+    this.borderColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +44,8 @@ class MealoBaseImage extends StatelessWidget {
         width: this.width,
         icon: this.icon,
         onAction: this.onAction,
+        additionalIcon: this.additionalIcon,
+        borderColor: this.borderColor,
       ),
     );
   }

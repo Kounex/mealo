@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mealo/models/meal/meal.dart';
+import 'package:mealo/utils/persistence.dart';
 import 'package:mealo/utils/theme.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
@@ -96,12 +97,21 @@ class _InitState extends ConsumerState<Init> {
 
     List<Meal> meals = await ref.read(mealsProvider.future);
 
+    /// Also rather legacy, but due to some reasons sometimes the [thumbnailUuid]
+    /// was standalone and not part of the [imagesUuids] - now it always
+    /// should as it's only a pointer to an existing image
+    for (final meal in meals) {
+      if (meal.thumbnailUuid != null &&
+          !meal.imagesUuids.contains(meal.thumbnailUuid)) {
+        meal.imagesUuids.add(meal.thumbnailUuid!);
+        PersistenceUtils.transaction(PersistenceOperation.insertUpdate, [meal]);
+      }
+    }
+
     for (final imageUuidFile in imagesUuidsFiles) {
       String imageUuid = imageUuidFile.path.split('/').last;
 
-      if (!meals.any((meal) =>
-          meal.imagesUuids.contains(imageUuid) ||
-          meal.thumbnailUuid == imageUuid)) {
+      if (!meals.any((meal) => meal.imagesUuids.contains(imageUuid))) {
         deletions.add(imageUuidFile.delete());
       }
     }
@@ -129,7 +139,7 @@ class _InitState extends ConsumerState<Init> {
                           BorderRadius.circular(DesignSystem.border.radius12),
                       clipBehavior: Clip.hardEdge,
                       child: Image.asset(
-                        'assets/images/app-icon.jpeg',
+                        'assets/images/splash.jpeg',
                         height: DesignSystem.size.x172,
                       ),
                     ),

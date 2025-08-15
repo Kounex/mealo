@@ -3,11 +3,9 @@ import 'dart:io';
 import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:isar/isar.dart';
 import 'package:mealo/widgets/shared/dialog/confirmation.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../../models/embeddings/rating_link/rating_link.dart';
 import '../../../../models/meal/meal.dart';
@@ -48,14 +46,12 @@ class AddEditMealSheet extends ConsumerStatefulWidget {
 
 class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
   final GlobalKey<FormState> _form = GlobalKey();
+  final ScrollController _controller = ScrollController();
 
   Meal? _meal;
+  final List<String> _imagesToDelete = [];
 
   late final TextEditingController _name;
-
-  final List<XFile> _imagesToAdd = [];
-
-  final List<String> _imagesUuidsToDelete = [];
 
   AddEditMealStep _step = AddEditMealStep.values.first;
 
@@ -97,36 +93,12 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
     await Future.wait(deletions);
   }
 
-  /// While adding / editing a meal, users will delete or add images. They can
-  /// delete existing images or ones they just added and haven't persisted
-  /// so far. This function will check for these and either delete or save
-  /// the images
-  Future<List<String>> _handleImages() async {
-    String path = (await getApplicationDocumentsDirectory()).path;
-
-    await _deleteImages(_imagesUuidsToDelete);
-
-    List<String> imagesUuids = [];
-
-    for (XFile image in _imagesToAdd) {
-      String uuid = const Uuid().v4();
-      await image.saveTo('$path/${Meal.subPathForImages}/$uuid');
-      imagesUuids.add(uuid);
-    }
-
-    return imagesUuids;
-  }
-
   void _saveMeal() async {
-    final imagesUuids = await _handleImages();
+    await _deleteImages(_imagesToDelete);
 
     PersistenceUtils.transaction(
       PersistenceOperation.insertUpdate,
-      [
-        _meal!
-          ..name = _name.text.trim()
-          ..imagesUuids = imagesUuids,
-      ],
+      [_meal!..name = _name.text.trim()],
     );
 
     if (context.mounted) {
@@ -136,14 +108,7 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
 
   void _deleteMeal() async {
     if (this.widget.meal != null) {
-      /// We need to gather all the image uuids which are associated with the
-      /// to be deleted meal
-      List<String> imagesUuidsToDelete = [...this.widget.meal!.imagesUuids];
-      if (this.widget.meal!.thumbnailUuid != null) {
-        imagesUuidsToDelete.add(this.widget.meal!.thumbnailUuid!);
-      }
-
-      await _deleteImages(imagesUuidsToDelete);
+      await _deleteImages(this.widget.meal!.imagesUuids);
 
       PersistenceUtils.transaction(
         PersistenceOperation.delete,
@@ -241,6 +206,7 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                   SizedBox(height: DesignSystem.spacing.x12),
                   Expanded(
                     child: ListView(
+                      controller: _controller,
                       physics: const ClampingScrollPhysics(),
                       children: [
                         Align(
@@ -253,9 +219,9 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                                   DesignSystem.animation.defaultDurationMS250,
                               child: switch (_step) {
                                 AddEditMealStep.images => ImagesStep(
+                                    controller: _controller,
                                     meal: _meal!,
-                                    imagesToAdd: _imagesToAdd,
-                                    imagesUuidsToDelete: _imagesUuidsToDelete,
+                                    imagesToDelete: _imagesToDelete,
                                   ),
                                 AddEditMealStep.ratings => RatingStep(
                                     meal: _meal!,
