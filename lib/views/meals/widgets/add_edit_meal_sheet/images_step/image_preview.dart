@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
@@ -21,12 +20,11 @@ class ImagePreview extends StatefulWidget {
 class _ImagePreviewState extends State<ImagePreview>
     with TickerProviderStateMixin {
   late final AnimationController _controllerImage;
-  late final AnimationController _controllerFullscreen;
+
   Offset _imageOffset = Offset.zero;
   Offset _imageRawDrag = Offset.zero;
 
   Animation<Offset>? _backAnim;
-  late Animation<double> _opacity;
 
   bool _overdragged = false;
 
@@ -38,15 +36,6 @@ class _ImagePreviewState extends State<ImagePreview>
       vsync: this,
       duration: DesignSystem.animation.defaultDurationMS300,
     );
-
-    _controllerFullscreen = AnimationController(
-      vsync: this,
-      duration: DesignSystem.animation.defaultDurationMS300,
-    );
-
-    _opacity = Tween<double>(begin: 1.0, end: 1.0)
-        .chain(CurveTween(curve: Curves.easeOut))
-        .animate(_controllerFullscreen);
   }
 
   double _tanh(double x) {
@@ -57,8 +46,8 @@ class _ImagePreviewState extends State<ImagePreview>
   Offset _rubberBand(Offset d, double R) {
     final r = d.distance;
     if (r == 0) return Offset.zero;
-    final m = R * _tanh(r / R); // in (0, R)
-    return d / r * m; // same direction, compressed magnitude
+    final m = R * _tanh(r / R);
+    return d / r * m;
   }
 
   void _dragUpdate(DragUpdateDetails details) {
@@ -69,7 +58,7 @@ class _ImagePreviewState extends State<ImagePreview>
     final dispLen = display.distance;
     final compression = rawLen == 0 ? 1.0 : dispLen / rawLen;
 
-    if (!_overdragged && compression < 0.35 || details.delta.distance > 20) {
+    if (!_overdragged && compression < 0.35) {
       _overdragged = true;
       _pop();
     }
@@ -78,7 +67,7 @@ class _ImagePreviewState extends State<ImagePreview>
   }
 
   void _animBack() {
-    if (!_controllerFullscreen.isAnimating) {
+    if (!_overdragged) {
       _backAnim = Tween<Offset>(begin: _imageOffset, end: Offset.zero)
           .chain(CurveTween(curve: Curves.easeOut))
           .animate(_controllerImage);
@@ -90,12 +79,11 @@ class _ImagePreviewState extends State<ImagePreview>
   }
 
   void _pop() {
-    _controllerFullscreen.forward().then((_) => Navigator.of(context).pop());
+    Navigator.of(context).pop();
   }
 
   @override
   void dispose() {
-    _controllerFullscreen.dispose();
     _controllerImage.dispose();
 
     super.dispose();
@@ -103,53 +91,36 @@ class _ImagePreviewState extends State<ImagePreview>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controllerFullscreen,
-      builder: (context, child) => Opacity(
-        opacity: _opacity.value,
-        child: GestureDetector(
-          onPanUpdate: _dragUpdate,
-          onPanEnd: (_) => _animBack(),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              GestureDetector(
-                onTap: _pop,
-                child: SizedBox.expand(
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(
-                      sigmaX: DesignSystem.sigmaBlur,
-                      sigmaY: DesignSystem.sigmaBlur,
-                    ),
-                    child: Container(
-                      color: Colors.black12,
-                      alignment: Alignment.center,
-                    ),
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onPanUpdate: _dragUpdate,
+      onPanEnd: (_) => _animBack(),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          GestureDetector(onTap: _pop, child: SizedBox.expand()),
+          AnimatedBuilder(
+            animation: _controllerImage,
+            builder: (context, child) => Transform.translate(
+              offset: _controllerImage.isAnimating
+                  ? _backAnim!.value
+                  : _imageOffset,
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: DesignSystem.spacing.x64,
+                    horizontal: DesignSystem.spacing.x12,
+                  ),
+                  child: MealoBaseImage(
+                    imageUuid: this.widget.imageUuid,
+                    subPath: Meal.subPathForImages,
+                    borderColor: Colors.transparent,
                   ),
                 ),
               ),
-              AnimatedBuilder(
-                animation: _controllerImage,
-                builder: (context, child) => Transform.translate(
-                  offset: _controllerImage.isAnimating
-                      ? _backAnim!.value
-                      : _imageOffset,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: DesignSystem.spacing.x64,
-                      horizontal: DesignSystem.spacing.x12,
-                    ),
-                    child: MealoBaseImage(
-                      imageUuid: this.widget.imageUuid,
-                      subPath: Meal.subPathForImages,
-                      borderColor: Colors.transparent,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

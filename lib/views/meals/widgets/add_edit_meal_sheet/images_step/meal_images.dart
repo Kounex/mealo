@@ -59,6 +59,14 @@ class _MealImagesState extends ConsumerState<MealImages>
     }
   }
 
+  void _showImagePreview(String imageUuid) => ModalUtils.showFullscreen(
+        context: context,
+        barrierDismissible: true,
+        transparent: true,
+        blur: true,
+        content: ImagePreview(imageUuid: imageUuid),
+      );
+
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
@@ -87,14 +95,7 @@ class _MealImagesState extends ConsumerState<MealImages>
                               (index, imageUuid) => GestureDetector(
                                 behavior: HitTestBehavior.translucent,
                                 onDoubleTap: () => _setThumbnail(imageUuid),
-                                onTap: () => ModalUtils.showFullscreen(
-                                  context: context,
-                                  transparent: true,
-                                  includeClose: false,
-                                  content: ImagePreview(
-                                    imageUuid: imageUuid,
-                                  ),
-                                ),
+                                onTap: () => _showImagePreview(imageUuid),
                                 child: Animate(
                                   autoPlay: false,
                                   controller: _controller,

@@ -75,7 +75,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: de7688a5667f134e722215244e2d8d3ca881c01d
+      resolved-ref: db3a70085cbb5e388cd9084ae5814fb91c07c86b
       url: "https://github.com/Kounex/base_components.git"
     source: git
     version: "1.0.0"
