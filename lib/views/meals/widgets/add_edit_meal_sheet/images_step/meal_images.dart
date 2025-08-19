@@ -94,7 +94,7 @@ class _MealImagesState extends ConsumerState<MealImages>
                     onReorderStart: (_) => setState(() => _toggleOrderMode()),
                     onReorderEnd: () => setState(() => _toggleOrderMode()),
                     shrinkWrap: true,
-                    padding: EdgeInsets.all(DesignSystem.spacing.x8),
+                    // padding: EdgeInsets.all(DesignSystem.spacing.x8),
                     children: [
                       ...this.widget.meal.imagesUuids.mapIndexed(
                             (index, imageUuid) => GestureDetector(

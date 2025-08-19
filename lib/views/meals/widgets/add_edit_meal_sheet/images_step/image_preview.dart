@@ -114,6 +114,7 @@ class _ImagePreviewState extends State<ImagePreview>
                   child: MealoBaseImage(
                     imageUuid: this.widget.imageUuid,
                     subPath: Meal.subPathForImages,
+                    stackFit: StackFit.loose,
                     borderColor: Colors.transparent,
                   ),
                 ),

@@ -8,6 +8,9 @@ class MealoBaseImage extends StatelessWidget {
   final String? imageUuid;
   final String? subPath;
 
+  final BoxFit fit;
+  final StackFit stackFit;
+
   final double? height;
   final double? width;
 
@@ -23,6 +26,8 @@ class MealoBaseImage extends StatelessWidget {
     super.key,
     this.image,
     this.imageUuid,
+    this.fit = BoxFit.cover,
+    this.stackFit = StackFit.expand,
     this.subPath,
     this.height,
     this.width,
@@ -40,6 +45,8 @@ class MealoBaseImage extends StatelessWidget {
         imageUuid: this.imageUuid,
         image: this.image,
         subPath: this.subPath,
+        fit: this.fit,
+        stackFit: this.stackFit,
         height: this.height,
         width: this.width,
         icon: this.icon,
