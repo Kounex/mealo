@@ -120,21 +120,15 @@ class _ImagesStepState extends State<ImagesStep> {
     List<XFile?> photos = [];
     switch (type) {
       case ImagePickerType.camera:
-        setState(() {
-          _pickFuture = picker.pickImage(source: ImageSource.camera);
-        });
+        _pickFuture = picker.pickImage(source: ImageSource.camera);
         photos.add(await _pickFuture);
         break;
       case ImagePickerType.gallery:
         if (multiple) {
-          setState(() {
-            _pickFuture = picker.pickMultiImage();
-          });
+          _pickFuture = picker.pickMultiImage();
           photos.addAll(await _pickFuture);
         } else {
-          setState(() {
-            _pickFuture = picker.pickImage(source: ImageSource.gallery);
-          });
+          _pickFuture = picker.pickImage(source: ImageSource.gallery);
           photos.add(await _pickFuture);
         }
         break;

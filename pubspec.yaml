@@ -93,6 +93,10 @@ dependencies:
 
   # Reorder everything
   reorderables: ^0.6.0
+  reorderable_grid:
+    git:
+      url: https://github.com/Kounex/reorderable_grid.git
+      ref: drag-background
 
 dev_dependencies:
   flutter_test:
