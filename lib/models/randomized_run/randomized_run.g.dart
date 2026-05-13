@@ -29,13 +29,17 @@ const RandomizedRunSchema = IsarGeneratedSchema(
         type: IsarType.stringList,
       ),
       IsarPropertySchema(
+        name: 'includedIngredientUuids',
+        type: IsarType.stringList,
+      ),
+      IsarPropertySchema(
+        name: 'excludedIngredientUuids',
+        type: IsarType.stringList,
+      ),
+      IsarPropertySchema(
         name: 'ratingLinks',
         type: IsarType.objectList,
         target: 'RatingLink',
-      ),
-      IsarPropertySchema(
-        name: 'ingredientUuids',
-        type: IsarType.stringList,
       ),
       IsarPropertySchema(
         name: 'daysNotEaten',
@@ -95,8 +99,24 @@ int serializeRandomizedRun(IsarWriter writer, RandomizedRun object) {
     IsarCore.endList(writer, listWriter);
   }
   {
-    final list = object.ratingLinks;
+    final list = object.includedIngredientUuids;
     final listWriter = IsarCore.beginList(writer, 3, list.length);
+    for (var i = 0; i < list.length; i++) {
+      IsarCore.writeString(listWriter, i, list[i]);
+    }
+    IsarCore.endList(writer, listWriter);
+  }
+  {
+    final list = object.excludedIngredientUuids;
+    final listWriter = IsarCore.beginList(writer, 4, list.length);
+    for (var i = 0; i < list.length; i++) {
+      IsarCore.writeString(listWriter, i, list[i]);
+    }
+    IsarCore.endList(writer, listWriter);
+  }
+  {
+    final list = object.ratingLinks;
+    final listWriter = IsarCore.beginList(writer, 5, list.length);
     for (var i = 0; i < list.length; i++) {
       {
         final value = list[i];
@@ -107,21 +127,13 @@ int serializeRandomizedRun(IsarWriter writer, RandomizedRun object) {
     }
     IsarCore.endList(writer, listWriter);
   }
-  {
-    final list = object.includedIngredientUuids;
-    final listWriter = IsarCore.beginList(writer, 4, list.length);
-    for (var i = 0; i < list.length; i++) {
-      IsarCore.writeString(listWriter, i, list[i]);
-    }
-    IsarCore.endList(writer, listWriter);
-  }
-  IsarCore.writeLong(writer, 5, object.daysNotEaten ?? -9223372036854775808);
-  IsarCore.writeString(writer, 6, object.mealUuid);
-  IsarCore.writeBool(writer, 7, object.manuallyEaten);
-  IsarCore.writeBool(writer, 8, object.eaten);
-  IsarCore.writeString(writer, 9, object.uuid);
-  IsarCore.writeLong(writer, 10, object.created.toUtc().microsecondsSinceEpoch);
-  IsarCore.writeLong(writer, 11, object.updated.toUtc().microsecondsSinceEpoch);
+  IsarCore.writeLong(writer, 6, object.daysNotEaten ?? -9223372036854775808);
+  IsarCore.writeString(writer, 7, object.mealUuid);
+  IsarCore.writeBool(writer, 8, object.manuallyEaten);
+  IsarCore.writeBool(writer, 9, object.eaten);
+  IsarCore.writeString(writer, 10, object.uuid);
+  IsarCore.writeLong(writer, 11, object.created.toUtc().microsecondsSinceEpoch);
+  IsarCore.writeLong(writer, 12, object.updated.toUtc().microsecondsSinceEpoch);
   return Isar.fastHash(object.uuid);
 }
 
@@ -165,6 +177,38 @@ RandomizedRun deserializeRandomizedRun(IsarReader reader) {
     {
       final reader = IsarCore.readerPtr;
       if (reader.isNull) {
+        object.includedIngredientUuids = const <String>[];
+      } else {
+        final list = List<String>.filled(length, '', growable: true);
+        for (var i = 0; i < length; i++) {
+          list[i] = IsarCore.readString(reader, i) ?? '';
+        }
+        IsarCore.freeReader(reader);
+        object.includedIngredientUuids = list;
+      }
+    }
+  }
+  {
+    final length = IsarCore.readList(reader, 4, IsarCore.readerPtrPtr);
+    {
+      final reader = IsarCore.readerPtr;
+      if (reader.isNull) {
+        object.excludedIngredientUuids = const <String>[];
+      } else {
+        final list = List<String>.filled(length, '', growable: true);
+        for (var i = 0; i < length; i++) {
+          list[i] = IsarCore.readString(reader, i) ?? '';
+        }
+        IsarCore.freeReader(reader);
+        object.excludedIngredientUuids = list;
+      }
+    }
+  }
+  {
+    final length = IsarCore.readList(reader, 5, IsarCore.readerPtrPtr);
+    {
+      final reader = IsarCore.readerPtr;
+      if (reader.isNull) {
         object.ratingLinks = const <RatingLink>[];
       } else {
         final list =
@@ -187,35 +231,19 @@ RandomizedRun deserializeRandomizedRun(IsarReader reader) {
     }
   }
   {
-    final length = IsarCore.readList(reader, 4, IsarCore.readerPtrPtr);
-    {
-      final reader = IsarCore.readerPtr;
-      if (reader.isNull) {
-        object.includedIngredientUuids = const <String>[];
-      } else {
-        final list = List<String>.filled(length, '', growable: true);
-        for (var i = 0; i < length; i++) {
-          list[i] = IsarCore.readString(reader, i) ?? '';
-        }
-        IsarCore.freeReader(reader);
-        object.includedIngredientUuids = list;
-      }
-    }
-  }
-  {
-    final value = IsarCore.readLong(reader, 5);
+    final value = IsarCore.readLong(reader, 6);
     if (value == -9223372036854775808) {
       object.daysNotEaten = null;
     } else {
       object.daysNotEaten = value;
     }
   }
-  object.mealUuid = IsarCore.readString(reader, 6) ?? '';
-  object.manuallyEaten = IsarCore.readBool(reader, 7);
-  object.eaten = IsarCore.readBool(reader, 8);
-  object.uuid = IsarCore.readString(reader, 9) ?? '';
+  object.mealUuid = IsarCore.readString(reader, 7) ?? '';
+  object.manuallyEaten = IsarCore.readBool(reader, 8);
+  object.eaten = IsarCore.readBool(reader, 9);
+  object.uuid = IsarCore.readString(reader, 10) ?? '';
   {
-    final value = IsarCore.readLong(reader, 10);
+    final value = IsarCore.readLong(reader, 11);
     if (value == -9223372036854775808) {
       object.created =
           DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
@@ -224,7 +252,7 @@ RandomizedRun deserializeRandomizedRun(IsarReader reader) {
     }
   }
   {
-    final value = IsarCore.readLong(reader, 11);
+    final value = IsarCore.readLong(reader, 12);
     if (value == -9223372036854775808) {
       object.updated =
           DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
@@ -278,21 +306,11 @@ dynamic deserializeRandomizedRunProp(IsarReader reader, int property) {
         {
           final reader = IsarCore.readerPtr;
           if (reader.isNull) {
-            return const <RatingLink>[];
+            return const <String>[];
           } else {
-            final list =
-                List<RatingLink>.filled(length, RatingLink(), growable: true);
+            final list = List<String>.filled(length, '', growable: true);
             for (var i = 0; i < length; i++) {
-              {
-                final objectReader = IsarCore.readObject(reader, i);
-                if (objectReader.isNull) {
-                  list[i] = RatingLink();
-                } else {
-                  final embedded = deserializeRatingLink(objectReader);
-                  IsarCore.freeReader(objectReader);
-                  list[i] = embedded;
-                }
-              }
+              list[i] = IsarCore.readString(reader, i) ?? '';
             }
             IsarCore.freeReader(reader);
             return list;
@@ -318,33 +336,60 @@ dynamic deserializeRandomizedRunProp(IsarReader reader, int property) {
       }
     case 5:
       {
-        final value = IsarCore.readLong(reader, 5);
+        final length = IsarCore.readList(reader, 5, IsarCore.readerPtrPtr);
+        {
+          final reader = IsarCore.readerPtr;
+          if (reader.isNull) {
+            return const <RatingLink>[];
+          } else {
+            final list =
+                List<RatingLink>.filled(length, RatingLink(), growable: true);
+            for (var i = 0; i < length; i++) {
+              {
+                final objectReader = IsarCore.readObject(reader, i);
+                if (objectReader.isNull) {
+                  list[i] = RatingLink();
+                } else {
+                  final embedded = deserializeRatingLink(objectReader);
+                  IsarCore.freeReader(objectReader);
+                  list[i] = embedded;
+                }
+              }
+            }
+            IsarCore.freeReader(reader);
+            return list;
+          }
+        }
+      }
+    case 6:
+      {
+        final value = IsarCore.readLong(reader, 6);
         if (value == -9223372036854775808) {
           return null;
         } else {
           return value;
         }
       }
-    case 6:
-      return IsarCore.readString(reader, 6) ?? '';
     case 7:
-      return IsarCore.readBool(reader, 7);
+      return IsarCore.readString(reader, 7) ?? '';
     case 8:
       return IsarCore.readBool(reader, 8);
     case 9:
-      return IsarCore.readString(reader, 9) ?? '';
+      return IsarCore.readBool(reader, 9);
     case 10:
+      return IsarCore.readString(reader, 10) ?? '';
+    case 11:
       {
-        final value = IsarCore.readLong(reader, 10);
+        final value = IsarCore.readLong(reader, 11);
         if (value == -9223372036854775808) {
           return DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
         } else {
           return DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true);
         }
       }
-    case 11:
+    case 12:
       {
-        final value = IsarCore.readLong(reader, 11);
+        final value = IsarCore.readLong(reader, 12);
         if (value == -9223372036854775808) {
           return DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
         } else {
@@ -386,12 +431,12 @@ class _RandomizedRunUpdateImpl implements _RandomizedRunUpdate {
     return collection.updateProperties([
           uuid
         ], {
-          if (daysNotEaten != ignore) 5: daysNotEaten as int?,
-          if (mealUuid != ignore) 6: mealUuid as String?,
-          if (manuallyEaten != ignore) 7: manuallyEaten as bool?,
-          if (eaten != ignore) 8: eaten as bool?,
-          if (created != ignore) 10: created as DateTime?,
-          if (updated != ignore) 11: updated as DateTime?,
+          if (daysNotEaten != ignore) 6: daysNotEaten as int?,
+          if (mealUuid != ignore) 7: mealUuid as String?,
+          if (manuallyEaten != ignore) 8: manuallyEaten as bool?,
+          if (eaten != ignore) 9: eaten as bool?,
+          if (created != ignore) 11: created as DateTime?,
+          if (updated != ignore) 12: updated as DateTime?,
         }) >
         0;
   }
@@ -425,12 +470,12 @@ class _RandomizedRunUpdateAllImpl implements _RandomizedRunUpdateAll {
     Object? updated = ignore,
   }) {
     return collection.updateProperties(uuid, {
-      if (daysNotEaten != ignore) 5: daysNotEaten as int?,
-      if (mealUuid != ignore) 6: mealUuid as String?,
-      if (manuallyEaten != ignore) 7: manuallyEaten as bool?,
-      if (eaten != ignore) 8: eaten as bool?,
-      if (created != ignore) 10: created as DateTime?,
-      if (updated != ignore) 11: updated as DateTime?,
+      if (daysNotEaten != ignore) 6: daysNotEaten as int?,
+      if (mealUuid != ignore) 7: mealUuid as String?,
+      if (manuallyEaten != ignore) 8: manuallyEaten as bool?,
+      if (eaten != ignore) 9: eaten as bool?,
+      if (created != ignore) 11: created as DateTime?,
+      if (updated != ignore) 12: updated as DateTime?,
     });
   }
 }
@@ -468,12 +513,12 @@ class _RandomizedRunQueryUpdateImpl implements _RandomizedRunQueryUpdate {
     Object? updated = ignore,
   }) {
     return query.updateProperties(limit: limit, {
-      if (daysNotEaten != ignore) 5: daysNotEaten as int?,
-      if (mealUuid != ignore) 6: mealUuid as String?,
-      if (manuallyEaten != ignore) 7: manuallyEaten as bool?,
-      if (eaten != ignore) 8: eaten as bool?,
-      if (created != ignore) 10: created as DateTime?,
-      if (updated != ignore) 11: updated as DateTime?,
+      if (daysNotEaten != ignore) 6: daysNotEaten as int?,
+      if (mealUuid != ignore) 7: mealUuid as String?,
+      if (manuallyEaten != ignore) 8: manuallyEaten as bool?,
+      if (eaten != ignore) 9: eaten as bool?,
+      if (created != ignore) 11: created as DateTime?,
+      if (updated != ignore) 12: updated as DateTime?,
     });
   }
 }
@@ -505,12 +550,12 @@ class _RandomizedRunQueryBuilderUpdateImpl
     final q = query.build();
     try {
       return q.updateProperties(limit: limit, {
-        if (daysNotEaten != ignore) 5: daysNotEaten as int?,
-        if (mealUuid != ignore) 6: mealUuid as String?,
-        if (manuallyEaten != ignore) 7: manuallyEaten as bool?,
-        if (eaten != ignore) 8: eaten as bool?,
-        if (created != ignore) 10: created as DateTime?,
-        if (updated != ignore) 11: updated as DateTime?,
+        if (daysNotEaten != ignore) 6: daysNotEaten as int?,
+        if (mealUuid != ignore) 7: mealUuid as String?,
+        if (manuallyEaten != ignore) 8: manuallyEaten as bool?,
+        if (eaten != ignore) 9: eaten as bool?,
+        if (created != ignore) 11: created as DateTime?,
+        if (updated != ignore) 12: updated as DateTime?,
       });
     } finally {
       q.close();
@@ -922,12 +967,194 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      ratingLinksIsEmpty() {
-    return not().ratingLinksIsNotEmpty();
+      includedIngredientUuidsElementEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        EqualCondition(
+          property: 3,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      ratingLinksIsNotEmpty() {
+      includedIngredientUuidsElementGreaterThan(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterCondition(
+          property: 3,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
+      includedIngredientUuidsElementGreaterThanOrEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterOrEqualCondition(
+          property: 3,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
+      includedIngredientUuidsElementLessThan(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessCondition(
+          property: 3,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
+      includedIngredientUuidsElementLessThanOrEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessOrEqualCondition(
+          property: 3,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
+      includedIngredientUuidsElementBetween(
+    String lower,
+    String upper, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        BetweenCondition(
+          property: 3,
+          lower: lower,
+          upper: upper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
+      includedIngredientUuidsElementStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        StartsWithCondition(
+          property: 3,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
+      includedIngredientUuidsElementEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        EndsWithCondition(
+          property: 3,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
+      includedIngredientUuidsElementContains(String value,
+          {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        ContainsCondition(
+          property: 3,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
+      includedIngredientUuidsElementMatches(String pattern,
+          {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        MatchesCondition(
+          property: 3,
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
+      includedIngredientUuidsElementIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const EqualCondition(
+          property: 3,
+          value: '',
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
+      includedIngredientUuidsElementIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const GreaterCondition(
+          property: 3,
+          value: '',
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
+      includedIngredientUuidsIsEmpty() {
+    return not().includedIngredientUuidsIsNotEmpty();
+  }
+
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
+      includedIngredientUuidsIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const GreaterOrEqualCondition(property: 3, value: null),
@@ -936,7 +1163,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      ingredientUuidsElementEqualTo(
+      excludedIngredientUuidsElementEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -952,7 +1179,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      ingredientUuidsElementGreaterThan(
+      excludedIngredientUuidsElementGreaterThan(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -968,7 +1195,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      ingredientUuidsElementGreaterThanOrEqualTo(
+      excludedIngredientUuidsElementGreaterThanOrEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -984,7 +1211,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      ingredientUuidsElementLessThan(
+      excludedIngredientUuidsElementLessThan(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1000,7 +1227,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      ingredientUuidsElementLessThanOrEqualTo(
+      excludedIngredientUuidsElementLessThanOrEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1016,7 +1243,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      ingredientUuidsElementBetween(
+      excludedIngredientUuidsElementBetween(
     String lower,
     String upper, {
     bool caseSensitive = true,
@@ -1034,7 +1261,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      ingredientUuidsElementStartsWith(
+      excludedIngredientUuidsElementStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1050,7 +1277,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      ingredientUuidsElementEndsWith(
+      excludedIngredientUuidsElementEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1066,7 +1293,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      ingredientUuidsElementContains(String value,
+      excludedIngredientUuidsElementContains(String value,
           {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -1080,7 +1307,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      ingredientUuidsElementMatches(String pattern,
+      excludedIngredientUuidsElementMatches(String pattern,
           {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -1094,7 +1321,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      ingredientUuidsElementIsEmpty() {
+      excludedIngredientUuidsElementIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const EqualCondition(
@@ -1106,7 +1333,7 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      ingredientUuidsElementIsNotEmpty() {
+      excludedIngredientUuidsElementIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const GreaterCondition(
@@ -1118,12 +1345,12 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      ingredientUuidsIsEmpty() {
-    return not().ingredientUuidsIsNotEmpty();
+      excludedIngredientUuidsIsEmpty() {
+    return not().excludedIngredientUuidsIsNotEmpty();
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
-      ingredientUuidsIsNotEmpty() {
+      excludedIngredientUuidsIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const GreaterOrEqualCondition(property: 4, value: null),
@@ -1132,16 +1359,30 @@ extension RandomizedRunQueryFilter
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
+      ratingLinksIsEmpty() {
+    return not().ratingLinksIsNotEmpty();
+  }
+
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
+      ratingLinksIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const GreaterOrEqualCondition(property: 5, value: null),
+      );
+    });
+  }
+
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
       daysNotEatenIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 5));
+      return query.addFilterCondition(const IsNullCondition(property: 6));
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterFilterCondition>
       daysNotEatenIsNotNull() {
     return QueryBuilder.apply(not(), (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 5));
+      return query.addFilterCondition(const IsNullCondition(property: 6));
     });
   }
 
@@ -1152,7 +1393,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(
-          property: 5,
+          property: 6,
           value: value,
         ),
       );
@@ -1166,7 +1407,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(
-          property: 5,
+          property: 6,
           value: value,
         ),
       );
@@ -1180,7 +1421,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterOrEqualCondition(
-          property: 5,
+          property: 6,
           value: value,
         ),
       );
@@ -1194,7 +1435,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(
-          property: 5,
+          property: 6,
           value: value,
         ),
       );
@@ -1208,7 +1449,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessOrEqualCondition(
-          property: 5,
+          property: 6,
           value: value,
         ),
       );
@@ -1223,7 +1464,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         BetweenCondition(
-          property: 5,
+          property: 6,
           lower: lower,
           upper: upper,
         ),
@@ -1239,7 +1480,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(
-          property: 6,
+          property: 7,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1255,7 +1496,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(
-          property: 6,
+          property: 7,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1271,7 +1512,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterOrEqualCondition(
-          property: 6,
+          property: 7,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1287,7 +1528,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(
-          property: 6,
+          property: 7,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1303,7 +1544,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessOrEqualCondition(
-          property: 6,
+          property: 7,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1320,7 +1561,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         BetweenCondition(
-          property: 6,
+          property: 7,
           lower: lower,
           upper: upper,
           caseSensitive: caseSensitive,
@@ -1337,7 +1578,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         StartsWithCondition(
-          property: 6,
+          property: 7,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1353,7 +1594,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EndsWithCondition(
-          property: 6,
+          property: 7,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1366,7 +1607,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         ContainsCondition(
-          property: 6,
+          property: 7,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1379,7 +1620,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         MatchesCondition(
-          property: 6,
+          property: 7,
           wildcard: pattern,
           caseSensitive: caseSensitive,
         ),
@@ -1392,7 +1633,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const EqualCondition(
-          property: 6,
+          property: 7,
           value: '',
         ),
       );
@@ -1404,7 +1645,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const GreaterCondition(
-          property: 6,
+          property: 7,
           value: '',
         ),
       );
@@ -1418,7 +1659,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(
-          property: 7,
+          property: 8,
           value: value,
         ),
       );
@@ -1432,7 +1673,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(
-          property: 8,
+          property: 9,
           value: value,
         ),
       );
@@ -1446,7 +1687,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(
-          property: 9,
+          property: 10,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1462,7 +1703,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(
-          property: 9,
+          property: 10,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1478,7 +1719,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterOrEqualCondition(
-          property: 9,
+          property: 10,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1494,7 +1735,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(
-          property: 9,
+          property: 10,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1510,7 +1751,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessOrEqualCondition(
-          property: 9,
+          property: 10,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1526,7 +1767,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         BetweenCondition(
-          property: 9,
+          property: 10,
           lower: lower,
           upper: upper,
           caseSensitive: caseSensitive,
@@ -1543,7 +1784,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         StartsWithCondition(
-          property: 9,
+          property: 10,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1559,7 +1800,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EndsWithCondition(
-          property: 9,
+          property: 10,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1572,7 +1813,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         ContainsCondition(
-          property: 9,
+          property: 10,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -1586,7 +1827,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         MatchesCondition(
-          property: 9,
+          property: 10,
           wildcard: pattern,
           caseSensitive: caseSensitive,
         ),
@@ -1599,7 +1840,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const EqualCondition(
-          property: 9,
+          property: 10,
           value: '',
         ),
       );
@@ -1611,7 +1852,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const GreaterCondition(
-          property: 9,
+          property: 10,
           value: '',
         ),
       );
@@ -1625,7 +1866,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(
-          property: 10,
+          property: 11,
           value: value,
         ),
       );
@@ -1639,7 +1880,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(
-          property: 10,
+          property: 11,
           value: value,
         ),
       );
@@ -1653,7 +1894,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterOrEqualCondition(
-          property: 10,
+          property: 11,
           value: value,
         ),
       );
@@ -1667,7 +1908,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(
-          property: 10,
+          property: 11,
           value: value,
         ),
       );
@@ -1681,7 +1922,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessOrEqualCondition(
-          property: 10,
+          property: 11,
           value: value,
         ),
       );
@@ -1696,7 +1937,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         BetweenCondition(
-          property: 10,
+          property: 11,
           lower: lower,
           upper: upper,
         ),
@@ -1711,7 +1952,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(
-          property: 11,
+          property: 12,
           value: value,
         ),
       );
@@ -1725,7 +1966,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(
-          property: 11,
+          property: 12,
           value: value,
         ),
       );
@@ -1739,7 +1980,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterOrEqualCondition(
-          property: 11,
+          property: 12,
           value: value,
         ),
       );
@@ -1753,7 +1994,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(
-          property: 11,
+          property: 12,
           value: value,
         ),
       );
@@ -1767,7 +2008,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessOrEqualCondition(
-          property: 11,
+          property: 12,
           value: value,
         ),
       );
@@ -1782,7 +2023,7 @@ extension RandomizedRunQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         BetweenCondition(
-          property: 11,
+          property: 12,
           lower: lower,
           upper: upper,
         ),
@@ -1799,14 +2040,14 @@ extension RandomizedRunQuerySortBy
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy>
       sortByDaysNotEaten() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(5);
+      return query.addSortBy(6);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy>
       sortByDaysNotEatenDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(5, sort: Sort.desc);
+      return query.addSortBy(6, sort: Sort.desc);
     });
   }
 
@@ -1814,7 +2055,7 @@ extension RandomizedRunQuerySortBy
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(
-        6,
+        7,
         caseSensitive: caseSensitive,
       );
     });
@@ -1824,7 +2065,7 @@ extension RandomizedRunQuerySortBy
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(
-        6,
+        7,
         sort: Sort.desc,
         caseSensitive: caseSensitive,
       );
@@ -1834,26 +2075,26 @@ extension RandomizedRunQuerySortBy
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy>
       sortByManuallyEaten() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(7);
+      return query.addSortBy(8);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy>
       sortByManuallyEatenDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(7, sort: Sort.desc);
+      return query.addSortBy(8, sort: Sort.desc);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> sortByEaten() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(8);
+      return query.addSortBy(9);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> sortByEatenDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(8, sort: Sort.desc);
+      return query.addSortBy(9, sort: Sort.desc);
     });
   }
 
@@ -1861,7 +2102,7 @@ extension RandomizedRunQuerySortBy
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(
-        9,
+        10,
         caseSensitive: caseSensitive,
       );
     });
@@ -1871,7 +2112,7 @@ extension RandomizedRunQuerySortBy
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(
-        9,
+        10,
         sort: Sort.desc,
         caseSensitive: caseSensitive,
       );
@@ -1880,25 +2121,25 @@ extension RandomizedRunQuerySortBy
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> sortByCreated() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(10);
+      return query.addSortBy(11);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> sortByCreatedDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(10, sort: Sort.desc);
+      return query.addSortBy(11, sort: Sort.desc);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> sortByUpdated() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(11);
+      return query.addSortBy(12);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> sortByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(11, sort: Sort.desc);
+      return query.addSortBy(12, sort: Sort.desc);
     });
   }
 }
@@ -1908,92 +2149,92 @@ extension RandomizedRunQuerySortThenBy
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy>
       thenByDaysNotEaten() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(5);
+      return query.addSortBy(6);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy>
       thenByDaysNotEatenDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(5, sort: Sort.desc);
+      return query.addSortBy(6, sort: Sort.desc);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> thenByMealUuid(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(6, caseSensitive: caseSensitive);
+      return query.addSortBy(7, caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> thenByMealUuidDesc(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(6, sort: Sort.desc, caseSensitive: caseSensitive);
+      return query.addSortBy(7, sort: Sort.desc, caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy>
       thenByManuallyEaten() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(7);
+      return query.addSortBy(8);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy>
       thenByManuallyEatenDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(7, sort: Sort.desc);
+      return query.addSortBy(8, sort: Sort.desc);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> thenByEaten() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(8);
+      return query.addSortBy(9);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> thenByEatenDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(8, sort: Sort.desc);
+      return query.addSortBy(9, sort: Sort.desc);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> thenByUuid(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(9, caseSensitive: caseSensitive);
+      return query.addSortBy(10, caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> thenByUuidDesc(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(9, sort: Sort.desc, caseSensitive: caseSensitive);
+      return query.addSortBy(10, sort: Sort.desc, caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> thenByCreated() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(10);
+      return query.addSortBy(11);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> thenByCreatedDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(10, sort: Sort.desc);
+      return query.addSortBy(11, sort: Sort.desc);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> thenByUpdated() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(11);
+      return query.addSortBy(12);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterSortBy> thenByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(11, sort: Sort.desc);
+      return query.addSortBy(12, sort: Sort.desc);
     });
   }
 }
@@ -2015,7 +2256,14 @@ extension RandomizedRunQueryWhereDistinct
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterDistinct>
-      distinctByIngredientUuids() {
+      distinctByIncludedIngredientUuids() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(3);
+    });
+  }
+
+  QueryBuilder<RandomizedRun, RandomizedRun, QAfterDistinct>
+      distinctByExcludedIngredientUuids() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(4);
     });
@@ -2024,41 +2272,41 @@ extension RandomizedRunQueryWhereDistinct
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterDistinct>
       distinctByDaysNotEaten() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(5);
+      return query.addDistinctBy(6);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterDistinct> distinctByMealUuid(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(6, caseSensitive: caseSensitive);
+      return query.addDistinctBy(7, caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterDistinct>
       distinctByManuallyEaten() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(7);
+      return query.addDistinctBy(8);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterDistinct> distinctByEaten() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(8);
+      return query.addDistinctBy(9);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterDistinct>
       distinctByCreated() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(10);
+      return query.addDistinctBy(11);
     });
   }
 
   QueryBuilder<RandomizedRun, RandomizedRun, QAfterDistinct>
       distinctByUpdated() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(11);
+      return query.addDistinctBy(12);
     });
   }
 }
@@ -2079,59 +2327,66 @@ extension RandomizedRunQueryProperty1
     });
   }
 
-  QueryBuilder<RandomizedRun, List<RatingLink>, QAfterProperty>
-      ratingLinksProperty() {
+  QueryBuilder<RandomizedRun, List<String>, QAfterProperty>
+      includedIngredientUuidsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
     });
   }
 
   QueryBuilder<RandomizedRun, List<String>, QAfterProperty>
-      ingredientUuidsProperty() {
+      excludedIngredientUuidsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
     });
   }
 
-  QueryBuilder<RandomizedRun, int?, QAfterProperty> daysNotEatenProperty() {
+  QueryBuilder<RandomizedRun, List<RatingLink>, QAfterProperty>
+      ratingLinksProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(5);
     });
   }
 
-  QueryBuilder<RandomizedRun, String, QAfterProperty> mealUuidProperty() {
+  QueryBuilder<RandomizedRun, int?, QAfterProperty> daysNotEatenProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(6);
     });
   }
 
-  QueryBuilder<RandomizedRun, bool, QAfterProperty> manuallyEatenProperty() {
+  QueryBuilder<RandomizedRun, String, QAfterProperty> mealUuidProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(7);
     });
   }
 
-  QueryBuilder<RandomizedRun, bool, QAfterProperty> eatenProperty() {
+  QueryBuilder<RandomizedRun, bool, QAfterProperty> manuallyEatenProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(8);
     });
   }
 
-  QueryBuilder<RandomizedRun, String, QAfterProperty> uuidProperty() {
+  QueryBuilder<RandomizedRun, bool, QAfterProperty> eatenProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(9);
     });
   }
 
-  QueryBuilder<RandomizedRun, DateTime, QAfterProperty> createdProperty() {
+  QueryBuilder<RandomizedRun, String, QAfterProperty> uuidProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(10);
     });
   }
 
-  QueryBuilder<RandomizedRun, DateTime, QAfterProperty> updatedProperty() {
+  QueryBuilder<RandomizedRun, DateTime, QAfterProperty> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(11);
+    });
+  }
+
+  QueryBuilder<RandomizedRun, DateTime, QAfterProperty> updatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(12);
     });
   }
 }
@@ -2152,61 +2407,68 @@ extension RandomizedRunQueryProperty2<R>
     });
   }
 
-  QueryBuilder<RandomizedRun, (R, List<RatingLink>), QAfterProperty>
-      ratingLinksProperty() {
+  QueryBuilder<RandomizedRun, (R, List<String>), QAfterProperty>
+      includedIngredientUuidsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
     });
   }
 
   QueryBuilder<RandomizedRun, (R, List<String>), QAfterProperty>
-      ingredientUuidsProperty() {
+      excludedIngredientUuidsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
+    });
+  }
+
+  QueryBuilder<RandomizedRun, (R, List<RatingLink>), QAfterProperty>
+      ratingLinksProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(5);
     });
   }
 
   QueryBuilder<RandomizedRun, (R, int?), QAfterProperty>
       daysNotEatenProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(5);
+      return query.addProperty(6);
     });
   }
 
   QueryBuilder<RandomizedRun, (R, String), QAfterProperty> mealUuidProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(6);
+      return query.addProperty(7);
     });
   }
 
   QueryBuilder<RandomizedRun, (R, bool), QAfterProperty>
       manuallyEatenProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(7);
+      return query.addProperty(8);
     });
   }
 
   QueryBuilder<RandomizedRun, (R, bool), QAfterProperty> eatenProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(8);
+      return query.addProperty(9);
     });
   }
 
   QueryBuilder<RandomizedRun, (R, String), QAfterProperty> uuidProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(9);
+      return query.addProperty(10);
     });
   }
 
   QueryBuilder<RandomizedRun, (R, DateTime), QAfterProperty> createdProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(10);
+      return query.addProperty(11);
     });
   }
 
   QueryBuilder<RandomizedRun, (R, DateTime), QAfterProperty> updatedProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(11);
+      return query.addProperty(12);
     });
   }
 }
@@ -2227,64 +2489,71 @@ extension RandomizedRunQueryProperty3<R1, R2>
     });
   }
 
-  QueryBuilder<RandomizedRun, (R1, R2, List<RatingLink>), QOperations>
-      ratingLinksProperty() {
+  QueryBuilder<RandomizedRun, (R1, R2, List<String>), QOperations>
+      includedIngredientUuidsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
     });
   }
 
   QueryBuilder<RandomizedRun, (R1, R2, List<String>), QOperations>
-      ingredientUuidsProperty() {
+      excludedIngredientUuidsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
+    });
+  }
+
+  QueryBuilder<RandomizedRun, (R1, R2, List<RatingLink>), QOperations>
+      ratingLinksProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(5);
     });
   }
 
   QueryBuilder<RandomizedRun, (R1, R2, int?), QOperations>
       daysNotEatenProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(5);
+      return query.addProperty(6);
     });
   }
 
   QueryBuilder<RandomizedRun, (R1, R2, String), QOperations>
       mealUuidProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(6);
+      return query.addProperty(7);
     });
   }
 
   QueryBuilder<RandomizedRun, (R1, R2, bool), QOperations>
       manuallyEatenProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(7);
+      return query.addProperty(8);
     });
   }
 
   QueryBuilder<RandomizedRun, (R1, R2, bool), QOperations> eatenProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addProperty(8);
-    });
-  }
-
-  QueryBuilder<RandomizedRun, (R1, R2, String), QOperations> uuidProperty() {
-    return QueryBuilder.apply(this, (query) {
       return query.addProperty(9);
     });
   }
 
-  QueryBuilder<RandomizedRun, (R1, R2, DateTime), QOperations>
-      createdProperty() {
+  QueryBuilder<RandomizedRun, (R1, R2, String), QOperations> uuidProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(10);
     });
   }
 
   QueryBuilder<RandomizedRun, (R1, R2, DateTime), QOperations>
-      updatedProperty() {
+      createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(11);
+    });
+  }
+
+  QueryBuilder<RandomizedRun, (R1, R2, DateTime), QOperations>
+      updatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(12);
     });
   }
 }
@@ -2293,7 +2562,7 @@ extension RandomizedRunQueryProperty3<R1, R2>
 // RiverpodGenerator
 // **************************************************************************
 
-String _$randomizedRunsHash() => r'd19a291e2f2163357353e79671cee3637c0b3b29';
+String _$randomizedRunsHash() => r'9f38cf4345e4f8f61864f9ab11f4ad4ad8eab7fc';
 
 /// See also [RandomizedRuns].
 @ProviderFor(RandomizedRuns)
@@ -2309,4 +2578,5 @@ final randomizedRunsProvider = AutoDisposeAsyncNotifierProvider<RandomizedRuns,
 );
 
 typedef _$RandomizedRuns = AutoDisposeAsyncNotifier<List<RandomizedRun>>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

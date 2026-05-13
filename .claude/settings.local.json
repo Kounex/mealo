@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(flutter pub *)",
+      "Bash(flutter packages *)",
+      "Bash(flutter analyze *)",
+      "Bash(flutter build *)",
+      "Bash(flutter doctor *)",
+      "Bash(dart run *)",
+      "Bash(grep -E \"\\\\.\\(dart|g\\\\.dart\\)$\")",
+      "WebFetch(domain:drift.simonbinder.eu)",
+      "WebFetch(domain:pub.dev)",
+      "Bash(dart analyze *)",
+      "Bash(git stash *)",
+      "Bash(git add *)",
+      "Bash(git reset *)",
+      "Bash(git checkout *)",
+      "Bash(rm -rf lib/database/)"
+    ],
+    "additionalDirectories": [
+      "/Users/kounex/development/flutter/mealo/lib/database"
+    ]
+  }
+}

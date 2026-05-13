@@ -975,7 +975,7 @@ extension UnitQueryProperty3<R1, R2>
 // RiverpodGenerator
 // **************************************************************************
 
-String _$unitsHash() => r'445bd7c45be2549e60f828b4e40261977790fc60';
+String _$unitsHash() => r'2f19a7d8034fbe8a7a93af89abd56a864aa63e0c';
 
 /// See also [Units].
 @ProviderFor(Units)
@@ -990,4 +990,5 @@ final unitsProvider =
 );
 
 typedef _$Units = AutoDisposeAsyncNotifier<List<Unit>>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

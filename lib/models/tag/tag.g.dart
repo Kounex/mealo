@@ -1238,7 +1238,7 @@ extension TagQueryProperty3<R1, R2>
 // RiverpodGenerator
 // **************************************************************************
 
-String _$tagsHash() => r'6aa852a863d26b33f09ff0c5089b5413b4d34516';
+String _$tagsHash() => r'83bf5c0064c9639ce734ab42f8e3d8add2ed4929';
 
 /// See also [Tags].
 @ProviderFor(Tags)
@@ -1252,4 +1252,5 @@ final tagsProvider = AutoDisposeAsyncNotifierProvider<Tags, List<Tag>>.internal(
 );
 
 typedef _$Tags = AutoDisposeAsyncNotifier<List<Tag>>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

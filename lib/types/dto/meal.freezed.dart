@@ -12,7 +12,7 @@ part of 'meal.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$MealDTO {
@@ -84,10 +84,10 @@ class _$MealDTOCopyWithImpl<$Res, $Val extends MealDTO>
 }
 
 /// @nodoc
-abstract class _$$_MealDTOCopyWith<$Res> implements $MealDTOCopyWith<$Res> {
-  factory _$$_MealDTOCopyWith(
-          _$_MealDTO value, $Res Function(_$_MealDTO) then) =
-      __$$_MealDTOCopyWithImpl<$Res>;
+abstract class _$$MealDTOImplCopyWith<$Res> implements $MealDTOCopyWith<$Res> {
+  factory _$$MealDTOImplCopyWith(
+          _$MealDTOImpl value, $Res Function(_$MealDTOImpl) then) =
+      __$$MealDTOImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -99,10 +99,11 @@ abstract class _$$_MealDTOCopyWith<$Res> implements $MealDTOCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_MealDTOCopyWithImpl<$Res>
-    extends _$MealDTOCopyWithImpl<$Res, _$_MealDTO>
-    implements _$$_MealDTOCopyWith<$Res> {
-  __$$_MealDTOCopyWithImpl(_$_MealDTO _value, $Res Function(_$_MealDTO) _then)
+class __$$MealDTOImplCopyWithImpl<$Res>
+    extends _$MealDTOCopyWithImpl<$Res, _$MealDTOImpl>
+    implements _$$MealDTOImplCopyWith<$Res> {
+  __$$MealDTOImplCopyWithImpl(
+      _$MealDTOImpl _value, $Res Function(_$MealDTOImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -114,7 +115,7 @@ class __$$_MealDTOCopyWithImpl<$Res>
     Object? thumbnailBase64 = freezed,
     Object? imagesBase64 = freezed,
   }) {
-    return _then(_$_MealDTO(
+    return _then(_$MealDTOImpl(
       uuid: null == uuid
           ? _value.uuid
           : uuid // ignore: cast_nullable_to_non_nullable
@@ -141,8 +142,8 @@ class __$$_MealDTOCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_MealDTO implements _MealDTO {
-  const _$_MealDTO(
+class _$MealDTOImpl implements _MealDTO {
+  const _$MealDTOImpl(
       {required this.uuid,
       required this.createdAt,
       required this.name,
@@ -174,10 +175,10 @@ class _$_MealDTO implements _MealDTO {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_MealDTO &&
+            other is _$MealDTOImpl &&
             (identical(other.uuid, uuid) || other.uuid == uuid) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
@@ -195,8 +196,8 @@ class _$_MealDTO implements _MealDTO {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_MealDTOCopyWith<_$_MealDTO> get copyWith =>
-      __$$_MealDTOCopyWithImpl<_$_MealDTO>(this, _$identity);
+  _$$MealDTOImplCopyWith<_$MealDTOImpl> get copyWith =>
+      __$$MealDTOImplCopyWithImpl<_$MealDTOImpl>(this, _$identity);
 }
 
 abstract class _MealDTO implements MealDTO {
@@ -205,7 +206,7 @@ abstract class _MealDTO implements MealDTO {
       required final DateTime createdAt,
       required final String name,
       final String? thumbnailBase64,
-      final List<String>? imagesBase64}) = _$_MealDTO;
+      final List<String>? imagesBase64}) = _$MealDTOImpl;
 
   @override
   String get uuid;
@@ -219,6 +220,6 @@ abstract class _MealDTO implements MealDTO {
   List<String>? get imagesBase64;
   @override
   @JsonKey(ignore: true)
-  _$$_MealDTOCopyWith<_$_MealDTO> get copyWith =>
+  _$$MealDTOImplCopyWith<_$MealDTOImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

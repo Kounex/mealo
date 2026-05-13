@@ -29,8 +29,6 @@ class _SystemHash {
   }
 }
 
-typedef SelectedMealRef = AutoDisposeFutureProviderRef<Meal>;
-
 /// See also [selectedMeal].
 @ProviderFor(selectedMeal)
 const selectedMealProvider = SelectedMealFamily();
@@ -77,10 +75,10 @@ class SelectedMealFamily extends Family<AsyncValue<Meal>> {
 class SelectedMealProvider extends AutoDisposeFutureProvider<Meal> {
   /// See also [selectedMeal].
   SelectedMealProvider(
-    this.uuid,
-  ) : super.internal(
+    String uuid,
+  ) : this._internal(
           (ref) => selectedMeal(
-            ref,
+            ref as SelectedMealRef,
             uuid,
           ),
           from: selectedMealProvider,
@@ -92,9 +90,43 @@ class SelectedMealProvider extends AutoDisposeFutureProvider<Meal> {
           dependencies: SelectedMealFamily._dependencies,
           allTransitiveDependencies:
               SelectedMealFamily._allTransitiveDependencies,
+          uuid: uuid,
         );
 
+  SelectedMealProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.uuid,
+  }) : super.internal();
+
   final String uuid;
+
+  @override
+  Override overrideWith(
+    FutureOr<Meal> Function(SelectedMealRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: SelectedMealProvider._internal(
+        (ref) => create(ref as SelectedMealRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        uuid: uuid,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Meal> createElement() {
+    return _SelectedMealProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -110,8 +142,21 @@ class SelectedMealProvider extends AutoDisposeFutureProvider<Meal> {
   }
 }
 
+mixin SelectedMealRef on AutoDisposeFutureProviderRef<Meal> {
+  /// The parameter `uuid` of this provider.
+  String get uuid;
+}
+
+class _SelectedMealProviderElement
+    extends AutoDisposeFutureProviderElement<Meal> with SelectedMealRef {
+  _SelectedMealProviderElement(super.provider);
+
+  @override
+  String get uuid => (origin as SelectedMealProvider).uuid;
+}
+
 String _$prevRandomizedMealsHash() =>
-    r'9c4c6134f76cae63435b8c67bd351b1b777aa9a0';
+    r'76361ad2960e13d3dfda3216499fc93e0e1ab304';
 
 /// See also [prevRandomizedMeals].
 @ProviderFor(prevRandomizedMeals)
@@ -127,7 +172,7 @@ final prevRandomizedMealsProvider =
 );
 
 typedef PrevRandomizedMealsRef = AutoDisposeFutureProviderRef<List<Meal>>;
-String _$prevAteMealsHash() => r'40284bc60cb44b411f64e1a5d50707c47aa4ca57';
+String _$prevAteMealsHash() => r'cc25a5fb0363edc58a171292c30d6e88feb9534e';
 
 /// See also [prevAteMeals].
 @ProviderFor(prevAteMeals)
@@ -142,7 +187,7 @@ final prevAteMealsProvider = AutoDisposeFutureProvider<List<Meal>>.internal(
 
 typedef PrevAteMealsRef = AutoDisposeFutureProviderRef<List<Meal>>;
 String _$currentRandomizedRunHash() =>
-    r'60cde4c2ae4533bd6b58fbf789aed6966206fc1b';
+    r'9e2615de32b73a03bda8d1d224d374cd1d9292d5';
 
 /// See also [CurrentRandomizedRun].
 @ProviderFor(CurrentRandomizedRun)
@@ -158,4 +203,5 @@ final currentRandomizedRunProvider = AutoDisposeAsyncNotifierProvider<
 );
 
 typedef _$CurrentRandomizedRun = AutoDisposeAsyncNotifier<RandomizedRun?>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -999,7 +999,7 @@ extension IngredientQueryProperty3<R1, R2>
 // RiverpodGenerator
 // **************************************************************************
 
-String _$ingredientsHash() => r'284c787844f5daf584eaeec16cf58d7b47e301ca';
+String _$ingredientsHash() => r'56562eab8ecd3188f2cb32a75b7be0acd26dd911';
 
 /// See also [Ingredients].
 @ProviderFor(Ingredients)
@@ -1014,4 +1014,5 @@ final ingredientsProvider =
 );
 
 typedef _$Ingredients = AutoDisposeAsyncNotifier<List<Ingredient>>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
