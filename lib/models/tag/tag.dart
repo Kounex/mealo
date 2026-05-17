@@ -15,4 +15,12 @@ class Tags extends _$Tags with Persistence<Tag> {
 @collection
 class Tag extends CommonModel {
   String? colorHex;
+
+  @override
+  Map<String, dynamic> toJson() {
+    final json = super.toJson();
+    json.addAll({'colorHex': colorHex});
+
+    return json;
+  }
 }

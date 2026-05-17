@@ -1,6 +1,6 @@
 import 'package:base_components/base_components.dart';
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MealoBaseImage extends StatelessWidget {
   final XFile? image;

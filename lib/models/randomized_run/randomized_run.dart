@@ -57,4 +57,23 @@ class RandomizedRun extends BaseModel {
     this.manuallyEaten = true,
     this.eaten = true,
   });
+
+  @override
+  Map<String, dynamic> toJson() {
+    final json = super.toJson();
+    json.addAll({
+      'includedTagsUuids': includedTagsUuids,
+      'excludedTagsUuids': excludedTagsUuids,
+      'includedIngredientUuids': includedIngredientUuids,
+      'excludedIngredientUuids': excludedIngredientUuids,
+      'ratingLinks':
+          ratingLinks.map((ratingLink) => ratingLink.toJson()).toList(),
+      'daysNotEaten': daysNotEaten,
+      'mealUuid': mealUuid,
+      'manuallyEaten': manuallyEaten,
+      'eaten': eaten,
+    });
+
+    return json;
+  }
 }

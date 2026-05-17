@@ -30,7 +30,7 @@ class _InitState extends ConsumerState<Init> {
   }
 
   Future<void> _initApp() async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
 
     FlutterNativeSplash.remove();
 
@@ -38,7 +38,7 @@ class _InitState extends ConsumerState<Init> {
     await _moveImages();
     await _cleanUpMealImages();
 
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
   }
 
   bool _isUuidV4(String s) {

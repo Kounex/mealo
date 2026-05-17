@@ -32,4 +32,15 @@ class Settings extends BaseModel {
   /// Internal settings to check certain states
   /// ********************************************************
   bool firstLaunch = false;
+
+  @override
+  Map<String, dynamic> toJson() {
+    final json = super.toJson();
+    json.addAll({
+      'darkMode': darkMode,
+      'firstLaunch': firstLaunch,
+    });
+
+    return json;
+  }
 }

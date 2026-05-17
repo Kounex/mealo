@@ -19,8 +19,22 @@ abstract class BaseModel {
   /// can handle it
   @utc
   DateTime updated = DateUtils.zero;
+
+  Map<String, dynamic> toJson() => {
+        'uuid': uuid,
+        'created': created.toString(),
+        'updated': updated.toString(),
+      };
 }
 
 abstract class CommonModel extends BaseModel {
   late String name;
+
+  @override
+  Map<String, dynamic> toJson() {
+    final json = super.toJson();
+    json.addAll({'name': name});
+
+    return json;
+  }
 }

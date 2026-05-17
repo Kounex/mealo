@@ -16,7 +16,10 @@
       "Bash(git add *)",
       "Bash(git reset *)",
       "Bash(git checkout *)",
-      "Bash(rm -rf lib/database/)"
+      "Bash(rm -rf lib/database/)",
+      "Bash(flutter clean *)",
+      "Bash(pod install *)",
+      "Bash(flutter run *)"
     ],
     "additionalDirectories": [
       "/Users/kounex/development/flutter/mealo/lib/database"

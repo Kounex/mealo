@@ -25,8 +25,6 @@ class Meals extends _$Meals with Persistence<Meal> {
 class Meal extends CommonModel {
   static String subPathForImages = 'meal-images';
 
-  DateTime createdAt = DateTime.now();
-
   String? instructions;
   String? thumbnailUuid;
   List<String> imagesUuids = [];
@@ -34,6 +32,22 @@ class Meal extends CommonModel {
   List<RatingLink> ratings = [];
   List<String> tagUuids = [];
   List<IngredientLink> ingredients = [];
+
+  @override
+  Map<String, dynamic> toJson() {
+    final json = super.toJson();
+    json.addAll({
+      'instructions': instructions,
+      'thumbnailUuid': thumbnailUuid,
+      'imagesUuids': imagesUuids,
+      'ratings': ratings.map((rating) => rating.toJson()).toList(),
+      'tagUuids': tagUuids,
+      'ingredients':
+          ingredients.map((ingredient) => ingredient.toJson()).toList(),
+    });
+
+    return json;
+  }
 }
 
 @embedded
@@ -42,4 +56,10 @@ class IngredientLink {
   String? uuidUnit;
 
   double? amount;
+
+  Map<String, dynamic> toJson() => {
+        'uuidIngredient': uuidIngredient,
+        'uuidUnit': uuidUnit,
+        'amount': amount,
+      };
 }

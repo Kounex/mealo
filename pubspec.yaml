@@ -48,11 +48,8 @@ dependencies:
   # Some fancy utility functions for collections
   collection: ^1.18.0
 
-  # Enable camera access and handling
-  camera: ^0.10.5+9
-
   # Enable selecting files
-  file_picker: ^8.1.2
+  image_picker: ^1.2.2
 
   # HTTP client
   dio: ^5.8.0
@@ -92,11 +89,13 @@ dependencies:
   flutter_native_splash: ^2.4.7
 
   # Reorder everything
-  reorderables: ^0.6.0
   reorderable_grid:
     git:
       url: https://github.com/Kounex/reorderable_grid.git
       ref: drag-background
+
+  # Share files
+  share_plus: ^12.0.2
 
 dev_dependencies:
   flutter_test:
@@ -113,6 +112,7 @@ dev_dependencies:
 
   # Generator stuff
   # isar_generator: *isar_version
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

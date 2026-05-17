@@ -7,6 +7,11 @@ class RatingLink {
   String? ratingUuid;
 
   RatingValue value = RatingValue.three;
+
+  Map<String, dynamic> toJson() => {
+        'ratingUuid': ratingUuid,
+        'value': value.number,
+      };
 }
 
 enum RatingValue {
