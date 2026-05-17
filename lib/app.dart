@@ -2,7 +2,7 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'models/settings/settings.dart';
+import 'data/models/settings/settings.dart';
 import 'utils/router.dart';
 import 'utils/theme.dart';
 
@@ -11,9 +11,11 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    bool darkMode = ref.watch(
-          settingsSingletonProvider
-              .select((value) => value.valueOrNull?.darkMode),
+    bool darkMode =
+        ref.watch(
+          settingsSingletonProvider.select(
+            (value) => value.valueOrNull?.darkMode,
+          ),
         ) ??
         true;
 

@@ -1,7 +1,7 @@
 import '../../models/embeddings/rating_link/rating_link.dart';
-import '../../models/ingredient/ingredient.dart';
-import '../../models/meal/meal.dart';
-import '../../models/tag/tag.dart';
+import '../../data/models/ingredient/ingredient.dart';
+import '../../data/models/meal/meal.dart';
+import '../../data/models/tag/tag.dart';
 
 class RandomizeConfig {
   final List<Meal> filteredMeals;

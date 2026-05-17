@@ -2,7 +2,7 @@ import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/model.dart';
+import '../../../data/models/model.dart';
 import 'confirmation.dart';
 
 class AddEditModelDialog<T extends CommonModel> extends ConsumerStatefulWidget {
@@ -40,9 +40,10 @@ class _AddEditModelDialogState<T extends CommonModel>
     super.initState();
 
     _controller = TextEditingController(
-        text: this.widget.editingModel != null
-            ? this.widget.editingModel!.name
-            : this.widget.name ?? '');
+      text: this.widget.editingModel != null
+          ? this.widget.editingModel!.name
+          : this.widget.name ?? '',
+    );
   }
 
   String _getGenericBaseModelType() =>
@@ -62,10 +63,7 @@ class _AddEditModelDialogState<T extends CommonModel>
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            _getTitle(),
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
+          Text(_getTitle(), style: Theme.of(context).textTheme.headlineSmall),
           if (this.widget.editingModel != null)
             BaseTextButton(
               onPressed: () => ModalUtils.showBaseDialog(
@@ -107,7 +105,8 @@ class _AddEditModelDialogState<T extends CommonModel>
           child: const Text('Cancel'),
         ),
         BaseTextButton(
-          onPressed: _controller.text.trim().isNotEmpty &&
+          onPressed:
+              _controller.text.trim().isNotEmpty &&
                   (this.widget.editingModel == null ||
                       this.widget.editingModel!.name != _controller.text.trim())
               ? () async {

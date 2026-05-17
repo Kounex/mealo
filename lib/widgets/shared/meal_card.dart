@@ -4,7 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 
-import '../../../models/meal/meal.dart';
+import '../../data/models/meal/meal.dart';
 import 'image.dart';
 
 class MealCard extends StatelessWidget {
@@ -14,13 +14,7 @@ class MealCard extends StatelessWidget {
 
   final void Function()? onTap;
 
-  const MealCard({
-    super.key,
-    this.meal,
-    this.height,
-    this.width,
-    this.onTap,
-  });
+  const MealCard({super.key, this.meal, this.height, this.width, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +42,8 @@ class MealCard extends StatelessWidget {
                     (this.meal?.imagesUuids != null &&
                         this.meal!.imagesUuids.isNotEmpty)
                 ? MealoBaseImage(
-                    imageUuid: this.meal?.thumbnailUuid ??
+                    imageUuid:
+                        this.meal?.thumbnailUuid ??
                         this.meal!.imagesUuids.first,
                     subPath: Meal.subPathForImages,
                     height: this.height,
@@ -60,8 +55,9 @@ class MealCard extends StatelessWidget {
               right: 0,
               left: 0,
               child: Container(
-                height:
-                    this.height != null ? min(this.height! / 3, 48.0) : 48.0,
+                height: this.height != null
+                    ? min(this.height! / 3, 48.0)
+                    : 48.0,
                 padding: EdgeInsets.all(DesignSystem.spacing.x4),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primaryContainer,
@@ -69,10 +65,7 @@ class MealCard extends StatelessWidget {
                   //   top: BorderSide(color: Theme.of(context).dividerColor),
                   // ),
                   boxShadow: const [
-                    BoxShadow(
-                      blurRadius: 12.0,
-                      offset: Offset(0, 12),
-                    ),
+                    BoxShadow(blurRadius: 12.0, offset: Offset(0, 12)),
                   ],
                 ),
                 child: Center(

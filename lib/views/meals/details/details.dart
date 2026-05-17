@@ -4,8 +4,8 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/meal/meal.dart';
-import '../../../models/rating/rating.dart';
+import '../../../data/models/meal/meal.dart';
+import '../../../data/models/rating/rating.dart';
 import '../../../stores/views/home.dart';
 import '../../../widgets/shared/dialog/confirmation.dart';
 import '../../../widgets/shared/image.dart';
@@ -15,16 +15,14 @@ import '../widgets/add_edit_meal_sheet/add_edit_meal_sheet.dart';
 class MealDetailsView extends ConsumerWidget {
   final String uuid;
 
-  const MealDetailsView({
-    super.key,
-    required this.uuid,
-  });
+  const MealDetailsView({super.key, required this.uuid});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<List<Rating>> asyncRatings = ref.watch(ratingsProvider);
-    final AsyncValue<Meal> asyncSelectedMeal =
-        ref.watch(selectedMealProvider(this.uuid));
+    final AsyncValue<Meal> asyncSelectedMeal = ref.watch(
+      selectedMealProvider(this.uuid),
+    );
 
     return BaseAsyncValueBuilder(
       asyncValue: asyncSelectedMeal,
@@ -35,36 +33,37 @@ class MealDetailsView extends ConsumerWidget {
             title: Text(meal.name),
             actions: [
               IconButton(
-                onPressed: () => ModalUtils.showExpandedModalBottomSheet(
-                  context,
-                  AddEditMealSheet(
-                    meal: meal,
-                  ),
-                  popOnClose: false,
-                  onClose: () {
-                    ModalUtils.showBaseDialog(
+                onPressed: () =>
+                    ModalUtils.showExpandedModalBottomSheet(
                       context,
-                      Builder(builder: (context) {
-                        return MealoBaseConfirmationDialog(
-                          title: 'Close Sheet',
-                          body:
-                              'Are you sure you want to close this sheet? All your changes will not be saved!',
-                          isYesDestructive: true,
-                          onYes: (_) {
-                            /// Important step - this makes sure that all changes we made
-                            /// here are set back to its original value
-                            Navigator.of(context).pop();
-                            ref.invalidate(mealsProvider);
-                          },
+                      AddEditMealSheet(meal: meal),
+                      popOnClose: false,
+                      onClose: () {
+                        ModalUtils.showBaseDialog(
+                          context,
+                          Builder(
+                            builder: (context) {
+                              return MealoBaseConfirmationDialog(
+                                title: 'Close Sheet',
+                                body:
+                                    'Are you sure you want to close this sheet? All your changes will not be saved!',
+                                isYesDestructive: true,
+                                onYes: (_) {
+                                  /// Important step - this makes sure that all changes we made
+                                  /// here are set back to its original value
+                                  Navigator.of(context).pop();
+                                  ref.invalidate(mealsProvider);
+                                },
+                              );
+                            },
+                          ),
                         );
-                      }),
-                    );
-                  },
-                ).then((value) {
-                  if (value != null) {
-                    Beamer.of(context).beamBack();
-                  }
-                }),
+                      },
+                    ).then((value) {
+                      if (value != null) {
+                        Beamer.of(context).beamBack();
+                      }
+                    }),
                 icon: const Icon(FluentIcons.document_edit_24_regular),
               ),
             ],
@@ -92,12 +91,10 @@ class MealDetailsView extends ConsumerWidget {
             BaseAsyncValueBuilder(
               asyncValue: asyncRatings,
               data: (ratings) => Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: DesignSystem.spacing.x24),
-                child: MealRatings(
-                  ratings: ratings,
-                  ratingLinks: meal.ratings,
+                padding: EdgeInsets.symmetric(
+                  horizontal: DesignSystem.spacing.x24,
                 ),
+                child: MealRatings(ratings: ratings, ratingLinks: meal.ratings),
               ),
             ),
           ],

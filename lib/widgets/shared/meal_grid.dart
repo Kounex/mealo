@@ -2,8 +2,9 @@ import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../models/meal/meal.dart';
+import '../../data/models/meal/meal.dart';
 import 'meal_card.dart';
 
 class MealGrid extends ConsumerWidget {
@@ -50,27 +51,28 @@ class MealGrid extends ConsumerWidget {
                 itemCount: meals.length,
                 itemBuilder: (context, index) =>
                     AnimationConfiguration.staggeredGrid(
-                  position: index,
-                  duration: DesignSystem.animation.defaultDurationMS250,
-                  columnCount: columnCount,
-                  child: FadeInAnimation(
-                    child: MealCard(
-                      meal: meals[index],
-                      height: this.itemCrossAxisExtent * 3 / 4,
-                      width: this.itemCrossAxisExtent,
-                      onTap: () => this.onTap?.call(meals[index]),
+                      position: index,
+                      duration: DesignSystem.animation.defaultDurationMS250,
+                      columnCount: columnCount,
+                      child: FadeInAnimation(
+                        child: MealCard(
+                          meal: meals[index],
+                          height: this.itemCrossAxisExtent * 3 / 4,
+                          width: this.itemCrossAxisExtent,
+                          onTap: () => this.onTap?.call(meals[index]),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
               ),
             )
           : this.empty ??
-              Padding(
-                padding: EdgeInsets.only(top: DesignSystem.spacing.x4),
-                child: const BasePlaceholder(
+                Padding(
+                  padding: EdgeInsets.only(top: DesignSystem.spacing.x4),
+                  child: const BasePlaceholder(
                     text:
-                        'It\'s quite empty in here.\nLet\'s start by adding some meals!'),
-              ),
+                        'It\'s quite empty in here.\nLet\'s start by adding some meals!',
+                  ),
+                ),
     );
   }
 }

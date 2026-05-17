@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/settings/settings.dart';
+import '../../../data/models/settings/settings.dart';
 
 class ThemeSwitcher extends ConsumerWidget {
   const ThemeSwitcher({super.key});
@@ -15,7 +15,8 @@ class ThemeSwitcher extends ConsumerWidget {
     return ListTile(
       title: const Text('Dark Mode'),
       trailing: Switch.adaptive(
-        value: darkMode ??
+        value:
+            darkMode ??
             MediaQuery.of(context).platformBrightness == Brightness.dark,
         activeColor: Theme.of(context).colorScheme.primary,
         onChanged: (mode) =>

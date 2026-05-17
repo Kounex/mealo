@@ -4,13 +4,13 @@ import 'package:base_components/base_components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/models/ingredient/ingredient.dart';
-import 'package:mealo/models/meal/meal.dart';
-import 'package:mealo/models/randomized_run/randomized_run.dart';
-import 'package:mealo/models/rating/rating.dart';
-import 'package:mealo/models/settings/settings.dart';
-import 'package:mealo/models/tag/tag.dart';
-import 'package:mealo/models/unit/unit.dart';
+import 'package:mealo/data/models/ingredient/ingredient.dart';
+import 'package:mealo/data/models/meal/meal.dart';
+import 'package:mealo/data/models/randomized_run/randomized_run.dart';
+import 'package:mealo/data/models/rating/rating.dart';
+import 'package:mealo/data/models/settings/settings.dart';
+import 'package:mealo/data/models/tag/tag.dart';
+import 'package:mealo/data/models/unit/unit.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../utils/persistence.dart';
@@ -21,17 +21,12 @@ import 'widgets/theme_switcher.dart';
 class SettingsView extends ConsumerWidget {
   final ScrollController controller;
 
-  const SettingsView({
-    super.key,
-    required this.controller,
-  });
+  const SettingsView({super.key, required this.controller});
 
   Future<void> _exportModels(BuildContext context, WidgetRef ref) async {
     OverlayUtils.showStatusOverlay(
       context: context,
-      content: BaseProgressIndicator(
-        text: 'Preparing export...',
-      ),
+      content: BaseProgressIndicator(text: 'Preparing export...'),
     );
 
     final meals = await ref.read(mealsProvider.future);
@@ -44,8 +39,9 @@ class SettingsView extends ConsumerWidget {
 
     final mealsJson = meals.map((meal) => meal.toJson()).toList();
     final tagsJson = tags.map((tag) => tag.toJson()).toList();
-    final ingredientsJson =
-        ingredients.map((ingredient) => ingredient.toJson()).toList();
+    final ingredientsJson = ingredients
+        .map((ingredient) => ingredient.toJson())
+        .toList();
     final unitsJson = units.map((unit) => unit.toJson()).toList();
     final ratingsJson = ratings.map((rating) => rating.toJson()).toList();
 

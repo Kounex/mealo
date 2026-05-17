@@ -2,7 +2,7 @@ import 'package:base_components/base_components.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../models/tag/tag.dart';
+import '../../data/models/tag/tag.dart';
 
 class TagsBlock extends StatelessWidget {
   final List<Tag> tags;
@@ -28,17 +28,15 @@ class TagsBlock extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (this.title case var title?)
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
+          Text(title, style: Theme.of(context).textTheme.titleMedium),
         SizedBox(height: DesignSystem.spacing.x12),
         BaseSuggestionTextField<Tag>(
-          suggestions: (text) => this
-              .tags
-              .where((tag) =>
-                  !this.selectedTags.contains(tag) &&
-                  tag.name.toLowerCase().contains(text.toLowerCase()))
+          suggestions: (text) => this.tags
+              .where(
+                (tag) =>
+                    !this.selectedTags.contains(tag) &&
+                    tag.name.toLowerCase().contains(text.toLowerCase()),
+              )
               .toList(),
           hintText: 'Search for tags...',
           suggestionText: (tag) => tag.name,
@@ -50,8 +48,7 @@ class TagsBlock extends StatelessWidget {
         Wrap(
           direction: Axis.horizontal,
           spacing: DesignSystem.spacing.x8,
-          children: this
-              .selectedTags
+          children: this.selectedTags
               .map(
                 (tag) => BaseChip(
                   text: tag.name,

@@ -2,7 +2,7 @@ import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/tag/tag.dart';
+import '../../../../data/models/tag/tag.dart';
 import '../../../../types/extensions/string.dart';
 import '../../../../widgets/shared/dialog/add_edit_tag/add_edit_tag.dart';
 
@@ -31,9 +31,7 @@ class TagsOverview extends ConsumerWidget {
                   ),
                   onTap: () => ModalUtils.showBaseDialog(
                     context,
-                    AddEditTagDialog(
-                      tag: tag,
-                    ),
+                    AddEditTagDialog(tag: tag),
                   ),
                 ),
               ),

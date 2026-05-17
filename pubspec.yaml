@@ -5,10 +5,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 0.6.1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
-
-# Globals for packages which share the same version
-isar_version: &isar_version 4.0.0-dev.14
+  sdk: '>=3.8.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -25,22 +22,21 @@ dependencies:
   # Unique identifier for our models
   uuid: ^4.5.1
 
-  # Immutability - constrained by Isar source_gen requirements
-  freezed: ^2.4.7
-  freezed_annotation: ^2.4.1
+  # Immutability
+  freezed_annotation: ^3.1.0
 
-  # JSON parser and serializer
-  # crimson: ^0.2.1
+  # JSON handling
+  json_annotation: ^4.11.0
 
-  # State management - limited by Isar analyzer constraints
-  flutter_riverpod: ^2.5.1
-  riverpod_annotation: ^2.4.0
+  # State management
+  flutter_riverpod: ^3.3.1
+  riverpod_annotation: ^4.0.2
+  riverpod_sqflite: ^0.4.2
 
-  # Local storage - constrained by analyzer <7.0.0
-  isar: *isar_version
-  isar_flutter_libs: *isar_version
-
+  # Local storage
   shared_preferences: ^2.3.2
+  sqflite: ^2.4.2+1
+  sqflite_common_ffi_web: ^1.1.1
 
   # Navigator 2.0
   beamer: ^1.7.0
@@ -52,17 +48,18 @@ dependencies:
   image_picker: ^1.2.2
 
   # HTTP client
-  dio: ^5.8.0
+  dio: ^5.9.2
 
   # Some hashing functions
   crypto: ^3.0.6
 
   # Work with paths / directories
   path_provider: ^2.1.5
+  path: ^1.9.1
 
   # UI
   # Consistent theming
-  flex_color_scheme: ^8.3.0
+  flex_color_scheme: ^8.4.0
 
   # Power up slivers
   sliver_tools: ^0.2.12
@@ -71,19 +68,19 @@ dependencies:
   flutter_staggered_animations: ^1.1.1
 
   # Microsoft icons pack
-  fluentui_system_icons: ^1.1.260
+  fluentui_system_icons: ^1.1.273
 
   # Adjust text size correctly
   auto_size_text: ^3.0.0
 
   # Powered-up animations
-  flutter_animate: ^4.5.0
+  flutter_animate: ^4.5.2
 
   # Pre-built color picker because it is a pain in the ass to do on my own
   flutter_colorpicker: ^1.1.0
 
   # App Icon
-  flutter_launcher_icons: ^0.14.2
+  flutter_launcher_icons: ^0.14.4
 
   # Native Splash Screen for initializing
   flutter_native_splash: ^2.4.7
@@ -95,23 +92,26 @@ dependencies:
       ref: drag-background
 
   # Share files
-  share_plus: ^12.0.2
+  share_plus: ^13.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   # Linting and analysis
-  flutter_lints: ^3.0.2
-  custom_lint: ^0.6.4
-  # riverpod_lint: # Disabled due to analyzer constraints with Isar
+  flutter_lints: ^6.0.0
+  # custom_lint: removed - archived, analyzer conflicts
+  # riverpod_lint: removed - depends on custom_lint
 
-  # Code generation - constrained by Isar analyzer <7.0.0
-  build_runner: ^2.4.7
-  riverpod_generator: ^2.3.13
+  # Code generation
+  build_runner: ^2.15.0
+  riverpod_generator: ^4.0.3
+  freezed: ^3.2.5
+  json_serializable: ">=6.13.0 <6.13.2"
+
 
   # Generator stuff
-  # isar_generator: *isar_version
+  # isar_generator: # Removed with Isar
 
 
 # For information on the generic Dart part of this file, see the

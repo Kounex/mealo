@@ -4,7 +4,7 @@ import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/models/meal/meal.dart';
+import 'package:mealo/data/models/meal/meal.dart';
 import 'package:mealo/utils/persistence.dart';
 import 'package:mealo/utils/theme.dart';
 import 'package:path_provider/path_provider.dart';
@@ -72,7 +72,8 @@ class _InitState extends ConsumerState<Init> {
       if (_isUuidV4(file.path.split('/').last)) {
         renamings.add(
           file.rename(
-              '${imagesDir.path}/${Meal.subPathForImages}/${file.path.split('/').last}'),
+            '${imagesDir.path}/${Meal.subPathForImages}/${file.path.split('/').last}',
+          ),
         );
       }
     }
@@ -88,8 +89,9 @@ class _InitState extends ConsumerState<Init> {
     Directory baseDir = await getApplicationDocumentsDirectory();
 
     /// Folder for the images of all the meals
-    Directory mealImagesDir =
-        Directory('${baseDir.path}/${Meal.subPathForImages}');
+    Directory mealImagesDir = Directory(
+      '${baseDir.path}/${Meal.subPathForImages}',
+    );
 
     List<FileSystemEntity> imagesUuidsFiles = mealImagesDir.listSync();
 
@@ -125,36 +127,39 @@ class _InitState extends ConsumerState<Init> {
       data: ThemeUtils.baseDark,
       child: Directionality(
         textDirection: TextDirection.ltr,
-        child: Builder(builder: (context) {
-          return Material(
-            color: ThemeUtils.baseDark.colorScheme.surface,
-            child: BaseFutureBuilder(
-              future: _init,
-              loading: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Align(
-                    child: ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(DesignSystem.border.radius12),
-                      clipBehavior: Clip.hardEdge,
-                      child: Image.asset(
-                        'assets/images/splash.jpeg',
-                        height: DesignSystem.size.x172,
+        child: Builder(
+          builder: (context) {
+            return Material(
+              color: ThemeUtils.baseDark.colorScheme.surface,
+              child: BaseFutureBuilder(
+                future: _init,
+                loading: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Align(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                          DesignSystem.border.radius12,
+                        ),
+                        clipBehavior: Clip.hardEdge,
+                        child: Image.asset(
+                          'assets/images/splash.jpeg',
+                          height: DesignSystem.size.x172,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: DesignSystem.spacing.x64),
-                  BaseProgressIndicator(
-                    text: 'Preparing all meals...',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ],
+                    SizedBox(height: DesignSystem.spacing.x64),
+                    BaseProgressIndicator(
+                      text: 'Preparing all meals...',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ],
+                ),
+                data: (_) => widget.child,
               ),
-              data: (_) => widget.child,
-            ),
-          );
-        }),
+            );
+          },
+        ),
       ),
     );
   }

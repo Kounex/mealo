@@ -2,19 +2,16 @@ import 'package:base_components/base_components.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mealo/models/ingredient/ingredient.dart';
+import 'package:mealo/data/models/ingredient/ingredient.dart';
 
-import '../../../../models/meal/meal.dart';
+import '../../../../data/models/meal/meal.dart';
 import '../../../../utils/persistence.dart';
 import '../../../../widgets/shared/dialog/add_edit_model.dart';
 
 class IngredientStep extends ConsumerStatefulWidget {
   final Meal meal;
 
-  const IngredientStep({
-    super.key,
-    required this.meal,
-  });
+  const IngredientStep({super.key, required this.meal});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _IngredientStepState();
@@ -22,27 +19,25 @@ class IngredientStep extends ConsumerStatefulWidget {
 
 class _IngredientStepState extends ConsumerState<IngredientStep> {
   List<Ingredient> _suggestions(List<Ingredient> ingredients, String text) {
-    return ingredients.where(
-      (ingredient) {
-        bool ingredientNotSelected = this.widget.meal.ingredients.every(
-            (selectedIngredient) =>
-                selectedIngredient.uuidIngredient != ingredient.uuid);
+    return ingredients.where((ingredient) {
+      bool ingredientNotSelected = this.widget.meal.ingredients.every(
+        (selectedIngredient) =>
+            selectedIngredient.uuidIngredient != ingredient.uuid,
+      );
 
-        bool ingredientWithTextExists = text.trim().isEmpty
-            ? true
-            : ingredient.name.toLowerCase().contains(
-                  text.toLowerCase().trim(),
-                );
+      bool ingredientWithTextExists = text.trim().isEmpty
+          ? true
+          : ingredient.name.toLowerCase().contains(text.toLowerCase().trim());
 
-        return ingredientNotSelected && ingredientWithTextExists;
-      },
-    ).toList();
+      return ingredientNotSelected && ingredientWithTextExists;
+    }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    final AsyncValue<List<Ingredient>> asyncIngredients =
-        ref.watch(ingredientsProvider);
+    final AsyncValue<List<Ingredient>> asyncIngredients = ref.watch(
+      ingredientsProvider,
+    );
 
     return BaseAsyncValueBuilder(
       asyncValue: asyncIngredients,
@@ -74,18 +69,18 @@ class _IngredientStepState extends ConsumerState<IngredientStep> {
                 ),
               );
               if (ingredient != null) {
-                setState(() => this
-                    .widget
-                    .meal
-                    .ingredients
-                    .add(IngredientLink()..uuidIngredient = ingredient.uuid));
+                setState(
+                  () => this.widget.meal.ingredients.add(
+                    IngredientLink()..uuidIngredient = ingredient.uuid,
+                  ),
+                );
               }
             },
-            onSuggestionTapped: (ingredient) => setState(() => this
-                .widget
-                .meal
-                .ingredients
-                .add(IngredientLink()..uuidIngredient = ingredient.uuid)),
+            onSuggestionTapped: (ingredient) => setState(
+              () => this.widget.meal.ingredients.add(
+                IngredientLink()..uuidIngredient = ingredient.uuid,
+              ),
+            ),
           ),
           SizedBox(height: DesignSystem.spacing.x24),
           BaseCard(
@@ -99,23 +94,20 @@ class _IngredientStepState extends ConsumerState<IngredientStep> {
                     alignment: Alignment.centerLeft,
                     child: Wrap(
                       spacing: DesignSystem.spacing.x12,
-                      children: this
-                          .widget
-                          .meal
-                          .ingredients
+                      children: this.widget.meal.ingredients
                           .map(
                             (mealIngredient) => BaseChip(
                               text: ingredients
-                                  .firstWhereOrNull((ingredient) =>
-                                      mealIngredient.uuidIngredient ==
-                                      ingredient.uuid)
+                                  .firstWhereOrNull(
+                                    (ingredient) =>
+                                        mealIngredient.uuidIngredient ==
+                                        ingredient.uuid,
+                                  )
                                   ?.name,
                               onDeleted: () => setState(
-                                () => this
-                                    .widget
-                                    .meal
-                                    .ingredients
-                                    .remove(mealIngredient),
+                                () => this.widget.meal.ingredients.remove(
+                                  mealIngredient,
+                                ),
                               ),
                             ),
                           )
@@ -124,7 +116,8 @@ class _IngredientStepState extends ConsumerState<IngredientStep> {
                   )
                 : Padding(
                     padding: EdgeInsets.symmetric(
-                        vertical: DesignSystem.spacing.x24),
+                      vertical: DesignSystem.spacing.x24,
+                    ),
                     child: BasePlaceholder(text: 'No ingredients added yet'),
                   ),
           ),

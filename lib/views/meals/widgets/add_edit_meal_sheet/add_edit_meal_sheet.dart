@@ -8,8 +8,8 @@ import 'package:mealo/widgets/shared/dialog/confirmation.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../../models/embeddings/rating_link/rating_link.dart';
-import '../../../../models/meal/meal.dart';
-import '../../../../models/rating/rating.dart';
+import '../../../../data/models/meal/meal.dart';
+import '../../../../data/models/rating/rating.dart';
 import '../../../../utils/persistence.dart';
 import 'images_step/images_step.dart';
 import 'ingredient_step.dart';
@@ -25,20 +25,17 @@ enum AddEditMealStep {
   tags;
 
   String get title => switch (this) {
-        AddEditMealStep.images => 'Images',
-        AddEditMealStep.ratings => 'Ratings',
-        AddEditMealStep.ingredients => 'Ingredients',
-        AddEditMealStep.tags => 'Tags',
-      };
+    AddEditMealStep.images => 'Images',
+    AddEditMealStep.ratings => 'Ratings',
+    AddEditMealStep.ingredients => 'Ingredients',
+    AddEditMealStep.tags => 'Tags',
+  };
 }
 
 class AddEditMealSheet extends ConsumerStatefulWidget {
   final Meal? meal;
 
-  const AddEditMealSheet({
-    super.key,
-    this.meal,
-  });
+  const AddEditMealSheet({super.key, this.meal});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AddMealSheetState();
@@ -80,8 +77,10 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
     return meal;
   }
 
-  Future<void> _deleteImages(List<String> imagesUuidsToDelete,
-      [String? path]) async {
+  Future<void> _deleteImages(
+    List<String> imagesUuidsToDelete, [
+    String? path,
+  ]) async {
     List<Future> deletions = [];
 
     /// The apps root directory for custom content
@@ -96,10 +95,9 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
   void _saveMeal() async {
     await _deleteImages(_imagesToDelete);
 
-    PersistenceUtils.transaction(
-      PersistenceOperation.insertUpdate,
-      [_meal!..name = _name.text.trim()],
-    );
+    PersistenceUtils.transaction(PersistenceOperation.insertUpdate, [
+      _meal!..name = _name.text.trim(),
+    ]);
 
     if (context.mounted) {
       Navigator.of(context).pop();
@@ -110,10 +108,9 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
     if (this.widget.meal != null) {
       await _deleteImages(this.widget.meal!.imagesUuids);
 
-      PersistenceUtils.transaction(
-        PersistenceOperation.delete,
-        [this.widget.meal!],
-      );
+      PersistenceUtils.transaction(PersistenceOperation.delete, [
+        this.widget.meal!,
+      ]);
     }
     if (mounted) {
       Navigator.of(context).pop('delete');
@@ -121,8 +118,9 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
   }
 
   String? _checkMealNameUnique(String name) {
-    List<Meal> meals =
-        PersistenceUtils.where<Meal>().nameEqualTo(name.trim()).findAll();
+    List<Meal> meals = PersistenceUtils.where<Meal>()
+        .nameEqualTo(name.trim())
+        .findAll();
 
     if (meals.isNotEmpty &&
         meals.every((meal) => meal.uuid != this.widget.meal?.uuid)) {
@@ -158,8 +156,9 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                       ),
                       if (this.widget.meal != null)
                         Padding(
-                          padding:
-                              EdgeInsets.only(left: DesignSystem.spacing.x12),
+                          padding: EdgeInsets.only(
+                            left: DesignSystem.spacing.x12,
+                          ),
                           child: BaseTextButton(
                             onPressed: () => ModalUtils.showBaseDialog(
                               context,
@@ -191,16 +190,17 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                   SizedBox(height: DesignSystem.spacing.x24),
                   Padding(
                     padding: EdgeInsets.symmetric(
-                        horizontal: DesignSystem.spacing.x4),
+                      horizontal: DesignSystem.spacing.x4,
+                    ),
                     child: StepperOverview(
                       step: _step.index,
                       max: AddEditMealStep.values.length - 1,
                       size: DesignSystem.size.x42,
                       titles: List.from(
-                          AddEditMealStep.values.map((step) => step.title)),
-                      onStepTapped: (step) => setState(
-                        () => _step = AddEditMealStep.values[step],
+                        AddEditMealStep.values.map((step) => step.title),
                       ),
+                      onStepTapped: (step) =>
+                          setState(() => _step = AddEditMealStep.values[step]),
                     ),
                   ),
                   SizedBox(height: DesignSystem.spacing.x12),
@@ -212,32 +212,32 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                         Align(
                           alignment: Alignment.topCenter,
                           child: Padding(
-                            padding:
-                                EdgeInsets.only(top: DesignSystem.spacing.x24),
+                            padding: EdgeInsets.only(
+                              top: DesignSystem.spacing.x24,
+                            ),
                             child: AnimatedSwitcher(
                               duration:
                                   DesignSystem.animation.defaultDurationMS250,
                               child: switch (_step) {
                                 AddEditMealStep.images => ImagesStep(
-                                    controller: _controller,
-                                    meal: _meal!,
-                                    imagesToDelete: _imagesToDelete,
-                                  ),
+                                  controller: _controller,
+                                  meal: _meal!,
+                                  imagesToDelete: _imagesToDelete,
+                                ),
                                 AddEditMealStep.ratings => RatingStep(
-                                    meal: _meal!,
-                                  ),
+                                  meal: _meal!,
+                                ),
                                 AddEditMealStep.ingredients => IngredientStep(
-                                    meal: _meal!,
-                                  ),
-                                AddEditMealStep.tags => TagsStep(
-                                    meal: _meal!,
-                                  ),
+                                  meal: _meal!,
+                                ),
+                                AddEditMealStep.tags => TagsStep(meal: _meal!),
                               },
                             ),
                           ),
                         ),
                         SizedBox(
-                          height: 36.0 +
+                          height:
+                              36.0 +
                               48.0 +
                               MediaQuery.of(context).viewPadding.bottom,
                         ),
@@ -257,7 +257,8 @@ class _AddMealSheetState extends ConsumerState<AddEditMealSheet> {
                   const BaseDivider(),
                   Material(
                     child: Padding(
-                      padding: EdgeInsets.all(DesignSystem.spacing.x24) +
+                      padding:
+                          EdgeInsets.all(DesignSystem.spacing.x24) +
                           MediaQuery.of(context).viewPadding,
                       child: StepperControl(
                         step: _step.index,

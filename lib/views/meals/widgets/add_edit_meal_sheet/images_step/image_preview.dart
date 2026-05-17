@@ -2,16 +2,13 @@ import 'dart:math';
 
 import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
-import 'package:mealo/models/meal/meal.dart';
+import 'package:mealo/data/models/meal/meal.dart';
 import 'package:mealo/widgets/shared/image.dart';
 
 class ImagePreview extends StatefulWidget {
   final String imageUuid;
 
-  const ImagePreview({
-    super.key,
-    required this.imageUuid,
-  });
+  const ImagePreview({super.key, required this.imageUuid});
 
   @override
   State<ImagePreview> createState() => _ImagePreviewState();
@@ -68,9 +65,10 @@ class _ImagePreviewState extends State<ImagePreview>
 
   void _animBack() {
     if (!_overdragged) {
-      _backAnim = Tween<Offset>(begin: _imageOffset, end: Offset.zero)
-          .chain(CurveTween(curve: Curves.easeOut))
-          .animate(_controllerImage);
+      _backAnim = Tween<Offset>(
+        begin: _imageOffset,
+        end: Offset.zero,
+      ).chain(CurveTween(curve: Curves.easeOut)).animate(_controllerImage);
 
       _controllerImage.forward(from: 0);
       _imageOffset = Offset.zero;

@@ -2,7 +2,7 @@ import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/rating/rating.dart';
+import '../../../data/models/rating/rating.dart';
 import '../../../utils/persistence.dart';
 import 'confirmation.dart';
 
@@ -10,11 +10,7 @@ class AddEditRatingDialog extends ConsumerStatefulWidget {
   final Rating? rating;
   final String? name;
 
-  const AddEditRatingDialog({
-    super.key,
-    this.rating,
-    this.name,
-  });
+  const AddEditRatingDialog({super.key, this.rating, this.name});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AddEditRatingState();
@@ -30,7 +26,8 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
     super.initState();
 
     _name = TextEditingController(
-        text: this.widget.rating?.name ?? this.widget.name ?? '');
+      text: this.widget.rating?.name ?? this.widget.name ?? '',
+    );
 
     _description = TextEditingController(text: this.widget.rating?.description);
   }
@@ -55,10 +52,9 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
                       'Are you sure you want to delete ${this.widget.rating!.name}? This action can\'t be undone!',
                   isYesDestructive: true,
                   onYes: (_) {
-                    PersistenceUtils.transaction(
-                      PersistenceOperation.delete,
-                      [this.widget.rating!],
-                    );
+                    PersistenceUtils.transaction(PersistenceOperation.delete, [
+                      this.widget.rating!,
+                    ]);
                     Navigator.of(context).pop();
                   },
                 ),
@@ -75,7 +71,8 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
             const Text('Enter the name and description for the Rating entity:'),
           if (this.widget.rating == null)
             const Text(
-                'Ratings apply to all meals. You will need to update existing meals and set the value of the new rating.'),
+              'Ratings apply to all meals. You will need to update existing meals and set the value of the new rating.',
+            ),
           SizedBox(height: DesignSystem.spacing.x24),
           Form(
             key: _form,
@@ -88,9 +85,14 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
                     String? error;
                     error = ValidationUtils.name(text);
                     if (this.widget.rating == null && error == null) {
-                      if (ref.read(ratingsProvider).valueOrNull?.any((rating) =>
-                              rating.name.toLowerCase() ==
-                              text!.toLowerCase().trim()) ??
+                      if (ref
+                              .read(ratingsProvider)
+                              .valueOrNull
+                              ?.any(
+                                (rating) =>
+                                    rating.name.toLowerCase() ==
+                                    text!.toLowerCase().trim(),
+                              ) ??
                           true) {
                         error = 'Rating already exists!';
                       }
@@ -119,14 +121,11 @@ class _AddEditRatingState extends ConsumerState<AddEditRatingDialog> {
             if (_form.currentState!.validate()) {
               Rating? rating = this.widget.rating ?? Rating();
 
-              PersistenceUtils.transaction(
-                PersistenceOperation.insertUpdate,
-                [
-                  rating
-                    ..name = _name.text.trim()
-                    ..description = _description.text.trim(),
-                ],
-              );
+              PersistenceUtils.transaction(PersistenceOperation.insertUpdate, [
+                rating
+                  ..name = _name.text.trim()
+                  ..description = _description.text.trim(),
+              ]);
 
               Navigator.of(context).pop(rating);
             }

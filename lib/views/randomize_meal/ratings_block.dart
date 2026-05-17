@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/embeddings/rating_link/rating_link.dart';
-import '../../../../models/rating/rating.dart';
+import '../../data/models/rating/rating.dart';
 import '../../../../widgets/shared/meal_ratings.dart';
 
 class RatingsBlock extends ConsumerWidget {
@@ -39,24 +39,30 @@ class RatingsBlock extends ConsumerWidget {
             SizedBox(height: DesignSystem.spacing.x12),
             BaseSuggestionTextField<Rating>(
               suggestions: (text) => ratings
-                  .where((rating) =>
-                      !this.selectedRatings.any((ratingLink) =>
-                          ratingLink.ratingUuid == rating.uuid) &&
-                      rating.name.toLowerCase().contains(text.toLowerCase()))
+                  .where(
+                    (rating) =>
+                        !this.selectedRatings.any(
+                          (ratingLink) => ratingLink.ratingUuid == rating.uuid,
+                        ) &&
+                        rating.name.toLowerCase().contains(text.toLowerCase()),
+                  )
                   .toList(),
               hintText: 'Search for ratings...',
               suggestionText: (rating) => rating.name,
-              sort: (rating1, rating2) => rating1.name
-                  .toLowerCase()
-                  .compareTo(rating2.name.toLowerCase()),
+              sort: (rating1, rating2) => rating1.name.toLowerCase().compareTo(
+                rating2.name.toLowerCase(),
+              ),
               onSuggestionTapped: this.onAdd,
             ),
             SizedBox(height: DesignSystem.spacing.x12),
             MealRatings(
               onSelectionChanged: this.onValueChanged,
               ratings: ratings
-                  .where((rating) => this.selectedRatings.any(
-                      (ratingLink) => ratingLink.ratingUuid == rating.uuid))
+                  .where(
+                    (rating) => this.selectedRatings.any(
+                      (ratingLink) => ratingLink.ratingUuid == rating.uuid,
+                    ),
+                  )
                   .toList(),
               ratingLinks: this.selectedRatings,
               onRemove: this.onRemove,

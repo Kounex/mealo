@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/model.dart';
+import '../../data/models/model.dart';
 
 class ModelSuggestionTextField<T extends CommonModel> extends StatelessWidget {
   final T? value;
@@ -39,15 +39,13 @@ class ModelSuggestionTextField<T extends CommonModel> extends StatelessWidget {
   });
 
   List<T> _filterSuggestions(String text) {
-    return this.values.where(
-      (model) {
-        if (this.isSearchCaseSensitive) {
-          return model.name.contains(text);
-        }
+    return this.values.where((model) {
+      if (this.isSearchCaseSensitive) {
+        return model.name.contains(text);
+      }
 
-        return model.name.toLowerCase().contains(text.toLowerCase());
-      },
-    ).toList();
+      return model.name.toLowerCase().contains(text.toLowerCase());
+    }).toList();
   }
 
   int _sortSuggestions(T value1, T value2) {
@@ -69,9 +67,7 @@ class ModelSuggestionTextField<T extends CommonModel> extends StatelessWidget {
       onSuggestionTapped: (value) => this.setValue(value),
       anchorType: this.anchorType ?? AnchorType.left,
       minWidth: this.minWidth,
-      onCreateNew: (text) async => this.setValue(
-        await this.onAdd(text),
-      ),
+      onCreateNew: (text) async => this.setValue(await this.onAdd(text)),
       onDeleteSelection: this.onDeleteSelection,
     );
   }

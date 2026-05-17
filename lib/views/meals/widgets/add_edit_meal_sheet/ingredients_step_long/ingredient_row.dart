@@ -2,8 +2,8 @@ import 'package:base_components/base_components.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../models/ingredient/ingredient.dart';
-import '../../../../../models/meal/meal.dart';
+import '../../../../../data/models/ingredient/ingredient.dart';
+import '../../../../../data/models/meal/meal.dart';
 import '../../../../../utils/persistence.dart';
 import '../../../../../widgets/shared/dialog/add_edit_model.dart';
 import '../../../../../widgets/shared/model_suggestion_text_field.dart';
@@ -35,8 +35,10 @@ class _IngredientRowState extends State<IngredientRow> {
   void initState() {
     super.initState();
 
-    _ingredient = this.widget.ingredients.firstWhereOrNull((ingredient) =>
-        ingredient.uuid == (this.widget.ingredient.uuidIngredient ?? ''));
+    _ingredient = this.widget.ingredients.firstWhereOrNull(
+      (ingredient) =>
+          ingredient.uuid == (this.widget.ingredient.uuidIngredient ?? ''),
+    );
 
     _checkSaveable();
 
@@ -66,11 +68,8 @@ class _IngredientRowState extends State<IngredientRow> {
     return !_editing
         ? GestureDetector(
             onTap: () => setState(() => _editing = true),
-            child: BaseChip(
-              label: Text(_ingredient?.name ?? ''),
-            ),
+            child: BaseChip(label: Text(_ingredient?.name ?? '')),
           )
-
         /// TODO: check why the outer card loses its left and right elevation
         /// if this is shown
         : BaseCard(
@@ -124,14 +123,15 @@ class _IngredientRowState extends State<IngredientRow> {
                         onPressed: this.widget.onDelete,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Theme.of(context).colorScheme.error,
-                          foregroundColor:
-                              Theme.of(context).colorScheme.onError,
+                          foregroundColor: Theme.of(
+                            context,
+                          ).colorScheme.onError,
                         ),
                         child: const Text('Delete'),
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           );

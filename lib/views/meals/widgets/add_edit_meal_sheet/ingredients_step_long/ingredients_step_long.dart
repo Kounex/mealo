@@ -4,17 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/ingredients_step_long/ingredient_row.dart';
 
-import '../../../../../models/ingredient/ingredient.dart';
-import '../../../../../models/meal/meal.dart';
-import '../../../../../models/unit/unit.dart';
+import '../../../../../data/models/ingredient/ingredient.dart';
+import '../../../../../data/models/meal/meal.dart';
+import '../../../../../data/models/unit/unit.dart';
 
 class IngredientsStepLong extends ConsumerStatefulWidget {
   final Meal meal;
 
-  const IngredientsStepLong({
-    super.key,
-    required this.meal,
-  });
+  const IngredientsStepLong({super.key, required this.meal});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -28,8 +25,9 @@ class _IngredientsStepState extends ConsumerState<IngredientsStepLong> {
 
   @override
   Widget build(BuildContext context) {
-    final AsyncValue<List<Ingredient>> asyncIngredients =
-        ref.watch(ingredientsProvider);
+    final AsyncValue<List<Ingredient>> asyncIngredients = ref.watch(
+      ingredientsProvider,
+    );
     final AsyncValue<List<Unit>> asyncUnits = ref.watch(unitsProvider);
 
     return Column(
@@ -58,35 +56,37 @@ class _IngredientsStepState extends ConsumerState<IngredientsStepLong> {
                         ),
                       SizedBox(height: DesignSystem.spacing.x12),
                       ...this.widget.meal.ingredients.mapIndexed(
-                            (index, ingredient) => IngredientRow(
-                              /// TODO: check why it is necessary to have a key
-                              /// here
-                              key: ValueKey(ingredient),
-                              ingredient: ingredient,
-                              ingredients: List.from(
-                                ingredients.whereNot((baseIngredient) => this
-                                    .widget
-                                    .meal
-                                    .ingredients
-                                    .any((mealIngredient) =>
+                        (index, ingredient) => IngredientRow(
+                          /// TODO: check why it is necessary to have a key
+                          /// here
+                          key: ValueKey(ingredient),
+                          ingredient: ingredient,
+                          ingredients: List.from(
+                            ingredients.whereNot(
+                              (baseIngredient) =>
+                                  this.widget.meal.ingredients.any(
+                                    (mealIngredient) =>
                                         baseIngredient.uuid ==
-                                        mealIngredient.uuidIngredient)),
-                              ),
-                              onDelete: () => setState(
-                                () => this.widget.meal.ingredients = this
-                                    .widget
-                                    .meal
-                                    .ingredients
-                                    .whereNotIndexed((i, _) => i == index)
-                                    .toList(),
-                              ),
+                                        mealIngredient.uuidIngredient,
+                                  ),
                             ),
                           ),
+                          onDelete: () => setState(
+                            () => this.widget.meal.ingredients = this
+                                .widget
+                                .meal
+                                .ingredients
+                                .whereNotIndexed((i, _) => i == index)
+                                .toList(),
+                          ),
+                        ),
+                      ),
                       if (this.widget.meal.ingredients.isEmpty) ...[
                         SizedBox(height: DesignSystem.spacing.x24),
                         const Center(
-                          child:
-                              BasePlaceholder(text: 'No ingredients added yet'),
+                          child: BasePlaceholder(
+                            text: 'No ingredients added yet',
+                          ),
                         ),
                         SizedBox(height: DesignSystem.spacing.x24),
                       ],

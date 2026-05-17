@@ -2,7 +2,7 @@ import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/tag/tag.dart';
+import '../../../../data/models/tag/tag.dart';
 import '../../../../utils/persistence.dart';
 import '../confirmation.dart';
 import 'color_picker_tile.dart';
@@ -11,11 +11,7 @@ class AddEditTagDialog extends ConsumerStatefulWidget {
   final Tag? tag;
   final String? name;
 
-  const AddEditTagDialog({
-    super.key,
-    this.tag,
-    this.name,
-  });
+  const AddEditTagDialog({super.key, this.tag, this.name});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -33,9 +29,10 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
     super.initState();
 
     _controller = TextEditingController(
-        text: this.widget.tag != null
-            ? this.widget.tag!.name
-            : this.widget.name ?? '');
+      text: this.widget.tag != null
+          ? this.widget.tag!.name
+          : this.widget.name ?? '',
+    );
 
     _colorHex = this.widget.tag?.colorHex;
   }
@@ -60,10 +57,9 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
                       'Are you sure you want to delete ${this.widget.tag!.name}? This action can\'t be undone!',
                   isYesDestructive: true,
                   onYes: (_) {
-                    PersistenceUtils.transaction(
-                      PersistenceOperation.delete,
-                      [this.widget.tag!],
-                    );
+                    PersistenceUtils.transaction(PersistenceOperation.delete, [
+                      this.widget.tag!,
+                    ]);
                     Navigator.of(context).pop();
                   },
                 ),
@@ -87,9 +83,14 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
                 String? error;
                 error = ValidationUtils.name(text);
                 if (this.widget.tag == null && error == null) {
-                  if (ref.read(tagsProvider).valueOrNull?.any((tag) =>
-                          tag.name.toLowerCase() ==
-                          text!.toLowerCase().trim()) ??
+                  if (ref
+                          .read(tagsProvider)
+                          .valueOrNull
+                          ?.any(
+                            (tag) =>
+                                tag.name.toLowerCase() ==
+                                text!.toLowerCase().trim(),
+                          ) ??
                       true) {
                     error = 'Tag already exists!';
                   }
@@ -115,14 +116,11 @@ class _AddEditTagDialogState extends ConsumerState<AddEditTagDialog> {
             if (_form.currentState!.validate()) {
               Tag? tag = this.widget.tag ?? Tag();
 
-              PersistenceUtils.transaction(
-                PersistenceOperation.insertUpdate,
-                [
-                  tag
-                    ..name = _controller.text.trim()
-                    ..colorHex = _colorHex,
-                ],
-              );
+              PersistenceUtils.transaction(PersistenceOperation.insertUpdate, [
+                tag
+                  ..name = _controller.text.trim()
+                  ..colorHex = _colorHex,
+              ]);
 
               Navigator.of(context).pop(tag);
             }

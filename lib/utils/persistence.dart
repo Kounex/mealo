@@ -2,14 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../models/ingredient/ingredient.dart';
-import '../models/meal/meal.dart';
-import '../models/model.dart';
-import '../models/randomized_run/randomized_run.dart';
-import '../models/rating/rating.dart';
-import '../models/settings/settings.dart';
-import '../models/tag/tag.dart';
-import '../models/unit/unit.dart';
+import '../data/models/ingredient/ingredient.dart';
+import '../data/models/meal/meal.dart';
+import '../data/models/model.dart';
+import '../data/models/randomized_run/randomized_run.dart';
+import '../data/models/rating/rating.dart';
+import '../data/models/settings/settings.dart';
+import '../data/models/tag/tag.dart';
+import '../data/models/unit/unit.dart';
 import 'date.dart';
 
 class PersistenceUtils {
@@ -101,8 +101,9 @@ class PersistenceUtils {
         /// Check if updated is the default, not changed [DateUtils.zero] value
         /// and therefore a new model which has not been persisted or an
         /// existing one where we want [updated] to be the current date time
-        model.updated =
-            model.updated == DateUtils.zero ? model.created : DateTime.now();
+        model.updated = model.updated == DateUtils.zero
+            ? model.created
+            : DateTime.now();
       }
     }
 
@@ -111,8 +112,9 @@ class PersistenceUtils {
 
       return switch (operation) {
         PersistenceOperation.insertUpdate => collection.putAll(models),
-        PersistenceOperation.delete =>
-          collection.deleteAll(models.map((model) => model.uuid).toList()),
+        PersistenceOperation.delete => collection.deleteAll(
+          models.map((model) => model.uuid).toList(),
+        ),
       };
     });
   }
@@ -125,10 +127,9 @@ class PersistenceUtils {
     /// clear the collection itself to make sure we really only have one (just
     /// to be sure)
     PersistenceUtils._instance.write((isar) => isar.settings.clear());
-    PersistenceUtils.transaction(
-      PersistenceOperation.insertUpdate,
-      [Settings()],
-    );
+    PersistenceUtils.transaction(PersistenceOperation.insertUpdate, [
+      Settings(),
+    ]);
 
     /// Since one of our singletons (in this case [Settings]) was
     /// not present, this was the first launch of the app and we
@@ -152,7 +153,4 @@ class PersistenceUtils {
   }
 }
 
-enum PersistenceOperation {
-  insertUpdate,
-  delete,
-}
+enum PersistenceOperation { insertUpdate, delete }

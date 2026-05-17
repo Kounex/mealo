@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../../../models/meal/meal.dart';
+import '../../../../../data/models/meal/meal.dart';
 import 'image_from_url_dialog.dart';
 import 'meal_images.dart';
 
@@ -74,21 +74,21 @@ class _ImagesStepState extends State<ImagesStep> {
   Future<void> _showPhotoPickerSheet() async {
     ImagePickerType? type =
         await ModalUtils.showBaseModalBottomSheet<ImagePickerType>(
-      context,
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: ImagePickerType.values
-            .map(
-              (type) => ListTile(
-                title: Text(type.text),
-                leading: Icon(type.icon),
-                onTap: () => Navigator.of(context).pop(type),
-              ),
-            )
-            .toList(),
-      ),
-    );
+          context,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: ImagePickerType.values
+                .map(
+                  (type) => ListTile(
+                    title: Text(type.text),
+                    leading: Icon(type.icon),
+                    onTap: () => Navigator.of(context).pop(type),
+                  ),
+                )
+                .toList(),
+          ),
+        );
 
     if (type != null && mounted) {
       List<XFile> images = [];
@@ -98,10 +98,12 @@ class _ImagesStepState extends State<ImagesStep> {
           images = await _pickImages(type, true);
           break;
         case ImagePickerType.url:
-          XFile? image = XFile.fromData(await ModalUtils.showBaseDialog(
-            context,
-            const ImageFromURLDialog(),
-          ));
+          XFile? image = XFile.fromData(
+            await ModalUtils.showBaseDialog(
+              context,
+              const ImageFromURLDialog(),
+            ),
+          );
 
           images.add(image);
           break;
@@ -113,8 +115,10 @@ class _ImagesStepState extends State<ImagesStep> {
     }
   }
 
-  Future<List<XFile>> _pickImages(ImagePickerType type,
-      [bool multiple = false]) async {
+  Future<List<XFile>> _pickImages(
+    ImagePickerType type, [
+    bool multiple = false,
+  ]) async {
     final ImagePicker picker = ImagePicker();
 
     List<XFile?> photos = [];
@@ -159,10 +163,7 @@ class _ImagesStepState extends State<ImagesStep> {
         Stack(
           alignment: Alignment.center,
           children: [
-            MealImages(
-              meal: this.widget.meal,
-              onImageAction: _deleteImage,
-            ),
+            MealImages(meal: this.widget.meal, onImageAction: _deleteImage),
             FutureBuilder(
               future: _pickFuture,
               builder: (context, snapshot) {
@@ -179,15 +180,13 @@ class _ImagesStepState extends State<ImagesStep> {
                     ),
                     child: Padding(
                       padding: EdgeInsets.all(DesignSystem.spacing.x24),
-                      child: BaseProgressIndicator(
-                        text: 'Loading image(s)...',
-                      ),
+                      child: BaseProgressIndicator(text: 'Loading image(s)...'),
                     ),
                   );
                 }
                 return const SizedBox();
               },
-            )
+            ),
           ],
         ),
         SizedBox(height: DesignSystem.spacing.x24),

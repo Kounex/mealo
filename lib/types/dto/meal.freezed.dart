@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,217 +9,283 @@ part of 'meal.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 /// @nodoc
 mixin _$MealDTO {
-  String get uuid => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  String? get thumbnailBase64 => throw _privateConstructorUsedError;
-  List<String>? get imagesBase64 => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
-  $MealDTOCopyWith<MealDTO> get copyWith => throw _privateConstructorUsedError;
+ String get uuid; DateTime get createdAt; String get name; String? get thumbnailBase64; List<String>? get imagesBase64;
+/// Create a copy of MealDTO
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$MealDTOCopyWith<MealDTO> get copyWith => _$MealDTOCopyWithImpl<MealDTO>(this as MealDTO, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MealDTO&&(identical(other.uuid, uuid) || other.uuid == uuid)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.name, name) || other.name == name)&&(identical(other.thumbnailBase64, thumbnailBase64) || other.thumbnailBase64 == thumbnailBase64)&&const DeepCollectionEquality().equals(other.imagesBase64, imagesBase64));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,uuid,createdAt,name,thumbnailBase64,const DeepCollectionEquality().hash(imagesBase64));
+
+@override
+String toString() {
+  return 'MealDTO(uuid: $uuid, createdAt: $createdAt, name: $name, thumbnailBase64: $thumbnailBase64, imagesBase64: $imagesBase64)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $MealDTOCopyWith<$Res> {
-  factory $MealDTOCopyWith(MealDTO value, $Res Function(MealDTO) then) =
-      _$MealDTOCopyWithImpl<$Res, MealDTO>;
-  @useResult
-  $Res call(
-      {String uuid,
-      DateTime createdAt,
-      String name,
-      String? thumbnailBase64,
-      List<String>? imagesBase64});
-}
+abstract mixin class $MealDTOCopyWith<$Res>  {
+  factory $MealDTOCopyWith(MealDTO value, $Res Function(MealDTO) _then) = _$MealDTOCopyWithImpl;
+@useResult
+$Res call({
+ String uuid, DateTime createdAt, String name, String? thumbnailBase64, List<String>? imagesBase64
+});
 
+
+
+
+}
 /// @nodoc
-class _$MealDTOCopyWithImpl<$Res, $Val extends MealDTO>
+class _$MealDTOCopyWithImpl<$Res>
     implements $MealDTOCopyWith<$Res> {
-  _$MealDTOCopyWithImpl(this._value, this._then);
+  _$MealDTOCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final MealDTO _self;
+  final $Res Function(MealDTO) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? uuid = null,
-    Object? createdAt = null,
-    Object? name = null,
-    Object? thumbnailBase64 = freezed,
-    Object? imagesBase64 = freezed,
-  }) {
-    return _then(_value.copyWith(
-      uuid: null == uuid
-          ? _value.uuid
-          : uuid // ignore: cast_nullable_to_non_nullable
-              as String,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      thumbnailBase64: freezed == thumbnailBase64
-          ? _value.thumbnailBase64
-          : thumbnailBase64 // ignore: cast_nullable_to_non_nullable
-              as String?,
-      imagesBase64: freezed == imagesBase64
-          ? _value.imagesBase64
-          : imagesBase64 // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
-    ) as $Val);
-  }
+/// Create a copy of MealDTO
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? uuid = null,Object? createdAt = null,Object? name = null,Object? thumbnailBase64 = freezed,Object? imagesBase64 = freezed,}) {
+  return _then(_self.copyWith(
+uuid: null == uuid ? _self.uuid : uuid // ignore: cast_nullable_to_non_nullable
+as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,thumbnailBase64: freezed == thumbnailBase64 ? _self.thumbnailBase64 : thumbnailBase64 // ignore: cast_nullable_to_non_nullable
+as String?,imagesBase64: freezed == imagesBase64 ? _self.imagesBase64 : imagesBase64 // ignore: cast_nullable_to_non_nullable
+as List<String>?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [MealDTO].
+extension MealDTOPatterns on MealDTO {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _MealDTO value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _MealDTO() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _MealDTO value)  $default,){
+final _that = this;
+switch (_that) {
+case _MealDTO():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _MealDTO value)?  $default,){
+final _that = this;
+switch (_that) {
+case _MealDTO() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String uuid,  DateTime createdAt,  String name,  String? thumbnailBase64,  List<String>? imagesBase64)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _MealDTO() when $default != null:
+return $default(_that.uuid,_that.createdAt,_that.name,_that.thumbnailBase64,_that.imagesBase64);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String uuid,  DateTime createdAt,  String name,  String? thumbnailBase64,  List<String>? imagesBase64)  $default,) {final _that = this;
+switch (_that) {
+case _MealDTO():
+return $default(_that.uuid,_that.createdAt,_that.name,_that.thumbnailBase64,_that.imagesBase64);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String uuid,  DateTime createdAt,  String name,  String? thumbnailBase64,  List<String>? imagesBase64)?  $default,) {final _that = this;
+switch (_that) {
+case _MealDTO() when $default != null:
+return $default(_that.uuid,_that.createdAt,_that.name,_that.thumbnailBase64,_that.imagesBase64);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
-abstract class _$$MealDTOImplCopyWith<$Res> implements $MealDTOCopyWith<$Res> {
-  factory _$$MealDTOImplCopyWith(
-          _$MealDTOImpl value, $Res Function(_$MealDTOImpl) then) =
-      __$$MealDTOImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {String uuid,
-      DateTime createdAt,
-      String name,
-      String? thumbnailBase64,
-      List<String>? imagesBase64});
+
+
+class _MealDTO implements MealDTO {
+  const _MealDTO({required this.uuid, required this.createdAt, required this.name, this.thumbnailBase64, final  List<String>? imagesBase64}): _imagesBase64 = imagesBase64;
+  
+
+@override final  String uuid;
+@override final  DateTime createdAt;
+@override final  String name;
+@override final  String? thumbnailBase64;
+ final  List<String>? _imagesBase64;
+@override List<String>? get imagesBase64 {
+  final value = _imagesBase64;
+  if (value == null) return null;
+  if (_imagesBase64 is EqualUnmodifiableListView) return _imagesBase64;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
+
+/// Create a copy of MealDTO
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$MealDTOCopyWith<_MealDTO> get copyWith => __$MealDTOCopyWithImpl<_MealDTO>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MealDTO&&(identical(other.uuid, uuid) || other.uuid == uuid)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.name, name) || other.name == name)&&(identical(other.thumbnailBase64, thumbnailBase64) || other.thumbnailBase64 == thumbnailBase64)&&const DeepCollectionEquality().equals(other._imagesBase64, _imagesBase64));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,uuid,createdAt,name,thumbnailBase64,const DeepCollectionEquality().hash(_imagesBase64));
+
+@override
+String toString() {
+  return 'MealDTO(uuid: $uuid, createdAt: $createdAt, name: $name, thumbnailBase64: $thumbnailBase64, imagesBase64: $imagesBase64)';
+}
+
+
 }
 
 /// @nodoc
-class __$$MealDTOImplCopyWithImpl<$Res>
-    extends _$MealDTOCopyWithImpl<$Res, _$MealDTOImpl>
-    implements _$$MealDTOImplCopyWith<$Res> {
-  __$$MealDTOImplCopyWithImpl(
-      _$MealDTOImpl _value, $Res Function(_$MealDTOImpl) _then)
-      : super(_value, _then);
+abstract mixin class _$MealDTOCopyWith<$Res> implements $MealDTOCopyWith<$Res> {
+  factory _$MealDTOCopyWith(_MealDTO value, $Res Function(_MealDTO) _then) = __$MealDTOCopyWithImpl;
+@override @useResult
+$Res call({
+ String uuid, DateTime createdAt, String name, String? thumbnailBase64, List<String>? imagesBase64
+});
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? uuid = null,
-    Object? createdAt = null,
-    Object? name = null,
-    Object? thumbnailBase64 = freezed,
-    Object? imagesBase64 = freezed,
-  }) {
-    return _then(_$MealDTOImpl(
-      uuid: null == uuid
-          ? _value.uuid
-          : uuid // ignore: cast_nullable_to_non_nullable
-              as String,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      thumbnailBase64: freezed == thumbnailBase64
-          ? _value.thumbnailBase64
-          : thumbnailBase64 // ignore: cast_nullable_to_non_nullable
-              as String?,
-      imagesBase64: freezed == imagesBase64
-          ? _value._imagesBase64
-          : imagesBase64 // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
-    ));
-  }
+
+
+
 }
-
 /// @nodoc
+class __$MealDTOCopyWithImpl<$Res>
+    implements _$MealDTOCopyWith<$Res> {
+  __$MealDTOCopyWithImpl(this._self, this._then);
 
-class _$MealDTOImpl implements _MealDTO {
-  const _$MealDTOImpl(
-      {required this.uuid,
-      required this.createdAt,
-      required this.name,
-      this.thumbnailBase64,
-      final List<String>? imagesBase64})
-      : _imagesBase64 = imagesBase64;
+  final _MealDTO _self;
+  final $Res Function(_MealDTO) _then;
 
-  @override
-  final String uuid;
-  @override
-  final DateTime createdAt;
-  @override
-  final String name;
-  @override
-  final String? thumbnailBase64;
-  final List<String>? _imagesBase64;
-  @override
-  List<String>? get imagesBase64 {
-    final value = _imagesBase64;
-    if (value == null) return null;
-    if (_imagesBase64 is EqualUnmodifiableListView) return _imagesBase64;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
-  @override
-  String toString() {
-    return 'MealDTO(uuid: $uuid, createdAt: $createdAt, name: $name, thumbnailBase64: $thumbnailBase64, imagesBase64: $imagesBase64)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$MealDTOImpl &&
-            (identical(other.uuid, uuid) || other.uuid == uuid) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.thumbnailBase64, thumbnailBase64) ||
-                other.thumbnailBase64 == thumbnailBase64) &&
-            const DeepCollectionEquality()
-                .equals(other._imagesBase64, _imagesBase64));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, uuid, createdAt, name,
-      thumbnailBase64, const DeepCollectionEquality().hash(_imagesBase64));
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$MealDTOImplCopyWith<_$MealDTOImpl> get copyWith =>
-      __$$MealDTOImplCopyWithImpl<_$MealDTOImpl>(this, _$identity);
+/// Create a copy of MealDTO
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? uuid = null,Object? createdAt = null,Object? name = null,Object? thumbnailBase64 = freezed,Object? imagesBase64 = freezed,}) {
+  return _then(_MealDTO(
+uuid: null == uuid ? _self.uuid : uuid // ignore: cast_nullable_to_non_nullable
+as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,thumbnailBase64: freezed == thumbnailBase64 ? _self.thumbnailBase64 : thumbnailBase64 // ignore: cast_nullable_to_non_nullable
+as String?,imagesBase64: freezed == imagesBase64 ? _self._imagesBase64 : imagesBase64 // ignore: cast_nullable_to_non_nullable
+as List<String>?,
+  ));
 }
 
-abstract class _MealDTO implements MealDTO {
-  const factory _MealDTO(
-      {required final String uuid,
-      required final DateTime createdAt,
-      required final String name,
-      final String? thumbnailBase64,
-      final List<String>? imagesBase64}) = _$MealDTOImpl;
 
-  @override
-  String get uuid;
-  @override
-  DateTime get createdAt;
-  @override
-  String get name;
-  @override
-  String? get thumbnailBase64;
-  @override
-  List<String>? get imagesBase64;
-  @override
-  @JsonKey(ignore: true)
-  _$$MealDTOImplCopyWith<_$MealDTOImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
+
+// dart format on

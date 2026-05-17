@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../models/meal/meal.dart';
+import '../../data/models/meal/meal.dart';
 import '../../utils/router.dart';
 import '../../widgets/shared/dialog/confirmation.dart';
 import '../../widgets/shared/meal_grid.dart';
@@ -12,10 +12,7 @@ import 'widgets/add_edit_meal_sheet/add_edit_meal_sheet.dart';
 class MealsView extends ConsumerWidget {
   final ScrollController controller;
 
-  const MealsView({
-    super.key,
-    required this.controller,
-  });
+  const MealsView({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,20 +30,22 @@ class MealsView extends ConsumerWidget {
               onClose: () {
                 ModalUtils.showBaseDialog(
                   context,
-                  Builder(builder: (context) {
-                    return MealoBaseConfirmationDialog(
-                      title: 'Close Sheet',
-                      body:
-                          'Are you sure you want to close this sheet? All your changes will not be saved!',
-                      isYesDestructive: true,
-                      onYes: (_) {
-                        /// Important step - this makes sure that all changes we made
-                        /// here are set back to its original value
-                        Navigator.of(context).pop();
-                        ref.invalidate(mealsProvider);
-                      },
-                    );
-                  }),
+                  Builder(
+                    builder: (context) {
+                      return MealoBaseConfirmationDialog(
+                        title: 'Close Sheet',
+                        body:
+                            'Are you sure you want to close this sheet? All your changes will not be saved!',
+                        isYesDestructive: true,
+                        onYes: (_) {
+                          /// Important step - this makes sure that all changes we made
+                          /// here are set back to its original value
+                          Navigator.of(context).pop();
+                          ref.invalidate(mealsProvider);
+                        },
+                      );
+                    },
+                  ),
                 );
               },
             ),
@@ -59,10 +58,8 @@ class MealsView extends ConsumerWidget {
           padding: EdgeInsets.all(DesignSystem.spacing.x24),
           child: MealGrid(
             provider: mealsProvider,
-            onTap: (meal) => RouterUtils.goTo(
-              context,
-              MealDetailRoute(meal.uuid),
-            ),
+            onTap: (meal) =>
+                RouterUtils.goTo(context, MealDetailRoute(meal.uuid)),
           ),
         ),
       ],

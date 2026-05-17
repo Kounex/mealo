@@ -2,9 +2,9 @@ import 'package:base_components/base_components.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../models/ingredient/ingredient.dart';
-import '../../../../../models/meal/meal.dart';
-import '../../../../../models/unit/unit.dart';
+import '../../../../../data/models/ingredient/ingredient.dart';
+import '../../../../../data/models/meal/meal.dart';
+import '../../../../../data/models/unit/unit.dart';
 import '../../../../../utils/persistence.dart';
 import '../../../../../widgets/shared/dialog/add_edit_model.dart';
 import '../../../../../widgets/shared/model_suggestion_text_field.dart';
@@ -44,16 +44,20 @@ class _IngredientRowFullState extends State<IngredientRowFull> {
     double? amount = this.widget.ingredient.amount;
     if (amount != null) {
       _amount = TextEditingController(
-          text: amount.truncateToDouble() == amount
-              ? amount.toStringAsFixed(0)
-              : amount.toString());
+        text: amount.truncateToDouble() == amount
+            ? amount.toStringAsFixed(0)
+            : amount.toString(),
+      );
     } else {
       _amount = TextEditingController();
     }
     _unit = this.widget.units.firstWhereOrNull(
-        (unit) => unit.uuid == (this.widget.ingredient.uuidUnit ?? ''));
-    _ingredient = this.widget.ingredients.firstWhereOrNull((ingredient) =>
-        ingredient.uuid == (this.widget.ingredient.uuidIngredient ?? ''));
+      (unit) => unit.uuid == (this.widget.ingredient.uuidUnit ?? ''),
+    );
+    _ingredient = this.widget.ingredients.firstWhereOrNull(
+      (ingredient) =>
+          ingredient.uuid == (this.widget.ingredient.uuidIngredient ?? ''),
+    );
 
     _checkSaveable();
 
@@ -63,7 +67,8 @@ class _IngredientRowFullState extends State<IngredientRowFull> {
   }
 
   void _checkSaveable() {
-    _saveable = ValidationUtils.number(_amount.text) == null &&
+    _saveable =
+        ValidationUtils.number(_amount.text) == null &&
         _unit != null &&
         _ingredient != null;
   }
@@ -103,17 +108,17 @@ class _IngredientRowFullState extends State<IngredientRowFull> {
       onAdd: (name) => ModalUtils.showBaseDialog<Unit>(
         context,
         AddEditModelDialog(
-            name: name,
-            onAdd: (name) {
-              final unit = Unit()..name = name;
+          name: name,
+          onAdd: (name) {
+            final unit = Unit()..name = name;
 
-              PersistenceUtils.transaction(
-                PersistenceOperation.insertUpdate,
-                [unit],
-              );
+            PersistenceUtils.transaction(PersistenceOperation.insertUpdate, [
+              unit,
+            ]);
 
-              return unit;
-            }),
+            return unit;
+          },
+        ),
       ),
       onDeleteSelection: () => setState(() => _unit = null),
     );
@@ -130,10 +135,9 @@ class _IngredientRowFullState extends State<IngredientRowFull> {
           onAdd: (name) {
             final ingredient = Ingredient()..name = name;
 
-            PersistenceUtils.transaction(
-              PersistenceOperation.insertUpdate,
-              [ingredient],
-            );
+            PersistenceUtils.transaction(PersistenceOperation.insertUpdate, [
+              ingredient,
+            ]);
 
             return ingredient;
           },
@@ -147,10 +151,10 @@ class _IngredientRowFullState extends State<IngredientRowFull> {
             onTap: () => setState(() => _editing = true),
             child: BaseChip(
               label: Text(
-                  '${_amount.text} ${_unit?.name ?? ""} ${_ingredient?.name ?? ""}'),
+                '${_amount.text} ${_unit?.name ?? ""} ${_ingredient?.name ?? ""}',
+              ),
             ),
           )
-
         /// TODO: check why the outer card loses its left and right elevation
         /// if this is shown
         : BaseCard(
@@ -164,29 +168,18 @@ class _IngredientRowFullState extends State<IngredientRowFull> {
                 availableWidth >= 700
                     ? Row(
                         children: [
-                          SizedBox(
-                            width: 144.0,
-                            child: amountTextField,
-                          ),
+                          SizedBox(width: 144.0, child: amountTextField),
                           SizedBox(width: DesignSystem.spacing.x12),
-                          SizedBox(
-                            width: 108.0,
-                            child: unitSuggestField,
-                          ),
+                          SizedBox(width: 108.0, child: unitSuggestField),
                           SizedBox(width: DesignSystem.spacing.x12),
-                          Expanded(
-                            child: ingredientSuggestField,
-                          ),
+                          Expanded(child: ingredientSuggestField),
                         ],
                       )
                     : Column(
                         children: [
                           Row(
                             children: [
-                              SizedBox(
-                                width: 144.0,
-                                child: amountTextField,
-                              ),
+                              SizedBox(width: 144.0, child: amountTextField),
                               SizedBox(width: DesignSystem.spacing.x12),
                               Expanded(
                                 child: Align(
@@ -220,14 +213,15 @@ class _IngredientRowFullState extends State<IngredientRowFull> {
                         onPressed: this.widget.onDelete,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Theme.of(context).colorScheme.error,
-                          foregroundColor:
-                              Theme.of(context).colorScheme.onError,
+                          foregroundColor: Theme.of(
+                            context,
+                          ).colorScheme.onError,
                         ),
                         child: const Text('Delete'),
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           );

@@ -3,18 +3,15 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/meal/meal.dart';
-import '../../../../models/tag/tag.dart';
+import '../../../../data/models/meal/meal.dart';
+import '../../../../data/models/tag/tag.dart';
 import '../../../../types/extensions/string.dart';
 import '../../../../widgets/shared/dialog/add_edit_tag/add_edit_tag.dart';
 
 class TagsStep extends ConsumerStatefulWidget {
   final Meal meal;
 
-  const TagsStep({
-    super.key,
-    required this.meal,
-  });
+  const TagsStep({super.key, required this.meal});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _TagsStepState();
@@ -24,30 +21,24 @@ class _TagsStepState extends ConsumerState<TagsStep> {
   List<Tag> _suggestions(List<Tag> tags, String text) {
     /// Here we will determine the list of tags which are available in the
     /// suggestion textfield for the user to select from
-    return tags.where(
-      (tag) {
-        /// First we check for those tags which have not been selected so far
-        bool tagNotSelected = this
-            .widget
-            .meal
-            .tagUuids
-            .every((selectedTagUuid) => selectedTagUuid != tag.uuid);
+    return tags.where((tag) {
+      /// First we check for those tags which have not been selected so far
+      bool tagNotSelected = this.widget.meal.tagUuids.every(
+        (selectedTagUuid) => selectedTagUuid != tag.uuid,
+      );
 
-        /// Since the user can also write into the suggestion textfield to
-        /// filter the tags, we will check for those tags whose name contains
-        /// the given text
-        bool tagWithTextExists = text.trim().isEmpty
-            ? true
-            : tag.name.toLowerCase().contains(
-                  text.toLowerCase().trim(),
-                );
+      /// Since the user can also write into the suggestion textfield to
+      /// filter the tags, we will check for those tags whose name contains
+      /// the given text
+      bool tagWithTextExists = text.trim().isEmpty
+          ? true
+          : tag.name.toLowerCase().contains(text.toLowerCase().trim());
 
-        /// Now both have to be true so we get those tags which have not been
-        /// selected by the user so far and match the text given by the user
-        /// (will be all non selected tags if the user has not put in any text)
-        return tagNotSelected && tagWithTextExists;
-      },
-    ).toList();
+      /// Now both have to be true so we get those tags which have not been
+      /// selected by the user so far and match the text given by the user
+      /// (will be all non selected tags if the user has not put in any text)
+      return tagNotSelected && tagWithTextExists;
+    }).toList();
   }
 
   @override
@@ -68,9 +59,7 @@ class _TagsStepState extends ConsumerState<TagsStep> {
             onCreateNew: (text) async {
               Tag? tag = await ModalUtils.showBaseDialog(
                 context,
-                AddEditTagDialog(
-                  name: text,
-                ),
+                AddEditTagDialog(name: text),
               );
               if (tag != null) {
                 setState(() => this.widget.meal.tagUuids.add(tag.uuid));
@@ -91,23 +80,23 @@ class _TagsStepState extends ConsumerState<TagsStep> {
                     alignment: Alignment.centerLeft,
                     child: Wrap(
                       spacing: DesignSystem.spacing.x12,
-                      children: this
-                          .widget
-                          .meal
-                          .tagUuids
+                      children: this.widget.meal.tagUuids
                           .map(
                             (tagUuid) => BaseChip(
                               text: tags
                                   .firstWhereOrNull(
-                                      (tag) => tag.uuid == tagUuid)
+                                    (tag) => tag.uuid == tagUuid,
+                                  )
                                   ?.name,
                               color: tags
                                   .firstWhereOrNull(
-                                      (tag) => tag.uuid == tagUuid)
+                                    (tag) => tag.uuid == tagUuid,
+                                  )
                                   ?.colorHex
                                   ?.toColor(),
-                              onDeleted: () => setState(() =>
-                                  this.widget.meal.tagUuids.remove(tagUuid)),
+                              onDeleted: () => setState(
+                                () => this.widget.meal.tagUuids.remove(tagUuid),
+                              ),
                             ),
                           )
                           .toList(),
@@ -115,7 +104,8 @@ class _TagsStepState extends ConsumerState<TagsStep> {
                   )
                 : Padding(
                     padding: EdgeInsets.symmetric(
-                        vertical: DesignSystem.spacing.x24),
+                      vertical: DesignSystem.spacing.x24,
+                    ),
                     child: BasePlaceholder(text: 'No tags added yet'),
                   ),
           ),

@@ -3,17 +3,14 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/meal/meal.dart';
-import '../../../../models/rating/rating.dart';
+import '../../../../data/models/meal/meal.dart';
+import '../../../../data/models/rating/rating.dart';
 import '../../../../widgets/shared/meal_ratings.dart';
 
 class RatingStep extends ConsumerStatefulWidget {
   final Meal meal;
 
-  const RatingStep({
-    super.key,
-    required this.meal,
-  });
+  const RatingStep({super.key, required this.meal});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _RatingStepState();
@@ -33,7 +30,8 @@ class _RatingStepState extends ConsumerState<RatingStep> {
           rightPadding: 0,
           backgroundColor: Theme.of(context).cardColor.lighten(2),
           child: Text(
-              'Ratings are meant to be positive so that \'5\' is the best outcome while \'1\' is the worst. This will enable to correctly filter and sort meals later on.'),
+            'Ratings are meant to be positive so that \'5\' is the best outcome while \'1\' is the worst. This will enable to correctly filter and sort meals later on.',
+          ),
         ),
         SizedBox(height: DesignSystem.spacing.x24),
         BaseCard(
@@ -53,13 +51,16 @@ class _RatingStepState extends ConsumerState<RatingStep> {
             data: (ratings) => MealRatings(
               ratings: ratings,
               ratingLinks: this.widget.meal.ratings,
-              onSelectionChanged: (rating, ratingValue) => setState(() => this
-                  .widget
-                  .meal
-                  .ratings
-                  .firstWhereOrNull(
-                      (ratingLink) => ratingLink.ratingUuid == rating.uuid)
-                  ?.value = ratingValue),
+              onSelectionChanged: (rating, ratingValue) => setState(
+                () =>
+                    this.widget.meal.ratings
+                            .firstWhereOrNull(
+                              (ratingLink) =>
+                                  ratingLink.ratingUuid == rating.uuid,
+                            )
+                            ?.value =
+                        ratingValue,
+              ),
             ),
           ),
         ),

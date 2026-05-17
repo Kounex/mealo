@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/embeddings/rating_link/rating_link.dart';
-import '../../../../models/ingredient/ingredient.dart';
-import '../../../../models/rating/rating.dart';
-import '../../../../models/tag/tag.dart';
+import '../../data/models/ingredient/ingredient.dart';
+import '../../data/models/rating/rating.dart';
+import '../../data/models/tag/tag.dart';
 import '../../widgets/shared/dialog/confirmation.dart';
 import 'days_dropdown.dart';
 import 'ingredients_block.dart';
@@ -17,10 +17,7 @@ import 'tags_block.dart';
 class RandomizeMealView extends ConsumerStatefulWidget {
   final ScrollController controller;
 
-  const RandomizeMealView({
-    super.key,
-    required this.controller,
-  });
+  const RandomizeMealView({super.key, required this.controller});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -139,23 +136,21 @@ class _RandomizeMealViewState extends ConsumerState<RandomizeMealView> {
                       BaseTextButton(
                         onPressed: _areFiltersActive()
                             ? () => ModalUtils.showBaseDialog(
-                                  context,
-                                  MealoBaseConfirmationDialog(
-                                    onYes: (_) => _setFiltersDefault(),
-                                    title: 'Reset Filters',
-                                    body:
-                                        'Are you sure you want to reset the filters? This action can\'t be undone!',
-                                    isYesDestructive: true,
-                                  ),
-                                )
+                                context,
+                                MealoBaseConfirmationDialog(
+                                  onYes: (_) => _setFiltersDefault(),
+                                  title: 'Reset Filters',
+                                  body:
+                                      'Are you sure you want to reset the filters? This action can\'t be undone!',
+                                  isYesDestructive: true,
+                                ),
+                              )
                             : null,
                         isDestructive: true,
                         child: const Text('Reset'),
                       ),
                       SizedBox(width: DesignSystem.spacing.x8),
-                      OnOffIndicator(
-                        on: _areFiltersActive(),
-                      ),
+                      OnOffIndicator(on: _areFiltersActive()),
                       SizedBox(width: DesignSystem.spacing.x18),
                     ],
                   ),
@@ -186,18 +181,22 @@ class _RandomizeMealViewState extends ConsumerState<RandomizeMealView> {
                         text:
                             'Which ingredients would you like to have in the meal?',
                         onAdd: (ingredient) => setState(
-                            () => _includedIngredients.add(ingredient)),
+                          () => _includedIngredients.add(ingredient),
+                        ),
                         onRemove: (ingredient) => setState(
-                            () => _includedIngredients.remove(ingredient)),
+                          () => _includedIngredients.remove(ingredient),
+                        ),
                       ),
                       SizedBox(height: DesignSystem.spacing.x24),
                       IngredientsBlock(
                         selectedIngredients: _excludedIngredients,
                         text: 'Which ingredients should NOT be in the meal?',
                         onAdd: (ingredient) => setState(
-                            () => _excludedIngredients.add(ingredient)),
+                          () => _excludedIngredients.add(ingredient),
+                        ),
                         onRemove: (ingredient) => setState(
-                            () => _excludedIngredients.remove(ingredient)),
+                          () => _excludedIngredients.remove(ingredient),
+                        ),
                       ),
                       SizedBox(height: DesignSystem.spacing.x24),
                       RatingsBlock(
@@ -209,14 +208,23 @@ class _RandomizeMealViewState extends ConsumerState<RandomizeMealView> {
                               ..value = RatingValue.three,
                           ),
                         ),
-                        onRemove: (rating) => setState(() =>
-                            _selectedRatings.removeWhere((ratingLink) =>
-                                ratingLink.ratingUuid == rating.uuid)),
-                        onValueChanged: (rating, ratingValue) => setState(() =>
-                            _selectedRatings
-                                .firstWhereOrNull((ratingLink) =>
-                                    ratingLink.ratingUuid == rating.uuid)
-                                ?.value = ratingValue),
+                        onRemove: (rating) => setState(
+                          () => _selectedRatings.removeWhere(
+                            (ratingLink) =>
+                                ratingLink.ratingUuid == rating.uuid,
+                          ),
+                        ),
+                        onValueChanged: (rating, ratingValue) => setState(
+                          () =>
+                              _selectedRatings
+                                      .firstWhereOrNull(
+                                        (ratingLink) =>
+                                            ratingLink.ratingUuid ==
+                                            rating.uuid,
+                                      )
+                                      ?.value =
+                                  ratingValue,
+                        ),
                       ),
                       SizedBox(height: DesignSystem.spacing.x24),
                       DaysDropdown(

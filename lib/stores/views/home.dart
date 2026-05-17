@@ -4,8 +4,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../models/meal/meal.dart';
-import '../../models/randomized_run/randomized_run.dart';
+import '../../data/models/meal/meal.dart';
+import '../../data/models/randomized_run/randomized_run.dart';
 import '../../types/classes/randomize_config.dart';
 import '../../utils/persistence.dart';
 
@@ -23,17 +23,12 @@ class CurrentRandomizedRun extends _$CurrentRandomizedRun {
   @override
   FutureOr<RandomizedRun?> build() => null;
 
-  void start({
-    Duration? duration,
-    RandomizeConfig? config,
-  }) async {
+  void start({Duration? duration, RandomizeConfig? config}) async {
     try {
       List<Meal> meals =
           config?.filteredMeals ?? await ref.read(mealsProvider.future);
 
-      final randomMeal = meals.elementAt(
-        Random().nextInt(meals.length),
-      );
+      final randomMeal = meals.elementAt(Random().nextInt(meals.length));
 
       final randomizedRun = RandomizedRun()
         ..mealUuid = randomMeal.uuid
@@ -41,11 +36,13 @@ class CurrentRandomizedRun extends _$CurrentRandomizedRun {
             config?.includedTags.map((tag) => tag.uuid).toList() ?? []
         ..excludedTagsUuids =
             config?.excludedTags.map((tag) => tag.uuid).toList() ?? []
-        ..includedIngredientUuids = config?.includedIngredients
+        ..includedIngredientUuids =
+            config?.includedIngredients
                 .map((ingredient) => ingredient.uuid)
                 .toList() ??
             []
-        ..excludedIngredientUuids = config?.excludedIngredients
+        ..excludedIngredientUuids =
+            config?.excludedIngredients
                 .map((ingredient) => ingredient.uuid)
                 .toList() ??
             []
@@ -56,10 +53,9 @@ class CurrentRandomizedRun extends _$CurrentRandomizedRun {
       this.state = await AsyncValue.guard(() async {
         await Future.delayed(duration ?? const Duration(seconds: 3));
 
-        PersistenceUtils.transaction(
-          PersistenceOperation.insertUpdate,
-          [randomizedRun],
-        );
+        PersistenceUtils.transaction(PersistenceOperation.insertUpdate, [
+          randomizedRun,
+        ]);
 
         return randomizedRun;
       });
@@ -72,25 +68,32 @@ class CurrentRandomizedRun extends _$CurrentRandomizedRun {
 @riverpod
 FutureOr<List<Meal>> prevRandomizedMeals(Ref ref) async {
   List<Meal> meals = await ref.watch(mealsProvider.future);
-  List<RandomizedRun> randomizedRuns =
-      (await ref.watch(randomizedRunsProvider.future))
-          .sorted((a, b) => b.created.compareTo(a.created));
+  List<RandomizedRun> randomizedRuns = (await ref.watch(
+    randomizedRunsProvider.future,
+  )).sorted((a, b) => b.created.compareTo(a.created));
 
   return meals
-      .where((meal) => randomizedRuns
-          .any((randomizedRun) => randomizedRun.mealUuid == meal.uuid))
+      .where(
+        (meal) => randomizedRuns.any(
+          (randomizedRun) => randomizedRun.mealUuid == meal.uuid,
+        ),
+      )
       .toList();
 }
 
 @riverpod
 FutureOr<List<Meal>> prevAteMeals(Ref ref) async {
   List<Meal> meals = await ref.watch(mealsProvider.future);
-  List<RandomizedRun> randomizedRuns =
-      (await ref.watch(randomizedRunsProvider.future))
-          .sorted((a, b) => b.created.compareTo(a.created));
+  List<RandomizedRun> randomizedRuns = (await ref.watch(
+    randomizedRunsProvider.future,
+  )).sorted((a, b) => b.created.compareTo(a.created));
 
   return meals
-      .where((meal) => randomizedRuns.any((randomizedRun) =>
-          randomizedRun.mealUuid == meal.uuid && randomizedRun.eaten))
+      .where(
+        (meal) => randomizedRuns.any(
+          (randomizedRun) =>
+              randomizedRun.mealUuid == meal.uuid && randomizedRun.chosen,
+        ),
+      )
       .toList();
 }

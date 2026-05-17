@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mealo/views/meals/widgets/add_edit_meal_sheet/images_step/image_preview.dart';
 import 'package:reorderable_grid/reorderable_grid.dart';
 
-import '../../../../../models/meal/meal.dart';
+import '../../../../../data/models/meal/meal.dart';
 import '../../../../../widgets/shared/image.dart';
 
 class MealImages extends ConsumerStatefulWidget {
@@ -59,12 +59,12 @@ class _MealImagesState extends ConsumerState<MealImages>
   }
 
   void _showImagePreview(String imageUuid) => ModalUtils.showFullscreen(
-        context: context,
-        barrierDismissible: true,
-        transparent: true,
-        blur: true,
-        content: ImagePreview(imageUuid: imageUuid),
-      );
+    context: context,
+    barrierDismissible: true,
+    transparent: true,
+    blur: true,
+    content: ImagePreview(imageUuid: imageUuid),
+  );
 
   @override
   void dispose() {
@@ -87,8 +87,9 @@ class _MealImagesState extends ConsumerState<MealImages>
                     crossAxisSpacing: DesignSystem.spacing.x12,
                     mainAxisSpacing: DesignSystem.spacing.x12,
                     onReorder: (oldIndex, newIndex) => setState(() {
-                      final item =
-                          this.widget.meal.imagesUuids.removeAt(oldIndex);
+                      final item = this.widget.meal.imagesUuids.removeAt(
+                        oldIndex,
+                      );
                       this.widget.meal.imagesUuids.insert(newIndex, item);
                     }),
                     onReorderStart: (_) => setState(() => _toggleOrderMode()),
@@ -97,53 +98,50 @@ class _MealImagesState extends ConsumerState<MealImages>
                     // padding: EdgeInsets.all(DesignSystem.spacing.x8),
                     children: [
                       ...this.widget.meal.imagesUuids.mapIndexed(
-                            (index, imageUuid) => GestureDetector(
-                              key: ValueKey(imageUuid),
-                              behavior: HitTestBehavior.translucent,
-                              onDoubleTap: () => _setThumbnail(imageUuid),
-                              onTap: () => _showImagePreview(imageUuid),
-                              child: Animate(
-                                autoPlay: false,
-                                controller: _controller,
-                                effects: [
-                                  RotateEffect(
-                                    begin: -0.003,
-                                    end: 0.003,
-                                    duration: DesignSystem
-                                        .animation.defaultDurationMS150,
-                                    curve: Curves.easeInOut,
-                                  ),
-                                  ScaleEffect(
-                                    begin: const Offset(0.998, 0.998),
-                                    end: const Offset(1.002, 1.002),
-                                    duration: DesignSystem
-                                        .animation.defaultDurationMS150,
-                                    curve: Curves.easeInOut,
-                                  ),
-                                ],
-                                child: MealoBaseImage(
-                                  imageUuid: imageUuid,
-                                  subPath: Meal.subPathForImages,
-                                  height:
-                                      MediaQuery.sizeOf(context).width / 3.75,
-                                  width:
-                                      MediaQuery.sizeOf(context).width / 3.75,
-                                  additionalIcon:
-                                      this.widget.meal.thumbnailUuid ==
-                                              imageUuid
-                                          ? CupertinoIcons.photo
-                                          : null,
-                                  borderColor: this.widget.meal.thumbnailUuid ==
-                                          imageUuid
-                                      ? Theme.of(context).colorScheme.onSurface
-                                      : null,
-                                  icon: CupertinoIcons.clear,
-                                  onAction: () =>
-                                      this.widget.onImageAction(imageUuid),
-                                ),
+                        (index, imageUuid) => GestureDetector(
+                          key: ValueKey(imageUuid),
+                          behavior: HitTestBehavior.translucent,
+                          onDoubleTap: () => _setThumbnail(imageUuid),
+                          onTap: () => _showImagePreview(imageUuid),
+                          child: Animate(
+                            autoPlay: false,
+                            controller: _controller,
+                            effects: [
+                              RotateEffect(
+                                begin: -0.003,
+                                end: 0.003,
+                                duration:
+                                    DesignSystem.animation.defaultDurationMS150,
+                                curve: Curves.easeInOut,
                               ),
+                              ScaleEffect(
+                                begin: const Offset(0.998, 0.998),
+                                end: const Offset(1.002, 1.002),
+                                duration:
+                                    DesignSystem.animation.defaultDurationMS150,
+                                curve: Curves.easeInOut,
+                              ),
+                            ],
+                            child: MealoBaseImage(
+                              imageUuid: imageUuid,
+                              subPath: Meal.subPathForImages,
+                              height: MediaQuery.sizeOf(context).width / 3.75,
+                              width: MediaQuery.sizeOf(context).width / 3.75,
+                              additionalIcon:
+                                  this.widget.meal.thumbnailUuid == imageUuid
+                                  ? CupertinoIcons.photo
+                                  : null,
+                              borderColor:
+                                  this.widget.meal.thumbnailUuid == imageUuid
+                                  ? Theme.of(context).colorScheme.onSurface
+                                  : null,
+                              icon: CupertinoIcons.clear,
+                              onAction: () =>
+                                  this.widget.onImageAction(imageUuid),
                             ),
                           ),
+                        ),
+                      ),
                     ],
                   ),
                   //     ReorderableWrap(
@@ -226,11 +224,10 @@ class _MealImagesState extends ConsumerState<MealImages>
               rightPadding: 0,
               backgroundColor: Theme.of(context).cardColor.lighten(2),
               child: Padding(
-                padding:
-                    EdgeInsets.symmetric(vertical: DesignSystem.spacing.x24),
-                child: const BasePlaceholder(
-                  text: 'No images set yet',
+                padding: EdgeInsets.symmetric(
+                  vertical: DesignSystem.spacing.x24,
                 ),
+                child: const BasePlaceholder(text: 'No images set yet'),
               ),
             ),
     );

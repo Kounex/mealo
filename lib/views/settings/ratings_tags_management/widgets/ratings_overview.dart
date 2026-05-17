@@ -2,7 +2,7 @@ import 'package:base_components/base_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/rating/rating.dart';
+import '../../../../data/models/rating/rating.dart';
 import '../../../../widgets/shared/dialog/add_edit_rating.dart';
 
 class RatingsOverview extends ConsumerWidget {
@@ -24,14 +24,10 @@ class RatingsOverview extends ConsumerWidget {
             children: [
               ...ratings.map(
                 (rating) => GestureDetector(
-                  child: BaseChip(
-                    label: Text(rating.name),
-                  ),
+                  child: BaseChip(label: Text(rating.name)),
                   onTap: () => ModalUtils.showBaseDialog(
                     context,
-                    AddEditRatingDialog(
-                      rating: rating,
-                    ),
+                    AddEditRatingDialog(rating: rating),
                   ),
                 ),
               ),
